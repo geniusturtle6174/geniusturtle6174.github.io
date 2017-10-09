@@ -1,0 +1,21 @@
+﻿a{text-decoration:none;color:blue}
+a:hover{text-decoration:none;color:red}
+img{border-radius:7px;}
+
+.myTitle{font-size:15pt}
+body{font-size:15pt;font-family:"標楷體","DFKai-sb"}
+.small{font-size:1pt}
+
+table{border:0;width:95%; margin-bottom: 40px; margin-top: 0px;}
+
+.developmentThLeft{border-color:black;border-right:ridge;border-bottom:ridge;background-color:#ccffcc;width:30%;}
+.developmentThRight{border-color:black;border-bottom:ridge;background-color:#ccffcc;}
+.developmentTdLeft{border-color:black;border-right:ridge;border-bottom:ridge;background-color:#ffccff;text-align:center}
+.developmentTdRight{border-color:black;border-bottom:ridge;background-color:#ffccff;padding:5pt}
+
+.toolNotes{border-color:black;padding:7pt;text-align:center;background-color:#ffccff;width:33%;}
+
+.relatedPapersThLeft{border-color:black;border-right:ridge;border-bottom:ridge;background-color:#ccffcc;width:75%;}
+.relatedPapersThRight{border-color:black;border-bottom:ridge;background-color:#ccffcc;}
+.relatedPapersTdLeft{border-color:black;border-right:ridge;border-bottom:ridge;background-color:#ffccff;}
+.relatedPapersTdRight{border-color:black;border-bottom:ridge;background-color:#ffccff;padding:10pt}

@@ -1,0 +1,38 @@
+<html>
+<head>
+	<title>王崇喆</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="../myCss.css">
+	<base target="_blank">
+</head>
+
+<body bgcolor="#ccccff">
+<pre>
+
+- 取得軟體 : valgrind
+  - 網站 : http://valgrind.org/
+  - 需自行下載後編譯
+
+安裝步驟：
+  - 解壓縮(如使用圖形介面可免去指令)
+  - cd至該目錄下
+  - ./configure
+  - make
+    (此步驟稍微花費時間)
+  - sudo make install
+
+- 待檢查程式之編譯
+  - 加上"-g"參數
+  - 不要加上"O"參數進行優化
+
+- 如何執行
+  - valgrind --leak-check=full --show-reachable=yes {平時正常執行時使用之方式}
+  - 關於其他可調整參數，請使用"valgrind --help"查看
+
+- notes
+  - 根據網站資料，執行速度會慢個20~30倍
+
+</pre>
+</body>
+</html>
+
