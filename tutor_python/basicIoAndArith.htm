@@ -1,0 +1,189 @@
+﻿<html>
+<head>
+	<title>線上教材：Python 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushPython.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+在 Python 要印出固定的內容非常簡單，以下範例會在螢幕上印出"Hello World!!"：
+<pre class="brush: py">
+print('Hello World!!') # 印出一些東西
+</pre>
+要執行這段程式碼，你可以先在 cmd 當中先開啟 Python 後複製貼上或自行打字，
+或者將其存成一個副檔名為 py 的純文字檔(如 hello.py)，然後在 cmd 當中，用"python hello.py"的方式執行。
+其中：<br/><br/>
+<ul>
+	<li>此處的括號代表呼叫語言提供的內建函式(function)，就像數學中 y = f(x) 的那個括號</li>
+	<li>井字號後面是程式碼的單行註解，可用解釋某一段程式碼的用途。
+		註解是給人閱讀的，裡面的任何文字都不會被當作程式來執行。</li>
+	<li>單引號可以換成雙引號</li>
+	<li>在 Python 當中，每行程式的結尾不必加上分號，但是要加也可以</li>
+</ul>
+</p>
+
+<p>
+另外，若是在 Python 2 當中，應該寫成：
+<pre class="brush: py">
+print 'OAO'
+</pre>
+或者：
+<pre class="brush: py">
+from __future__ import print_function
+print('OAO')
+</pre>
+第一行的 import，主要用於使用外掛功能。較細節的說明，日後會另外介紹
+</p>
+
+<p>
+目前為止，已經能輸出大部分的固定內容，
+而程式中的資料若要能隨著狀況(例如使用者輸入或者運算結果)改變，則需要用變數來儲存。
+變數是記憶體裡面的一塊空間，可以用來存放資料，而變數命名時，必須遵循下列的命名規則：
+<ul>
+	<li>以底線或英文大小寫字母開頭</li>
+	<li>以底線、英文大小寫、數字組成</li>
+	<li>不可使用保留字(例如：if)與函式名稱(例如：print)</li>
+</ul>
+</p>
+
+<p>
+Question: 下列哪些變數名稱合法？
+<ul>
+	<li>AbCdE</li>
+	<li>34fgh</li>
+	<li>test!!</li>
+	<li>ab123</li>
+</ul>
+</p>
+
+<p>
+將資料塞進變數當中的方法，是使用「=」(指派運算子)，
+例如程式敘述「a=2」的結果，就是讓變數 a 的值為 2。
+以下範例會計算兩個整數相加的結果：
+<pre class="brush: py">
+a = 1
+b = 2
+c = a + b
+print(c) # 因為是單純印出變數，所以不用加引號
+</pre>
+</p>
+
+<p>
+以下將基本的運算符號稍做整理：
+<ul>
+	<li>「+」、「-」、「*」、「/」或「//」：加減乘除</li>
+	<li>「**」：次方，底數在前指數在後</li>
+	<li>「%」：取餘數(模數運算, modulo)</li>
+	<li>「()」：括號，必須成對</li>
+	<li>「=」：指派，將運算結果指定給某個變數</li>
+</ul><br/>
+運算符號之間，會遵守優先順序，例如先乘除後加減，以及括號先算等等。
+另外要注意的是，變數一旦被指派了新的值，則舊的值會永遠消失。
+例如先寫了「a = 1」的敘述，而後面又接著「a = 2」，則此時的變數 a 的值，會由 1 變成 2。
+以下展示幾個範例。
+</p>
+
+<p>
+三個整數取平均：
+<pre class="brush: py">
+a = 1
+b = 2
+c = 3
+d = (a + b + c) / 3
+print("Avg of {}, {}, and {}: {}".format(a, b, c, d)) # 變數跟固定文字混在一起印的方法很多，這是其中一種
+</pre>
+</p>
+
+<p>
+運算優先順序：
+<pre class="brush: py">
+a = 3
+b = 2
+c = 1
+d = 4
+e = a+d/b-c; # 3+4/2-1
+print('Result:', e)
+</pre>
+</p>
+
+<p>
+Question: 兩行 print 分別會印出什麼？
+<pre class="brush: py">
+a = 1
+a = a + 1
+print(a)
+b = a + 1
+print(a, b)
+</pre>
+</p>
+
+<p>
+在前面幾個範例中，除法的結果都恰好是整數，
+如果在數學上是小數的話，則在程式語言中，我們可以利用不同的運算符號，讓程式計算是否捨去小數的結果
+<pre class="brush: py">
+a = 8 / 3
+b = 8 / 4
+c = 8 / 5
+print(a, b, c)
+a = 8 // 3
+b = 8 // 4
+c = 8 // 5
+print(a, b, c)
+</pre>
+在 Python 3 當中，一個斜線會保留小數，兩個斜線會往負的方向取整數；
+而在 Python 2 當中，則都是往負的方向取整數。
+但當你在 Python 2 中使用了「from __future__ import division」之後，就又會跟 Python 3 一樣。
+</p>
+
+<p>
+在 Python 語言中，餘數的符號會與除數相同，即 a % b 相當於計算 a - a//b*b。
+以下是用「%」符號求餘數的範例：
+<pre class="brush: py">
+print(15 % 4)
+print(-15 % 4)
+print(15 % -4)
+print(-15 % -4)
+</pre>
+</p>
+
+<p>
+關於其他一些的 print 使用與其格式控制，範例如下：
+<pre class="brush: py">
+''' 以下為了讓不同格式間的輸出效果更明顯，
+    因此在前後都加上其他不相干的符號 '''
+print('!!{:5d}!!'.format(123))  # 靠右輸出 5 位整數，前方空白
+print('!!{:05d}!!'.format(123)) # 靠右輸出 5 位整數，前方補 0
+print('!!{:10.2f}!!'.format(12345.678))  # 靠右輸出浮點數，總共 10 位，小數點部分 2 位。輸出結果會被四捨五入
+</pre>
+其中，三個單引號是多行字串，但也可以當作多行註解使用
+</p>
+
+<p>
+若要接收使用者輸入的變數，則可使用 input 函式(目前，我們只先介紹一次讀取一個數字的方法)。
+以下是兩個整數相加的範例，為了避免次一行程式被當成這一行的輸入，請存成 py 檔，或者逐行執行：
+<pre class="brush: py">
+a = input('Please enter 1st number: ')
+b = input('Please enter 2nd number: ')
+print(a + b)
+</pre>
+你可能會發現結果跟預期的不太一樣，這是因為輸入的內容被當成一般文字，而加號為文字的連接。
+若要修正，可以將第三行改為「print int(a) + int(b)」，就會當成整數運算。
+如果希望是數字但是不一定是整數，可以把「int」改為「float」。
+另外，若使用 Python 2，則會自動判斷輸入的類型，
+但是像這樣明確地寫出要使用整數運算，仍會對釐清程式的運作細節有幫助。
+</p>
+
+</blockquote>
+</body></html>

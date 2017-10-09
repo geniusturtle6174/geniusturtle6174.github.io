@@ -1,0 +1,217 @@
+﻿<html>
+<head>
+	<title>線上教材：Python 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushPython.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+Numpy 是 Python 的一個函式庫，支援了非常多種的向量和矩陣等等的運算。
+要安裝 numpy，你必須先在 cmd 當中執行「pip install numpy」或「python -m pip install numpy」
+(根據電腦的設定，可能在指令細節還會有些許差異)；
+安裝完成後，在 Python 程式中 import，就可以使用。
+</p>
+
+<p>
+首先來看一些基本的數學運算。
+由於常見的部分在 Math 當中也有提供很多，故以下僅任意列出其中一些，作為語法的介紹：
+<pre class="brush: py">
+import numpy as np
+
+print(np.abs(-123.45))
+print(np.log2(1024))
+print(np.log10(2))
+</pre>
+</p>
+
+<p>
+Numpy 當中，最基本與常見的資料結構，就是多維陣列(ndarray)；
+而向量，當然就是一維陣列：
+<pre class="brush: py">
+import numpy as np
+
+a = np.array([]) # 空陣列
+b = np.array([3, 4, 2, 1, 5])
+c = np.array([6, 8, 7, 5, 9])
+print(b + c)
+print(b - c)
+print(b * c) # 元素對元素計算
+print(b / c) # 元素對元素計算
+print(b.shape)
+</pre>
+</p>
+
+<p>
+創建規則向量，可以用 arange (相當於 range 的 numpy 版本)，甚至也有 linspace 可用：
+<pre class="brush: py">
+import numpy as np
+
+print(np.arange(10))
+print(np.arange(1,10))
+print(np.arange(1,10,2))
+print(np.linspace(0, 1, 11))
+</pre>
+</p>
+
+<p>
+二維陣列，就是很多個一維陣列排在一起：
+<pre class="brush: py">
+import numpy as np
+
+print(np.array([[1,2,3], [4,5,6]]))
+print(np.zeros(5))     # 也有 ones 可以用
+print(np.zeros((2,3)))
+print(np.zeros((5,1)))
+</pre>
+</p>
+
+<p>
+矩陣的合併：
+<pre class="brush: py">
+import numpy as np
+
+a = np.array([[1,2,3], [4,5,6]])
+b = np.array([[7,8,9], [0,0,0]])
+print(np.vstack([a, b]))
+print(np.hstack([a, b]))
+</pre>
+需要注意的是，如果其中一方是空矩陣的話，可能會產生問題，所以必須對其 size 屬性進行判斷，
+例如下列程式片段中，已知 a 有可能為空，則可以這樣處理：
+<pre class="brush: py">
+c = np.vstack([a, b]) if(a.size) else b
+</pre>
+</p>
+
+<p>
+一些統計等運算，例如極值、排序、平均、共變異矩陣：
+<pre class="brush: py">
+import numpy as np
+
+a = np.array([[1,5,3], [4,2,6]])
+print(np.max(a)) # 在所有元素裡面找
+print(np.max(a, axis=0)) # 對每個 column 找
+print(np.max(a, axis=1)) # 對每個 row 找
+
+b = np.array([[4,2,5,3,1], [8,6,7,9,0]])
+print(np.sort(b))         # 每個 row 各自排序
+print(np.sort(b, axis=0)) # 每個 column 各自排序
+
+c = np.array([[4,2,5,3,1], [8,6,7,9,0]])
+print(np.mean(c)) # 所有元素平均
+print(np.mean(c, axis=0)) # 每個 column 各自平均
+print(np.mean(c, axis=1)) # 每個 row 各自平均
+
+d = np.array([[4,2,5,3,1], [8,6,7,9,0], [15,27,42,17,83]])
+print(np.cov(d)) # 每個 column 當作一個資料點，故總共 5 筆，每筆 3 維
+print(np.cov(d, rowvar=False)) # 每個 row 當作一個資料點，故總共 3 筆，每筆 5 維
+</pre>
+</p>
+
+<p>
+上列的極值或排序，如果想要找出位置或順序(僅以向量示範)：
+<pre class="brush: py">
+import numpy as np
+
+a = np.array([4,2,3,1,5])
+print(np.argmax(a))
+print(np.argsort(a))
+</pre>
+</p>
+
+<p>
+邏輯運算與尋找(僅以向量示範)：
+<pre class="brush: py">
+import numpy as np
+
+a = np.array([4,3,1,6,9,2,5,0,8,7])
+print(a&gt;=5)
+print(np.where(a&gt;=5)[0])
+
+print(np.bitwise_or(a&gt;=7, a&lt;=3))
+print(np.where(np.bitwise_or(a&gt;=7, a&lt;=3))[0])
+</pre>
+</p>
+
+<p>
+轉置：
+<pre class="brush: py">
+import numpy as np
+
+a = np.array([[1,5,3], [4,2,6]])
+print(a.T)
+print('------------')
+
+b = np.array([[4],[2],[3]])
+print(b, b.shape)
+print(b.T, b.T.shape)
+print('------------')
+
+c = np.array([4,2,3,5,1])
+cLen = c.shape[0]
+print(c, c.shape)
+print(c.T, c.T.shape) # 一開始就是一維的不能轉
+print(c.reshape(cLen, -1), c.reshape(cLen, -1).shape) # 若需要轉，可以這樣用
+</pre>
+</p>
+
+<p>
+矩陣相乘的方法如下。若是利用 ndarray，可以呼叫 multiply：
+<pre class="brush: py">
+import numpy as np
+
+a = np.array([[1,5,3], [4,2,6]])
+b = np.array([[3,5,4,6,7], [8,2,4,7,1], [9,0,2,7,1]])
+print(np.matmul(a, b))
+</pre>
+</p>
+
+<p>
+行列式值與反矩陣：
+<pre class="brush: py">
+import numpy as np
+
+a = np.array([[4,3,5], [2,6,1], [0,5,8]])
+print(np.linalg.det(a))
+print('------------')
+b = np.linalg.inv(a)
+print(b)
+print(np.matmul(a,b))
+</pre>
+</p>
+
+<p>
+線性方程求解：
+<pre class="brush: py">
+import numpy as np
+
+A = np.array([[1,4,2], [3,1,8], [9,4,1]])
+b = np.array([10, 11, 100])
+
+# Ax = b
+x, resid, rank, s = np.linalg.lstsq(A, b)
+print(x)
+print(np.matmul(A, x))
+
+print('------------------')
+
+# x'A = b
+x, resid, rank, s = np.linalg.lstsq(A.T, b.T)
+print(x)
+print(np.matmul(x, A))
+</pre>
+</p>
+
+</blockquote>
+</body></html>

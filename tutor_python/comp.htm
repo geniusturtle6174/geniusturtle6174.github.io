@@ -1,0 +1,92 @@
+﻿<html>
+<head>
+	<title>線上教材：Python 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushPython.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+以下是一個用迴圈處理串列的範例，此範例會將 a 串列的每個元素平方，再存到 b 串列：
+<pre class="brush: py">
+a = [9, 4, 8, 7]
+b = []
+
+for v in a:
+	b.append(v**2)
+
+print(b)
+</pre>
+</p>
+
+<p>
+而透過 list comprehension 的語法，我們可以很簡潔的寫為如下：
+<pre class="brush: py">
+a = [9, 4, 8, 7]
+b = [v**2 for v in a]
+print(b)
+</pre>
+</p>
+
+<p>
+這個則是透過迴圈建立字典的範例：
+<pre class="brush: py">
+a = {}
+
+for i in range(10):
+	a[i] = i**2
+
+print(a)
+</pre>
+</p>
+
+<p>
+我們也可以仿照 list comprehension 的語法(此時即為 dictionary comprehension)，
+簡潔的寫為如下：
+<pre class="brush: py">
+a = {i:i**2 for i in range(10)}
+print(a)
+</pre>
+</p>
+
+<p>
+List comprehension 對於巢狀迴圈，也跟原本有斷行時的的讀法一樣，
+最前面的是最外層，依此類推：
+<pre class="brush: py">
+a = ['A', 'B', 'C']
+b = ['X', 'Y', 'Z']
+c = [i+j for i in a for j in b]
+</pre>
+</p>
+
+<p>
+當然，也可以更進一步的跟條件判斷結合：
+<pre class="brush: py">
+a = [9, 4, 8, 7]
+b = [1 if(v>7) else 0 for v in a]
+print(b)
+</pre>
+</p>
+
+<p>
+此處也順帶介紹一下 map，他可以隱含的幫你把串列的每個元素都處理過一遍：
+<pre class="brush: py">
+a = ['12', '34', '56']
+b = [x for x in map(int, a)] # Python 2 當中，用 b = map(int, a) 就可以了
+print(a, b)
+</pre>
+</p>
+
+</blockquote>
+</body></html>

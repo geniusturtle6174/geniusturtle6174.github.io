@@ -1,0 +1,65 @@
+﻿<html>
+<head>
+	<title>線上教材：Python 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushPython.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+每個 Python 的檔案都可以看作模組，import 以後就可以使用裡面的函式或變數。
+假設我們有一個 test.py，內容為以下：
+<pre class="brush: py">
+def inc(x):
+	return x + 1
+
+def dec(x):
+	return x - 1
+
+a = 10
+b = 20
+</pre>
+則我們可以在同一目錄下的 Python 環境或檔案中這樣使用：
+<pre class="brush: py">
+import test
+
+print(test.a)
+print(test.b)
+print(test.inc(1))
+print(test.dec(100))
+</pre>
+</p>
+
+<p>
+Import 的時候，利用 as 可以換個名稱：
+<pre class="brush: py">
+import test as QQ
+
+print(QQ.a)
+print(QQ.inc(1))
+</pre>
+</p>
+
+<p>
+也可以只 import 一部分：
+<pre class="brush: py">
+from test import inc
+
+print(inc(1))
+</pre>
+這時候，就不需要再寫出原本的模組名稱"test"。
+</p>
+
+</blockquote>
+</body></html>

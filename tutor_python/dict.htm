@@ -1,0 +1,114 @@
+﻿<html>
+<head>
+	<title>線上教材：Python 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushPython.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+使用日常生活中的字典時，你會有一個要查詢的字詞，然後翻找到解釋。
+而 Python 中的字典是一堆 key 與 value 的集合，
+其中的 key 就像是要查詢的字詞，而 value 就像是解釋。
+字典的基本使用方法如下：
+<pre class="brush: py">
+d = {123: 456, 'OAO': 'QQ', 'easy': 'hahaha'}
+
+print(d[123])
+print(d['OAO'])
+
+print(d['difficult']) # 這行會產生錯誤，因為字典當中沒有這個字
+
+# 新增一組 key-value 的組合
+d['www'] = 'XDDDD'
+print(d['www'])
+
+# 修改一組 key-value 的組合
+d[123] = 789
+print(d[123])
+
+# 刪除一組 key-value 的組合
+del d[123]
+print(d[123]) # 這行也會產生錯誤，因為字典當中現在沒有這個字
+
+del d[12345] # 刪除不存在的字，也會產生錯誤
+
+print(len(d)) # 字詞的個數
+</pre>
+</p>
+
+<p>
+若要在程式中判斷字典裡是否有該字詞，可以用 in 來進行：
+<pre class="brush: py">
+d = {123: 456, 'OAO': 'QQ', 'easy': 'hahaha'}
+
+print(123 in d)
+print('XD' in d)
+print('difficult' not in d) # 或 print(not 'difficult' in d)
+</pre>
+如果是在 Python 2 當中，還有 has_key() 可以使用，不過在 Python 3 沒有此方法。
+</p>
+
+<p>
+字典要拷貝時的狀況，跟 list 非常像。如果是單純使用等號的情況，那麼任何東西都會跟著被改：
+<pre class="brush: py">
+d = {123: 456}
+e = d
+
+d[123] = 789
+d['abd'] = 'def'
+print(d)
+print(e)
+</pre>
+</p>
+
+<p>
+如果是單純使用"copy"的情況，在 value 是串列的時候會產生問題
+(修改其中一邊的串列內容時，另一邊會跟著修改)：
+<pre class="brush: py">
+d = {123: 456}
+e = d.copy()
+
+d[123] = 789
+d['abd'] = 'def'
+print(d)
+print(e)
+
+f = {123: [456, 567]}
+g = f.copy()
+
+f[123].append(789)
+f['abd'] = 'def'
+print(f)
+print(g)
+</pre>
+</p>
+
+<p>
+如果要連串列都能複製一份，則仍須使用 deepcopy：
+<pre class="brush: py">
+import copy
+
+f = {123: [456]}
+g = copy.deepcopy(f)
+
+f[123].append(789)
+f['abd'] = 'def'
+print(f)
+print(g)
+</pre>
+</p>
+
+</blockquote>
+</body></html>

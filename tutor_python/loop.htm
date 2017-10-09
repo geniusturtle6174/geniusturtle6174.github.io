@@ -1,0 +1,346 @@
+﻿<html>
+<head>
+	<title>線上教材：Python 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushPython.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+程式中，經常需要重複的進行某些動作，這時候，就需要用到"迴圈"。
+其中一種方法是 for 迴圈，其基本的用法如下：
+<pre class="brush: python">
+for 變數 in 串列或其他任何一串東西:
+	程式敘述
+</pre>
+迴圈中的程式敘述，會依照變數值的變化，被重複的執行。
+例如，下面這個程式可以有規則的印出一些數字：
+<pre class="brush: python">
+for i in range(10):
+	print(i)
+
+print('===================')
+    
+for i in range(1, 10):
+	print(i)
+
+print('===================')
+
+for i in range(1, 10, 2):
+	print(i)
+
+print('===================')
+
+for i in range(10, 1, -1):
+	print(i)
+</pre>
+會跟著迴圈跳動的變數，若沒有其他特殊用途，則習慣上會命名為 i, j, k 等等。
+程式裡面的 print，會因會變數 i 的跳動，而印出不同的數字。
+</p>
+
+<p>
+我們將前面的範例稍微變更一點點，則可以從 1 加到 100：
+<pre class="brush: python">
+s = 0
+for i in range(1, 101):
+	s = s + i
+print(s)
+</pre>
+其中的變數 s，會依次被加上 1, 2, 3, ..., 100，所以迴圈跑完以後，就可以得到 1 加到 100 的結果。
+記得一開始要初始化為 0 (歸零)，否則會得到不正確的結果
+</p>
+
+<p>
+如果是計算階乘，千萬記得改變一下初始值。以下示範計算 10 的階乘：
+<pre class="brush: python">
+s = 1
+for i in range(1, 11):
+	s = s * i
+print(s)
+</pre>
+</p>
+
+<p>
+如果要計算比較一般化的等差級數和，
+則可簡單的把迴圈變數跳動的範圍，改用變數來給值或判斷：
+<pre class="brush: python">
+s = 0
+
+# 也可以改成讓使用者輸入
+a1 = 3
+an = 101
+d = 2
+for i in range(a1, an+1, 2):
+	s = s + i
+print(s)
+
+n = (an - a1) / d + 1
+print(n*(a1+an)/2)
+</pre>
+當然，也可以如最後一段，用公式計算級數和。
+尤其是項數多的時候，用公式計算會比迴圈來的有效率。
+</p>
+
+<p>
+<a href="http://zh.wikipedia.org/wiki/%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97">費氏數列</a>也很適合用迴圈來計算，
+以下程式可以計算費氏數列第 n (n ≥ 2)項的值：
+<pre class="brush: python">
+prev1 = 1
+prev2 = 0
+n = 7 # 也可以改成讓使用者輸入
+for i in range(2, n+1):
+	fn = prev1 + prev2
+	prev2 = prev1
+	prev1 = fn
+print(fn)
+</pre>
+</p>
+
+<p>
+迴圈跟 list 結合時，有以下幾種用法：
+<pre class="brush: python">
+a = [3, 5, 2, 4, 1]
+
+for i in range(len(a)):
+	print(i, a[i])
+print('---------')
+
+for x in a:
+	print(x)
+print('---------')
+
+for i, x in enumerate(a):
+	print(i, x)
+print('---------')
+
+for i, x in enumerate(a, 10):
+	print(i, x)
+</pre>
+</p>
+
+<p>
+迴圈跟 dictionary 結合時，則有以下幾種用法：
+<pre class="brush: python">
+d = {'AB': 'CDE', 'QQ': 'OAO', 123: 456}
+
+for k in d:
+	print(k, d[k])
+print('---------')
+
+for k, v in d.items(): # 在 Python 2 請改用 iteritems
+    print(k, v)
+</pre>
+</p>
+
+<p>
+迴圈跟條件判斷一樣，也可以是巢狀(一層包一層)的。以下程式使用了兩層的 for 迴圈來輸出九九乘法表：
+<pre class="brush: python">
+for i in range(1, 10):
+    for j in range(1, 10):
+        print('{:d}*{:d}={:2d} '.format(i, j, i*j), end = '')
+    print('')
+</pre>
+這支程式的輸出為：
+<pre>
+1*1= 1 1*2= 2 1*3= 3 1*4= 4 1*5= 5 1*6= 6 1*7= 7 1*8= 8 1*9= 9
+2*1= 2 2*2= 4 2*3= 6 2*4= 8 2*5=10 2*6=12 2*7=14 2*8=16 2*9=18
+3*1= 3 3*2= 6 3*3= 9 3*4=12 3*5=15 3*6=18 3*7=21 3*8=24 3*9=27
+......(以下略)
+</pre>
+Question: 如何改成印直的？
+</p>
+
+<!--p>
+使用巢狀迴圈時，要注意內層迴圈的變數必須跟外層不同。
+以下是一個<b>會發生問題</b>的範例，內層和外層同時使用了變數 i。
+各位可以在執行之前，先預測一下它的效果：
+<pre class="brush: python">
+for i in range(5):
+	print(i)
+	print('---')
+	for i in range(3):
+		print(i)
+	print('===')
+</pre>
+</p-->
+
+<p>
+另外一種迴圈指令是 while，其語法為：
+<pre class="brush: python">
+while(條件式):
+	程式敘述
+</pre>
+只要條件符合，迴圈就會一直執行。
+</p>
+
+<p>
+以下程式也會印出 1 到 10，各位可以體會一下 while 與 for 的語法差異：
+<pre class="brush: python">
+i = 1
+while(i&lt;=10):
+	print(i)
+	i = i + 1
+</pre>
+</p>
+
+<p>
+利用 while 迴圈，很適合觀察「3n+1問題」的數列。這個問題的規則是這樣的：
+<ul>
+	<li>給定一正整數 n</li>
+	<li>當 n 是偶數時：除以 2</li>
+	<li>當 n 是奇數時：乘以 3 再 +1</li>
+	<li>最後會在 4, 2, 1 三者之間循環</li>
+</ul><br/>
+所以我們可以利用 while 迴圈，加上 if 進行判斷，寫出下面的程式：
+<pre class="brush: python">
+n = 13
+print(n)
+while(n!=1):
+	if(n%2==0):
+		n /= 2
+	else:
+		n = 3*n + 1
+	print(int(n))
+</pre>
+</p>
+
+<p>
+「break」可以跳出所在的這一層迴圈，「continue」可以繼續下一層迴圈：
+<pre class="brush: python">
+print("First loop:")
+for i in range(1, 6):
+    if(3==i):
+        break
+    print(i)
+print('')
+
+print("Second loop:")
+for i in range(1, 6):
+    if(3==i):
+        continue
+    print(i)
+print('')
+
+print("Nested loop:")
+for i in range(1, 4):
+    for j in range(1, 6):
+        print(i, j)
+        if(i==2):
+            break
+    print('')
+</pre>
+</p>
+
+<!--p>
+如果熟悉了迴圈的語法，則可以做出一個簡單的終極密碼遊戲。
+先來看看虛擬碼(此例之設計為，密碼有可能是上下界之一)：
+<pre class="brush: python">
+while(1){  /* 無窮迴圈，猜中才能跳出 */
+
+	提示使用者在上下界之間，輸入一個數字
+
+	if( 輸入數字恰為密碼 ){
+		猜中、break;
+	}
+	else if( 數字&lt;密碼 && 數字&ge;下界 ){
+		下界 ← 數字 + 1;
+	}
+	else if( 數字&gt;密碼 && 數字&le;上界 ){
+		上界 ← 數字 - 1;
+	}
+	else {
+		不要來亂;
+	}
+
+}
+</pre>
+C 語言中，把 0 當做「否」，其餘的非 0 值當做「是」，
+所以「while(1)」的寫法，會造成無窮迴圈(迴圈停不下來)。
+當然，猜中密碼時遊戲就要結束，所以 break 的條件就是猜中密碼。以下是完整程式碼：
+<pre class="brush: python">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	int low = 1, high = 100, pwd = 35, guess;
+	while(1){
+		printf("請在 %d 與 %d 之間猜一數字： ", low, high);
+		scanf(" %d", &amp;guess);
+		
+		if(guess==pwd){
+			printf("猜中了\n");
+			break;
+		}
+		else if( guess&lt;pwd && guess&gt;=low ){
+			low = guess + 1;
+		}
+		else if( guess&gt;pwd && guess&lt;=high){
+			high = guess - 1;
+		}
+		else {
+			printf("範圍有誤，請重新輸入！\n");
+		}
+	}
+	return 0;
+}
+</pre>
+範例當中的數字是事先寫死的，當然也可以改用亂數產生。往後會提到如何產生亂數。
+</p>
+
+<p>
+高中學過的勘根定理，也可以用迴圈來實做。
+勘根定理告訴我們，如果函數 f 是連續的，且 f(a)*f(b) &le; 0，則 [a, b] 之間至少有一根。
+求根的步驟如下：
+<ol>
+	<li>找一個區間 [a, b]，使 f(a) 和 f(b) 異號</li>
+	<li>求 a, b 中點 c，並求 f(c)</li>
+	<li>如果 f(a) 和 f(c) 同號，則取 c 為新左界，否則取 c 為新右界</li>
+	<li>重複 2 和 3，至夠精確為止</li>
+</ol><br/>
+面對未知的函數，要很快的猜出適合的 a 和 b，是比較困難的，所以範例中的 a 和 b 是固定值。
+以下程式，會計算 x<sup>5</sup> - x - 1 = 0 在 (-0.5, 1.5) 之間的某一根：
+<pre class="brush: python">
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+
+int main()
+{
+	double a = -0.5, b = 1.5, c, fa, fb, fc;
+
+	fa = pow(a, 5.0) - a - 1;
+	fb = pow(b, 5.0) - b - 1;
+
+	while( fa * fb &lt; 0 ){
+		c = (a+b)/2;
+		fc = pow(c, 5.0) - c - 1;
+
+		if( fabs(fc) &lt; 0.000001){ /* 夠小則中止 */
+			break;
+		}
+
+ 		if( fa*fc &gt; 0 ){/* f(a), f(c)同號，以c為新左界 */
+			a = c;
+		}
+		else {
+			b = c;
+		}
+	}
+	printf("Root: %.4f\n", c);
+	return 0;
+}
+</pre>
+</p-->
+
+</blockquote>
+</body></html>

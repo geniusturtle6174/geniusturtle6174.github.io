@@ -1,0 +1,147 @@
+﻿<html>
+<head>
+	<title>線上教材：Python 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushPython.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+本篇介紹一些可能比較常用的數學運算。
+以下範例皆假設各位已在 cmd 當中輸入過，或者檔案當中有「import math」。
+</p>
+
+<p>
+數論系列：
+<pre class="brush: py">
+math.ceil(0.4)  # 往正向無條件進位至整數
+math.floor(0.6) # 往負向無條件捨位至整數
+
+math.fabs(-12.345) # 絕對值，亦可使用「abs(-12.345)」
+math.factorial(5)  # 階乘
+math.gcd(12, 34)   # 最大公因數，Python 3.5 開始支援
+</pre>
+</p>
+
+<p>
+指數對數系列：
+<pre class="brush: py">
+math.exp(3)     # e 的幾次方
+math.pow(3, 5)  # x 的 y 次方，相當於 x**y
+math.sqrt(2)    # x 的開根號
+
+math.log(20.085536923187668) # 自然對數
+math.log2(8)
+math.log10(7)
+# 若要計算其他底數的對數，請使用「math.log(真數, 底數)」的方式，或自行套用換底公式
+</pre>
+</p>
+
+<p>
+三角函數系列，其輸入單位為弧度：
+<pre class="brush: py">
+math.sin(0.5)
+math.cos(0.5)
+math.tan(0.5)
+
+# 利用 radians 將角度轉換為弧度
+math.sin(math.radians(45))
+math.cos(math.radians(45))
+math.tan(math.radians(45))
+
+# 反三角函數，並利用 degrees 將結果從弧度轉為角度
+tmp = 1 / math.sqrt(2)
+math.degrees(math.asin(tmp))
+math.degrees(math.acos(tmp))
+math.degrees(math.atan(tmp))
+</pre>
+</p>
+
+<p>
+如果程式當中需要進行浮點數的比較，則情況可能會與你想像的不太一樣，
+這是由於浮點數在電腦中的精確度限制所造成，電腦裡的浮點數運算也不一定遵守結合律(associative)：
+<pre class="brush: py">
+print(0.1+0.2+0.3)
+print((0.1+0.2)+0.3)
+print(0.1+(0.2+0.3))
+print((0.1+0.2)+0.3 == 0.1+(0.2+0.3))
+</pre>
+</p>
+
+<!--p>
+下面用取概數中的四捨六入五取雙來做一個應用範例(本範例只考慮正數)。
+一般的四捨五入是 4 以下捨位，5 以上進位；
+但四捨六入五取雙則是 4 以下捨位，6 以上進位，而遇到 5 時，如果進位後是偶數則進位，否則捨位。
+依據其原則，虛擬碼可寫為以下(假設要處理的是變數 x，結果儲存在變數 r)：
+<pre class="brush: py">
+if(小數點下第一位&lt;=4){
+	r = floor(x);
+}
+else if(小數點下第一位&gt;=6){
+	r = ceil(x);
+}
+else { /* 小數點下第一位==5 */
+	if(個位數為偶數){
+		r = floor(x);
+	}
+	else { /* 個位數為奇數 */
+		r = ceil(x);
+	}
+}
+</pre>
+Question: 如何取得個位數與小數點下第一位？如何判斷奇偶數？
+</p>
+
+<p>
+寫成程式碼，則可為以下：
+<pre class="brush: py">
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+
+int main ()
+{
+	int a, b;
+	double r, x;
+
+	printf("請輸入一個小數：");
+	scanf("%lf",&amp;x);
+	
+	a = ( (int) floor(x) ) % 10;     // 浮點數型別不能取餘數，必須先轉成整數
+	b = ( (int) floor(x*10) ) % 10;
+	printf("個位數：%d，十分位數：%d\n", a, b);
+	
+	if(b&lt;=4){
+		r = floor(x);
+	}
+	else if(b&gt;=6){
+		r = ceil(x);
+	}
+	else {
+		if(a%2==0){
+			r = floor(x);
+		}
+		else {
+			r = ceil(x);
+		}
+	}
+	
+	printf("概數：%.1f\n",r);
+	return 0;
+}
+</pre>
+</p-->
+
+</blockquote>
+
+</body></html>

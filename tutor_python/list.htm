@@ -1,0 +1,171 @@
+﻿<html>
+<head>
+	<title>線上教材：Python 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushPython.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+串列是由一群資料排在一起形成的，其定義與使用方式非常簡單。
+定義時必須使用中括號，並在內容之間以逗點隔開；使用時則是依照內容順序，由 0 開始數。
+範例如下：
+<pre class="brush: py">
+a = [9, 4, 8, 7]
+
+print(a[0])
+print(a[1])
+print(a[2])
+print(a[3])
+</pre>
+</p>
+
+<p>
+一些比較進階的內容取用方式以及基本的計算：
+<pre class="brush: py">
+a = [12, 34, 56, 78, 90, 123, 456, 789, 1234, 5678, 12345]
+
+print(123 in a)
+print(5566 not in a)
+a[4:7]   # a[4] 開始取到 a[7-1]，或者說 a[4] 開始取 7-4 個
+a[3:8:2] # a[3] 開始取到 a[8-1]，每 2 個取 1 個
+a[-1]    # 倒數第一個
+len(a)   # List 長度
+
+# 如果內容都是數字，可以使用以下的計算
+min(a)
+max(a)
+sum(a)
+</pre>
+</p>
+
+<p>
+元素的修改與刪除：
+<pre class="brush: py">
+a = [12, 34, 56, 78, 90, 123, 456, 789, 1234, 5678, 12345]
+
+a[0] = 'QQ'
+a[5:8] = ['XD'] * (8-5) # ['XD'] 這個 list 重複 (8-5) 次
+del a[3]
+</pre>
+其中可以看到，在 Python 當中，串列是可以把不同類型的資料放在一起的。
+</p>
+
+<p>
+元素的新增與其他操作：
+<pre class="brush: py">
+a = [12, 34, 56, 78, 90, 123, 456, 789, 1234, 5678, 12345]
+
+a.append('OAO')   # 加入一個元素到尾端
+a.extend(['QQ'])  # 把另一個 list 從尾端接上去，也可以用 a + [-321]
+a.insert(3, 'XD') # 在指定的位置插入元素
+x = a.pop()       # 移除最後一個元素並回傳
+x = a.pop(3)      # 移除指定位置的元素並回傳
+a.reverse()       # 反轉
+a.sort()          # 排序，元素之間必須可以互相比較才能使用
+b = sorted(a)     # 也是排序，不過會回傳新的 list
+</pre>
+</p>
+
+<p>
+在排序部分，如果想要使用自己定義的大小來排序，可以這樣用：
+<pre class="brush: py">
+a = ['abe', 'fghij', 'jklm', 'mn']
+print(sorted(a))
+print(sorted(a, key=len)) # 以字串長度排序
+</pre>
+</p>
+
+<p>
+或是在其他語言當中可能很常見的，comparison function 的寫法：
+<pre class="brush: py">
+import functools
+ 
+def myCmp(x, y):
+    if(x%2==y%2):
+        return x - y
+    else:
+        return x%2 - y%2
+ 
+a = [123, 456, 789, 10]
+print(sorted(a))
+print(sorted(a, key=functools.cmp_to_key(myCmp)))
+</pre>
+</p>
+
+<p>以下是其他一些<b>一不小心，可能就會產生非預期結果</b>的範例。</p>
+
+<p>
+List 的指派，跟一般變數不太一樣，改了源頭，其他的會跟著改：
+<pre class="brush: py">
+a = [12, 34, 56, 78, 90]
+b = a
+a [0] = 99
+print(a)
+print(b) # 跟著改變了
+</pre>
+</p>
+
+<p>
+如果你希望跟一般變數一樣，會有新的一份，可以這樣用：
+<pre class="brush: py">
+a = [12, 34, 56, 78, 90]
+b = a[:]
+a[0] = 99
+print(a)
+print(b) # 不會受影響
+</pre>
+</p>
+
+<p>
+但是前面說過，串列可以把不同類型的資料放在一起，甚至可以再放入串列，這時候又會有一些問題：
+<pre class="brush: py">
+a = [[12, 34], 56, 78, 90]
+b = a[:]
+a[0][0] = 99
+print(a)
+print(b) # 又跟著改變了
+</pre>
+因為串列裡面又有串列，包了好多層；但是「[:]」這種語法，只能複製一層。
+</p>
+
+<p>
+如果真的要把每一層都複製，可以這樣使用：
+<pre class="brush: py">
+import copy 
+a = [[12, 34], 56, 78, 90]
+b = copy.deepcopy(a)
+a[0][0] = 99
+print(a)
+print(b) # 總算不會受影響了
+</pre>
+</p>
+
+<p>
+另外，你可能還記得，函式當中的預設參數，在每次呼叫時都會重新給值。
+但是若預設參數是串列時，附加的值會被保留：
+<pre class="brush: py">
+def test(x, a = []):
+	print("Content of a when entering test", a)
+	a.append(x)
+	print("Content of a when exiting test", a)
+
+test(12)
+test(34)
+test(56)
+</pre>
+</p>
+
+</blockquote>
+</body></html>
