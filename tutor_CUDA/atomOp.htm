@@ -1,0 +1,79 @@
+﻿<html>
+<head>
+	<title>線上教材：CUDA 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushCpp.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+Atomic operation 可以保證一次只有一個 thread 會對某塊記憶體進行存取。
+CUDA 提供了各種 atomic operation，例如 atomic{Add, Sub, Exch, Min, Max, Inc, Dec} 等等。
+以下示範 atomicAdd：
+</p>
+<pre class="brush: c">
+#include&lt;stdio.h&gt;
+#include&lt;time.h&gt;
+#include&lt;stdlib.h&gt;
+
+#define SIZE 100000
+#define RANGE 100
+
+__global__ static void initHist(int *h){
+	h[threadIdx.x] = 0;
+}
+
+__global__ static void hist(int *a, int *h, int len){
+	int idx = blockIdx.x * blockDim.x + threadIdx.x;
+	if(idx&lt;len){
+		atomicAdd(&h[a[idx]], 1);
+	}
+}
+
+int a[SIZE], hist1[RANGE], hist2[RANGE];
+
+int main(int argc,char **argv)
+{
+	int *gpu_a, *gpu_hist;
+	int i;
+	
+	srand(time(NULL));
+	for(i=0;i&lt;RANGE;i++){
+		hist1[i] = 0;
+	}
+	for(i=0;i&lt;SIZE;i++){
+		a[i] = rand() % 100;
+		hist1[a[i]]++;
+	}
+
+	cudaMalloc((void**)&gpu_a, sizeof(int) * SIZE);
+	cudaMalloc((void**)&gpu_hist, sizeof(int) * RANGE);
+	cudaMemcpy(gpu_a, a, sizeof(int) * SIZE, cudaMemcpyHostToDevice);
+	
+	initHist&lt;&lt;&lt;1, RANGE&gt;&gt;&gt;(gpu_hist);
+	cudaThreadSynchronize();
+	hist&lt;&lt;&lt;(SIZE/1024)+1, 1024&gt;&gt;&gt;(gpu_a, gpu_hist, SIZE);
+	cudaThreadSynchronize();
+	
+	cudaMemcpy(&hist2, gpu_hist, sizeof(int) * RANGE, cudaMemcpyDeviceToHost);
+
+	for(i=0;i&lt;RANGE;i++){
+		printf("%3d %5d %5d\n", i, hist1[i], hist2[i]);
+	}
+	return 0;
+}
+</pre>
+
+</blockquote>
+</body></html>

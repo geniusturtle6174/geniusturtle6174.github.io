@@ -1,0 +1,67 @@
+﻿<html>
+<head>
+	<title>線上教材：CUDA 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushCpp.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+底下以向量相加的範例，示範 UVA 的宣告與使用：
+</p>
+<pre class="brush: c">
+#include&lt;stdio.h&gt;
+#include&lt;time.h&gt;
+#include&lt;stdlib.h&gt;
+
+#define SIZE 100000
+
+__global__ static void vecAdd(int *a, int *b, int *c, int len){
+	int idx = blockIdx.x * blockDim.x + threadIdx.x;
+	if(idx&lt;len){
+		c[idx] = a[idx] + b[idx];
+	}
+}
+
+int main(int argc,char **argv)
+{
+	int *a, *b, *c1, *c2;
+	int i, err = 0;
+	
+	cudaHostAlloc((void**)&a, sizeof(int) * SIZE, cudaHostAllocDefault);
+	cudaHostAlloc((void**)&b, sizeof(int) * SIZE, cudaHostAllocDefault);
+	cudaHostAlloc((void**)&c1, sizeof(int) * SIZE, cudaHostAllocDefault);
+	cudaHostAlloc((void**)&c2, sizeof(int) * SIZE, cudaHostAllocDefault);
+	
+	srand(time(NULL));
+	for(i=0;i&lt;SIZE;i++){
+		a[i] = rand() % 100;
+		b[i] = rand() % 100;
+		c1[i] = a[i] + b[i];
+	}
+
+	vecAdd&lt;&lt;&lt;100, 1000&gt;&gt;&gt;(a, b, c2, SIZE);
+	cudaThreadSynchronize();
+	
+	for(i=0;i&lt;SIZE;i++){
+		err += abs(c1[i]-c2[i]);
+	}
+	printf("Err: %d", err);
+	
+	return 0;
+}
+</pre>
+
+</blockquote>
+</body></html>

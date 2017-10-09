@@ -1,0 +1,68 @@
+﻿<html>
+<head>
+	<title>線上教材：CUDA 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushCpp.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<ul>
+	<li>(低)除法中，如果除數是二的次方數，可以轉換成 bitwise operqtion，例如：
+		i/1024 轉成 i >> 10、i%64 轉成 i & 63。若在程式中寫的是常數，則編譯時會自動轉換。</li>
+	<li>開根號再倒數可使用 rsqrtf() (float)或 rsqrt() (double)</li>
+	<li>(中)如果速度比精確度重要，可使用 fast math library。以下範例為精確度的展示：
+		<pre class="brush: c">
+#include&lt;stdio.h&gt;
+#include&lt;math.h&gt;
+
+#define SIZE 100000
+
+__global__ static void sineTest(float *out){
+	out[0] = sinf(0.5);
+	out[1] = __sinf(0.5);
+}
+
+int main(int argc,char **argv)
+{
+	float out[3], *gpu_out;
+
+	cudaMalloc((void**)&gpu_out, sizeof(float) * 2);
+	
+	sineTest&lt;&lt;&lt;1, 2&gt;&gt;&gt;(gpu_out);
+	out[2] = sin(0.5);
+	cudaThreadSynchronize();
+	
+	cudaMemcpy(out, gpu_out, sizeof(int) * 2, cudaMemcpyDeviceToHost);
+	
+	printf("GPU vs GPU-fast: %f\n", log10(fabs(out[0]-out[1])));
+	printf("GPU vs CPU: %f\n", log10(fabs(out[0]-out[2])));
+	printf("GPU-fast vs CPU: %f\n", log10(fabs(out[1]-out[2])));
+	
+	return 0;
+}
+</pre>
+	</li>
+	<li>(中)以特化的、較快的函式，取代較慢的、較一般的函式
+		<ul>
+			<li>比較小的整數次方，以直接用乘的取代 pow()</li>
+			<li>底數為 2 或 10 的次方，用 exp2()、expf2()、exp10()、expf10() 取代 pow()、powf()</li>
+			<li>指數為 1/3 時，用 cbrt() 或 cbrtf()</li>
+			<li>計算 sin(pi*x) 時，使用 sinpi() 或 sinpif()</li>
+		</ul>
+	</li>
+	<li>(高)減少 global memory 的使用，盡量用 shared memory</li>
+</ul>
+
+</blockquote>
+</body></html>

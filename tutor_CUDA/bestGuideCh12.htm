@@ -1,0 +1,30 @@
+﻿<html>
+<head>
+	<title>線上教材：CUDA 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushCpp.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<ul>
+	<li>(高)避免在同一個 warp 當中有不同的執行路徑(warp divergence)
+		<br/><img src="pics/warp_divergence.png"/>
+	</li>
+	<li>(低)迴圈的計數器以 signed integer 代替 unsigned integer，
+		因為 C 標準中，signed integer 的 overflow 沒有仔細定義，從而有加速空間</li>
+	<li>(高)避免在程式會發散的地方使用 __syncthreads()</li>
+</ul>
+
+</blockquote>
+</body></html>

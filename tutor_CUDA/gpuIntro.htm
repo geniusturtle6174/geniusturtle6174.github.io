@@ -1,0 +1,50 @@
+﻿<html>
+<head>
+	<title>線上教材：CUDA 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+顯卡規格，GTX 1080 vs GTX 1080 Ti，為什麼 Ti 比較高級？</p>
+<center><img src="pics/spec_1080_vs_ti.png"/></center>
+
+<p>
+GPU 基本硬體架構圖：</p>
+<ul>
+	<li>SM: streaming multiprocessor</li>
+	<li>SP: streaming processor (Fermi 架構之後統稱為 CUDA cores)</li>
+	<li>Shared Memory: 同一塊 SM 上可以互通資料</li>
+	<li>Global Memory: 所有人都可以互通資料，比 shared memory 慢</li>
+	<li>Constant/texture Memory: 對 GPU 來說只能讀不能寫，讀取方式符合條件時速度會快</li>
+</ul><br/>
+<center><img src="pics/gpuArchi.png" width="500"/></center>
+
+<p>
+CUDA (Compute Unified Device Architecture，統一計算架構)：Nvidia 發展的平行計算架構</p>
+<ul>
+	<li>可視為 C 的延伸</li>
+	<li>寫 function (kernel)，放到 GPU 上面跑</li>
+	<li>Thread
+		<ul>
+			<li>kernel 會被不同的 threads 平行地執行</li>
+			<li>在硬體上，對應到 SP</li>
+			<li>每 32 個 thread 組成一個 warp，其 program counter 必須一致</li>
+		</ul>
+	</li>
+	<li>Block
+		<ul>
+			<li>數個 threads 組合而成</li>
+			<li>在硬體上，對應到 SM</li>
+		</ul>
+	</li>
+</ul>
+
+</blockquote>
+
+</body></html>

@@ -1,0 +1,53 @@
+﻿<html>
+<head>
+	<title>線上教材：CUDA 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushCpp.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+本範例使用 constant memory，進行兩個整數的相加：
+</p>
+<pre class="brush: c">
+#include&lt;stdio.h&gt;
+#include&lt;time.h&gt;
+#include&lt;stdlib.h&gt;
+
+__constant__ int const_gpu_a[2];
+
+__global__ static void vecSum(int *sum){
+	*sum = const_gpu_a[0] + const_gpu_a[1];
+}
+
+int main(int argc,char **argv)
+{
+	int s, *gpu_s;
+	int a[2] = {1, 1};
+	
+	cudaMalloc((void**)&gpu_s, sizeof(int) * 1);
+	cudaMemcpyToSymbol(const_gpu_a, a, sizeof(int) * 2);
+	
+	vecSum&lt;&lt;&lt;1, 1&gt;&gt;&gt;(gpu_s);
+	cudaThreadSynchronize();
+	
+	cudaMemcpy(&s, gpu_s, sizeof(int) * 1, cudaMemcpyDeviceToHost);
+
+	printf("sum: %d\n", s);	
+	return 0;
+}
+</pre>
+
+</blockquote>
+</body></html>

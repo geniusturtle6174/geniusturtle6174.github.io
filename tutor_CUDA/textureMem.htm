@@ -1,0 +1,118 @@
+﻿<html>
+<head>
+	<title>線上教材：CUDA 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushCpp.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+本範例示範 texture memory 的操作：
+</p>
+<pre class="brush: c">
+#include&lt;stdio.h&gt;
+#include&lt;time.h&gt;
+#include&lt;stdlib.h&gt;
+
+texture&lt;float, 1, cudaReadModeElementType&gt; texture_array;
+
+__global__ static void texExp01(float *vec){
+	vec[threadIdx.x] = tex1Dfetch(texture_array, threadIdx.x);
+}
+
+__global__ static void texExp02(float *vec){
+	vec[threadIdx.x] = tex1D(texture_array, threadIdx.x / (20.0/4.0));
+}
+
+int main(int argc,char **argv)
+{
+	float result[20], *gpu_result;
+	float a[5] = {1, 2, 3, 4, 5};
+	int i;
+	
+	cudaMalloc((void**) &gpu_result, sizeof(float) * 20);
+
+	float *gpu_a1;
+	cudaMalloc((void**) &gpu_a1, sizeof(float) * 5);
+	cudaMemcpy(gpu_a1, a, sizeof(float) * 5, cudaMemcpyHostToDevice);
+	cudaBindTexture(0, texture_array, gpu_a1);
+	texExp01&lt;&lt;&lt;1, 5&gt;&gt;&gt;(gpu_result);
+	cudaThreadSynchronize();
+	cudaMemcpy(&result, gpu_result, sizeof(int) * 5, cudaMemcpyDeviceToHost);
+	printf("Exp 1:\n");
+	for(i=0;i&lt;5;i++){
+		printf("\t%.2f\n", result[i]);
+	}
+	
+	cudaArray *gpu_a2;
+	cudaMallocArray(&gpu_a2, &texture_array.channelDesc, 5, 1);
+	cudaBindTextureToArray(texture_array, gpu_a2);
+	texture_array.filterMode = cudaFilterModeLinear;
+	cudaMemcpyToArray(gpu_a2, 0, 0, a, sizeof(float) * 5, cudaMemcpyHostToDevice);
+	texExp02&lt;&lt;&lt;1, 20&gt;&gt;&gt;(gpu_result);
+	cudaThreadSynchronize();
+	cudaMemcpy(&result, gpu_result, sizeof(float) * 20, cudaMemcpyDeviceToHost);
+	printf("Exp 2:\n");
+	for(i=0;i&lt;20;i++){
+		printf("\t%2d %.2f\n", i, result[i]);
+	}
+
+	return 0;
+}
+</pre>
+
+<p>操作步驟與簡單解說如下：<p/>
+<ol>
+	<li>宣告出 texture 的參考
+		<ul>
+			<li>語法：「texture&lt;資料類型, 維度, 讀取模式&gt; 名稱;」</li>
+			<li>資料類型：可使用一般的型別，例如 int、float 等等</li>
+			<li>維度：1 或 2</li>
+			<li>讀取模式：
+				"cudaReadModeElementType"為原始方式讀取，
+				"cudaReadModeNormalizedFloat"於資料是整數時，會正規化到 [0, 1] 或 [-1, 1]</li>
+		</ul>
+	</li>
+	
+	<li>Bind texture：將 gpu 記憶體和 texture 做連結
+		<ul>
+			<li>使用 linear memory 時
+				<ul>
+					<li>cudaBindTexture(offset, texture 的參考, GPU 記憶體)</li>
+					<li>offset 一般給 0</li>
+				</ul>
+			</li>
+			<li>使用 CUDA array 時
+				<ul>
+					<li>cudaBindTextureToArray(texture 的參考, GPU 記憶體)</li>
+					<li>支援內插。
+						材質參考的 filterMode 為 cudaFilterModeLinear 時，是線性內插；
+						材質參考的 filterMode 為 cudaFilterModePoint 時，是向左尋找</li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+	
+	<li>Kernel 使用
+		<ul>
+			<li>使用 linear memory 時：tex1Dfetch</li>
+			<li>使用 CUDA array 時：tex1D</li>
+		</ul>
+	</li>
+	
+	<li>unbind texture (範例中省略)</li>
+</ol>
+
+</blockquote>
+</body></html>

@@ -1,0 +1,156 @@
+﻿<html>
+<head>
+	<title>線上教材：CUDA 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushCpp.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+本範例以一個 block 來進行向量元素的總和：
+</p>
+<pre class="brush: c">
+#include&lt;stdio.h&gt;
+#include&lt;time.h&gt;
+#include&lt;stdlib.h&gt;
+
+#define SIZE 1000
+
+__global__ static void vecSum(int *a, int *sum, int len){
+	int i;
+	
+	__shared__ int partialSum[1000];
+	
+	partialSum[threadIdx.x] = 0;
+	
+	for(i=threadIdx.x;i&lt;len;i+=blockDim.x){
+		partialSum[threadIdx.x] += a[i];
+	}
+	
+	if(threadIdx.x==0){
+		*sum = 0;
+		for(i=0;i&lt;1000;i++){
+			*sum += partialSum[i];
+		}
+	}
+}
+
+int a[SIZE];
+
+int main(int argc,char **argv)
+{
+	int *gpu_a, *gpu_s;
+	int i, s1 = 0, s2 = 0;
+	
+	srand(time(NULL));
+	for(i=0;i&lt;SIZE;i++){
+		a[i] = rand() % 100;
+		s1 += a[i];
+	}
+
+	cudaMalloc((void**)&gpu_a, sizeof(int) * SIZE);
+	cudaMalloc((void**)&gpu_s, sizeof(int) * 1);
+	cudaMemcpy(gpu_a, a, sizeof(int) * SIZE, cudaMemcpyHostToDevice);
+	
+	vecSum&lt;&lt;&lt;1, 1000&gt;&gt;&gt;(gpu_a, gpu_s, SIZE);
+	cudaThreadSynchronize();
+	
+	cudaMemcpy(&s2, gpu_s, sizeof(int) * 1, cudaMemcpyDeviceToHost);
+
+	printf("CPU: %d, GPU: %d\n", s1, s2);	
+	return 0;
+}
+</pre>
+
+<p>
+上述範例的 kernel 中，最後做加總只使用到 thread 0，很沒有效率。現在來嘗試做一點修改：
+</p>
+<pre class="brush: c">
+#include&lt;stdio.h&gt;
+#include&lt;time.h&gt;
+#include&lt;stdlib.h&gt;
+
+#define SIZE 100000
+
+__global__ static void vecSum(int *a, int *sum, int len){
+	int i, offset;
+	
+	__shared__ int partialSum[1024];
+	
+	partialSum[threadIdx.x] = 0;
+	
+	for(i=threadIdx.x;i&lt;len;i+=blockDim.x){
+		partialSum[threadIdx.x] += a[i];
+	}
+	__syncthreads();
+	
+	offset = blockDim.x / 2;
+	while(offset&gt;0){
+		if(threadIdx.x&lt;offset){
+			partialSum[threadIdx.x]+= partialSum[threadIdx.x+offset];
+		}
+		offset /= 2;
+		__syncthreads();
+	}
+	
+	if(threadIdx.x==0){
+		*sum = partialSum[0];
+	}
+}
+
+int a[SIZE];
+
+int main(int argc,char **argv)
+{
+	int *gpu_a, *gpu_s;
+	int i, s1 = 0, s2 = 0;
+	
+	srand(time(NULL));
+	for(i=0;i&lt;SIZE;i++){
+		a[i] = rand() * 100;
+		s1 += a[i];
+	}
+
+	cudaMalloc((void**)&gpu_a, sizeof(int) * SIZE);
+	cudaMalloc((void**)&gpu_s, sizeof(int) * 1);
+	cudaMemcpy(gpu_a, a, sizeof(int) * SIZE, cudaMemcpyHostToDevice);
+	
+	vecSum&lt;&lt;&lt;1, 1024&gt;&gt;&gt;(gpu_a, gpu_s, SIZE);
+	cudaThreadSynchronize();
+	
+	cudaMemcpy(&s2, gpu_s, sizeof(int) * 1, cudaMemcpyDeviceToHost);
+
+	printf("CPU: %d, GPU: %d\n", s1, s2);	
+	return 0;
+}
+</pre>
+
+<p>
+這種方法，我們稱為 parallel reduction。關於更詳細的改進過程，可以參考<a href="reduction.pdf">官方資訊</a>。
+</p>
+
+<p>
+另外，shared memory 也可以動態的指定大小。只要把：
+</p>
+<pre class="brush: c">__shared__ int partialSum[1024];</pre>
+<p>
+換成：
+</p>
+<pre class="brush: c">extern __shared__ int partialSum[];</pre>
+<p>
+並且在 kernel 啟動的時候，多加一個參數指定大小即可。
+</p>
+
+</blockquote>
+</body></html>

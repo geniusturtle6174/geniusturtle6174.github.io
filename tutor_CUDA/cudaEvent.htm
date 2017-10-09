@@ -1,0 +1,88 @@
+﻿<html>
+<head>
+	<title>線上教材：CUDA 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushCpp.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+CUDA 當中的 event 功能，可以用於較精確的計時：
+</p>
+<pre class="brush: c">
+#include&lt;stdio.h&gt;
+#include&lt;time.h&gt;
+#include&lt;stdlib.h&gt;
+
+#define SIZE 100000
+
+__global__ static void vecAdd(int *a, int *b, int *c, int len){
+	int idx = blockIdx.x * blockDim.x + threadIdx.x;
+	if(idx&lt;len){
+		c[idx] = a[idx] + b[idx];
+	}
+}
+
+int a[SIZE], b[SIZE], c1[SIZE], c2[SIZE];
+
+int main(int argc,char **argv)
+{
+	int *gpu_a, *gpu_b, *gpu_c;
+	int i, err = 0;
+	float t1, t2;
+	cudaEvent_t start, stop;
+	cudaEventCreate(&start);
+	cudaEventCreate(&stop);
+	
+	srand(time(NULL));
+	for(i=0;i&lt;SIZE;i++){
+		a[i] = rand() % 100;
+		b[i] = rand() % 100;
+	}
+
+	cudaMalloc((void**)&gpu_a, sizeof(int) * SIZE);
+	cudaMalloc((void**)&gpu_b, sizeof(int) * SIZE);
+	cudaMalloc((void**)&gpu_c, sizeof(int) * SIZE);
+	
+	cudaMemcpy(gpu_a, a, sizeof(int) * SIZE, cudaMemcpyHostToDevice);
+	cudaMemcpy(gpu_b, b, sizeof(int) * SIZE, cudaMemcpyHostToDevice);
+	
+	cudaEventRecord(start);
+	cudaEventSynchronize(start);
+	for(i=0;i&lt;SIZE;i++){
+		c1[i] = a[i] + b[i];
+	}
+	cudaEventRecord(stop);
+	cudaEventSynchronize(stop);
+	cudaEventElapsedTime(&t1, start, stop);
+	
+	cudaEventRecord(start);
+	vecAdd&lt;&lt;&lt;100, 1000&gt;&gt;&gt;(gpu_a, gpu_b, gpu_c, SIZE);
+	cudaEventRecord(stop);
+	cudaEventSynchronize(stop);
+	cudaEventElapsedTime(&t2, start, stop);
+	
+	cudaMemcpy(c2, gpu_c, sizeof(int) * SIZE, cudaMemcpyDeviceToHost);
+	
+	for(i=0;i&lt;SIZE;i++){
+		err += abs(c1[i]-c2[i]);
+	}
+	printf("Err: %d, CPU time:%.4f, GPU time:%.4f\n", err, t1, t2);
+	
+	return 0;
+}
+</pre>
+
+</blockquote>
+</body></html>

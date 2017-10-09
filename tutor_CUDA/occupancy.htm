@@ -1,0 +1,68 @@
+﻿<html>
+<head>
+	<title>線上教材：CUDA 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+Occupancy 定義為"實際同時執行的 warp 數目"與"硬體可容許同時執行的 warp 數目"的比率。
+首先，在編譯時，要加入「--ptxas-options=-v」選項，
+取得程式資源(register 與 shared memory)用量。以向量相加的第一個範例為例，
+顯示出的是使用了 27 個 registers 與 4000 bytes 的 shared memory，
+而我們固定使用 1 個 block，內含 1000 個 threads。
+</p>
+
+<p>
+另一方面，如同硬碟的磁區不會是一個一個 byte 分配一樣，
+GPU 在分配資源時也會有硬體限制的最小單位。
+以下簡單列出其中一些(不同的硬體版本，這些值可能會不太一樣)：
+</p>
+<center><table class="slide">
+<tr><th>項目</th><th>值</th></th>
+<tr><td>Warps per SM</td><td align="right">48</td></th>
+<tr><td>Thread Blocks per SM</td><td align="right">8</td></th>
+<tr><td>Register allocation unit size</td><td align="right">64</td></th>
+<tr><td>Register allocation granularity</td><td align="right">warp</td></th>
+<tr><td>Shared Memory Allocation unit size (byte)</td><td align="right">128</td></th>
+</table></center>
+
+<p>
+因此，我們可以進行下列計算：
+</p>
+<ul>
+	<li>一個 Block 內的 warp 數量：ceil(1000/32, 1) = 32，可使 1 個 block 同時執行</li>
+	<li>Register 用量：ceil(27*warp_size, 64)*32 = 28672，可使 floor(32768 / 28672) = 1 個 block 同時執行</li>
+	<li>Shared memory 用量：ceil(4000, 128) = 4096，可使 floor(49152/4096) = 12 個 block 同時執行</li>
+</ul>
+<p>
+由於 1 小於硬體限制的 8，而我們的 1 個 block 內有 32 個 warp，因此 occupancy 為 32/48 = 67%。
+</p>
+
+<p>
+假設有另外一個 kernel，每個 block 內有 64 個 threads，每個 thread 用 8 個 registers，
+每個 block 用 1024 bytes 的 shared memory，則：
+</p>
+<ul>
+	<li>一個 Block 內的 warp 數量：ceil(64/32, 1) = 2，可使 16 個 block 同時執行</li>
+	<li>Register 用量：ceil(8*warp_size, 64)*2 = 512，可使 floor(32768 / 512) = 64 個 block 同時執行</li>
+	<li>Shared memory 用量：ceil(1024, 128) = 1024，可使 floor(49152/1024) = 48 個 block 同時執行</li>
+</ul>
+<p>
+由於 min(16, 64, 48) 仍大於硬體限制的 8，因此同時只能有 8 個 block 在執行，
+而我們的 1 個 block 內有 2 個 warp，因此 occupancy 為 8*2/48 = 33%。
+</p>
+
+<p>
+官方提供了一個 <a href="CUDA_Occupancy_calculator.xls">CUDA_Occupancy_calculator</a>，來幫你計算 occupancy。
+需要注意的是，occupancy 高不一定代表效能好，但是太低通常代表不好。
+</p>
+
+</blockquote>
+
+</body></html>
