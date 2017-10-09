@@ -1,0 +1,177 @@
+﻿<html>
+<head>
+	<title>線上教材：C 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushCpp.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+以下範例，會創立一個 "hello.txt" 檔案，並在裡面寫入 "Hello World!!"：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	FILE *fPtr;
+
+	fPtr = fopen("hello.txt","w");
+	fprintf(fPtr, "Hello World!!\n");
+	fclose(fPtr);
+
+	return 0;
+}
+</pre>
+在 C 語言當中處理檔案時，是對一個指向 FILE 結構的指標進行操作，所以我們必須宣告「FILE *fPtr」。
+該結構定義在 stdio.h 當中，結構裡面會包含處理檔案所需的資訊，不過各位不需要瞭解細節就可以使用。
+<br/><br/>
+檔案在使用前，必須開啟。開啟檔案的函式為「fopen」，
+第一個參數是一個字串，代表檔案名稱；
+第二個參數是開啟的模式，這裡的「"w"」代表這個檔案會被用來寫入。
+使用 w 模式時，如果檔案不存在，則會建立一個新的；但如果檔案存在，則舊的內容會被清掉重寫。
+後面會有其他的模式範例。
+<br/><br/>
+要將字串輸出到檔案時，跟輸出到螢幕的方法很像。輸出到螢幕時會使用「printf」，而輸出到檔案時可使用「fprintf」。
+「fprintf」的第一個參數是檔案指標，後面都跟「printf」一樣。
+<br/><br/>
+檔案操作完畢後，必須用「fclose」關閉。
+</p>
+
+<p>
+如果要讀取檔案，則可以在開啟時使用「"r"」，然後用「fscanf」讀取之。
+以下範例，會假設檔案 text.txt 當中有三個整數，並把它們讀取進記憶體，顯示相加的結果：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	FILE *fin;
+	int a, b, c;
+
+	fin = fopen("test.txt","r");
+	if(NULL==fin){
+		printf("File not found!!\n");
+		return 0;
+	}
+
+	fscanf(fin, "%d %d %d", &amp;a, &amp;b, &amp;c);
+	printf("a + b + c is %d\n", a+b+c);
+
+	fclose(fin);
+
+	return 0;
+}
+</pre>
+事實上，fopen 在檔案無法開啟時，會回傳 NULL，因此我們可藉由判斷檔案指標是否為NULL，來知道檔案是否被正確開啟，
+藉此進行一些錯誤處理，以免發生無法預期的狀況。
+</p>
+
+<p>
+前面提過， w 模式會把檔案覆蓋並重寫，而 a 模式則可以把新的內容，附加到原本檔案的尾端 。
+如果檔案不存在的話， a 模式也會幫你建立一個新的。以下是範例，為了看出"附加"的效果，必須多執行幾次：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	FILE *fPtr;
+
+	fPtr = fopen("hello.txt","a");
+	fprintf(fPtr, "Hello World!!\n");
+	fclose(fPtr);
+
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+如果要知道是否已經讀到檔案結尾，則可使用「feof」函式。此函式的輸入參數是一個檔案指標，
+而如果已經讀到結尾，則會回傳 true，反之回傳 false。
+以下範例，會將 test2.txt 當中的所有整數讀進來，並顯示相加的結果：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	FILE *fin;
+	int a, sum = 0;
+
+	fin = fopen("test2.txt","r");
+
+	while( !feof(fin) ){
+		fscanf(fin, "%d", &amp;a);
+		sum += a;
+	}
+	printf("sum: %d\n", sum);
+	fclose(fin);
+
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+在這個範例中你可能會發現，如果檔案的尾巴(就是最後一個數字後面)多了一些空白或換行，
+則最後一個數字會被多加一次。
+這是因為 fscanf 在讀完最後一個整數之後，檔案還沒到結尾，因此會再進入一次 while 迴圈；
+此時，fscnaf 因為讀不到整數了，因此 a 的值不會被改變，
+但是仍會用目前的值重新執行一次「sum += a;」，因此會讓最後一個數字被多加一次。
+若要避免這種情況，可以把範例中 while 迴圈的部分，修改為以下：
+<pre class="brush: c">
+	while( !feof(fin) &amp;&amp; fscanf(fin, "%d", &amp;a)>0){
+		sum += a;
+	}
+</pre>
+其中，因為 scanf/fscanf 會回傳讀到多少東西(相對的，printf/fprintf 也會回傳印出了多少東西)，
+所以我們可據此判斷 scanf/fscanf 是否在讀取正常的整數，或者尾巴多餘的空白。
+</p>
+
+<p>
+如果需要重新回到檔案的開頭處讀取，可以使用「fseek()」函式。
+第一個參數是你的檔案指標；而如果是回到檔案開頭，則第二和第三個參數分別固定為「0」和「SEEK_SET」。
+以下範例，會先將檔案讀取一小部分，然後再從頭開始全部讀完：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	FILE *fin;
+	int a;
+
+	fin = fopen("test2.txt","r");
+
+	fscanf(fin, "%d", &amp;a);
+	printf("%d\n", a);
+	fscanf(fin, "%d", &amp;a);
+	printf("%d\n", a);
+	fscanf(fin, "%d", &amp;a);
+	printf("%d\n", a);
+
+	fseek(fin, 0, SEEK_SET);
+
+	while( !feof(fin)  &amp;&amp; fscanf(fin, "%d", &amp;a)>0){
+		printf("%d\n", a);
+	}
+
+	fclose(fin);
+
+	return 0;
+}
+</pre>
+</p>
+
+</blockquote>
+</body></html>

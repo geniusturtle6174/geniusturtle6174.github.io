@@ -1,0 +1,291 @@
+﻿<html>
+<head>
+	<title>線上教材：C 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushCpp.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+目前為止，所學的函式都是系統或 C 語言事先寫好的函式，但我們也可以自己撰寫函式。
+透過函式，可以將程式碼中常用的功能包裝起來，重複的呼叫與執行，
+使得功能更容易重複使用，程式碼更容易管理(當然，為了簡潔，以下範例可能簡單到不用函式必較方便)。
+下面的程式，會簡單的將變數值+1：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int test(int x);
+
+int main()
+{
+	int a;
+
+	printf("請輸入 a 值：");
+	scanf("%d", &amp;a);
+	a = test(a);
+	printf("新的 a 值：%d\n",a);
+	return 0;
+}
+
+int test(int x){
+	return x+1;
+}
+</pre>
+</p>
+
+<p>
+第3行的「int test(int x);」是函式原型(function prototype)。
+最前面的「int」是函式回傳的變數類型；「test」是函數名稱，命名規則與變數相同；
+小括號內，則是函式的參數列表，包含參數類型與名稱；傳入的參數可以有好多個，但是只能回傳一個。
+</p>
+
+<p>
+呼叫函式的方法，如第 11 行所示，與呼叫 C 語言提供的函式相同。
+第 16 到第 18 行，則為函式的定義。
+在函式裡面，可以寫上任何需要的敘述，如果需要回傳值的話，記得使用「return」。
+</p>
+
+<p>
+函式原型和定義也可以寫在一起，但是仍需要出現在被呼叫的地方之前，如下：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int test(int x){
+	return x+1;
+}
+
+int main()
+{
+	int a;
+
+	printf("請輸入 a 值：");
+	scanf("%d", &amp;a);
+	a = test(a);
+	printf("新的 a 值：%d\n",a);
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+在一個函式中定義的變數，並無法被其他函式所讀取，這個稱為變數的範圍(scope)。
+以下範例中，main函式的變數a，與test函式中的變數a，並不會互相干擾：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int test(int a){
+	a = a + 1;
+	printf("test 函式中的 a 值: %d\n",a);
+	return a;
+}
+
+int main()
+{
+	int a, b;
+	printf("請輸入a值：");
+	scanf("%d", &a);
+	b = test(a);
+	printf("main 函式中的 a 值: %d\n",a);
+	printf("main 函式中的 b 值: %d\n",b);
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+需要傳入兩個以上的參數時，中間以逗點區隔。這個範例，會將浮點數四捨五入到小數點下第k位：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+
+double kDigitsRound(double x, int k){
+	x = x * pow(10.0, k);
+	x = floor(x + 0.5);
+	x = x / pow(10.0, k);
+	return x;
+}
+
+int main()
+{
+	double x = 123.4567;
+	int k = 3;
+
+	x = kDigitsRound(x, k);
+	printf("新的 x 值：%f\n",x);
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+當然，你需要再傳多一點參數也沒問題。
+以下範例，可用來計算三次多項式的值：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+
+double cubicPolyval(double a, double b, double c, double d, double x){
+	return a*x*x*x + b*x*x + c*x + d; // 也可以使用 pow(x,3) 代替 x*x*x，依此類推
+}
+
+int main()
+{
+	printf("When x = 1.2, 2x^3 + 3x^2 + 2.5x + 1 is %f\n", cubicPolyval(2, 3, 2.5, 1, 1.2) );
+	return 0;
+}
+</pre>
+</p>
+
+<!--
+<p>
+函式當中宣告的變數，在函式結束時就會失效。如果需要將值保留住，可以在宣告時加上「static」(靜態)：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+void test(void){ /* 如果不需要傳入或回傳參數，則寫為void */
+	static int a = 1;
+	printf("進入test函式時的a值: %d\n",a);
+	a = a + 1;
+	printf("離開test函式時的a值: %d\n",a);
+}
+
+int main()
+{
+	test();
+	test();
+	test();
+	return 0;
+}
+</pre>
+由上例中，可以發現static變數只會被初始化一次，之後的值都會被保留住。
+</p>
+-->
+
+<p>
+以上的變數，只有在程式的一小部分可以看見，所以稱為區域變數。
+如果有一個變數，需要讓整個程式都看的見，則可以使用全域變數，在任何函式以外的地方宣告即可：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int a; /* 這是全域變數 */
+
+void test(void){
+	printf("進入 test 函式時的 a 值: %d\n",a);
+	a = a + 1;
+	printf("離開 test 函式時的 a 值: %d\n",a);
+}
+
+int main()
+{
+	a = 1;
+	test();
+	a = a + 1;
+	test();
+	return 0;
+}
+</pre>
+</p>
+
+<!--
+<p>
+以下範例，將展示全域變數、區域變數、靜態變數同時使用的效果：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int a = 1000; /* 這是全域變數 */
+
+void useLocal(void){
+	int a = 1;
+	printf("進入useLocal函式時的a值: %d\n",a);
+	a = a + 1;
+	printf("離開useLocal函式時的a值: %d\n",a);
+}
+
+void useStaticLocal(void){
+	static int a = 10;
+	printf("進入useStaticLocal函式時的a值: %d\n",a);
+	a = a + 1;
+	printf("離開useStaticLocal函式時的a值: %d\n",a);
+}
+
+void useGlobal(void){
+	printf("進入useGlobal函式時的a值: %d\n",a);
+	a = a + 1;
+	printf("離開useGlobal函式時的a值: %d\n",a);
+}
+
+int main()
+{
+	int a = 100;
+
+	printf("進入main函式時的a值: %d\n",a);
+
+	useLocal();
+	useStaticLocal();
+	useGlobal();
+
+	useLocal();
+	useStaticLocal();
+	useGlobal();
+
+	printf("離開main函式時的a值: %d\n",a);
+
+	return 0;
+}
+</pre>
+</p>
+-->
+
+<p>
+以下範例，將展示全域變數與區域變數同時使用的效果：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int a = 1000; /* 這是全域變數 */
+
+void useLocal(void){
+	int a = 1;
+	printf("進入 useLocal 函式時的 a 值: %d\n",a);
+	a = a + 1;
+	printf("離開 useLocal 函式時的 a 值: %d\n",a);
+}
+
+void useGlobal(void){
+	printf("進入 useGlobal 函式時的 a 值: %d\n",a);
+	a = a + 1;
+	printf("離開 useGlobal 函式時的 a 值: %d\n",a);
+}
+
+int main()
+{
+	int a = 100;
+
+	printf("進入 main 函式時的 a 值: %d\n",a);
+
+	useLocal();
+	useGlobal();
+
+	useLocal();
+	useGlobal();
+
+	printf("離開 main 函式時的 a 值: %d\n",a);
+
+	return 0;
+}
+</pre>
+</p>
+
+</blockquote>
+</body></html>

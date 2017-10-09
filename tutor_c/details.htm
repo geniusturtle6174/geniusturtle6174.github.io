@@ -1,0 +1,130 @@
+﻿<html>
+<head>
+	<title>QF100300--計算機程式設計--計財系</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushCpp.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+C語言當中，除了「if...else」以外，也可以用「?:」來進行條件判斷：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	int a=3, b=4, c;
+
+	c = (a&gt;b)?(a-b):(b-a);
+	printf("c: %d\n", c);
+
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+「#define」除了定義常數以外，也可以定義一些簡單的函式：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+#define MAX(a,b) ( ( (a) &gt; (b) ) ? (a) : (b) )
+
+int main()
+{
+	int a=3, b=4 , c;
+
+	c = MAX(a,b);
+	printf("c: %d\n", c);
+	
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+變數宣告可以放在函式開頭以外的地方：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	int a=3;
+
+	if(a&gt;=2){
+		int a=4;
+		printf("a: %d\n", a);
+	}
+	printf("a: %d\n", a);
+
+	return 0;
+}
+</pre>
+如果放在迴圈裡面，則每次都會被重新初始化：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	int i;
+
+	for(i=0;i<5;i++){
+		int a=4;
+		printf("a: %d\n", a);
+		a++;
+	}
+
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+「scanf」會回傳"讀到了幾樣東西"：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	int a, b, c;
+
+	c = scanf("%d %d", &a, &b);
+	printf("c: %d\n", c);
+
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+「stdin」和「stdout」其實也是檔案指標：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	int a;
+
+	fscanf(stdin, "%d", &a);
+	fprintf(stdout, "a: %d\n", a);
+	
+	return 0;
+}
+</pre>
+</p>
+
+</blockquote>
+
+</body>
+</html>

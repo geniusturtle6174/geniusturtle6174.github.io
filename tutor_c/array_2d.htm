@@ -1,0 +1,224 @@
+﻿<html>
+<head>
+	<title>線上教材：C 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushCpp.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+陣列也可以有多個維度，適合用來存放表格、矩陣等資料。
+一維陣列需要一個索引值，例如 a[3]；而多維陣列，則需要多個索引值。
+以一個 2-by-3 的二維陣列為例，其長像如下：
+<table width="50%">
+	<tr><td>&nbsp; </td><td align="center">0th column</td><td align="center">1st column</td><td align="center">2nd column</td></tr>
+	<tr><td>0th row</td><td style="border:solid 1px" align="center">a[0][0]</td><td style="border:solid 1px" align="center">a[0][1]</td><td style="border:solid 1px" align="center">a[0][2]</td></tr>
+	<tr><td>1st row</td><td style="border:solid 1px" align="center">a[1][0]</td><td style="border:solid 1px" align="center">a[1][1]</td><td style="border:solid 1px" align="center">a[1][2]</td></tr>
+</table>
+</p>
+
+<p>
+二維陣列的宣告方法跟一維陣列非常相似，只是我們現在需要多指定一個維度的大小：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+#define ROW 2
+#define COL 3
+
+int main()
+{
+	int a[ROW][COL] = { {1, 2, 3}, {4, 5, 6} }; /* 2-by-3 的二維陣列，並指定所有的初始值 */
+	int b[ROW][COL] = {4, 5, 6, 7}; /* 2-by-3 的二維陣列，從第 0 個 row 開始指定初始值，後面為 0 */
+	int c[ROW][COL] = { {9, 8}, {7} }; /* 2-by-3 的二維陣列，分別指定不同 row 的初始值，沒指定到的為 0。 */
+	int i, j;
+
+	for(i=0;i&lt;ROW;i++){
+		for(j=0;j&lt;COL;j++){
+			printf("%2d ", a[i][j]);
+		}
+		printf("\n");
+	}
+
+	for(i=0;i&lt;ROW;i++){
+		for(j=0;j&lt;COL;j++){
+			printf("%2d ", b[i][j]);
+		}
+		printf("\n");
+	}
+
+	for(i=0;i&lt;ROW;i++){
+		for(j=0;j&lt;COL;j++){
+			printf("%2d ", c[i][j]);
+		}
+		printf("\n");
+	}
+
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+如果要將多維陣列丟進 function 裡面，則後面的維度都要指定大小。
+因為陣列在記憶體裡面是一個 row 接著一個存放，編譯器需要事先知道什麼時候該換到下一個 row。
+例如將前面的範例中，重複的印出部分變成 function，則會如下：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+#define ROW 2
+#define COL 3
+
+void printArray(int array[][COL], int rowNum, int colNum){
+	int i, j;
+	for(i=0;i&lt;rowNum;i++){
+		for(j=0;j&lt;colNum;j++){
+			printf("%2d ", array[i][j]);
+		}
+		printf("\n");
+	}
+	printf("\n");
+}
+
+int main()
+{
+	int a[ROW][COL] = { {1, 2, 3}, {4, 5, 6} }; /* 2-by-3的二維陣列，並指定所有的初始值 */
+	int b[ROW][COL] = {4, 5, 6, 7}; /* 2-by-3的二維陣列，從第0個row開始指定初始值，後面為0 */
+	int c[ROW][COL] = { {9, 8}, {7} }; /* 2-by-3的二維陣列，分別指定不同row的初始值，沒指定到的為0。 */
+
+	printArray(a, ROW, COL);
+	printArray(b, ROW, COL);
+	printArray(c, ROW, COL);
+
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+數值的指派跟讀取也和之前的一般變數和一維陣列相當，以下示範矩陣相加：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+#define ROW 2
+#define COL 3
+
+void printArray(int array[][COL], int rowNum, int colNum){
+	int i, j;
+	for(i=0;i&lt;rowNum;i++){
+		for(j=0;j&lt;colNum;j++){
+			printf("%2d ",array[i][j]);
+		}
+		printf("\n");
+	}
+	printf("\n");
+}
+
+int main()
+{
+	int a[ROW][COL], b[ROW][COL], c[ROW][COL], i, j;
+
+	printf("Input A:\n");
+	for(i=0;i&lt;ROW;i++){
+		printf("Input row %d: ", i);
+		for(j=0;j&lt;COL;j++){
+			scanf("%d", &amp;a[i][j]);
+		}
+	}
+	
+	printf("Input B:\n");
+	for(i=0;i&lt;ROW;i++){
+		printf("Input row %d: ", i);
+		for(j=0;j&lt;COL;j++){
+			scanf("%d", &amp;b[i][j]);
+		}
+	}
+	
+	for(i=0;i&lt;ROW;i++){
+		for(j=0;j&lt;COL;j++){
+			c[i][j] = a[i][j] + b[i][j];
+		}
+	}
+	
+	printArray(a, ROW, COL);
+	printArray(b, ROW, COL);
+	printArray(c, ROW, COL);
+
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+矩陣相乘的做法則需要多一層迴圈，如下，
+其中由於 c 矩陣跟計算總和時一樣，會被拿來累加，因此要記得正確的初始化：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+#define ROW 3
+#define COL 3
+
+void printArray(int array[][COL], int rowNum, int colNum){
+	int i, j;
+	for(i=0;i&lt;rowNum;i++){
+		for(j=0;j&lt;colNum;j++){
+			printf("%2d ",array[i][j]);
+		}
+		printf("\n");
+	}
+	printf("\n");
+}
+
+int main()
+{
+	int a[ROW][COL];
+	int b[ROW][COL];
+	int c[ROW][COL] = {0};
+	int i, j, k;
+
+	printf("Enter values of matrix a:\n");
+	for(i=0;i&lt;ROW;i++){
+		for(j=0;j&lt;COL;j++){
+			printf("Enter a[%d][%d]: ",i,j);
+			scanf("%d",&amp;a[i][j]);
+		}
+	}
+
+	printf("Enter values of matrix b:\n");
+	for(i=0;i&lt;ROW;i++){
+		for(j=0;j&lt;COL;j++){
+			printf("Enter b[%d][%d]: ",i,j);
+			scanf("%d",&amp;b[i][j]);
+		}
+	}
+
+	for(i=0;i&lt;ROW;i++){
+		for(j=0;j&lt;COL;j++){
+			for(k=0;k&lt;COL;k++){
+				c[i][j] += a[i][k]*b[k][j];
+			}
+		}
+	}
+
+	printArray(a, ROW, COL);
+	printArray(b, ROW, COL);
+	printArray(c, ROW, COL);
+
+	return 0;
+}
+</pre>
+</p>
+
+</blockquote>
+</body></html>

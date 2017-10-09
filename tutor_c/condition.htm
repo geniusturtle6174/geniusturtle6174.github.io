@@ -1,0 +1,419 @@
+﻿<html>
+<head>
+	<title>線上教材：C 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushCpp.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+程式可以如此靈活的原因之一，就是能依據不同的條件，來進行不同的工作。
+要進行判斷，可以使用if...else的語法，如下：
+<pre class="brush: c">
+if(條件運算式){
+	程式敘述1; /* 當然也可以是很多筆敘述 */
+}
+else {
+	程式敘述2;
+}
+</pre>
+當條件成立時，將執行敘述1，否則會執行敘述2。如果不需要敘述2，則可省略else以下的部分。
+另，程式敘述只有一條時，可以省略大括號，但為了避免解讀上的誤會，有時不會這麼做。
+</p>
+
+<p>
+以成績及格與否的判斷做為一個簡單的範例，
+其邏輯上為「60分以上及格，否則被當」。寫成程式碼時的範例如下：
+<pre class="brush: c">
+#include&lt;stdio.h&gt;
+
+int main()
+{
+	int grade;
+	scanf("%d", &amp;grade); /* 接受使用者輸入一個整數 */
+	if(grade&gt;=60){
+		printf("及格\n");
+	}
+	else {
+		printf("GG\n");
+	}
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+上例中的「>=」，稱之為條件運算子，可以用來判斷左邊的運算結果，是否大於等於右邊的運算結果。
+其餘的條件運算子有：
+<ul>
+	<li>大於：「&gt;」，等於：「==」，小於：「&lt;」。
+		需注意判斷是否等於的用法是兩個等號(一個等號是變數指派)</li>
+	<li>大於等於：「&gt;=」，小於等於：「&lt;=」</li>
+	<li>不等於：「!=」</li>
+	<li>且：「&amp;&amp;」</li>
+		<ul>
+			<li>範例：「a==b &amp;&amp; 5==c」</li>
+			<li>發現第一個條件不成立時，則不判斷第二個條件</li>
+		</ul>
+	<li>或：「||」</li>
+		<ul>
+			<li>範例：「x!=y || z==3」</li>
+			<li>發現第一個條件成立時，則不判斷第二個條件</li>
+		</ul>
+</ul>
+</p>
+
+<p>
+使用範例如下：
+<pre class="brush: c">
+#include&lt;stdio.h&gt;
+
+int main()
+{
+	int a, b;
+
+	a = 10;
+	if( a &gt; 5 ){
+		printf("a比5大\n");
+	}
+
+	b = 7;
+	if( b % 2 != 0 ){
+		printf("b是奇數\n");
+	}
+
+	a = 2;
+	b = 3;
+	if( a &gt; 0 && b &gt; 0 ){
+		printf("a和b都是正數\n");
+	}
+
+	a = 20;
+	b = 90;
+	if( a &gt; 60 || b &gt; 70 ){
+		printf("a或b至少有一個及格\n");
+	}
+
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+或和且的混用：
+<pre class="brush: c">
+#include&lt;stdio.h&gt;
+
+int main()
+{
+	int a, b, c;
+
+	a = 10;
+	b = 20;
+	c = 30;
+	/**
+	下列條件符合其一時執行
+	1. a 比 5 大，而且 b 比 10 大
+	2. c 比 15 大
+	**/
+	if( a &gt; 5 && b &gt; 10 || c &gt; 15){
+		printf("測試一：條件符合\n");
+	}
+
+	a = 15;
+	b = 20;
+	c = 3;
+	/**
+	下列條件都要符合時執行
+	1. a 比 5 大，或者 b 比 10 大
+	2. c 比 15 大
+	**/
+	if( (a &gt; 5 || b &gt; 10) && c &gt; 15){
+		printf("測試二：條件符合\n");
+	}
+	else {
+		printf("測試二：條件不符\n");
+	}
+
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+如果要進行的條件判斷和動作比較簡單，可以使用「?:」來進行之：
+<pre class="brush: c">
+#include&lt;stdio.h&gt;
+
+int main()
+{
+	int grade = 70;
+	int a=1, b=2, c;
+	
+	// 例如第一個範例，可以簡化成這樣
+	(grade&gt;=60)?printf("及格\n"):printf("GG\n");
+
+	// 也可以這樣用
+	c = (a&gt;b)?(a+b):(a-b);
+	printf("Value of c: %d\n", c);
+
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+以下提到的，則是一些容易<b>有問題</b>，甚至是<b>錯誤</b>的用法。
+</p>
+
+<p>
+"或"就像加法，"且"就像乘法，它們也遵守先乘除後加減的規則。我們把前面某個範例的括號拿掉看看：
+<pre class="brush: c">
+#include&lt;stdio.h&gt;
+
+int main()
+{
+	int a, b, c;
+
+	a = 15;
+	b = 20;
+	c = 3;
+	/**
+	下列條件都要符合時執行
+	1. a 比 5 大，或者 b 比 10 大
+	2. c 比 15 大
+	**/
+	if( a &gt; 5 || b &gt; 10 && c &gt; 15){
+		printf("測試二：條件符合\n");
+	}
+	else {
+		printf("測試二：條件不符\n");
+	}
+
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+在數學式子中，我們會寫"a &lt; b &lt; c"，這是大家很熟悉的遞移律。
+但若要在程式中進行這樣的判斷，可能必須分開寫：
+<pre class="brush: c">
+#include&lt;stdio.h&gt;
+
+int main()
+{
+	int a=3, b=2, c=1;
+	
+	if(a &gt; b &gt; c){
+		printf("條件符合\n");
+	}
+	else {
+		printf("Ha ha ha UCCU\n");
+	}
+
+	return 0;
+}
+</pre>
+原因是這些比較運算，是由左到右進行的。在範例中，「3 &gt; 2」會先被計算，而產生「TRUE」的結果。
+此結果在電腦中以數字 1 代表，而後進行「1 &gt; 1」的計算時，就會被視為條件不符。
+</p>
+
+<p>
+再次注意，判斷是否相等是用兩個等號，
+一個等號的「=」是指派運算，代表把值塞給變數，和判斷相等的「==」很容易造成誤會：
+<pre class="brush: c">
+#include&lt;stdio.h&gt;
+
+int main()
+{
+	int a=123, b=456;
+
+	if(a=1){/* 錯誤用法 */
+		printf("a的值為%d\n", a);
+	}
+
+	if(a=0){/* 錯誤用法 */
+		printf("a的值為%d\n", a);
+	}
+
+	if(b=0){/* 錯誤用法 */
+		printf("b的值為%d\n", b);
+	}
+
+	if(b==0){/* 正確用法 */
+		printf("b的值為%d\n", b);
+	}
+
+	return 0;
+}
+</pre>
+以上是由於 C 語言的條件判斷，是跟據運算結果是否為 0 來決定是否符合，0 為不符合，非 0 為符合。
+所以，「if(a=1)」會先將 a 的值指定為 1 ，然後讓 if 收到 1 ，所以會執行裡面的程式敘述。
+為了避免不小心犯錯，所以在與常數比較時，可以寫成「1==a」的形式，如下：
+<pre class="brush: c">
+#include&lt;stdio.h&gt;
+
+int main()
+{
+	int a=123;
+
+	if(123==a){
+		printf("a的值為%d\n", a);
+	}
+
+	if(a==123){ /* 當然還是可以這樣寫 */
+		printf("a的值為%d\n", a);
+	}
+
+	if(a=456){ /* 錯誤用法 */
+		printf("a的值為%d\n", b);
+	}
+
+	if(456=a){ /* 這裡會導致編譯錯誤 */
+		printf("a的值為%d\n", b);
+	}
+
+	return 0;
+}
+</pre>
+</p>
+
+<br/><br/>
+
+<p>
+進行程式設計時，可以依照自己的流程需求，使用合適的條件判斷方式。
+而如果所需要的條件判斷較為複雜時，則可使用巢狀(一層包一層)的敘述，
+例如<a href="http://zh.wikipedia.org/zh-tw/%E9%97%B0%E5%B9%B4">閏年</a>的判斷，
+其規則為逢4的倍數閏、100的倍數不閏、400的倍數閏，程式碼可以寫成以下的樣子(加入完整的縮排與括號)：
+<pre class="brush: c">
+#include&lt;stdio.h&gt;
+
+int main()
+{
+	int year;
+	scanf("%d", &amp;year);
+	if(year%400==0){
+		printf("閏年\n");
+	}
+	else {
+		if(year%100==0){
+			printf("平年\n");
+		}
+		else {
+			if(year%4==0){
+				printf("閏年\n");
+			}
+			else {
+				printf("平年\n");
+			}
+		}
+	}
+
+	return 0;
+}
+</pre>
+
+也可搭配括號省略的原則，寫成下面這樣：
+<pre class="brush: c">
+#include&lt;stdio.h&gt;
+
+int main()
+{
+	int year;
+	scanf("%d", &amp;year);
+	if(year%400==0){
+		printf("閏年\n");
+	}
+	else if(year%100==0){
+		printf("平年\n");
+	}
+	else if(year%4==0){
+		printf("閏年\n");
+	}
+	else {
+		printf("平年\n");
+	}
+
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+另外一種進行條件判斷的語法，是switch...case，其語法如下：
+<pre class="brush: c">
+switch(變數或運算式){
+	case 變數值或運算結果1:
+		程式敘述1;
+		break;
+	case 變數值或運算結果2:
+		程式敘述2;
+		break;
+	/* ...... */
+	case 變數值或運算結果n-1:
+		程式敘述n-1;
+		break;
+	default:
+		程式敘述n;
+}
+</pre>
+</p>
+
+<p>
+當程式進入此片段時，會對變數或運算結果對每一個 case 進行判斷，
+如果找到符合的 case，則會執行該 case 內的敘述。
+加入「break;」的目的是離開 switch 判斷，否則連以下其它 case 的程式敘述也會被執行。
+若沒有任何一個 case 符合，才會執行 defalut 內的敘述；default 是可有可無的。
+包含 default 在內的所有 case，都不需要用大括號包住所屬的程式敘述。
+</p>
+
+<p>
+以下範例會根據月份判斷天數。此處尚未跟閏年判斷結合，所以當使用者輸入二月時，會印出兩種結果。
+<pre class="brush: c">
+#include&lt;stdio.h&gt;
+
+int main()
+{
+	int month;
+	scanf("%d", &amp;month);
+	switch(month){
+		case 1:
+		case 3:
+		case 5:
+		case 7:
+		case 8:
+		case 10:
+		case 12:
+			printf("有31天\n");
+			break;
+		case 4:
+		case 6:
+		case 9:
+		case 11:
+			printf("有30天\n");
+			break;
+		case 2:
+			printf("有28或29天\n");
+			break;
+		default:
+			 printf("查無此月份！\n");
+	}
+	return 0;
+}
+</pre>
+</p>
+
+</blockquote>
+</body></html>

@@ -1,0 +1,166 @@
+﻿<html>
+<head>
+	<title>線上教材：C 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushCpp.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+動態規劃(Dynamic Programming)是一個基於填表的計算方法。
+Programming 是求取最佳解的意思，所以"Dynamic Programming"就是動態的求得目前的最佳解。
+如果你面對的問題，是可以透過把問題切割、合併來解決，
+而且切割出的小問題會重複時，就很適合利用動態規劃來解決。
+例如費氏數列的計算，我們先前曾經看過遞迴版本，
+這個版本在計算 fibo(5) 時，會呼叫 fibo(4) 和 fibo(3)，
+而因為 fibo(4) 會呼叫 fibo(3) 和 fibo(2)，所以 fibo(3) 會重複計算。
+而在更前面的迴圈章節看過的費氏數列範例，其實已經是動態規劃的版本。
+底下將介紹其他幾個可以用動態規劃解決的問題。
+</p>
+<br/><br/>
+
+<p>
+最長共同子序列問題：<br/><br/>
+可以先把這個問題想像成連連看，我們要把兩個字串中，一樣的字母連起來，但是不能交叉，如下圖：
+<br/><center><img src="pics/lcs01.png"></center><br/>
+我們的目標，是找出最大的連線數(與連線方式，如果需要的話)。<br></br>
+現在，若假設我們有兩個字串， str1[]="abc" 以及 str2[]="abcd"，則很清楚可以知道，最大的連線數是 3。
+如果這時候兩邊都各新加入了一個字母，那新的最大連線數要如何計算？
+我們可以分成兩種情況來討論，第一種是，如果加進來的兩個字母是相同的，那很顯然連線數直接 +1：
+<br/><center><img src="pics/lcs02.png"></center><br/>
+如果加進來的字母不一樣，則至少有一個字母不會被配對，所以相當於比較下圖左右兩種情況
+(去掉新 str1 的尾巴，或者去掉新 str2 的尾巴)：
+<br/><center><img src="pics/lcs03.png"></center><br/>
+這個資訊要去哪裡找？如果我們採用填表的方式，就會一目了然
+(所以，也有人認為，動態規劃應該叫做"填表法")。
+如果假設表格的 [i][j] 表示只考慮 str1 的前 i 個字元，以及 str2 的前 j 個字元時的最大連線數，
+則填表完成的樣子如下：
+<br/><center><img src="pics/lcs04.png"></center><br/>
+其中， i, j 為 0 時表示不考慮任何字元，所以第 0 個 row 和 column 的最大連線數是 0。
+再來，對於剩下的格子，我們分成兩種情況來討論，
+一是加進來的字母一樣的時候，相當於沒加字母前的連線數 +1，
+所以就填表來說，相當於 [i-1][j-1] 位置的數字 +1：
+<br/><center><img src="pics/lcs05.png"></center><br/>
+而如果加進來的字母不一樣時，因為這兩個字母不可能配對，
+我們就要分別去掉其中一邊，比比看去掉哪邊的效果比較好，
+以填表來說，相當於 [i-1][j] 和 [i][j-1] 的較大者：
+<br/><center><img src="pics/lcs06.png"></center><br/>
+</p>
+
+<p>
+因此，我們只需要將表格填完，即可得知最大連線數是多少。
+整個方法的虛擬碼如下(str1 和 str2 中，index 為 0 的地方是不重要的內容)：
+<pre class="brush: c">
+第 0 個 row 都是 0;
+第 0 個 column 都是 0;
+for i = 1 to str1 的長度
+	for j = 1 to str1 的長度
+		if( str1[i] 與 str2[j] 相等 )
+			table[i][j] = table[i-1][j-1] + 1;
+		else 
+			table[i][j] = max(table[i-1][j], table[i][j-1]);
+</pre>
+當然，要拿來求取最大連線數的兩個序列，不一定要是字串。
+你也可以針對兩個不同的數字序列，來求取最大連線數。
+另外，如果你需要最長共同序列，亦即是那些字母構成連線，
+就需要另外一張表格記錄每個格子的值的來源，最後再從尾巴回溯回去。
+</p>
+<br/><br/>
+
+<p>
+下一個要介紹的是 0-1 背包問題。這個問題是這樣的，有一個尋寶人，發現了 n 個寶物，
+每個寶物 j 都有價值 Pj 和重量 Wj，尋寶人希望在有限的背包空間 W 裡，裝下價值總和最高的寶物。
+在這個問題裡，如果寶物可以分割，那很明顯就從單價最高的寶物先拿再說；
+但是 0-1 背包問題討論的是不可分割的狀況，所以情況會變得比較複雜。
+要解決這個問題，我們一樣來填一張表格，
+其中 [i][j] 位置代表"目前的重量限制是 i"，以及"只考慮前 j 樣物品"。
+以下以實際的數字來說明。假設我們共有五樣物品，背包限裝 15 單位重：
+<center><table>
+<tr class="slide"><th class="slide">物品</th><th class="slide">價值</th><th class="slide">重量</th></tr>
+<tr class="slide"><td class="slide">A</td><td class="slide">4</td><td class="slide">12</td></tr>
+<tr class="slide"><td class="slide">B</td><td class="slide">2</td><td class="slide">2</td></tr>
+<tr class="slide"><td class="slide">C</td><td class="slide">2</td><td class="slide">1</td></tr>
+<tr class="slide"><td class="slide">D</td><td class="slide">1</td><td class="slide">1</td></tr>
+<tr class="slide"><td class="slide">E</td><td class="slide">10</td><td class="slide">4</td></tr>
+</table></center>
+則我們可以開出如下的表格，而且這樣填寫：
+<br/><center><img src="pics/knapsack01.png"></center><br/>
+對每一樣物品來說，都分成要拿與不拿兩種狀況，
+如果要拿，就是取得其價值，但是總空間減少(前面的物品能佔去的空間變少)；
+如果不拿，則跟只考慮前面物品的狀況一樣，空間不變(前面的物品能佔去的空間不變)。
+因此，我們可以寫出如下的虛擬碼：
+<pre class="brush: c">
+第 0 個 row 都是 0;
+第 1 個 column 在重量小於第 1 個物品的時候是 0，其餘是第 1 個物品的價值;
+for i = 1 to 背包容量
+	for j = 第 2 樣物品 to 最後一樣物品
+		if(i-Wj&lt;0)
+			table[i][j] = table[i][j-1];
+		else
+			table[i][j] = max(table[i][j-1], table[i-Wj][j-1]+Pj);
+</pre>
+其中的 i-Wj 即代表拿取第 j 樣物品時，前面的物品能佔去的空間。
+要注意它有可能變成負值，此時代表這樣物品不能拿，亦即拿了它的價值是 0。
+</p>
+<br/><br/>
+
+<p>
+再來要介紹的問題叫做"矩陣鏈乘積(Matrix Chain Multiplication)"。
+先想像一下有三個矩陣 A, B, C 要相乘，你要用 (AB)C 還是 A(BC)的順序來乘呢？
+假設它們的維度分別是 5-by-5, 5-by-3, 3-by-1，
+則 (AB)C 的順序，需要 5*5*3 + 5*3*1 = 90 次乘法運算；
+而 A(BC) 的順序，則只需要 5*3*1 + 5*5*1 = 40 次乘法運算。
+當矩陣的數量一多的時候，順序的差別就會更明顯，而要找出好的順序，就成了一個重要的問題。
+這次我們用由上往下的角度來思考：
+<center>假設有 ABCDE 五個矩陣相乘，你的第一刀要切在哪裡？</center><br/>
+如果是 (A)(BCDE)，則你分別需要知道 A 的最少乘法次數，以及 BCDE 的最少乘法次數；<br/>
+如果是 (AB)(CDE)，則你分別需要知道 AB 的最少乘法次數，以及 CDE 的最少乘法次數；<br/>
+如果是 (ABC)(DE)，則你分別需要知道 ABC 的最少乘法次數，以及 DE 的最少乘法次數；<br/>
+......<br/><br/>
+其中，在決定 BCDE 的順序時，我們也可能需要嘗試 (BC)(DE) 的最少乘法次數，
+所以也會需要 DE 的最少乘法次數。因此，我們需要表格來記錄這些重複過的資訊。
+本問題中的一個填表法，是將 table[i][j] 定義為 從第 i 個矩陣乘到第 j 個矩陣要花的最小乘法數。
+所以，以 5 個矩陣相乘來說，如果能填出 table[0][4]，則就代表求得最後解答。<br/><br/>
+我們先將表格初始化如下，對角線為 0 的原因是只有自己一個矩陣不用花時間，
+而下半部黑色代表這些值沒有意義，原因是不能倒著乘。
+<br/><center><img src="pics/mcm01.png"></center><br/>
+再來，對於每一格 table[i][j]，我們需要從下列數字當中找出最小值
+(假設第 0 個矩陣的維度是 p<sub>0</sub>-by-p<sub>1</sub>，
+第 1 個矩陣的維度是 p<sub>1</sub>-by-p<sub>2</sub>，依此類推)：<br/><br/>
+<pre>
+table[i][i]       + table[i+1][j] + p<sub>i</sub> * p<sub>i+1</sub> * p<sub>j+1</sub><br/>
+table[i][i+1]     + table[i+2][j] + p<sub>i</sub> * p<sub>i+2</sub> * p<sub>j+1</sub><br/>
+table[i][i+2]     + table[i+3][j] + p<sub>i</sub> * p<sub>i+3</sub> * p<sub>j+1</sub><br/>
+......<br/>
+table[i][k-1]     + table[k][j] + p<sub>i</sub> * p<sub>k</sub> * p<sub>j+1</sub><br/>
+......<br/>
+table[i][i+(j-1)] + table[j][j]   + p<sub>i</sub> * p<sub>j</sub>   * p<sub>j+1</sub><br/><br/>
+</pre>
+其中，以 table[i][i+2] + table[i+3][j] + p<sub>i</sub> * p<sub>i+3</sub> * p<sub>j+1</sub>
+為例，意義是"把這一刀切在 i+2 的話，所花的乘法次數是從 i 乘到 i+2 已經用的，
+加上從 i+3 乘到 j 用的，再加上合併起來要用的(第 i 個矩陣乘到第 i+2 個矩陣，維度會是 i-by-(i+3))"。
+你可以發現，這樣就相當於每一刀都切看看，然後比較一下哪一個最小。<br/><br/>
+所以，每填一格的時候，我們需要下列格子的資訊：
+<br/><center><img src="pics/mcm02.png"></center><br/>
+你想好如何填表了嗎？以下兩種方向都是可以的：
+<br/><center><img src="pics/mcm03.png"></center><br/>
+</p>
+
+<p>
+</p>
+<br/><br/>
+
+</blockquote>
+</body></html>

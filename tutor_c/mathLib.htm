@@ -1,0 +1,275 @@
+﻿<html>
+<head>
+	<title>線上教材：C 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushCpp.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+C語言提供了一些常見的數學函式，例如：
+<ul>
+	<li>三角函數：sin、cos、tan</li>
+	<li>反三角函數：asin、acos、atan</li>
+	<li>指數對數：exp、log、log10</li>
+	<li>次方/開平方根：pow、sqrt</li>
+	<li>捨位/進位：floor、ceil</li>
+	<li>絕對值：abs、fabs</li>
+</ul><br/>
+其中，使用 abs 時，必須 #include &lt;stdlib.h&gt;，使用其他函式，則需 #include &lt;math.h&gt;
+</p>
+
+<p>
+三角函數系列的函式，其輸入單位為弧度；如果需要以角度運算，則需在輸入時進行轉換
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+
+#define PI (2.0*acos(0.0))
+
+int main ()
+{
+	double param, result;
+	param = 30.0;
+	result = sin(param*PI/180); /*輸入單位為弧度*/
+	printf("The sine of %f degrees is %f.\n", param, result );
+	return 0;
+}
+</pre>
+經常出現而且固定的數字，可以用「#define」的方式定義，
+「#define」屬於前置處理的一種。前置處理代表在編譯之前進行的一些動作，
+例如「#define PI (2.0*acos(0.0))」，代表編譯器凡碰到「PI」時，都會把它代換成「(2.0*acos(0.0))」。
+多加括號是為了避免可能出現的運算優先權或型別轉換問題。
+當然，你也可以直接使用「3.1415926」，但可能在小數精確度方面不足，
+因此，範例中選擇使用「acos」函式來反推。
+<br/><br/>
+另外，此範例是第一次出現 include 多個檔案的範例。一般來說，include 的順序沒有差別。
+</p>
+
+<p>
+exp 函式，會進行以 <a href="http://en.wikipedia.org/wiki/E_(mathematical_constant)">e</a> 為底的指數運算，
+下列程式會計算 e<sup>5</sup>：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+
+int main ()
+{
+	double param, result;
+	param = 5.0;
+	result = exp(param);
+ 	printf ("E to the power of %lf is %lf.\n", param, result );
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+log 函式則會進行以 e 為底的對數運算，而 log10 則可計算以 10 為底的對數：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+
+int main ()
+{
+	double param, result1, result2;
+	param = 5.0;
+	result1 = log(param);
+	result2 = log10(param);
+ 	printf ("ln(%lf) = %lf\n", param, result1 );
+ 	printf ("log(%lf) = %lf\n", param, result2 );
+	return 0;
+}
+</pre>
+Question: 如何計算以其他數字為底的對數？
+</p>
+
+<p>
+「pow(a,b);」會算出 a<sup>b</sup>，sqrt 則是計算開平方根：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+
+int main ()
+{
+	printf ("10 ^ 0.699 = %lf\n", pow(10.0, 0.699));
+	printf ("2 ^ 0.5 = %lf\n", sqrt(2));
+	return 0;
+}
+</pre>
+Question: 如何計算開立方根？
+</p>
+
+<p>
+若呼叫「floor(a)」，則會傳回「不大於 a 的最大整數」。
+其實 floor 是地板的意思，可以想像成將數線直立，正向朝上，把整數的部分當作地板，
+則原來飄浮在樓層中間的 a 值，會掉到所屬的地板上。
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+
+int main ()
+{
+	printf ("floor of 2.3 is %.1lf\n", floor (2.3) );
+	printf ("floor of 3.8 is %.1lf\n", floor (3.8) );
+	printf ("floor of -2.3 is %.1lf\n", floor (-2.3) );
+	printf ("floor of -3.8 is %.1lf\n", floor (-3.8) );
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+與之相似的是 ceil，意義是天花板(ceiling)
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+
+int main ()
+{
+	printf ("ceil of 2.3 is %.1lf\n", ceil(2.3) );
+	printf ("ceil of 3.8 is %.1lf\n", ceil(3.8) );
+	printf ("ceil of -2.3 is %.1lf\n", ceil(-2.3) );
+	printf ("ceil of -3.8 is %.1lf\n", ceil(-3.8) );
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+絕對值的用法則是如下，需注意整數和浮點數型別要呼叫的函式不同：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main ()
+{
+	printf ("abs of  2 is %.d\n", abs( 2) );
+	printf ("abs of -2 is %.d\n", abs(-2) );
+	printf ("fabs of  2.3 is %.1lf\n", fabs( 2.3) );
+	printf ("fabs of -2.3 is %.1lf\n", fabs(-2.3) );
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+如果程式當中需要進行浮點數的比較，則情況可能會與你想像的不太一樣，
+這是由於浮點數在電腦中的精確度限制所造成：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+
+int main ()
+{
+	if(0.1+0.2==0.3){
+		printf("0.1 + 0.2 == 0.3\n");
+	}
+	
+	if( fabs( (0.1+0.2)-0.3 ) &lt;= pow(10, -6) ){
+		printf("0.1 + 0.2 is about 0.3\n");
+	}
+	
+	printf("%f\n", log10( (0.1+0.2)-0.3 ) );
+
+	return 0;
+}
+</pre>
+因此，電腦裡的浮點數運算不一定遵守結合律(associative)：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+
+int main ()
+{
+    double a = 0.1, b = 0.2, c = 0.3;
+
+    printf("%d\n", (a+b)+c == a+(b+c));
+
+    printf("%d\n", (0.1+0.2)+0.3 == 0.1+(0.2+0.3));
+
+    return 0;
+}
+</pre>
+(在上述範例中，一般來說會得到兩個 0，但隨著編譯器與作業系統的不同，也可能會有不同的結果，
+例如利用 Code::Blocks 13.12 在 windows 下編譯與執行，可能會得到 1 0。)
+</p>
+
+<p>
+下面用取概數中的四捨六入五取雙來做一個應用範例(本範例只考慮正數)。
+一般的四捨五入是 4 以下捨位，5 以上進位；
+但四捨六入五取雙則是 4 以下捨位，6 以上進位，而遇到 5 時，如果進位後是偶數則進位，否則捨位。
+依據其原則，虛擬碼可寫為以下(假設要處理的是變數 x，結果儲存在變數 r)：
+<pre class="brush: c">
+if(小數點下第一位&lt;=4){
+	r = floor(x);
+}
+else if(小數點下第一位&gt;=6){
+	r = ceil(x);
+}
+else { /* 小數點下第一位==5 */
+	if(個位數為偶數){
+		r = floor(x);
+	}
+	else { /* 個位數為奇數 */
+		r = ceil(x);
+	}
+}
+</pre>
+Question: 如何取得個位數與小數點下第一位？如何判斷奇偶數？
+</p>
+
+<p>
+寫成程式碼，則可為以下：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;math.h&gt;
+
+int main ()
+{
+	int a, b;
+	double r, x;
+
+	printf("請輸入一個小數：");
+	scanf("%lf",&amp;x);
+	
+	a = ( (int) floor(x) ) % 10;     // 浮點數型別不能取餘數，必須先轉成整數
+	b = ( (int) floor(x*10) ) % 10;
+	printf("個位數：%d，十分位數：%d\n", a, b);
+	
+	if(b&lt;=4){
+		r = floor(x);
+	}
+	else if(b&gt;=6){
+		r = ceil(x);
+	}
+	else {
+		if(a%2==0){
+			r = floor(x);
+		}
+		else {
+			r = ceil(x);
+		}
+	}
+	
+	printf("概數：%.1f\n",r);
+	return 0;
+}
+</pre>
+</p>
+
+</blockquote>
+
+</body></html>

@@ -1,0 +1,417 @@
+﻿<html>
+<head>
+	<title>線上教材：C 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushCpp.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+字串，顧名思義，是一連串的字元，也就是字元的陣列。
+C 語言裡面的字串，會寫在雙引號當中。一個字串會以空字元(NULL, '\0')來做為結束。
+以下是一個簡單的範例：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	char a[] = "test";
+	char b[] = {'t','e','s','t','\0'};
+
+	printf("%s\n",a); /* 使用 %s 印出字串 */
+	printf("%s\n",b);
+	return 0;
+}
+</pre>
+變數 a 和 b 都是字元陣列，在記憶體中的樣子都如同以下：<br/><br/>
+<table width="30%">
+	<tr><td align="right">a[0]&nbsp;(或 b[0])</td><td style="border:solid 1px" align="center">'t'</td></tr>
+	<tr><td align="right">a[1]&nbsp;(或 b[1])</td><td style="border:solid 1px" align="center">'e'</td></tr>
+	<tr><td align="right">a[2]&nbsp;(或 b[2])</td><td style="border:solid 1px" align="center">'s'</td></tr>
+	<tr><td align="right">a[3]&nbsp;(或 b[3])</td><td style="border:solid 1px" align="center">'t'</td></tr>
+	<tr><td align="right">a[4]&nbsp;(或 b[4])</td><td style="border:solid 1px" align="center">'\0'</td></tr>
+</table>
+<br/><br/>
+多出來的一個位置，是用來存放代表字串結束的空字元。如果沒有留下適當的空位，會出現無法預期的結果。
+</p>
+
+<p>
+如果要接受使用者輸入一個字串，則可在 scanf 裡面使用「%s」：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	char str[100];
+	scanf("%s", str);
+	printf("輸入的字串是：%s\n", str);
+	return 0;
+}
+</pre>
+scanf 會一直讀入字元，直到遇上空白、換行，或者沒有輸入為止。
+另外，我們將陣列名稱當作指標使用，因此不需要加上「&amp;」。
+當然，此處還必須假設使用者不會輸入多於 99 個字，以免超過陣列的大小。
+</p>
+
+<p>
+如果要對字串中的個別字元做處理，則可含括 ctype.h，裡面提供了一些判斷/轉換用的函式。
+例如，islower 可以判斷一個字元是否小寫英文字母；toupper 可將小寫英文字母轉換為大寫：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;ctype.h&gt;
+
+int main()
+{
+	char a[] = "ABCdef123";
+	int i = 0;
+
+	printf("a[0]是否為大寫字母 : %d\n", islower(a[0]) );
+	printf("a[6]是否為數字     : %d\n", isdigit(a[6]) );
+
+	printf("原來的字串 : %s\n", a);
+	while(a[i]!='\0'){
+		a[i] = toupper(a[i]);
+		i++;
+	}
+	printf("新的字串 : %s\n", a);
+
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+如果需要將字串"123"轉換成整數，或者將字串"45.678"轉換成浮點數，
+則可使用 stdlib.h 中的 atoi 和 atof 函式：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main()
+{
+	printf("%d\n", atoi("123"));
+	printf("%f\n", atof("45.678"));
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+前面的範例中提到，scanf 碰到空白就會停下來。如果希望連空白一起讀取，則可以使用 fgets 函式。
+fgets 會一直讀入字元，直到碰到換行、沒有字了，或者設定的最大上限為止：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+#define SIZE 100
+
+int main()
+{
+	char str[SIZE];
+
+	fgets(str, SIZE, stdin);
+	printf("經由 fgets 輸入的字串是：%s\n", str);
+
+	return 0;
+}
+</pre>
+其中，第一個參數是陣列名稱，第二個參數是要讀取的字元個數(包含自動加上的'\0')，
+第三個參數暫且固定為 stdin (若有興趣，可以先參考相關書籍中，關於檔案的章節，
+你會發現，改變第三個參數，就可以從檔案當中讀取資料)。
+經由 fgets 讀取進來的字串，會連同換行字元(就是你敲的那一下Enter)都忠實的保留；
+它也會自動加上'\0'，所以你不用擔心字串結束不了。
+</p>
+
+<p>
+getchar 函式也非常相似，他會不斷地，一個一個地讀取字元。
+以下範例，會將從鍵盤輸入的字元讀取進來，一個一個地塞到 sentence 陣列當中。
+直到讀到換行時，才會脫離迴圈，並將字串內容顯示出來：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+#define SIZE 1000
+
+int main()
+{
+	char c;
+	char sentence[SIZE];
+	int i = 0;
+
+	while( (c=getchar())!='\n' ){
+		sentence[i] = c;
+		i++;
+	}
+
+	printf("輸入的字串是：%s\n", sentence);
+
+	return 0;
+}
+</pre>
+但當各位執行這個範例時，也許會發現到多印了一些奇怪的字，
+這是因為 getchar 不會幫你在尾巴加入 '\0'，這個 '\0' 需要由各位自己加入。
+例如，可以在讀取結束後加上「sentence[i] = '\0'」。
+</p>
+
+<p>
+在以往的範例中，我們使用 printf 和 scanf，將資料印到螢幕(標準輸出)上，或者從鍵盤(標準輸入)讀取資料。
+其實，也可以從陣列進行輸入與輸出，使用的函式是 sprintf 和 sscanf：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+#define SIZE 100
+
+int main()
+{
+	char a[SIZE];
+	char b[] = "123 45.6";
+	int c;
+	double d;
+
+	sprintf(a, "%d %.4f\n~abcde~%d~fghijk~\nggg", 1234, 567.89, 101112);
+	printf("a 的內容: %s\n", a);
+
+	sscanf(b, "%d %lf", &amp;c, &amp;d);
+	printf("i: %d, j: %f\n", c, d);
+
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+如果需要知道字串的長度，可以使用 strlen 函式，必須先含括 string.h：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main()
+{
+	char msg[1234] = "Happy birthday to ";
+	printf("length of \"%s\" is: %d\n", msg, strlen(msg));
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+字串的複製與連接並不是使用「=」或「+」，而是 strcpy / strcat 函式：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main()
+{
+	char msg[1234] = "Happy birthday to ";
+	char nameA[] = "John.";
+	char name[100];
+
+	strcpy(name, nameA);
+	printf("The name is: %s\n", name);
+
+	strcat(msg, name);
+	printf("%s\n", msg);
+
+	return 0;
+}
+</pre>
+這些函式都位於 string.h 當中，他們會把後面的字串，複製或連接到前面的字串上。
+strcpy 和 strcat 會複製/連接整個字串， strncpy 和 strncat 則多了一個參數，讓你指定只需要複製/連接字串的前 n 個字元。
+除了 strncpy 以外的函式，都會幫你自動加上 '\0'。另外，使用這四個函數的時候，你必須自己保證被複製/連接的目標，可以裝的下新的字串。
+</p>
+
+<p>
+還記得指標的神奇範例嗎？上次是用字元指標「char *」指向整數區塊；
+這次我們用整數指標「int *」來指向字元的區塊：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main()
+{
+    char str[1024]={'\0'};
+    int *ptr, i;
+
+    strcpy(str, "Hello World!");
+    ptr = (int*)str;
+
+    for(i=0;ptr[i]!=0;i++){
+        printf("%d\n", ptr[i]);
+    }
+
+    return 0;
+}
+</pre>
+你會發現，印出來的正好是那些看似莫名其妙的數字。
+這個現象，跟整數在記憶體裡的存放方式有關。若有興趣，可以到網路上搜尋"little endian"這個關鍵詞。
+</p>
+
+<p>
+透過 strrev 函式，可以幫你把字串反轉：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main()
+{
+	char msg[1234] = "Hello World";
+
+	printf("原字串: %s\n", msg);
+	strrev(msg);
+	printf("新字串: %s\n", msg);
+
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+透過 strstr 函式，可以幫你尋找子字串。
+如果找到子字串， strstr 會回傳指向子字串開頭的指標；
+如果找不到，則會回傳 NULL (代表指標指向空的位置，各位可以先將它視為 false)：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main()
+{
+	char msg[] = "Hello World";
+	char str[8];
+	char *pos;
+
+	printf("Please enter a string: ");
+	scanf("%s", str);
+	pos = strstr(msg, str);
+	if(pos){
+		printf("Found, %s\n", pos);
+	}
+	else {
+		printf("Not Found.\n");
+	}
+
+	return 0;
+}
+</pre>
+Question: 如何知道字串開始位置的陣列索引值？(Hint: 指標加減)
+</p>
+
+<p>
+字元和整數的關係是非常密切的。例如，「A」在電腦裡面會被表示為「0100 0001」，相當於十進位的 65；「a」在電腦裡面會被表示為「0110 0001」，相當於十進位的 97。
+這種編碼方式稱為 ASCII (American Standard Code for Information Interchange)。
+如果要知道某個字母對應的數字為何，或者某個數字對應的字母為何，則方法如下：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	printf("%c: %d\n", 'A', 'A');
+	printf("%d: %c\n", 100, 100);
+
+	return 0;
+}
+</pre>
+所以，字串的大小比較，其實就是其中每個字母所對應的數字的大小比較：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	printf("Is %c greater than %c: %d\n", 'Z', 'B', 'Z'&gt;'B');
+	printf("Is %c greater than %c: %d\n", 'A', 'b', 'A'&gt;'b');
+
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+而如果需要比較兩個字串的大小，則可使用 strcmp 或 strncmp 函式。<br/><br/>
+strcmp 函式會比較前後兩個字串，如果：
+<ul>
+	<li>相等則傳回0</li>
+	<li>前面大於後面，則傳回一個正整數</li>
+	<li>前面小於後面，則傳回一個負整數</li>
+</ul>
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main()
+{
+	char a[] = "test";
+	char b[] = "test";
+	char c[] = "Test";
+	char d[] = "ABcd";
+
+	printf("%s v.s. %s: %d\n", a, b, strcmp(a,b) );
+	printf("%s v.s. %s: %d\n", a, c, strcmp(a,c) );
+	printf("%s v.s. %s: %d\n", c, d, strcmp(c,d) );
+	printf("%s v.s. %s: %d\n", d, c, strcmp(d,c) );
+
+	return 0;
+}
+</pre>
+strncmp 也非常相似，但是你可以只比對前 n 個字元。
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main()
+{
+	char a[] = "test1234";
+	char b[] = "test5678";
+
+	printf("%s v.s. %s: %d\n", a, b, strncmp(a,b,4) );
+	printf("%s v.s. %s: %d\n", a, b, strncmp(a,b,5) );
+
+	return 0;
+}
+</pre>
+Question: 如何從字串的中間開始進行 strncmp 的比較？(Hint: 指標加減)
+</p>
+
+<p>
+如果需要存放一堆字串，則必須使用二維陣列，使用方法如下：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	char suit[][10] = {"Clubs", "Diamonds", "Hearts", "Spades"};
+
+	printf("%s", suit[0]);
+
+	return 0;
+}
+</pre>
+事實上，二維陣列是一個指標陣列(存放一堆指標的一維陣列)，這些指標會指向某些一維陣列的開頭，
+以上述範例來說，可以理解如下：<br/><br/>
+<center><img src="pics/string01.png"></center>
+<br/><br/>
+所以，下面的範例也有同樣的效果：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	char *suit[4] = {"Clubs", "Diamonds", "Hearts", "Spades"};
+
+	printf("%s", suit[0]);
+
+	return 0;
+}
+</pre>
+</p>
+
+</blockquote>
+</body></html>

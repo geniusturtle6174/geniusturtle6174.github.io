@@ -1,0 +1,184 @@
+﻿<html>
+<head>
+	<title>線上教材：C 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushCpp.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+瞭解了排序之後，便可以對資料進行統計。
+有些統計需要應用到排序，例如中位數，可以在排序好之後，直接取出中間的數字：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+#define SIZE 10
+
+void insertionSort(int a[], int size){
+    int i, j, temp;
+
+    for(i=1;i&lt;size;i++){
+        temp = a[i];
+        j = i - 1;
+        while(j&gt;=0 && a[j]&gt;temp){
+            a[j+1] = a[j];
+            j--;
+        }
+        a[j+1] = temp;
+    }
+}
+
+double median(int a[], int size){
+	if(size%2==1){ /* odd size */
+		return a[size/2];
+	}
+	else{ /* even size */
+		return (a[size/2-1]+a[size/2])/2.0;
+	}
+}
+
+int main()
+{
+	int i, a[SIZE] = {3,0,1,8,7,2,5,4,6,9};
+	double m;
+
+	insertionSort(a, SIZE);
+	m = median(a, SIZE);
+	printf("Median: %f\n", m);
+
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+若要尋找眾數，則因為排序好之後，同樣的數字會被排在一起，
+所以循序計數過一遍，就可以知道每個數字出現的次數：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+#define SIZE 10
+
+void insertionSort(int a[], int size){
+    int i, j, temp;
+
+    for(i=1;i&lt;size;i++){
+        temp = a[i];
+        j = i - 1;
+        while(j&gt;=0 && a[j]&gt;temp){
+            a[j+1] = a[j];
+            j--;
+        }
+        a[j+1] = temp;
+    }
+}
+
+int mode(int a[], int size){
+	int i;
+	int modeValue=a[0], modeCount=1, thisCount=1; /* 第一個數字出現一次 */
+	for(i=1;i&lt;size;i++){
+		if(a[i]==a[i-1]){ /* 數字沒變，繼續加 */
+			thisCount++;
+		}
+		else { /* 數字改變，處理計數結果 */
+			printf("value: %d, count: %d\n", a[i-1], thisCount);
+			if(thisCount&gt;modeCount){
+				modeCount = thisCount;
+				modeValue = a[i-1];
+			}
+			thisCount = 1;
+		}
+	}
+	/* 處理最後一個數字 */
+	printf("value: %d, count: %d\n", a[i-1], thisCount);
+	if(thisCount&gt;modeCount){
+		modeCount = thisCount;
+		modeValue = a[i-1];
+	}
+	return modeValue;
+}
+
+int main()
+{
+	int a[SIZE] = {3,3,1,1,1,85,445,445,999,0};
+	int m;
+
+	insertionSort(a, SIZE);
+	m = mode(a, SIZE);
+
+	printf("mode value: %d\n", m);
+
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+但如果你已經事先知道數字的範圍，並且範圍不大，則可以直接使用陣列來計數。
+以下範例會亂數產生 100 個介於 1~10 之間的數字，並計算眾數：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;time.h&gt;
+
+#define SIZE 11
+#define RANDNUM 100
+
+int mode(int a[], int size){
+	int occTimes, theMode;
+	int i;
+
+	occTimes = a[1];
+	theMode = 1;
+	for(i=2;i&lt;size;i++){
+		if(a[i]>occTimes){
+			occTimes = a[i];
+			theMode = i;
+		}
+	}
+	return theMode;
+}
+
+int main()
+{
+	int i;
+	int array[RANDNUM] = {0};
+	int count[SIZE] = {0};
+
+	/* 亂數產生數字 */
+	srand( time(NULL) );
+	for(i=0;i&lt;RANDNUM;i++){
+		array[i] = 1+rand()%10;
+	}
+	
+	/* 計算每個數字各出現幾次 */
+	for(i=0;i&lt;RANDNUM;i++){
+		count[ array[i] ] += 1;
+	}
+
+	printf("Histogram:\n");
+	for(i=1;i&lt;SIZE;i++){
+		printf("%2d: %2d times\n", i, count[i]);
+	}
+
+	printf("Mode: %d\n", mode(count, SIZE));
+
+	return 0;
+}
+</pre>
+</p>
+
+</blockquote>
+</body></html>

@@ -1,0 +1,385 @@
+﻿<html>
+<head>
+	<title>線上教材：C 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushCpp.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+指標是代表記憶體位置的變數。通常一個變數存放的是某個特定的數值，但是指標所存放的是某個變數的位置。
+先看一個簡單的範例：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	int *countPtr, count = 17;
+	countPtr = &amp;count;
+	printf("%d\n", *countPtr);
+	return 0;
+}
+</pre>
+首先，程式在第 5 行，宣告了一個指向整數變數的指標變數「countPtr」，以及一個一般的整數變數「count」。
+在第 6 行，利用「&amp;」運算子，可以取得變數的位置，所以「&amp;count」的意思，是取出 count 變數在記憶體中的位置，
+而「countPtr = &amp;count;」的意思，即為將 countPtr 指標，指向 count 變數。
+如下圖：<br/><br/>
+<center><img src="pics/pointer01.png"></center>
+<br/><br/>
+第 7 行的「*」，則是取出指標變數指向的變數的值(反參考)，所以「*countPtr」，則可以取出 17，再利用 printf 顯示出來。
+</p>
+
+<p>
+要進行反參考，必須確保指標被指向正確的位置。例如以下程式，因為 countPtr 沒有被指向正確的位置，所以會發生 Runtime error。
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	int *countPtr, count = 17;
+	// countPtr = &amp;count;
+	printf("%d\n", *countPtr);
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+如果要顯示出記憶體位置，則可在 printf 當中使用 %p，此時會將記憶體位置以十六進位數字印出：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	int *aPtr, a = 17;
+	aPtr = &amp;a;
+
+	printf("Address of a : %p\n", &amp;a);
+	printf("Value of aPtr: %p\n", aPtr);
+	printf("\n");
+	
+	printf("Address of aPtr : %p\n", &amp;aPtr);
+	printf("\n");
+
+	printf("Value of a    : %d\n", a);
+	printf("Value of *aPtr: %d\n", *aPtr);
+	printf("\n");
+
+	printf("&amp;*aPtr: %p\n", &amp;*aPtr);
+	printf("*&amp;aPtr: %p\n", *&amp;aPtr);
+	printf("\n");
+
+	return 0;
+}
+</pre>
+上述範例中，假設 aPtr 指標變數在記憶體裡的位置是 0022FF1C，而 a 變數在記憶體裡的位置是 0022FF18，則可如下圖：<br/><br/>
+<center><img src="pics/pointer02.png"></center>
+<br/><br/>
+</p>
+
+<p>
+如果將函式的輸入參數設定為指標，又將某個變數的位置丟進去時，則該變數的內容會被改變：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+void test(int *aPtr){
+	*aPtr += 1;
+}
+
+int main()
+{
+	int a = 5;
+
+	printf("a: %d\n", a);
+	test(&amp;a);
+	printf("a: %d\n", a);
+	return 0;
+}
+</pre>
+利用這個方式，可以寫一個 swap 函式，將兩個數字交換：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+void swap(int *aPtr, int *bPtr){
+	int temp = *aPtr;
+	*aPtr = *bPtr;
+	*bPtr = temp;
+}
+
+int main()
+{
+	int a = 3, b = 5;
+
+	printf("a: %d, b: %d\n", a, b);
+	swap(&amp;a, &amp;b);
+	printf("a: %d, b: %d\n", a, b);
+	return 0;
+}
+</pre>
+範例至此，各位應該可以瞭解，為什麼 scanf 後面的變數，需要加上一個「&amp;」符號了。
+</p>
+
+<p>
+在課程一開始，我們曾經提到變數宣告時會指定變數類型與變數名稱，常用的變數類型有下列幾種：
+<ul>
+	<li>char：字元，佔 1 個 Byte</li>
+	<li>int：整數，佔 4 個 Byte</li>
+	<li>float：單精度浮點數(小數)，佔 4 個 Byte</li>
+	<li>double：倍精度浮點數，佔 8 個 Byte</li>
+</ul>
+<br/>
+可以透過 sizeof 運算子來計算看看：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	char a;
+	int b;
+	float c;
+	double d;
+
+	printf("sizeof(char):   %d\n", sizeof(a));
+	printf("sizeof(int):    %d\n", sizeof(b));
+	printf("sizeof(float):  %d\n", sizeof(c));
+	printf("sizeof(double): %d\n", sizeof(d));
+
+	return 0;
+}
+</pre>
+但如果是指標變數，則一律是 32 或 64 bits (4 或 8 Byte)，因為指標當中記錄的是記憶體位置：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	char *a;
+	int *b;
+	float *c;
+	double *d;
+
+	printf("sizeof(char):   %d\n", sizeof(a));
+	printf("sizeof(int):    %d\n", sizeof(b));
+	printf("sizeof(float):  %d\n", sizeof(c));
+	printf("sizeof(double): %d\n", sizeof(d));
+
+	return 0;
+}
+</pre>
+(註：Code::Blocks 的 windows 版只能編譯 32 bits 的執行檔，
+所以即使在 windows 64 bits 下測試，仍然是 4 Bytes)
+</p>
+
+<p>
+指標與陣列的關係非常密切，事實上，陣列名稱是一個"指向陣列第一個元素的指標"：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	int a[] = {8,7,2,6,9};
+	int *aPtr;
+	int i;
+
+	aPtr = a; /* 與 aPtr = &amp;a[0] 相同 */
+
+	for(i=0;i&lt;5;i++){
+		printf("%d %d %d\n", *(aPtr+i), *(a+i), a[i] );
+	}
+
+	return 0;
+}
+</pre>
+範例至此，各位應該可以瞭解，為什麼陣列的第一個元素的索引值是 0 了，因為索引值是從指標算起的位移值，
+既然指標指向最一開頭的元素，不用進行位移就可以取到該元素，所以位移值，即索引值是 0 。
+</p>
+
+<p>
+在上面的範例中，我們使用「aPtr + i」來對指標變數進行加減運算，
+意即改變這個指標所指向的記憶體區塊。
+那麼，記憶體的位置會如何變化呢？我們將上述範例做一點修改：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	int a[] = {8,7,2,6,9};
+	int *aPtr;
+	int i;
+
+	aPtr = a; /* 與 aPtr = &a[0] 相同 */
+
+	for(i=0;i&lt;5;i++){
+		printf( "Value: %d, Address: %p\n", *(aPtr), aPtr);
+		aPtr = aPtr + 1;
+	}
+
+	return 0;
+}
+</pre>
+各位可以發現，由於 aPtr 是一個指向整數變數的指標，而一個整數會佔去 4 Bytes 的大小，
+所以將一個整數指標「aPtr = aPtr + 1」的時候，指向的記憶體位置會往後 4 個 Bytes，
+「aPtr = aPtr - 1」則會往前 4 個 Bytes。
+當然，如果是指向 double 型態的指標，就要往後/前 8 個 Bytes：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	double a[] = {8,7,2,6,9};
+	double *aPtr;
+	int i;
+
+	aPtr = a; /* 與 aPtr = &amp;a[0] 相同 */
+
+	for(i=0;i&lt;5;i++){
+		printf( "Value: %f, Address: %p\n", *(aPtr), aPtr);
+		aPtr = aPtr + 1;
+	}
+
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+在前面的範例中，宣告了怎樣的變數(或陣列)，就要用怎樣的指標去指向它，例如， int 變數要用 int * 的指標去指。
+如果硬是要轉換的話，會發生一些奇妙的事情：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int main()
+{
+	int a[] = {1819043144, 1867980911, 560229490};
+	char *aPtr;
+	int i;
+
+	aPtr = (char*)a;
+
+	for( i = 0 ; i &lt; 3 * ( sizeof(int) / sizeof(char) ) ; i++){
+		printf( "%c", *aPtr);
+		aPtr = aPtr + 1;
+	}
+	printf("\n");
+
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+指標也可以指向一個函式，稱為函式指標(pointer to a function, function pointer)，
+此時，指標的內容是該函式程式碼的起始位置。以下示範如何將函式指標當成參數，傳遞給其他函式：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+#define SIZE 10
+
+int ascending(int a, int b){
+	return b &lt; a;
+}
+
+int descending(int a, int b){
+	return a &lt; b;
+}
+
+void swap(int *aPtr, int *bPtr){
+	int temp = *aPtr;
+	*aPtr = *bPtr;
+	*bPtr = temp;
+}
+
+void bubbleSort(int a[], int size, int (*compare)(int a, int b) ){
+	int i, j, temp;
+
+	for(i=size-1;i&gt;=0;i--){
+		for(j=0;j&lt;i;j++){
+			if(  (*compare)( a[j], a[j+1] )  ){ /* 是否需要交換 */
+				swap( &amp;a[j], &amp;a[j+1] );
+			}
+		}
+	}
+}
+
+int main()
+{
+	int a[] = {8,7,2,6,9,1,4,5,3,0};
+	int i;
+
+	bubbleSort(a, SIZE, ascending);
+
+	for(i=0;i&lt;SIZE;i++){
+		printf("%d ", a[i]);
+	}
+	printf("\n");
+
+	return 0;
+}
+</pre>
+上面的範例是氣泡排序法，可以透過傳入的函式不同，來決定要使用遞增或遞減排序。
+如果需要遞增排序時，則傳入 ascending 函式：因為此時需要交換的條件是"前面大於後面，
+所以這個函式被設計成會在此時回傳 1 ，其他時候回傳 0。descending 函式，也依此原理設計。
+</p>
+
+<p>
+事實上，C語言提供了一個 qsort 函式，只要含括 stdlib.h 即可呼叫，名稱由來是 quick sort，快速排序法。
+在此不會介紹到函式裡面稱為"快速"的由來(各位會在"資料結構"學到)，但要告訴大家的是， qsort 函式也會吃一個 function pointer，
+因此，你可以透過自己定義的函式，來對各種資料進行排序。
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int compare (const void * a, const void * b){
+	return *(int*)a - *(int*)b; /* 先轉型成實際上使用的型別，再進行判斷 */
+}
+
+int main()
+{
+	int a[] = {4,3,2,6,8,7,9,0,1,5};
+	int i;
+
+	qsort(a, 10, sizeof(int), compare);
+
+	for(i=0;i&lt;10;i++){
+		printf("%d ", a[i]);
+	}
+	printf("\n");
+
+	return 0;
+}
+</pre>
+qsort傳入的四個參數，分別是：
+<ol>
+	<li>陣列名稱</li>
+	<li>陣列元素個數</li>
+	<li>陣列的一個元素佔多少 Bytes</li>
+	<li>函式指標，判斷大小用的</li>
+</ol>
+<br/>
+而 compare function，應遵循這些原則設計：
+<ol>
+	<li>傳入的參數固定寫成「const void * a, const void * b」</li>
+	<ul>
+		<li>最前面的 const，代表所指向的變數的值不能被更動，詳見 7.5 節</li>
+		<li>void 代表可能指向任何型別，詳見 7.8 節最後面。使用時，需要轉換成實際上的型別</li>
+	</ul>
+	<li>當 a 應被視為小於 b 時(a 應排在 b 前面時)，回傳一個負整數；
+		a 與 b 視為相等時回傳 0 ；
+		a 視為大於 b 時(a 應排在 b 後面時)回傳一個正整數。</li>
+</ol>
+</p>
+
+</blockquote>
+</body></html>

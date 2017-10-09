@@ -1,0 +1,205 @@
+﻿<html>
+<head>
+	<title>線上教材：C 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushCpp.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+如果一個函式，會呼叫到自己本身，那麼這個函式就是遞迴函式。
+關於遞迴，在生活中就有一些常見的例子，比如說：
+<table border=1 width="90%"><tr><td>
+從前有座山，山裡有座廟，廟裡有個老和尚，正在給小和尚講故事呢！故事是什麼呢？「
+從前有座山，山裡有座廟，廟裡有個老和尚，正在給小和尚講故事呢！故事是什麼呢？「
+從前有座山，山裡有座廟，廟裡有個老和尚，正在給小和尚講故事呢！故事是什麼呢？「
+從前有座山，山裡有座廟，廟裡有個老和尚，正在給小和尚講故事呢！故事是什麼呢？「 ......」」」」
+</td></tr></table>
+</p>
+
+<p>
+或者是：<br/>
+<img src="pics/recu01.jpg" align="top"/>
+</p>
+
+<p>
+當然，對自己呼叫不會是無窮盡的，到某個條件成立時，就必須停下來，例如遞迴披薩(以披薩為配料的披薩)：<br/>
+<img src="pics/recu02.jpg" align="top" />
+</p>
+<br/>
+<p>
+遞迴在計算機科學上的定義，是將一個問題，分解成數個較小的問題求解，由小問題的解答，推出大問題的解答。
+雖然能用遞迴解決的問題，也都可以用迴圈解決；但有些問題，使用遞迴的方式來思考與求解，會比較直覺明瞭。
+但是，由於重複呼叫函式，所以遞迴容易造成系統多於的負擔，使用上必須注意。
+</p>
+
+<p>
+階乘是最常見的遞迴範例。例如 5!，可以這樣拆解：<br/><br/>
+5! = 5 * 4!<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;= 5 * 4 * 3!<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;= 5 * 4 * 3 * 2!<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;= 5 * 4 * 3 * 2 * 1!<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;= 5 * 4 * 3 * 2 * 1<br/>
+</p>
+<br/>
+<p>
+以下程式，會用遞迴的方法計算階乘：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int factorial(int n){
+	if(n&lt;=1){
+		return 1;
+	}
+	else {
+		return n * factorial(n-1);
+	}
+}
+
+int main()
+{
+	int n = 5;
+	printf("%d! = %d\n", n, factorial(n) );
+	return 0;
+}
+</pre>
+第 4~6 行是遞迴的終止條件，遞迴函式一定要有終止條件，否則無窮盡的呼叫，很快就會耗光系統資源。
+第 8 行則是對自己的呼叫，例如傳入 n = 5 時，在這行會呼叫 factorial(4)。
+</p>
+
+<p>
+遞迴(或者一般函式)在電腦內部的運作，可以用便條紙來比喻。
+函式就像寫在便條紙上的待辦事項，每當呼叫一個函式時，代表在一張便條紙上處理事情；
+如果呼叫另一個函式時，則代表有新的事情要辦，需要抽取另一張便條紙疊在上面；
+此時，必須先將目前已處理到的位置做個記號，才能抽出下一張便條紙，開始新的處理；
+當新的事情處理完畢以後，就可以回到剛才做記號的位置，繼續原來的處理。
+</p>
+
+<p>
+當然也可以用「樹」的概念，來對遞迴進行分析。
+以費氏數列為例，要計算 F<sub>5</sub> 時，需要先知道 F<sub>4</sub> 和 F<sub>3</sub>，
+即為一棵樹長出了兩個分支。程式如下：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int fibo(int n){
+	if(n&lt;=1){
+		return n;
+	}
+	else {
+		return fibo(n-1) + fibo(n-2);
+	}
+}
+
+int main()
+{
+	int n = 5;
+	printf("費氏數列第 %d 項為 %d\n", n, fibo(n) );
+	return 0;
+}
+</pre>
+</p>
+
+<p>接下來，是其他一些也很常見的遞迴範例。</p>
+
+<p>
+組合個數，可以分成"現在這個要選"以及"現在這個不選"來討論，
+亦即 C(m,n) = C(m-1, n-1) + C(m-1, n)：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int combo(int m, int n){
+	if(n==1){
+		return m;
+	}
+	else if(m==n||n==0){
+		return 1;
+	}
+	else {
+		return combo(m-1, n-1) + combo(m-1, n);
+	}
+}
+
+int main()
+{
+	printf("C(5, 3) = %d\n", combo(5, 3) );
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+最大公因數(greatest common divisor)，使用的遞迴式為 gcd(a, b) = gcd(b, a%b)，
+其實就是我們以前都學過的輾轉相除法：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+int gcd(int a, int b){
+	if(b==0){
+		return a;
+	}
+	else {
+		return gcd(b, a%b);
+	}
+}
+
+int main()
+{
+	printf("gcd(100, 60) = %d\n", gcd(100, 60));
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+河內塔也很容易用遞迴求解。例如在兩個盤子的情況下，你可以這樣做(假設左邊的柱子為起始點)：
+<ol>
+	<li>把小盤搬到中間(暫存柱)</li>
+	<li>把大盤搬到右邊(目標柱)</li>
+	<li>把小盤也搬到右邊，完成</li>
+</ol><br/>
+因此，對於遞廻來說，只要把上面範例的小盤子，當成 n-1 個小盤子就好了；
+意思是，我們可以把問題拆解成一個大盤子和 n-1 個比較小的盤子。
+至於 n-1 個小盤子的搬法，就交給遞迴解決。
+整體的步驟如下：<br/><br/>
+<ol>
+	<li>把 n-1 個盤子，從「起始柱」移到「暫存柱」</li>
+	<li>把第 n 個盤子移到「目標柱」</li>
+	<li>把「暫存柱」的那 n-1 個盤子移到「目標柱」</li>
+</ol>
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+void hanoi(int n, int startRod, int tempRod, int targetRod){
+	if(n>0){
+		hanoi(n-1, startRod, targetRod, tempRod);
+		printf("將 %d 盤從 %d 柱移動到 %d 柱\n", n, startRod, targetRod);
+		hanoi(n-1, tempRod, startRod, targetRod);
+	}
+}
+
+int main()
+{
+	hanoi(3, 1, 2, 3);
+	return 0;
+}
+</pre>
+</p>
+
+
+</blockquote>
+
+</body>
+</html>

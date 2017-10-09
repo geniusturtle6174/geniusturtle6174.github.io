@@ -1,0 +1,241 @@
+﻿<html>
+<head>
+	<title>線上教材：C 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushCpp.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+LAPACK 是 Linear Algebra PACKage 的縮寫，它是一個以 Fortran 語言寫成的函式庫。
+本篇的目標，是要以矩陣相乘等常見的函式為例，來介紹 LAPACK 的使用。
+由於自己下載原始碼，並編譯出函式庫的步驟比較繁瑣，
+所以這裡提供了事先編譯好的 <a href="lapack.rar">lapack.rar</a> 讓各位下載，
+請解壓縮後把它們放在同一個資料夾，例如"C:\lapack"。
+(如果對自行編譯有需要的話，可以檢視本網頁的原始碼，裡面用註解的方式記錄了一些比較重要的步驟。)
+<!--
+1. 下載點：http://icl.cs.utk.edu/lapack-for-windows/clapack/index.html</a>，
+   請拉到最底下的 Easy Windows Build，下載 clapack 和 cmake。
+2. 依該網頁步驟三的指示操作 cmake，configure 的三個勾勾原則上可以都不選。
+3. 打開專案檔編譯。此處曾經碰到某些東西 undefine，可能需要手動把 float.h 裡面對應的定義複製過來。
+4. 將編譯完成的結果放到你想要的地方，例如上述的"C:\lapack"。
+-->
+</p>
+
+<p>
+接著，我們要讓 Code::Blocks 知道函式庫放在哪裡。請先選擇 Settings → Compiler，應該會出現這個畫面：
+<br/><center><img src="pics/lapack01.png"></center><br/>
+再來，請找到 linker settings 這個分頁，把三個 *.a 的函示庫加入路徑中
+<br/><center><img src="pics/lapack02.png"></center><br/>
+下一步，請找到 Search directories 這個分頁，
+加入 C:\lapack 或你放置的其他路徑，才能讓 Code::Blocks 找到相對應的 *.h 檔案。
+</p>
+
+<p>
+現在，你可以先試著編譯與執行這個程式：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;time.h&gt;
+#include &lt;f2c.h&gt;
+#include &lt;clapack.h&gt;
+
+void matrixDisplay(double mat[], int m, int n){
+    int i, j;
+    for(i=0;i&lt;m;i++){
+        for(j=0;j&lt;n;j++){
+            printf("%.0f ",mat[i*n+j]);
+        }
+		printf("\n");
+    }
+}
+
+int main()
+{
+    int n;
+    double *A,*B,*C;
+    double alpha=1.0, beta=0.0;
+    char trans='t';
+    int i,j;
+
+    clock_t tic,toc;
+
+    /* space allocation */
+    n = 2;
+    A = (double*)malloc(n*n*sizeof(double));
+    B = (double*)malloc(n*n*sizeof(double));
+    C = (double*)malloc(n*n*sizeof(double));
+
+    /* value generation/initialization */
+    srand(time(NULL));
+    j = n*n;
+    for(i=0; i&lt;j; i++){
+        A[i] = rand()%5+1;
+        B[i] = rand()%5+1;
+        C[i] = 0.0;
+    }
+
+    /* computation */
+    tic = clock();
+    dgemm_(&trans, &trans, &n, &n, &n,&alpha, A, &n, B, &n,&beta, C, &n);
+    toc = clock();
+    printf("%.4f\n",(double)(toc-tic)/CLOCKS_PER_SEC);
+
+    /* display */
+    printf("==================\n");
+    matrixDisplay(A, n, n);
+    printf("==================\n");
+    matrixDisplay(B, n, n);
+    printf("==================\n");
+    matrixDisplay(C, n, n);
+    printf("==================\n");
+	
+    free(A);
+    free(B);
+    free(C);
+    return 0;
+}
+</pre>
+</p>
+
+<p>
+這個程式會亂數產生兩個 2-by-2 的矩陣，然後利用 LAPACK 計算矩陣乘積。
+首先，要使用 LAPACK 的功能，必須含括 f2c.h 和 clapack.h。
+time.h 則是計時用，在此範例中，由於矩陣很小，所以時間不明顯。
+再來，對於矩陣的部分，我們必須使用一維矩陣來存放資料，然後自行對應至二維。
+</p>
+
+<p>
+然後是最重要的，呼叫 LAPACK 的部分，我們使用的是「dgemm_」這個函式。
+它會幫你計算這個式子：<br>
+<center>C = &alpha;*op(A)*op(B) + &beta;*C</center></br>
+其中，op() 代表矩陣要轉置或者不要轉置，由輸入參數決定。
+命名的規則稍後來說明，我們先介紹參數如下，
+完整的說明可以參考<a href="http://www.netlib.org/lapack/explore-html/d1/d54/group__double__blas__level3.html#gaeda3cbd99c8fb834a60a6412878226e1">這裡</a>：
+<ul>
+	<li>transA: 控制 A 矩陣是否轉置；若值為'N'或'n'時代表不轉置，'T'或't'時代表轉置。</li>
+	<li>transB: 控制 B 矩陣是否轉置；若值為'N'或'n'時代表不轉置，'T'或't'時代表轉置。</li>
+	<li>m: op(A) 矩陣的 rows 的個數。</li>
+	<li>n: op(B) 矩陣的 columns 的個數。</li>
+	<li>k: op(A) 矩陣的 columns 的個數，即 op(B) 矩陣的 rows 的個數。</li>
+	<li>&alpha;: 如前述式子。</li>
+	<li>A: A 矩陣。</li>
+	<li>LDA: A 未轉置時為 m，轉置時為 k。</li>
+	<li>B: B 矩陣。</li>
+	<li>LDB: B 未轉置時為 k，轉置時為 n。</li>
+	<li>&beta;: 如前述式子。</li>
+	<li>C: C 矩陣。</li>
+	<li>LDC: 與 n 同值。</li>
+</ul><br/>
+所以，如果要進行兩個方陣 A 和 B 的相乘，則矩陣大小皆為 n，&alpha; 為 1，&beta; 為 0。
+在 trans 的部分，由於在 C 語言裡面，把二維放成一維時，習慣一個 row 接一個 row 放(稱為 row-major)；
+而 LAPACK 使用的 Fortran 語言，習慣一個 column 接一個 column 放(稱為 column-major)，
+所以 trans 在此處皆使用 't'。
+當然，輸出的 C 矩陣是 column-major，而此處在印出前並沒有特別轉換，所以你會覺得看到的矩陣方向不太對。
+另外，此函式庫需要傳入記憶體位置，所以若是非指標型態的變數，記得加上「&amp;」。
+</p>
+
+<p>
+接下來我們介紹命名規則。由於早期的 Fortran 在函式名稱的字數上有些限制，
+因此有規則如下(少數特例本篇不介紹)：
+<ul>
+	<li>第一個字母代表變數類型，LAPACK 有四種變數類型：</li>
+	<ul>
+		<li>single (s): 單精度浮點數，即 C 語言的 float。</li>
+		<li>double (d): 倍精度浮點數，即 C 語言的 double。</li>
+		<li>complex (c): 單精度複數，即 C 語言的 struct { float r, i; }。</li>
+		<li>doublecomplex (z): 單精度浮點數，即 C 語言的 struct { double r, i; }。</li>
+	</ul>
+	<li>再來的兩個字母代表矩陣的樣子，部分舉例如下：</li>
+	<ul>
+		<li>GE: general，一般的矩陣。</li>
+		<li>DI: diagonal，只有對角線的矩陣。</li>
+		<li>SY: symmetric，對稱矩陣</li>
+	</ul>
+	<li>最後的幾個字代表要進行的運算，例如：</li>
+	<ul>
+		<li>TRF: 三角化，即 LU 分解。</li>
+		<li>TRS: 解 AX=B，其中 A 是 xyyTRF 計算出的三角矩陣。</li>
+		<li>MM: 矩陣乘積。</li>
+	</ul>
+	
+</ul>
+</p>
+
+<p>
+因為 LAPACK 提供的函式很多，本篇就不一一介紹。
+以下示範 double 類型的 LU 分解的範例，需要使用的函式是「dgetrf_」，參數說明如下：
+<ul>
+	<li>m: A 矩陣的 rows 的個數。</li>
+	<li>n: A 矩陣的 columns 的個數。</li>
+	<li>A: A 矩陣。函式結束時，會將 L 和 U 存在這裡。</li>
+	<li>LDA: 至少要是 m。</li>
+	<li>ipiv: 整數陣列，會把 row 交換的過程存下來，第 i 個 row 會和第 ipiv(i) 個 row 交換。</li>
+	<li>info: 整數，代表計算結果。</li>
+	<ul>
+		<li>0: 成功。</li>
+		<li>&lt;0: 值為 -i 時代表第 i 個參數有非法值。</li>
+		<li>&gt;0: 值為 -i 時代表 U(i,i) 為 0。</li>
+	</ul>	
+</ul><br/>
+完整程式如下：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;time.h&gt;
+#include &lt;f2c.h&gt;
+#include &lt;clapack.h&gt;
+
+void matrixDisplay(double mat[], int m, int n){
+    int i, j;
+    for(i=0;i&lt;m;i++){
+        for(j=0;j&lt;n;j++){
+            printf("%.0f ",mat[i*n+j]);
+        }
+		printf("\n");
+    }
+}
+
+int main()
+{
+    int n, *ipiv;
+    double *A;
+    int i, j, info;
+	
+    /* space allocation */
+    n = 3;
+    A = (double*)malloc(n*n*sizeof(double));
+	ipiv = (int*)malloc(n*sizeof(int));
+
+    /* value generation/initialization */
+    srand(time(NULL));
+    j = n*n;
+    for(i=0; i&lt;j; i++){
+        A[i] = rand()%5+1;
+    }
+	
+	matrixDisplay(A, n, n);
+    dgetrf_(&n, &n, A, &n, ipiv, &info);
+    matrixDisplay(A, n, n);
+	
+    free(A);
+
+    return 0;
+}
+</pre>
+</p>
+
+</blockquote>
+</body></html>

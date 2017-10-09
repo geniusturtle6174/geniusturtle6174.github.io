@@ -1,0 +1,377 @@
+﻿<html>
+<head>
+	<title>線上教材：C 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushCpp.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+第一個程式範例，會在螢幕上印出「Hello World!!」，
+若要執行，可將以下程式碼複製貼上到 Code::Blocks 當中開啟的空白C檔案，並按鍵盤的「F9」。
+</p>
+<pre class="brush: c">
+#include&lt;stdio.h&gt;
+
+int main()
+{
+	printf("Hello World!!\n"); /* 我是註解 */
+	return 0; // 我也是註解
+}
+</pre>
+
+<p>
+「 printf("Hello World!!\n"); 」是本範例中最核心的一行，
+前面的"print"，顧名思義就是印出東西；而"f"代表"format"，
+意即輸出時可以指定較為細節的格式，在往後的內容會慢慢交代。
+括號內為要輸出文字，必需用雙引號包住。
+「\」(反斜線)是跳脫字元，與其後方的字母組合之後，即具有特殊意義(若要輸出反斜線，請使用「\\」)。
+此例中的「\n」代表換行，換行不會自動加入，但可以在任何想要的地方自己加入。
+最後，在程式敘述的結尾記得加上分號，每個程式敘述，結尾都要有分號。
+</p>
+
+<p>
+「#include&lt;stdio.h&gt;」會將函式庫的定義檔案包含進程式碼內，在此範例中，
+由於「在螢幕上印出文字」是常用且重要的功能，所以會由系統提供，
+我們撰寫程式時，只要將其定義檔包含進來即可。
+stdio 的意思則是 Standard Input/Output (標準輸入、輸出)，由於程式中需要印出東西，
+所以會包含 stdio.h 這個檔案
+</p>
+
+<p>
+「int main(){...}」是程式的進入點，意即程式會從這裡開始執行。
+小括號內應擺放傳給程式的參數，目前用不到，所以可先留白。程式的敘述則用大括號包住。
+「int」是函式回傳值的類型，以main來說，就是回傳給作業系統的訊息；此處需要整數，所以用int。
+</p>
+
+<p>
+「 /* ... */」和「//」是程式碼的註解，可用解釋某一段程式碼的用途。
+前者為多行註解，後者為單行註解，註解內的任何文字，都不會被編譯與執行。
+第5, 6兩行前面的空格，則稱為縮排。縮排不影響程式碼的效果，但是可以讓程式碼更容易閱讀。
+通常，會依據程式碼架構的不同層級，給予不同程度的縮排，往後會有更多範例。
+</p>
+
+<p>
+Questions:下列程式碼有哪些語法錯誤？修正這些語法錯誤後會印出什麼內容？
+</p>
+<pre class="brush: c">
+#include&lt;stdio.h&gt;
+
+int main
+{
+	printf(A\nB)
+/*
+	printf(C)
+*/
+	printf(D\nE\n)
+	return 0
+}
+</pre>
+
+<p>
+目前為止，已經能輸出大部分的固定內容，
+而程式中的資料若要能隨著狀況(例如使用者輸入或者運算結果)改變，則需要用變數來儲存。
+變數是記憶體裡面的一塊空間，可以用來存放資料，
+如果程式中需要使用變數，則必須在函式開頭前先進行宣告。
+變數宣告時會指定變數類型與變數名稱，常用的變數類型有下列幾種：
+<ul>
+	<li>char: 字元，佔 1 個 Byte</li>
+	<li>int: 整數，佔 4 個 Byte</li>
+	<li>float: 單精度浮點數(小數)，佔 4 個 Byte</li>
+	<li>double: 倍精度浮點數，佔 8 個 Byte</li>
+</ul>
+</p>
+
+<p>
+而變數命名時，必須遵循下列的命名規則：
+<ul>
+	<li>以底線或英文大小寫字母開頭(底線開頭的變數名稱，通常為編譯器或函式庫使用，故一般不建議如此命名)</li>
+	<li>以底線、英文大小寫、數字組成</li>
+	<li>不可使用保留字(例如：int)與函式名稱(例如：printf)</li>
+</ul>
+</p>
+
+<p>
+Question: 下列哪些變數名稱合法？
+<ul>
+	<li>AbCdE</li>
+	<li>34fgh</li>
+	<li>test!!</li>
+	<li>ab123</li>
+</ul>
+</p>
+
+<p>
+將資料塞進變數當中的方法，是使用「=」(指派運算子)，
+例如若先宣告了「int a;」，則程式敘述「a=2;」的結果，就是讓變數a的值為2。
+如果要讓 printf 可以輸出變數，則需使用轉換指定詞，
+轉換指定詞為百分比符號(%)加上某個字母(或更複雜的格式控制)，例如輸出整數變數則為「%d」。
+轉換指定詞的個數，必須與要輸出的變數個數相同。若要單純輸出百分比符號，則可使用「%%」。
+以下範例會計算兩個整數相加的結果：
+<pre class="brush: c">
+#include&lt;stdio.h&gt;
+
+int main() {  /* 大括號不一定要換行 */
+	int a, b, c;
+
+	a = 1;
+	b = 2;
+	c = a + b;
+	printf("%d + %d = %d\n", a, b, c);
+
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+以下將基本的運算符號稍做整理：
+<ul>
+	<li>「+」、「-」、「*」、「/」：加減乘除</li>
+	<li>「%」：取餘數(模數運算)</li>
+	<li>「()」：括號，必須成對</li>
+	<li>「=」：指派，將運算結果指定給某個變數</li>
+</ul><br/>
+運算符號之間，會遵守優先順序，例如先乘除後加減，以及括號先算等等。
+另外要注意的是，變數一旦被指派了新的值，則舊的值會永遠消失。
+例如先寫了「a=1;」的敘述，而後面又接著「a=2;」，則此時的變數a的值，會由1變成2。
+以下展示幾個範例。
+</p>
+
+<p>
+三個整數取平均：
+<pre class="brush: c">
+#include&lt;stdio.h&gt;
+
+int main()
+{
+	int a=1, b=2, c=3, d;/* 也可以在宣告時指定變數值 */
+	d = (a+b+c)/3;
+	printf("%d, %d, 和 %d 的平均是 %d\n", a, b, c, d);
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+運算優先順序：
+<pre class="brush: c">
+#include&lt;stdio.h&gt;
+
+int main()
+{
+	int a=3, b=2, c=1, d=4, e;
+	e = a+d/b-c; /* 3+4/2-1 */
+	printf("運算結果：%d\n", e);
+	return 0;
+}
+
+</pre>
+</p>
+
+<p>
+Question: 兩行 printf 分別會印出什麼？
+<pre class="brush: c">
+#include&lt;stdio.h&gt;
+
+int main() {
+	int a, b;
+	a = 1;
+	a = a + 1;
+	printf("a=%d\n", a);
+	b = a + 1;
+	printf("a = %d, b = %d\n", a, b);
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+在前面幾個範例中，除法的結果都恰好是整數。
+但若使用整數變數來進行小數除法，則小數點部分會被捨去，如下例：
+<pre class="brush: c">
+#include&lt;stdio.h&gt;
+
+int main()
+{
+	int a, b, c;
+	a = 8/3; /* 2.666....，會變成2 */
+	b = 8/4; /* 2 */
+	c = 8/5; /* 1.6，會變成1 */
+	printf("a = %d, b = %d, c = %d\n", a, b, c);
+	return 0;
+}
+
+</pre>
+</p>
+
+<p>
+此時，必須使用浮點數變數來進行運算與儲存結果。
+由於 double 類型的精確度較高，所以通常會使用 double。如下例：
+<pre class="brush: c">
+#include&lt;stdio.h&gt;
+
+int main()
+{
+	double a, b, c=3.0;
+	a = 8/c; /* 2.666... */
+	b = 8/4; /* 2 */
+	c = 8/5; /* 此行會將原來的c值覆蓋(是覆蓋為1.6嗎？) */
+	printf("a = %f, b = %f, c = %f\n", a, b, c);
+	return 0;
+}
+</pre>
+上例中，變數 c 的值不是 1. 6的原因，
+是當兩個運算元(operand)都是整數型別時，仍會用整數運算完的結果存到浮點變數裡面。
+因此，若要得到具有浮點數的結果，至少需要有一個運算元必須是浮點數型別
+(此時，編譯器會自動的將另外一個變數的型別做轉換)。
+如下例所示的方法，運算後都會得到 1.6：
+<pre class="brush: c">
+#include&lt;stdio.h&gt;
+
+int main()
+{
+	double a = 8, b = 5, c, d;
+	c = 8.0/5; /* or 8/5.0 , or 8.0/5.0 */
+	d = a/5;   /* or 8/b, or a/b */
+	printf("c=%f, d=%f\n", c, d);
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+以下則是用「%」符號求餘數的範例：
+<pre class="brush: c">
+#include&lt;stdio.h&gt;
+
+int main()
+{
+	int a, b, c, d;
+	a = 15 % 4;
+	b = -15 % 4;
+	c = 15 % -4;
+	d = -15 % -4;
+	printf("a = %d, b = %d, c = %d, d = %d\n", a, b, c, d);
+	return 0;
+}
+</pre>
+你可以發現，在 C 語言中，餘數的符號會與被除數相同(C99 開始定義此行為，在此之前視編譯器實作而定)，
+x % y 相當於 x - fix(x/y)*y，其中"fix"代表往 0 的方向取整數。
+若要計算 x - floor(x/y)*y，其中"floor"代表往負的方向取整數，可以使用如下的方法：
+<pre class="brush: c">
+#include&lt;stdio.h&gt;
+
+int main()
+{
+	int a, b, c, d;
+	a = (15 % 4 + 4) % 4;
+	b = (-15 % 4 + 4) % 4;
+	c = (15 % -4 + -4) % -4;
+	d = (-15 % -4 + -4) % -4;
+	printf("a = %d, b = %d, c = %d, d = %d\n", a, b, c, d);
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+關於更詳細的 printf 使用與其格式控制，範例如下：
+<pre class="brush: c">
+#include&lt;stdio.h&gt;
+
+int main()
+{
+	char   a = 'X';
+	int    b = -123;
+	float  c = 123.45;
+	double d = 67.89;
+
+	printf("%c\n", a); /* 使用%c輸出char類型的變數 */
+	printf("%d\n", b); /* 使用%d輸出int類型的變數 */
+	printf("%f\n", c); /* 使用%lf輸出float類型的變數 */
+	printf("%f\n", d); /* 使用%lf輸出double類型的變數 */
+
+	/* 以下為了讓不同格式間的輸出效果更明顯，
+	   因此在轉換指定詞的前後都加上其他不相干的符號 */
+	printf("!!%5d!!\n",123); /* 靠右輸出5位整數，前方空白 */
+	printf("!!%05d!!\n",123);/* 靠右輸出5位整數，前方補0 */
+	printf("!!%-5d!!\n",123);  /* 靠左輸出5位整數 */
+	printf("!!%10.2lf!!\n",12345.678); /* 靠右輸出浮點數，總共10位，小數點部分2位。輸出結果會被四捨五入 */
+
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+若要接收使用者輸入的變數，則可使用scanf函式。
+以下範例會接受使用者輸入的兩個整數(以空白區隔)，並且相加：
+<pre class="brush: c">
+#include&lt;stdio.h&gt;
+
+int main() {
+	int a, b;
+	printf("請輸入兩個整數：");
+	scanf("%d %d", &amp;a, &amp;b);
+	printf("a=%d, b=%d, a+b=%d\n", a, b, a+b);
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+scanf 後面的變數必須加上「&」，其意義為取得變數所在的記憶體位置，才能將輸入值放到變數當中，
+細節會在往後介紹。目前已介紹到的型別，與其對應的指定轉換詞如下列：
+<ul>
+	<li>char: %c</li>
+	<li>int: %d</li>
+	<li>float: %lf</li>
+	<li>double: %lf</li>
+</ul>
+</p>
+
+<p>
+以下是 printf 和 scanf 的一些整理，以及其他常見問題。<br/>
+<ul>
+	<li>
+		關於變數類型與指定轉換詞：
+		<table>
+		<tr class="slide"><td class="slide">&nbsp;</td><td class="slide">printf</td><td class="slide">scanf</td></tr>
+		<tr class="slide"><td class="slide">char</td><td class="slide">%c</td><td class="slide">%c</td></tr>
+		<tr class="slide"><td class="slide">int</td><td class="slide">%d</td><td class="slide">%d</td></tr>
+		<tr class="slide"><td class="slide">float</td><td class="slide">%f</td><td class="slide">%f</td></tr>
+		<tr class="slide"><td class="slide">double</td><td class="slide">%f</td><td class="slide">%lf</td></tr>
+		</table>
+	</li>
+	<br/>
+	<li>scanf 的格式化字串，是在指定輸入的格式。以下是比較<b>奇異</b>的用法
+		<ul>
+			<li>後面多一個換行「scanf("%d\n", &amp;a);」：代表期待吃到一個換行，而 scanf 會把換行、空白等跳過，
+				所以當後面沒有其他輸入時，會一直在等待換行。</li>
+			<li>後面多一個空白「scanf("%d ", &amp;a);」：同上。</li>
+			<li>指定輸入格式「scanf("%3d\n", &amp;a);」：這樣只會吃到前三位，
+				例如輸入 12345 時，只會讀取到 123，45 會等著被別的指定轉換詞來處理。</li>
+			<li>指定輸入格式「scanf("%.3lf\n", &amp;b);」：錯誤用法，scanf 只能指定總寬度，無法指定精確度。</li>
+		</ul>
+	</li>
+	<br/>
+	<li>書寫數學式子時，習慣把乘號省略，但是在程式當中不能省略，
+		例如「c = 2ab;」、「a = (x+3)(7x+8);」都會造成編譯錯誤。</li>
+	<br/>
+</ul>
+</p>
+
+</blockquote>
+</body></html>

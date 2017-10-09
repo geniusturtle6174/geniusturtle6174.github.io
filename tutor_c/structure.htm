@@ -1,0 +1,373 @@
+﻿<html>
+<head>
+	<title>線上教材：C 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushCpp.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+利用結構，可以結合一些彼此相關的變數，並定義成新的變數類型。
+以下是一個簡單的範例：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+struct Human{
+	char name[100];
+	int age;
+};
+
+int main()
+{
+	struct Human A;
+
+	strcpy(A.name, "John");
+	A.age = 20;
+
+	printf("A's name: %s\n", A.name);
+	printf("A's age : %d\n", A.age);
+	return 0;
+}
+</pre>
+上述範例中，「Human」稱為結構標籤，即為結構定義的名稱。大括號包住的變數，稱為結構的成員。
+同一個結構定義內，成員的名稱不能一樣，但是不同的結構定義之間，則名稱可以相同，不會衝突。
+成員可以是基本的資料型別，也可以是其它的結構變數。<br/><br/>
+要在宣告時同時給結構指定初始值，則需用一個大括號包住，裡面依照宣告成員的順序放入初始值，用逗號隔開。<br/><br/>
+「.」則是用於存取結構的成員。
+</p>
+
+<p>
+能對結構進行的運算，只有：
+<ul>
+	<li>指派(「=」)</li>
+	<li>取得所在的記憶體位置(「&」)</li>
+	<li>存取成員(「.」)</li>
+	<li>用sizeof計算所佔的大小</li>
+</ul>
+<br/>
+結構無法用「==」或「!=」之類的運算子來進行比較。以下示範指派運算：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+struct Human{
+	char name[100];
+	int age;
+};
+
+int main()
+{
+	struct Human A;
+	struct Human B;
+
+	strcpy(A.name, "John");
+	A.age = 20;
+
+	B = A;
+
+	strcpy(A.name,"Mary");
+	A.age = 18;
+
+	printf("A's name: %s\n", A.name);
+	printf("A's age : %d\n", A.age);
+
+	printf("B's name: %s\n", B.name);
+	printf("B's age : %d\n", B.age);
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+結構變數如同一般變數，將它傳進函式當中並做改變時，不會影響呼叫端的值：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+struct Human{
+	char name[100];
+	int age;
+};
+
+void test(struct Human A){
+	strcpy(A.name,"Mary");
+	A.age = 18;
+	printf("(in test) A's name: %s\n", A.name);
+	printf("(in test) A's age : %d\n\n", A.age);
+}
+
+int main()
+{
+	struct Human A;
+
+	strcpy(A.name, "John");
+	A.age = 20;
+
+	printf("(in main) A's name: %s\n", A.name);
+	printf("(in main) A's age : %d\n\n", A.age);
+
+	test(A);
+
+	printf("(in main) A's name: %s\n", A.name);
+	printf("(in main) A's age : %d\n\n", A.age);
+
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+但是如果將結構組合成陣列，則值會被改變：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+struct Human{
+	char name[100];
+	int age;
+};
+
+void test(struct Human A[]){
+	strcpy(A[0].name,"Tom");
+	A[0].age = 18;
+
+	printf("(in test) A[0]'s name: %s\n", A[0].name);
+	printf("(in test) A[0]'s age : %d\n\n", A[0].age);
+}
+
+int main()
+{
+	struct Human people[5];
+
+	strcpy(people[0].name,"Mary");
+	people[0].age = 15;
+
+	printf("(in main) people[0]'s name: %s\n", people[0].name);
+	printf("(in main) people[0]'s age : %d\n\n", people[0].age);
+
+	test(people);
+
+	printf("(in main) people[0]'s name: %s\n", people[0].name);
+	printf("(in main) people[0]'s age : %d\n\n", people[0].age);
+
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+前面提過，可以利用「.」來取得結構成員。但如果是指向結構的指標，要取其成員時，必須使用「-&gt;」：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+struct Human{
+	char name[100];
+	int age;
+};
+
+int main()
+{
+	struct Human A, *B;
+
+	strcpy(A.name, "John");
+	A.age = 20;
+
+	B = &A;
+
+	printf("A's name: %s\n", A.name);
+	printf("A's age : %d\n", A.age);
+	printf("B's name: %s\n", B-&gt;name);
+	printf("B's age : %d\n\n", B-&gt;age);
+
+	strcpy(B-&gt;name,"Mary");
+	B-&gt;age = 19;
+
+	printf("A's name: %s\n", A.name);
+	printf("A's age : %d\n", A.age);
+	printf("B's name: %s\n", B-&gt;name);
+	printf("B's age : %d\n", B-&gt;age);
+	
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+一個結構不能包含它自己，但是可以包含指向自己類型的指標。
+如果加上動態記憶體配置，則我們可以把一堆結構串連起來，稱為鏈結串列(linked list)。
+「malloc」函式可以幫你取得一塊記憶體空間，傳入的參數是空間大小(以Bytes為單位)，傳出的參數是指向那塊空間的指標。
+程式結束之前，要將空間歸還給系統，這時候必須利用「free」函式，把指向要歸還的空間指標傳進去，就可以將空間釋放出來。
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+struct Human{
+	int value;
+	struct Human *hPtr;
+};
+
+int main()
+{
+	struct Human *startPtr, *currPtr;
+	int i = 1;
+
+	/* set initial value */
+	startPtr = NULL;
+	currPtr = NULL;
+
+	 for ( i = 0 ; i &lt; 4 ; i ++ ){
+		/* create space */
+		if ( startPtr == NULL ){
+			startPtr = (struct Human *) malloc( sizeof( struct Human ) );
+			currPtr = startPtr ;
+		}
+		else {
+			currPtr-&gt;hPtr = (struct Human *) malloc( sizeof( struct Human ) );
+			currPtr = currPtr-&gt;hPtr;
+		}
+		currPtr -&gt; value = i;
+		currPtr -&gt; hPtr = NULL;
+	}
+
+	/* print out */
+	currPtr = startPtr;
+	while(currPtr != NULL){
+		printf("%d\n", currPtr-&gt;value );
+		currPtr = currPtr-&gt;hPtr;
+	}
+
+	/* free */
+	currPtr = startPtr;
+	while(currPtr != NULL){
+		currPtr = currPtr -&gt; hPtr;
+		free(startPtr);
+		startPtr = currPtr ;
+	}
+
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+如果在結構中，包含了兩個以上的，可以指向自己類型的指標，則可以串出更多花樣。
+例如，一個結構有指標指向另外兩個結構時，可以串成一棵「二元樹」。
+樹很適合用遞迴來描述，最上面的節點稱為「根」，
+指向的左邊也是一顆小樹，稱為「左子樹」，指向右邊的稱為「右子樹」，
+最末端沒有指向其它節點的節點，稱為「葉」。
+樹狀結構的應用非常多，像是「二元搜尋樹」就可以把陣列轉換成樹，
+其中遵守的原則是，左子樹的所有節點都比根小，右子樹的所有節點都比根大。
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+struct Node{
+	int value;
+	struct Node *leftPtr;
+	struct Node *rightPtr;
+};
+
+int treeSearch(struct Node *rootPtr, int key){
+	while(rootPtr!=NULL){
+		if( key &gt; rootPtr-&gt;value ){
+			rootPtr = rootPtr-&gt;rightPtr;
+		}
+		else if( key == rootPtr-&gt;value ){
+			return 1;
+		}
+		else if( key &lt; rootPtr-&gt;value ){
+			rootPtr = rootPtr-&gt;leftPtr;
+		}
+	}
+	return 0;
+}
+
+void freeTree(struct Node *ptr){
+	if(ptr!=NULL){
+		freeTree( ptr-&gt;leftPtr );
+		freeTree( ptr-&gt;rightPtr );
+		free(ptr);
+	}
+}
+
+int main()
+{
+	int a[] = {7, 9, 4, 3, 6, 13, 8, 17, 5, 12}; /* size: 10 */
+	int i, key;
+	struct Node *rootPtr, *currPtr, *nextPtr;
+
+	/* set initial value */
+	rootPtr = NULL;
+	currPtr = NULL;
+	nextPtr = NULL;
+
+	/* create space */
+	for ( i = 0 ; i &lt; 10 ; i ++ ){
+		key = a[i];
+		if ( rootPtr == NULL ){
+			rootPtr = (struct Node *) malloc( sizeof( struct Node ) );
+			currPtr = rootPtr;
+			rootPtr-&gt;value = key;
+			rootPtr-&gt;leftPtr  = NULL; /* ATTENTION!! */
+			rootPtr-&gt;rightPtr = NULL; /* ATTENTION!! */
+		}
+		else {
+			currPtr = rootPtr;
+			nextPtr = currPtr;
+			while(nextPtr!=NULL){
+				currPtr = nextPtr;
+				if( key &gt; currPtr-&gt;value ){
+					nextPtr = currPtr -&gt; rightPtr;
+					if(nextPtr==NULL){
+						nextPtr = (struct Node *) malloc( sizeof( struct Node ) );
+						nextPtr-&gt;value = key;
+						nextPtr-&gt;leftPtr  = NULL; /* ATTENTION!! */
+						nextPtr-&gt;rightPtr = NULL; /* ATTENTION!! */
+						currPtr-&gt;rightPtr = nextPtr;
+						break;
+					}
+				}
+				else {
+					nextPtr = currPtr -&gt; leftPtr;
+					if(nextPtr==NULL){
+						nextPtr = (struct Node *) malloc( sizeof( struct Node ) );
+						nextPtr-&gt;value = key;
+						nextPtr-&gt;leftPtr  = NULL; /* ATTENTION!! */
+						nextPtr-&gt;rightPtr = NULL; /* ATTENTION!! */
+						currPtr-&gt;leftPtr = nextPtr;
+						break;
+					}
+				}
+			}
+		}
+	}/* end create space */
+
+
+	/* search */
+	printf("Is %d in the tree? Ans: %d\n", 10, treeSearch(rootPtr, 10) );
+	printf("Is %d in the tree? Ans: %d\n", 17, treeSearch(rootPtr, 17) );
+
+	/* free */
+	freeTree(rootPtr);
+
+	return 0;
+}
+</pre>
+</p>
+
+</blockquote>
+</body></html>

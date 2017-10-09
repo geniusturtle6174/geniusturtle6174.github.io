@@ -1,0 +1,92 @@
+﻿<html>
+<head>
+	<title>線上教材：C 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushCpp.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+產生亂數最基本的方法，是使用 stdlib.h 當中的 rand 函式，
+該函式會產生一個 0 到 RAND_MAX 之間的整數(RAND_MAX 的值，定義在 stdlib.h 當中)，
+以下範例會產生 10 個亂數，並且顯示出來：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main ()
+{
+	int i;
+	for(i=1;i&lt;=10;i++){
+		printf("%d ", rand());
+	}
+	printf("\n");
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+在不同的電腦上，可能會得到不同的執行結果。但若是執行了兩次以上，你會發現印出來的值並沒有改變，
+這是因為 rand 函式只能產生虛擬亂數，儘管重複呼叫時，看起來會出現隨機的數列，
+但是當程式重新執行時，會發現數列一模一樣。
+這時，我們需要一個亂數種子，讓每次的順序盡可能不同。
+如果種子值相同的話，亂數順序仍然會相同，所以通常會使用電腦目前的時間來做為種子。
+修改後的範例如下：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;time.h&gt;
+
+int main ()
+{
+	int i;
+
+	srand( time(NULL) );
+	for(i=1;i&lt;=10;i++){
+		printf("%d ",rand());
+	}
+	printf("\n");
+	return 0;
+}
+</pre>
+我們用 time.h 中的 time 函式來取得系統時間。
+呼叫「time(NULL);」時，會取得 1970/01/01 00:00 到目前為止的秒數，丟給 srand 函式做為種子的設定。
+</p>
+
+<p>
+如果希望亂數產生在特定範圍內，則可使用餘數、加減等方法，對其進行平移。
+將範例再次修改，使其能模擬丟骰子十次：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;time.h&gt;
+
+int main ()
+{
+	int i;
+
+	srand( time(NULL) );
+	for(i=1;i&lt;=10;i++){
+		printf("%d ", 1+rand()%6 );
+	}
+	printf("\n");
+	return 0;
+}
+</pre>
+</p>
+
+</blockquote>
+</body></html>

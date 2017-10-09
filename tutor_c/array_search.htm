@@ -1,0 +1,114 @@
+﻿<html>
+<head>
+	<title>線上教材：C 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushCpp.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+如果需要知道陣列當中，是否存在某個特定的值，則可使用搜尋。
+最簡單的搜尋方法，是線性搜尋(一個一個找)：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+#define SIZE 100
+
+int linearSearch(int a[], int size, int key){
+	int i;
+
+	for(i=0;i&lt;size;i++){
+		if(a[i]==key){
+			return i;
+		}
+	}
+	return -1;
+}
+
+int main()
+{
+	int i, position, key = 37;
+	int a[SIZE] = {0};
+
+	/* 產生數字 */
+	for(i=0;i&lt;SIZE;i++){
+		a[ i ] = i * 2;
+	}
+
+	position = linearSearch(a, SIZE, key);
+
+	if(position&gt;=0){
+		printf("Found %d in a[%d]\n", key, position);
+	}
+	else {
+		printf("Not found\n");
+	}
+
+	return 0;
+}
+</pre>
+</p>
+
+<p>
+如果陣列已經被排序過，則可使用二元搜尋法：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+#define SIZE 100
+
+int binarySearch(int a[], int size, int key){
+	int low = 0, center, high = size - 1;
+
+	while(low&lt;=high){
+		center = (low+high)/2;
+		if(a[center]==key){
+			return center;
+		}
+		else if(key&lt;a[center]){
+			high = center - 1;
+		}
+		else {
+			low = center + 1;
+		}
+	}
+	return -1;
+}
+
+int main()
+{
+	int i, position, key = 37;
+	int a[SIZE] = {0};
+
+	/* 產生數字 */
+	for(i=0;i&lt;SIZE;i++){
+		a[ i ] = i * 2;
+	}
+
+	position = binarySearch(a, SIZE, key);
+
+	if(position&gt;=0){
+		printf("Found %d in a[%d]\n", key, position);
+	}
+	else {
+		printf("Not found\n");
+	}
+
+	return 0;
+}
+</pre>
+</p>
+
+</blockquote>
+</body></html>

@@ -1,0 +1,104 @@
+﻿<html>
+<head>
+	<title>線上教材：C 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushCpp.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+如果要對陣列的元素們進行排序，最簡單的是氣泡排序法(bubble sort)。
+以由小排到大來說，最小的值會像氣泡一樣，慢慢的往上浮。
+實例可以參考<a href="https://www.youtube.com/watch?feature=player_detailpage&v=lyZQPjUT5B4#t=53">這個影片</a>，程式則如下：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+#define SIZE 10
+
+void bubbleSort(int a[], int size){
+	int i, j, temp;
+
+	for(i=size-1;i&gt;=0;i--){
+		for(j=0;j&lt;i;j++){
+			if(a[j]&gt;a[j+1]){ /* 如果前面大於後面，則交換 */
+				temp = a[j];
+				a[j] = a[j+1];
+				a[j+1] = temp;
+			}
+		}
+	}
+}
+
+int main()
+{
+	int i;
+	int a[SIZE] = {3,0,1,8,7,2,5,4,6,9};
+
+	bubbleSort(a, SIZE);
+
+	for(i=0;i&lt;SIZE;i++){
+		printf("%d ",a[i]);
+	}
+	printf("\n");
+	return 0;
+}
+</pre>
+第一回合中，i=9，j 會從 0 跑到 8，所以可以讓最大的元素像消波塊一樣下沉。
+依此類推，每一回合可以讓該回合最大的元素下沉，則跑完n次以後，陣列就完成排序。
+</p>
+
+<p>
+比氣泡排序法稍微有效率的，是<a href="https://www.youtube.com/watch?v=ROalU379l3U">插入排序法(insertion sort)</a>。
+此方法的原理是，假設前 n 個元素已經排序好，再將第 n+1 個元素插入到正確的位置。
+雖然一樣需要兩層迴圈，但是因為記憶體存取的方式不同，所以執行效能較高：
+<pre class="brush: c">
+#include &lt;stdio.h&gt;
+
+#define SIZE 10
+
+void insertionSort(int a[], int size){
+    int i, j, temp;
+
+    for(i=1;i&lt;size;i++){
+        temp = a[i];
+        j = i - 1;
+        while(j&gt;=0 && a[j]&gt;temp){
+            a[j+1] = a[j];
+            j--;
+        }
+        a[j+1] = temp;
+    }
+}
+
+int main()
+{
+	int i;
+	int a[SIZE] = {3,0,1,8,7,2,5,4,6,9};
+
+	insertionSort(a, SIZE);
+
+	for(i=0;i&lt;SIZE;i++){
+		printf("%d ",a[i]);
+	}
+	printf("\n");
+	return 0;
+}
+</pre>
+若對其他排序方法有興趣，
+可以參考 <a href="https://www.youtube.com/watch?v=kPRA0W1kECg">15 Sorting Algorithms in 6 Minutes</a> 這個影片。
+</p>
+
+</blockquote>
+</body></html>
