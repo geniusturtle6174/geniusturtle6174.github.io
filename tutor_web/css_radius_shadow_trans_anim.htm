@@ -1,0 +1,245 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushXml.js"></script>
+	<script type="text/javascript" src="shBrushCss.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	﻿</head>
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+我們可以利用「border-radius」屬性，來定義圓角。
+而跟邊框設計相似的是，也可以個別調整左上、左下、右上、右下的設定：
+<ul>
+	<li>border-top-left-radius: 左上圓角設定</li>
+	<li>border-bottom-left-radius: 左下圓角設定</li>
+	<li>border-top-right-radius: 右上圓角設定</li>
+	<li>border-bottom-right-radius: 右下圓角設定</li>
+</ul>
+<br/>
+也有一些瀏覽器是使用自己的特有屬性來定義圓角，
+例如 Chrome, Safari (Webkit 引擎) 使用「-webkit-border-radius」，
+Firefox (Mozilla Gecko 引擎) 使用「-moz-border-radius」。
+不過，由於 Chrome 和 Firefox 已支援一些標準屬性，
+且為了範例篇幅考量，所以範例中主要將以標準屬性或「-webkit-」屬性來展示。
+若使用其他瀏覽器或另有需要，可自行查詢或測試。
+<br/><br/>
+以下是一個同時把四邊都變成圓角的範例。
+其中，由於圓角不允許重疊，所以若將半徑設的太大，會被瀏覽器解析成圓形：
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		#test1{width:80%; height:300px; border: 10px solid;			   border-radius: 15px;}		#test2{width:100px; height:100px; border: 10px solid;			   border-radius: 123px;}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;div id=&quot;test1&quot;&gt;&lt;/div&gt;&lt;br/&gt;&lt;div id=&quot;test2&quot;&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+「box-shadow」屬性，可以設計出陰影，它包含了以下六個參數：
+<ol>
+	<li>陰影類型：預設是外陰影效果，設定為「inset」則為內陰影</li>
+	<li>水平位移</li>
+	<li>垂直位移</li>
+	<li>模糊半徑</li>
+	<li>大小</li>
+	<li>顏色</li>
+</ol>
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		img{vertical-align:top}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;p&gt;實線陰影效果：&lt;img src=&quot;../pics/06.gif&quot; style=&quot;box-shadow: 5px 5px;&quot;&gt;&lt;/p&gt;&lt;p&gt;光暈陰影效果：&lt;img src=&quot;../pics/06.gif&quot; style=&quot;box-shadow: 5px 5px 10px;&quot;&gt;&lt;/p&gt;&lt;p&gt;陰影大小調整：&lt;img src=&quot;../pics/06.gif&quot; style=&quot;box-shadow: 5px 5px 10px 15px;&quot;&gt;&lt;/p&gt;&lt;p&gt;改變陰影顏色：&lt;img src=&quot;../pics/06.gif&quot; style=&quot;box-shadow: 5px 5px 10px #ff9999;&quot;&gt;&lt;/p&gt;&lt;p&gt;設置多組陰影(以逗點區隔，先寫的在最頂層)：&lt;img src=&quot;../pics/06.gif&quot;	 style=&quot;box-shadow: 0px 0px 5px  5px #ff9999,						0px 0px 5px 10px #99ff99,						0px 0px 5px 15px #9999ff;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+CSS 在 2D 上的轉變，是透過「transform」屬性來進行。
+不過目前(2013/02)，各家瀏覽器仍是以特有屬性的方式來支援。
+於值的設定方面，是透過一些轉變函數來進行，例如旋轉、平移、縮放等等。
+請參考以下範例：
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		img{vertical-align:top;border: 1px solid;}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;p&gt;原圖：&lt;img src=&quot;../pics/06.gif&quot;&gt;&lt;/p&gt;&lt;p&gt;translate (平移)：&lt;img src=&quot;../pics/06.gif&quot; style=&quot;	transform:translate(-25px,-25px);	-webkit-transform:translate(-25px,-25px);	-ms-transform:translate(-25px,-25px);	-o-transform:translate(-25px,-25px);	-moz-transform:translate(-25px,-25px);&quot;&gt;&lt;/p&gt;&lt;p&gt;rotate (旋轉)：&lt;img src=&quot;../pics/alan.jpg&quot; style=&quot;	transform:rotate(30deg);	-webkit-transform:rotate(30deg);&quot;&gt;&lt;/p&gt;&lt;p&gt;scale (縮放)：&lt;img src=&quot;../pics/06.gif&quot; style=&quot;	transform:scale(3,0.5);	-webkit-transform:scale(3,0.5);&quot;&gt;&lt;/p&gt;&lt;p&gt;skewX (扭曲X方向)：&lt;img src=&quot;../pics/alan.jpg&quot; style=&quot;	transform:skewX(30deg);	-webkit-transform:skewX(30deg);&quot;&gt;&lt;/p&gt;&lt;p&gt;skewY (扭曲Y方向)：&lt;img src=&quot;../pics/alan.jpg&quot; style=&quot;	transform:skewY(30deg);	-webkit-transform:skewY(30deg);&quot;&gt;&lt;/p&gt;&lt;p&gt;skew (兩個方向都扭曲)：&lt;img src=&quot;../pics/alan.jpg&quot; style=&quot;	transform:skew(30deg,20deg);	-webkit-transform:skew(30deg,20deg);&quot;&gt;&lt;/p&gt;&lt;p&gt;matrix (矩陣，結合以上轉變)：&lt;img src=&quot;../pics/alan.jpg&quot; style=&quot;	transform:matrix(0.5,0.866,-0.866,0.5,50,0);	-webkit-transform:matrix(0.5,0.866,-0.866,0.5,50,0);&quot;&gt;&lt;/p&gt;&lt;p&gt;也可以用原本的轉變函式結合而來：&lt;img src=&quot;../pics/alan.jpg&quot; style=&quot;	transform:translate(50px,0px) rotate(60deg);	-webkit-transform:translate(50px,0px) rotate(60deg);&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+轉變的原點，預設為物件的中心。
+若要改變，可透過「transform-origin」來進行，若有需要，請自行尋找細節。
+矩陣的六個值的對應則是如下：<br/><br/>
+<div>
+	<div style="float:left;padding-top:1.5em;"> 
+		matrix(1, 2, 3, 4, 5, 6) =
+	</div>
+	<div style="float:left;font-size:3em;">[</div>
+		<div style="float:left;font-size:1em;">
+			1 3 5<br>
+			2 4 6<br>
+			0 0 1</div>
+	<div style="float:left;font-size:3em;">]</div>
+</div>
+</p>
+
+<p style="clear:both">&nbsp;</p>
+
+<p>
+如果使用「transition」，則可定義動態的轉換。有以下幾個細節可以設定：
+<ul>
+	<li>transition-property: 要被轉換的屬性</li>
+	<li>transition-duration: 轉換的時間</li>
+	<li>transition-delay: 延遲多久後開始</li>
+	<li>transition-timimg-function: 轉換的效果</li>
+</ul><br/>
+其中 transition-timimg-function 的效果，包含以下幾種：
+<ul>
+	<li>linear: 開始到結束都等速</li>
+	<li>ease: 頭尾慢，中間快</li>
+	<li>ease-in: 開頭慢</li>
+	<li>ease-out: 結尾慢</li>
+	<li>ease-in-out: 頭尾慢</li>
+	<li>cubic-bezier(n,n,n,n): 自定義變化</li>
+</ul>
+</p>
+
+<p>
+例如以下範例，會轉換物件的背景色：
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		div{width:80%; height:100px; background-color:#000;			-webkit-transition: background-color 1s linear;			-moz-transition: background-color 1s linear;			-o-transition: background-color 1s linear;}		div:hover{background-color:#fff;}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+改變大小，同時展示各種 transition-timimg-function 的效果：
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		div{width:100px; height:100px; background-color:#333;}		div:hover{width:600px;}		#d1{-webkit-transition: width 2s linear;}		#d2{-webkit-transition: width 2s ease;}		#d3{-webkit-transition: width 2s ease-in;}		#d4{-webkit-transition: width 2s ease-out;}		#d5{-webkit-transition: width 2s ease-in-out;}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;div id=&quot;d1&quot;&gt;&lt;/div&gt;&lt;div id=&quot;d2&quot;&gt;&lt;/div&gt;&lt;div id=&quot;d3&quot;&gt;&lt;/div&gt;&lt;div id=&quot;d4&quot;&gt;&lt;/div&gt;&lt;div id=&quot;d5&quot;&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+也可以用於改變縮放、空白等屬性，以製造出有趣的效果
+(如果再加上倒影等設計，就可以更像 Mac 了)：
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		#bar{position:fixed; bottom:10px; width:100%; text-align:center}		img{margin: 0px;			-webkit-transition: 0.1s linear;			-webkit-transition-property: -webkit-transform margin;}		img:hover{			margin: 6px;			-webkit-transform: scale(1.5);		}			&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;div id=&quot;bar&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+「animation」顧名思義，則是用來定義動畫。有下列參數可以調整：
+<ul>
+	<li>animation-name: 動畫名稱</li>
+	<li>animation-duration: 播放時間長度</li>
+	<li>animation-timimg-function: 播放方式，與 transition-timimg-function 相同</li>
+	<li>animation-delay: 延遲多久後開始</li>
+	<li>animation-iteration-count: 播放次數，若設為 infinite 則代表持續撥放</li>
+	<li>animation-direction: 播放方向，若設為 alternate 則代表撥放方向一正一反</li>
+</ul><br/>
+接著，需要透過「@keyframs」，設定播放中的關鍵片段。語法如下：
+<pre class="brush: css">@keyframes 動畫名稱{播放進度一{CSS設定} 播放進度二{CSS設定} ...}</pre><br />
+其中，撥放進度可以是「0%」到「100%」中間的數字，也可以是「from」或「to」。
+</p>
+
+<p>
+透過物件的"賽跑"，來觀察不同 timing function 的效果：
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		div{			width:20px; height:20px; background-color:#333; border-radius:100px;			position: relative;			-webkit-animation: goRun 2s infinite alternate;		}		#d1{-webkit-animation-timing-function: linear;}		#d2{-webkit-animation-timing-function: ease;}		#d3{-webkit-animation-timing-function: ease-in;}		#d4{-webkit-animation-timing-function: ease-out;}		#d5{-webkit-animation-timing-function: ease-in-out;}		@-webkit-keyframes goRun{			from{left: 0px;}			to{left: 500px;}		}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;div id=&quot;d1&quot;&gt;&lt;/div&gt;&lt;div id=&quot;d2&quot;&gt;&lt;/div&gt;&lt;div id=&quot;d3&quot;&gt;&lt;/div&gt;&lt;div id=&quot;d4&quot;&gt;&lt;/div&gt;&lt;div id=&quot;d5&quot;&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+更可以組合ㄧ些屬性的變動，製造更複雜的效果：
+<pre class="brush: html">&lt;style&gt;
+.loading-spinner {
+	width: 70px;
+	height: 70px;
+	top: 50%;
+	left: 50%;
+	position: absolute;
+	margin: -35px 0 0 -35px;
+	border-radius: 100%;
+	background-color: black;
+}
+
+.main-loader {
+	position: relative;
+	width: 40px;
+	height: 40px;
+	margin: 16px 0 0 15px;
+}
+
+.main-loader .wBall {
+	position: absolute;
+	width: 38px;
+	height: 38px;
+	opacity: 0;
+	-webkit-animation: orbit 5.5s infinite;
+}
+
+.main-loader .wBall .wInnerBall {
+	background-color: rgb(204, 204, 204);
+	width: 5px;
+	height: 5px;
+	border-radius: 100%;
+}
+
+.main-loader #wBall_1 {
+	-webkit-animation-delay: 0s;
+}
+
+.main-loader #wBall_2 {
+	-webkit-animation-delay: 0.24s;
+}
+
+.main-loader #wBall_3 {
+	-webkit-animation-delay: 0.48s;
+}
+
+.main-loader #wBall_4 {
+	-webkit-animation-delay: 0.72s;
+}
+
+.main-loader #wBall_5 {
+	-webkit-animation-delay: 0.96s;
+}
+
+@-webkit-keyframes orbit{ 
+	  0%{-webkit-transform:rotate(225deg); opacity:1;
+		 -webkit-animation-timing-function:ease-out;}
+	  7%{-webkit-transform:rotate(345deg);
+		 -webkit-animation-timing-function:linear;}
+	 30%{-webkit-transform:rotate(455deg);
+		 -webkit-animation-timing-function:ease-in-out;}
+	 39%{-webkit-transform:rotate(690deg);
+		 -webkit-animation-timing-function:linear; }
+	 70%{-webkit-transform:rotate(815deg); opacity:1;
+		 -webkit-animation-timing-function:ease-out;}
+	 75%{-webkit-transform:rotate(945deg);
+		 -webkit-animation-timing-function: ease-out;}
+	 76%{-webkit-transform:rotate(945deg); opacity:0;}
+	100%{-webkit-transform:rotate(945deg); opacity:0;} 
+}
+&lt;/style&gt;
+
+&lt;div class=&quot;loading-spinner&quot; style=&quot;&quot;&gt;
+  &lt;div class=&quot;main-loader&quot;&gt;
+    &lt;div class=&quot;wBall&quot; id=&quot;wBall_1&quot;&gt;
+      &lt;div class=&quot;wInnerBall&quot;&gt; &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;wBall&quot; id=&quot;wBall_2&quot;&gt;
+      &lt;div class=&quot;wInnerBall&quot;&gt; &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;wBall&quot; id=&quot;wBall_3&quot;&gt;
+      &lt;div class=&quot;wInnerBall&quot;&gt; &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;wBall&quot; id=&quot;wBall_4&quot;&gt;
+      &lt;div class=&quot;wInnerBall&quot;&gt; &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;wBall&quot; id=&quot;wBall_5&quot;&gt;
+      &lt;div class=&quot;wInnerBall&quot;&gt; &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</pre>
+</p>
+
+<p>
+透過這些效果，還可以製造出有趣的動畫。以下是一些網路上的範例或近端備份：
+<ul>
+	<li>Doraemon:
+		<a href="http://css3.zxq.net/doraemon/doraemon_css3.html">原始連結</a>、
+		<a href="examples/css_doraemon.htm">近端備份</a>
+	</li>
+	<li>Konata:
+		<a href="http://rei.idv.tw/sample/konata.html">原始連結</a>
+	</li>
+</ul>
+</p>
+
+</blockquote>
+</body></html>

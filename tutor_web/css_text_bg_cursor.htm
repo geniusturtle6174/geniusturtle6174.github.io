@@ -1,0 +1,103 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushXml.js"></script>
+	<script type="text/javascript" src="shBrushCss.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	﻿</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+font 標籤只能有七種字型大小，但是 CSS 可以很自由的調整字型大小。
+另外，在指定色彩時，如果三種顏色的色碼，其兩個位數都個別相同，則可以個別簡寫為一個：
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		font{font-size:123pt;color:#cc33cc}		body{font-size:45pt;color:#c3c;}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;font&gt;在font標籤內&lt;/font&gt;&lt;br/&gt;在font標籤外&lt;/body&gt;&lt;/html&gt;</pre>
+其中，pt 這個單位，在顯示器的預設設定下會等於 1/72 英吋。若要使用像素來當單位，則是 px。
+</p>
+
+<p>
+如果要同時應用於多種元素，則可使用逗點分隔；
+若是要適用於被某元素包住的元素，則使用空白分隔：
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		p, h1{color:#7777ff}		p font{color:#ff7777}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ffffcc&quot;&gt;&lt;h1&gt;第一級標題&lt;/h1&gt;&lt;p&gt;第一個段落&lt;/p&gt;&lt;p&gt;第&lt;font&gt;二&lt;/font&gt;個段落&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+可以利用「id」或「class」屬性，幫標籤加上不同的 id 或類別。
+此時，可用以下方法，讓樣式適用於指定的 id 或類別：
+<ul>
+	<li>#ID名：適用於指定ID</li>
+	<li>.類別名：適用於指定類別</li>
+	<li>元素名#ID名：適用於ID指定之元素</li>
+	<li>元素名.類別名：適用於類別指定之元素</li>
+</ul>
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		p{color:red} /* 適用於所有段落，不過若指定類別或 ID 則以其為優先 */		.myClass{color:green} /* 適用於所有 class=&quot;myClass&quot; 者 */		table.myClass{font-size:123px;} /* 只適用於表格中有 class=&quot;myClass&quot; 者 */		#myId{color:blue} /* 適用於 id=&quot;myId&quot; 者 */	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;p&gt;一般的段落&lt;/p&gt;&lt;p class=&quot;myClass&quot;&gt;指定class的段落&lt;/p&gt;&lt;p id=&quot;myId&quot;&gt;指定ID的段落&lt;/p&gt;&lt;table class=&quot;myClass&quot;&gt;&lt;tr&gt;&lt;td&gt;測試&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+「:link」、「:visited」、「:hover」、「:active」這四個選擇器，可以用來改變超連結的樣式。
+這四個選擇器在使用時，「:link」和「:visited」必須在最前面，接著依序才是「:hover」和「:active」。
+範例如下：
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		a:link{color:blue}		a:visited{color:purple}		a:hover{color:red}		a:active{color:green}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;a href=&quot;http://www.nthu.edu.tw&quot;&gt;清華大學首頁&lt;/a&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+其中的「:hover」和「:active」則也可以用在超連結以外的地方。
+另外也有「:focus」，可以設定例如像輸入框等物件被聚焦時的樣式。
+例如：
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		li,input{font-size:123px;}		li:hover{color:red}		li:active{color:blue}		input:focus{color:green}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;ul&gt;	&lt;li&gt;嚞&lt;/li&gt;	&lt;li&gt;龘&lt;/li&gt;	&lt;li&gt;犇&lt;/li&gt;	&lt;/ul&gt;&lt;input type=&quot;text&quot; value=&quot;龜龜龜龜龜&quot;&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+如果需要首字放大、首行縮排等效果，可以參考以下範例：
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		#test:first-letter{font-size:25pt;float:left}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;p id=&quot;test&quot;&gt;先帝慮漢、賊不兩立，王業不偏安，故托臣以討賊也。以先帝之明，量臣之才，故知臣伐賊，才弱敵強也。然不伐賊，王業亦亡。惟坐而待亡，孰與伐之？是故托臣而弗疑也。臣受命之日，寢不安席，食不甘味；思惟北征，宜先入南：故五月渡瀘，深入不毛，並日而食。──臣非不自惜也：顧王業不可偏安於蜀都，故冒危難以奉先帝之遺意。而議者謂為非計。今賊適疲於西，又務於東，兵法“乘勞”：此進趨之時也。謹陳其事如左：&lt;/p&gt;&lt;p style=&quot;text-indent:2em;&quot;&gt;高帝明並日月，謀臣淵深，然涉險被創，危然後安；今陛下未及高帝，謀臣不如良、平，而欲以長策取勝，坐定天下：此臣之未解一也。劉繇、王朗，各據州郡，論安言計，動引聖人，群疑滿腹，眾難塞胸；今歲不戰，明年不征，使孫策坐大，遂並江東：此臣之未解二也。曹操智計，殊絕於人，其用兵也，仿怫孫、吳，然困於南陽，險於烏巢，危於祁連，逼於黎陽，幾敗北山，殆死潼關，然後偽定一時耳；況臣才弱，而欲以不危而定之：此臣之未解三也。曹操五攻昌霸不下，四越巢湖不成，任用李服而李服圖之，委任夏侯而夏侯敗亡，先帝每稱操為能，猶有此失；況臣弩下，何能必勝：此臣之未解四也。自臣到漢中，中間期年耳，然喪趙雲、陽群、馬玉、閻芝、丁立、白壽、劉合、鄧銅等，及驅長屯將七十余人，突將無前，叢叟、青羌，散騎武騎一千余人，此皆數十年之內，所糾合四方之精銳，非一州之所有；若複數年，則損三分之二也。──當何以圖敵：此臣之未解五也。今民窮兵疲，而事不可息；事不可息，則住與行，勞費正等；而不及今圖之，欲以一州之地，與賊持久：此臣之未解六也。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+關於其他的字型設定：
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;p style=&quot;font-family:標楷體&quot;&gt;這是字型測試&lt;/p&gt;&lt;p style=&quot;font-weight:bold&quot;&gt;這是粗體測試&lt;/p&gt;&lt;p style=&quot;font-style:italic&quot;&gt;這是斜體測試&lt;/p&gt;&lt;p style=&quot;text-decoration:overline underline line-through&quot;&gt;這是文字加上裝飾線條&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+我們也可以透過 CSS ，如同 Word 一般的設定行距(line-height)、對齊方式(text-align)、
+垂直對齊方式(vertical-align)、文字間隔(letter-spacing)、單字間隔(word-spacing)等等，
+若有需要可自行查詢。
+</p>
+
+<p>
+以下介紹關於背景的設定。首先是指定背景顏色：
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		body{background-color:#ccc}		p{background-color:#0A0}	&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;一般的段落&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+背景圖片與排列方式：
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		body{background-image:url(../pics/06.gif);background-repeat:repeat-y}	&lt;/style&gt;&lt;/head&gt;&lt;body&gt;background-repeat的設定：&lt;ul&gt;	&lt;li&gt;repeat: 重複到貼滿為止，此為預設的顯示方式&lt;/li&gt;	&lt;li&gt;repeat-x: 橫向重複&lt;/li&gt;	&lt;li&gt;repeat-y: 縱向重複&lt;/li&gt;	&lt;li&gt;no-repeat: 只貼一次&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+把背景圖片固定住：
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		body{background-image:url(../pics/06.gif);		     background-attachment:fixed}	&lt;/style&gt;&lt;/head&gt;&lt;body&gt;這是字&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;這是字&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;這是字&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;這是字&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;這是字&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;這是字&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;這是字&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;這是字&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;這是字&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;這是字&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;這是字&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;這是字&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;這是字&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;這是字&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;這是字&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;這是字&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;這是字&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;這是字&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+指定色彩時，除了 RGB 的三個顏色之外，也可以透過 RGBA 的方法，指定"不透明度"：
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body background=&quot;../pics/06.gif&quot;&gt;&lt;p style=&quot;background:rgba(0,0,0,0.2);font-size:123px;&quot;&gt;這是字這是字這是字這是字這是字&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+可以透過「cursor」，指定滑鼠游標的型狀：
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ffffcc&quot;&gt;&lt;p style=&quot;cursor:crosshair&quot;&gt;變十字&lt;/p&gt;&lt;p style=&quot;cursor:n-resize&quot;&gt;改變大小用的箭頭&lt;/p&gt;&lt;p style=&quot;cursor:s-resize&quot;&gt;改變大小用的箭頭&lt;/p&gt;&lt;p style=&quot;cursor:w-resize&quot;&gt;改變大小用的箭頭&lt;/p&gt;&lt;p style=&quot;cursor:e-resize&quot;&gt;改變大小用的箭頭&lt;/p&gt;&lt;p style=&quot;cursor:ne-resize&quot;&gt;改變大小用的箭頭&lt;/p&gt;&lt;p style=&quot;cursor:nw-resize&quot;&gt;改變大小用的箭頭&lt;/p&gt;&lt;p style=&quot;cursor:se-resize&quot;&gt;改變大小用的箭頭&lt;/p&gt;&lt;p style=&quot;cursor:sw-resize&quot;&gt;改變大小用的箭頭&lt;/p&gt;&lt;p style=&quot;cursor:hand&quot;&gt;變成手&lt;/p&gt;&lt;p style=&quot;cursor:move&quot;&gt;變成可移動用的型狀&lt;/p&gt;&lt;p style=&quot;cursor:wait&quot;&gt;等待中...&lt;/p&gt;&lt;p style=&quot;cursor:help&quot;&gt;說明&lt;/p&gt;&lt;p style=&quot;cursor:url(../pics/hand.gif),auto&quot;&gt;變圖片&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+</blockquote>
+</body></html>

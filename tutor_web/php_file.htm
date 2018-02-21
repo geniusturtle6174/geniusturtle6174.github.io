@@ -1,0 +1,138 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushXml.js"></script>
+	<script type="text/javascript" src="shBrushMine.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	﻿</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+要透過 php 上傳檔案，首先必須在表單做以下改變：
+<ul>
+	<li>「form」標籤新增一組屬性「enctype="multipart/form-data"」: 告訴瀏覽器可能會有檔案要上傳</li>
+	<li>「input」標籤改為「type="file"」: 產生一個讓你選擇檔案的按鈕</li>
+</ul><br/>
+而在 php 方面，則是透過「$_FILES[][]」來接收與處理檔案。
+第一個索引值是「type="file"」的「input」名稱，第二個索引值是你想處理的檔案性質。
+假設某個「type="file"」的「input」名稱是"testFile"的話，那麼：<br/><br/>
+<ul>
+	<li>「$_FILES["testFile"]["name"]」: 檔名</li>
+	<li>「$_FILES["testFile"]["type"]」: 類型，
+		例如文字檔是"text/plain"，
+		pdf檔是"application/pdf"，
+		jpg檔是"image/jpeg"</li>
+	<li>「$_FILES["testFile"]["size"]」: 大小，以位元組(Byte)為單位</li>
+	<li>「$_FILES["testFile"]["tmp_name"]」: 在系統當中暫存的位置與名稱</li>
+	<li>「$_FILES["testFile"]["error"]」: 錯誤編號</li>
+</ul><br/>
+暫存的檔案，在 php 程式執行完畢後(也就是網頁送到你面前之前)就會消失，所以我們必須將它移動到別的地方。
+另外，也可能需要限制檔案的大小和類型，以盡量防止有人上傳惡意檔案
+(就像<a href="https://www.youtube.com/watch?v=iAedP3pFxHA#t=187">這個魔術</a>的表象一樣，
+只透過文字提醒或 JavaScript 驗證的話是沒用的)。
+以下是一個簡單的範例：
+<pre class="brush: htmljsphp">&lt;?php$blackList = array('php', 'jsp', 'asp');$newDir = &quot;./uploadFile/&quot;;$resultStr = '';if(isset($_FILES[&quot;testFile&quot;]) &amp;&amp; $_FILES[&quot;testFile&quot;][&quot;name&quot;]!=NULL){	// explode: 切割字串, end: 取最後一個結果	$extension = strtolower(end(explode(&quot;.&quot;, $_FILES[&quot;testFile&quot;][&quot;name&quot;])));	if( !in_array($extension, $blackList) &amp;&amp;		$_FILES[&quot;testFile&quot;][&quot;size&quot;]&lt;=1024*1024){			$resultStr = &quot;Submit file OK.&quot;;			move_uploaded_file($_FILES[&quot;testFile&quot;][&quot;tmp_name&quot;], $newDir.$_FILES[&quot;testFile&quot;][&quot;name&quot;]);	}	else {		$resultStr = &quot;Submit file GG!!&quot;;	}}?&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form action=&quot;php_fileUp_01.php&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;	&lt;label for=&quot;file&quot;&gt;Upload your file: &lt;/label&gt;	&lt;input type=&quot;file&quot; name=&quot;testFile&quot;&gt;	&lt;input type=&quot;submit&quot; name=&quot;submit&quot; value=&quot;Submit&quot;&gt;	&lt;?php echo $resultStr;?&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+事實上，這個範例是也是有<ruby>問<rp>(</rp><rt>ㄌㄡˋ</rt><rp>)</rp>題<rp>(</rp><rt>ㄉㄨㄥˋ</rt><rp>)</rp></ruby>的，
+需要準備的檔案如下：<br/><br/>
+<ul>
+	<li>一支 php 檔案，把附檔名改成任意不在黑名單中的檔案(例如 jpg)。
+		可<a href="./examples/hello.jpg">由此下載</a>範例檔案</li>
+	<li>".htaccess"檔案，可<a href="./examples/htaccess.rar">由此下載</a>後解壓縮。
+		此檔案的功用是複寫 Apache 的設定。如果 httpd.conf 當中對該資料夾的設定是「AllowOverride All」，
+		則該資料夾的 .htaccess 就會產生作用。</li>
+</ul><br/>
+以上兩個檔案組合起來上傳，你就會發現"圖片檔"被當作 php 來執行了。
+</p>
+
+<p>
+下一個範例，我們將".htaccess"檔案也放入過濾清單當中：
+<pre class="brush: htmljsphp">&lt;?php$blackList = array('php', 'jsp', 'asp', 'htaccess');$newDir = &quot;./uploadFile/&quot;;$resultStr = '';if(isset($_FILES[&quot;testFile&quot;]) &amp;&amp; $_FILES[&quot;testFile&quot;][&quot;name&quot;]!=NULL){	// explode: 切割字串, end: 取最後一個結果	$extension = strtolower(end(explode(&quot;.&quot;, $_FILES[&quot;testFile&quot;][&quot;name&quot;])));	if( !in_array($extension, $blackList) &amp;&amp;		$_FILES[&quot;testFile&quot;][&quot;size&quot;]&lt;=1024*1024){			$resultStr = &quot;Submit file OK.&quot;;			move_uploaded_file($_FILES[&quot;testFile&quot;][&quot;tmp_name&quot;], $newDir.$_FILES[&quot;testFile&quot;][&quot;name&quot;]);	}	else {		$resultStr = &quot;Submit file GG!!&quot;;	}}?&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form action=&quot;php_fileUp_02.php&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;	&lt;label for=&quot;file&quot;&gt;Upload your file: &lt;/label&gt;	&lt;input type=&quot;file&quot; name=&quot;testFile&quot;&gt;	&lt;input type=&quot;submit&quot; name=&quot;submit&quot; value=&quot;Submit&quot;&gt;	&lt;?php echo $resultStr;?&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+如果想要進行<ruby>測<rp>(</rp><rt>ㄍㄨㄥ</rt><rp>)</rp>試<rp>(</rp><rt>ㄐㄧˊ</rt><rp>)</rp></ruby>，
+可以準備一支 php 程式，並命名為 xxx.php.ggg，其中的 ggg 可代換為任意一個系統未定義的附檔名。
+可<a href="./examples/hello.php.ggg">由此下載</a>範例檔案。
+(註：這個問題，在新版的 apache 預設設定下不會出現)
+</p>
+
+<p>
+前面的方法，是使用黑名單法，亦即在名單當中的類型會被禁止上傳。
+但是，各位看到了，黑名單法要注意的事情非常多，因此，比較完善的方法，是使用白名單法：
+<pre class="brush: htmljsphp">&lt;?php$whiteList = array('txt', 'jpg', 'png');$newDir = &quot;./uploadFile/&quot;;$resultStr = '';if(isset($_FILES[&quot;testFile&quot;]) &amp;&amp; $_FILES[&quot;testFile&quot;][&quot;name&quot;]!=NULL){	// explode: 切割字串, end: 取最後一個結果	$extension = strtolower(end(explode(&quot;.&quot;, $_FILES[&quot;testFile&quot;][&quot;name&quot;])));	if( in_array($extension, $whiteList) &amp;&amp;		$_FILES[&quot;testFile&quot;][&quot;size&quot;]&lt;=1024*1024){			$resultStr = &quot;Submit file OK.&quot;;			move_uploaded_file($_FILES[&quot;testFile&quot;][&quot;tmp_name&quot;], $newDir.$_FILES[&quot;testFile&quot;][&quot;name&quot;]);	}	else {		$resultStr = &quot;Submit file GG!!&quot;;	}}?&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form action=&quot;php_fileUp_02_1.php&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;	&lt;label for=&quot;file&quot;&gt;Upload your file: &lt;/label&gt;	&lt;input type=&quot;file&quot; name=&quot;testFile&quot;&gt;	&lt;input type=&quot;submit&quot; name=&quot;submit&quot; value=&quot;Submit&quot;&gt;	&lt;?php echo $resultStr;?&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+但是，讓使用者自訂檔名仍然可能是有危險的。
+例如在舊版的 PHP 當中(5.3.3 以前)，對於檔名的解析仍有一些有趣的地方。
+如果各位只有安裝 AppServ，則可以試著上傳一個檔名是"hello.php%00.jpg"的檔案，
+然後在網址列輸入"hello.php%2500.jpg"來存取。
+</p>
+
+<p>
+另外，如果是單純使用 mime type 來驗證，會發生什麼事呢？請先看以下範例：
+<pre class="brush: htmljsphp">&lt;?php$whiteList = array('image/jpeg');$newDir = &quot;./uploadFile/&quot;;$resultStr = '';if(isset($_FILES[&quot;testFile&quot;]) &amp;&amp; $_FILES[&quot;testFile&quot;][&quot;name&quot;]!=NULL){	if( in_array($_FILES[&quot;testFile&quot;][&quot;type&quot;], $whiteList) &amp;&amp;		$_FILES[&quot;testFile&quot;][&quot;size&quot;]&lt;=1024*1024){			$resultStr = &quot;Submit file OK.&quot;;			move_uploaded_file($_FILES[&quot;testFile&quot;][&quot;tmp_name&quot;], $newDir.$_FILES[&quot;testFile&quot;][&quot;name&quot;]);	}	else {		$resultStr = &quot;Submit file GG!!&quot;;	}}?&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form action=&quot;php_fileUp_02_1_mime.php&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;	&lt;label for=&quot;file&quot;&gt;Upload your file: &lt;/label&gt;	&lt;input type=&quot;file&quot; name=&quot;testFile&quot;&gt;	&lt;input type=&quot;submit&quot; name=&quot;submit&quot; value=&quot;Submit&quot;&gt;	&lt;?php echo $resultStr;?&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+此範例是 mime type 的白名單法，為了範例簡潔，僅允許"image/jpeg"通過。
+如果你上傳的附檔名是 jpg，則可以通過檢查，
+但是若沒有其他漏洞的搭配，要將這張"圖片"當作 php 來執行，可能有點困難。
+如果想要測試，可以利用"Tamper Data"這個 Firefox 的附加元件，
+只要在檔案送出前，將封包的檔名部分改成 php，
+就可以通過 mime type 的檢查，而且存檔的副檔名會是 php。
+</p>
+
+<p>
+這個範例，則以時間來命名使用者上傳的檔案，你也可以使用其他的機制。
+(不過，為了避免各位把這裡當免空來用，此範例還是要歸類在危險區)：
+<pre class="brush: htmljsphp">&lt;?php$whiteList = array('txt', 'jpg', 'png');$newDir = &quot;./uploadFile/&quot;;if($_FILES[&quot;testFile&quot;][&quot;name&quot;]!=NULL){ // 程式從檔案上傳	// explode: 切割字串, end: 取最後一個結果	$extension = strtolower(end(explode(&quot;.&quot;, $_FILES[&quot;testFile&quot;][&quot;name&quot;])));	if( in_array($extension, $whiteList) &amp;&amp;		$_FILES[&quot;testFile&quot;][&quot;size&quot;]&lt;=1024*1024){			$resultStr = &quot;Submit file OK.&quot;;			move_uploaded_file($_FILES[&quot;testFile&quot;][&quot;tmp_name&quot;], $newDir.time().&quot;.&quot;.$extension);	}	else {		$resultStr = &quot;Submit file GG!!&quot;;	}}?&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form action=&quot;php_fileUp_03.php&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;	&lt;label for=&quot;file&quot;&gt;Upload your file: &lt;/label&gt;	&lt;input type=&quot;file&quot; name=&quot;testFile&quot;&gt;	&lt;input type=&quot;submit&quot; name=&quot;submit&quot; value=&quot;Submit&quot;&gt;	&lt;?php echo $resultStr;?&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+實際上，在撰寫一個上傳檔案的功能時，需要考慮許多問題，例如：
+<ul><br/>
+	<li>若讓使用者自訂檔案名稱，可能會比較危險，
+		例如若要將檔名塞進資料庫，則就需要避免 SQL injecion 的問題。</li>
+	<li>惡意的上傳者可能會在檔案中夾帶伺服端程式碼，並嘗試讓其執行。
+		因此，可能需要使用專屬的函式庫或外部程式來檢查檔案是否合法；
+		也可以把上傳用的資料夾的執行權限取消。</li>
+	<li>其他則例如你不想讓上傳的靜態檔案被直接看見(http://.../upload/aaa.jpg)，
+		而只希望透過特定程式去撈取，則可以把檔案放在網頁伺服器無法讀取到的地方，
+		再用伺服端程式碼另外撈取。</li>
+</ul>
+</p>
+
+<p>
+而關於檔案下載，則是依照路徑把檔案取出。
+以下範例是由 GET 傳送檔名，來告訴伺服器要取得哪個檔案：
+<pre class="brush: htmljsphp">&lt;?php$baseDir = &quot;./uploadFile/&quot;;if(isset($_GET['file'])&amp;&amp;$_GET['file']){	$file = $baseDir.$_GET['file'];	if (file_exists($file)) {		header('Content-Type: application/octet-stream');		header(&quot;Content-Transfer-Encoding: Binary&quot;); 		header('Content-Disposition: attachment; filename='.basename($file));		readfile($file);	}}?&gt;</pre>
+如果你還記得<a href="http://technews.tw/2014/01/07/fetc-collection-again-etags-official-website-were-terrible-population-data-leaks/">遠通</a>的話，
+應該很容易看的出來這個範例的問題。若要測試，請在輸入框中輸入例如"../../../abc.txt"等內容。
+</p>
+
+<p>
+比較好的方法，則應該檢查輸入的檔名是否符合期待的格式。
+由於格式部分跟上傳時的命名可能有關，故此處僅示範"數字字母底線.htm"的格式：
+<pre class="brush: htmljsphp">&lt;?phpif(isset($_GET['file'])&amp;&amp;$_GET['file']){	$pattern = '/^[0-9A-Za-z_]+\.htm$/';	$file = $_GET['file'];	if (preg_match($pattern, $file) &amp;&amp; file_exists($file)) {		header('Content-Type: application/octet-stream');		header(&quot;Content-Transfer-Encoding: Binary&quot;); 		header('Content-Disposition: attachment; filename='.basename($file));		readfile($file);	}	else {		echo '此檔案不能下載！';	}}?&gt;</pre>
+</p>
+
+<p>
+除了上述示範的直接輸入檔名的方式，我們也可以建立類似以下的資料表，
+其中，ID 的部分可以設定為 primary key 與 auto increment，
+伺服器路徑為上傳時儲存的位置以及由伺服端程式自訂的檔名，並同時將原始檔名等資訊塞入資料庫。
+此時，就能使用 ID 或伺服端路徑等當作參數來撈取真正的檔案。
+<br><br><table class="slide" align=center>
+	<tr>
+		<th>ID</th>
+		<th>伺服器路徑</th>
+		<th>原始檔名</th>
+	</tr>
+	<tr><td>1</td><td>../upload/a4b153</td><td>aaa.php</td></tr>
+	<tr><td>2</td><td>../upload/f241cd</td><td>bbb.doc</td></tr>
+	<tr><td>3</td><td>../upload/2a34fe</td><td>ccc.pdf</td></tr>
+</table><br/><br/>
+</p>
+
+</blockquote>
+</body></html>

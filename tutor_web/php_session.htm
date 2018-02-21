@@ -1,0 +1,71 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushXml.js"></script>
+	<script type="text/javascript" src="shBrushMine.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	﻿</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+Session 與 cookie 非常類似，但最主要的差別在於 session 是儲存在伺服器端。
+若要在某個 php 程式當中使用 session，首先必須呼叫「session_start」，
+此函數必須在網頁輸出任何東西之前呼叫，否則會產生錯誤。
+之後，我們可以使用「$_SESSION["名稱"]」的方式去設定與讀取內容。
+而若要刪除 session，則可使用「unset」函式刪除指定名稱的 session，
+或者用「session_destroy」刪除所有的 session。
+以下是一系列的範例，各位可以在建立、讀取、毀滅之間互相點選看看。
+</p>
+
+<p>
+創建 session：
+<pre class="brush: htmljsphp">&lt;?phpsession_start();$_SESSION[&quot;abc&quot;] = &quot;def&quot;;$_SESSION[&quot;xyz&quot;] = 123;?&gt;</pre>
+讀取 session：
+<pre class="brush: htmljsphp">&lt;?phpsession_start();echo $_SESSION[&quot;abc&quot;];echo $_SESSION[&quot;xyz&quot;];?&gt;</pre>
+用 unset 毀掉 session：
+<pre class="brush: htmljsphp">&lt;?phpsession_start();unset($_SESSION[&quot;abc&quot;]);?&gt;</pre>
+用 destory 毀掉 session：
+<pre class="brush: htmljsphp">&lt;?phpsession_start();session_destroy();?&gt;</pre>
+</p>
+
+<p>
+Session 會透過 cookie 來分辨是哪一個用戶。當點進"創建 session"的範例後，
+打開瀏覽器的開發者工具，可以看到一個名為「PHPSESSID」的 cookie，
+如果先把這個 cookie 刪掉，再點選"讀取 session"，你會發現看不到東西。
+而 session 本身在伺服器端，是以文件的方式儲存，檔名是「sess_」加上前述的「PHPSESSID」。
+關於存放的地點，以 Win 7 為例，
+若使用 AppServ 預設會儲存在「C:\Users\你的帳號\AppData\Local\Temp」底下，
+XAMPP 則預設儲存在「C:\xampp\tmp」。
+它是一個純文字檔，各位可以試著打開看看內容。
+</p>
+
+<p>
+運用 session，即可以做出登入/登出的功能。
+以下範例的帳號是"test1"到"test5"，密碼都是"12345"，
+整張資料表可以在<a href="examples/user.sql">這裡</a>下載。
+登入頁面，就是在通過驗證後，設定 session 變數，然後轉到登入成功的頁面：
+<pre class="brush: htmljsphp">&lt;?phpsession_start();include(&quot;mysqlInc.php&quot;);?&gt;&lt;?phpif(isset($_SESSION['id']) &amp;&amp; $_SESSION['id']!=null){ // 如果登入過，則直接轉到登入後頁面	echo '&lt;meta http-equiv=REFRESH CONTENT=0;url=php_index.php&gt;';}else if(isset($_POST['account'])&amp;&amp;isset($_POST['password'])){	$acc = $_POST['account'];	$pwd = $_POST['password'];	$acc = preg_replace(&quot;/[^A-Za-z0-9]/&quot;,&quot;&quot;,$acc);	$pwd = preg_replace(&quot;/[^A-Za-z0-9]/&quot;,&quot;&quot;,$pwd);	if($acc!=NULL &amp;&amp; $pwd!=NULL){		$sql = &quot;SELECT id, pwd, nickName FROM user where id = '$acc'&quot;;		$result = mysql_query($sql);		$row = mysql_fetch_array($result);		// 比對密碼		if($row['pwd']==md5($pwd)){			$_SESSION['id'] = $row['id'];			$_SESSION['pwd'] = $row['pwd'];			$_SESSION['nickName'] = $row['nickName'];			echo '&lt;meta http-equiv=REFRESH CONTENT=0;url=php_index.php&gt;';		}	}}?&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form action=&quot;php_login.php&quot; method=&quot;post&quot;&gt;	帳號：&lt;input type=&quot;text&quot; name=&quot;account&quot;&gt;&lt;br/&gt;	密碼：&lt;input type=&quot;text&quot; name=&quot;password&quot;&gt;&lt;br/&gt;	&lt;input type=&quot;submit&quot;&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+這是登入成功後的頁面的範例，
+所有需要登入才能看的頁面，都必須詳加保護，
+以免被直接輸入網址連入而產生問題：
+<pre class="brush: htmljsphp">&lt;?phpsession_start();include(&quot;mysqlInc.php&quot;);?&gt;&lt;?phpif($_SESSION['id']==null){	echo '&lt;meta http-equiv=REFRESH CONTENT=0;url=php_login.php&gt;';}?&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?phpecho &quot;Hi, &quot;.$_SESSION['id'].&quot;(&quot;.$_SESSION['nickName'].&quot;)&quot;;?&gt;&lt;a href=&quot;php_logout.php&quot;&gt;登出&lt;/a&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+登出時，毀掉 session 即可：
+<pre class="brush: htmljsphp">&lt;?phpsession_start();session_destroy();echo '&lt;meta http-equiv=REFRESH CONTENT=0;url=php_login.php&gt;';?&gt;</pre>
+登入之後，就可以透過網頁跟使用者進行更多的互動。
+例如更改資料，只要將表單送過來的資料，利用 SQL 的「UPDATE」指令進行更新即可達成。
+</p>
+
+</blockquote>
+</body></html>

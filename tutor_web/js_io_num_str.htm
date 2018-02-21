@@ -1,0 +1,100 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushXml.js"></script>
+	<script type="text/javascript" src="shBrushJScript.js"></script>
+	<script type="text/javascript" src="shBrushMine.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	﻿</head>
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<script>
+Gol_D_Roger("3-2", "3-3"); // 顯示羅傑的書的章節對應
+</script>
+
+<p>
+JavaScript 的主要用途是，可以在客戶端(就是你自己用來上網的那台電腦)上執行計算，以減少伺服器的負擔。
+其程式碼是用「script」標籤夾住，內嵌於 HTML 當中，並由瀏覽器來執行。
+以下是一個簡單的範例，我們經由 JavaScript 程式碼，在網頁上顯示「Hello World!!」：
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;document.write(&quot;Hello World!!&quot;);&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+JavaScript 是一個以物件為基礎的語言。因此幾乎所有的變數，在 JavaScript 中都是物件。
+物件通常會有一些性質(property)和方法(method)，與物件相關的函式通常會被定義成該物件的方法。
+在上述範例中，「document」是一個物件，代表這個網頁；
+「write」是該物件的一個方法，可以寫一些東西到文件當中。
+</p>
+
+<p>
+也可以像 CSS 外部呼叫一樣，把 JavaScript 程式碼寫在另外一個檔案中。
+假設是寫在 abc.js 當中，我們只要像這樣把檔案包含進來即可：
+<pre class="brush: html">&lt;script type=&quot;text/javascript&quot; src=&quot;abc.js&quot;&gt;&lt;/script&gt;</pre><br />
+而在 abc.js 當中應該寫下的內容，就是原本在「script」標籤中會寫下的內容。
+此種方法比較常用於自訂函式。例如：
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;abc.js&quot;&gt;&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;input value=&quot;按我&quot; type=&quot;button&quot; onClick=&quot;test()&quot;/&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+其中，abc.js的內容如下：
+<pre class="brush: js">﻿function test(){	alert(&quot;Hello~&quot;);}</pre>
+</p>
+
+<p>
+JavaScript 除了循序執行以外，也可以藉由某個事件(例如按下按鈕)來啟動：
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;input type=&quot;button&quot; onClick=&quot;alert('Hello World!!');&quot; value=&quot;來按看看&quot;&gt; &lt;br/&gt;&lt;input type=&quot;button&quot; onMouseOver=&quot;alert('Hello World!!');&quot; value=&quot;滑鼠過來看看&quot;&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+上述的「onClick」和「onMouseOver」，分別代表按下按鈕以及滑鼠經過的事件。
+其他各式各樣的事件，會在往後陸續提及。
+</p>
+
+<p>
+JavaScript 的資料型態，可分成三類：
+<ul>
+	<li>基本型態：數字、字串、函數、...</li>
+	<li>組合型態：陣列、日期、數學(Math)、...</li>
+	<li>特殊型態：null、undefined</li>
+</ul>
+<br/>
+JavaScript 會自動把型態進行合理的轉換，我們可以利用「typeof」來得知變數的型別：
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;x = 123;document.write(&quot;「x = 123」, x 的型別為: &quot; + typeof(x) + &quot;&lt;br/&gt;&quot;);x = '456';document.write(&quot;「x = '456'」\&quot;, x 的型別為: &quot; + typeof(x) + &quot;&lt;br/&gt;&quot;);x = &quot;789&quot;;document.write(&quot;「x = \&quot;789\&quot;」, x 的型別為: &quot; + typeof(x) + &quot;&lt;br/&gt;&quot;);function test(){	// do nothing}document.write(&quot;「function test(){}」, test 的型別為: &quot; + typeof(test) + &quot;&lt;br/&gt;&quot;);document.write(&quot;「/*根本沒宣告*/」, abc 的型別為: &quot; + typeof(abc) + &quot;&lt;br/&gt;&quot;);var xyz;document.write(&quot;「var xyz」, xyz 的型別為: &quot; + typeof(xyz) + &quot;&lt;br/&gt;&quot;);/* 為什麼還是 undefined? 思考看看~ */&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+單引號和雙引號在大部分情形下是互通的。
+此外，如果在一種引號裡面出現另外一種，可以不必進行跳脫。
+</p>
+
+<p>
+「null」 是另外一種特殊型態：
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;x = null;document.write(&quot;「x = null」, x 的型別為: &quot; + typeof(x) + &quot;&lt;br/&gt;&quot;);document.write(&quot;「null」代表 &quot;+ (null?&quot;True&quot;:&quot;False&quot;) +&quot;&lt;br/&gt;&quot;);document.write(&quot;「x==null」 &quot;+ (x==null?&quot;成立&quot;:&quot;不成立&quot;) +&quot;&lt;br/&gt;&quot;);&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+若希望讓使用者輸入資料後進行處理，其中一種方法是「prompt」：
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;a = prompt(&quot;請輸入 a 值&quot;);b = prompt(&quot;請輸入 b 值&quot;);alert(&quot;a + b is: &quot; + (a+b) );&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+(為什麼上述範例中，若將 a 和 b 值都輸入為 1 ，結果會出現"11"？如何解決？請繼續往下看～)
+</p>
+
+<p>
+也可以取得表單的值：
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;script&gt;		function showName(str1, str2){			alert(&quot;Hi, &quot; + str1 + str2 + &quot;!&quot;);		}				function showText(str){			alert(str);		}	&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form&gt;	&lt;input type=&quot;text&quot; id=&quot;a&quot; placeholder=&quot;姓&quot;&gt;, 	&lt;input type=&quot;text&quot; id=&quot;b&quot; placeholder=&quot;名&quot;&gt;	&lt;input type=&quot;button&quot; value=&quot;按我顯示全名&quot; onClick=&quot;showName(this.form.a.value, this.form.b.value)&quot;&gt;	&lt;hr width=&quot;40%&quot; align=&quot;left&quot;/&gt;		&lt;textarea id=&quot;c&quot;&gt;test&lt;/textarea&gt; &lt;br/&gt;	&lt;input type=&quot;button&quot; value=&quot;按我顯示textarea內容&quot; onClick=&quot;showText(this.form.c.value)&quot;&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+
+</p>
+
+<p>
+JavaScript 會把所有的數值用 double 來進行儲存與運算，儘管外觀看起來像是整數。
+JavaScript 另外也提供十六進位和八進位的表示法，但此處就不詳細介紹。
+以下是一些數學函式，以及字串與數字互轉的範例：
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;br2 = &quot;&lt;br/&gt;&lt;br/&gt;&quot;;document.write(&quot;「Math.exp ( 2 )」: &quot; + Math.exp(2) + br2);document.write(&quot;「Math.log ( 2 )」: &quot; + Math.log(2) + br2);document.write(&quot;「Math.pow ( 2, 3 )」: &quot; + Math.pow(2, 3) + br2);document.write(&quot;「Math.sin ( Math.PI / 2 )」: &quot; + Math.sin(Math.PI/2) + br2);document.write(&quot;「parseInt ( '1234abcd' )」: &quot; + parseInt('1234abcd') + br2);document.write(&quot;「parseFloat ( '0.0a' )」: &quot; + parseFloat('0.0a') + br2);document.write(&quot;「parseFloat ( 'test' )」: &quot; + parseFloat('test') + br2);document.write(&quot;「isNaN( parseFloat( 'test' ) )」: &quot; + isNaN(parseFloat('test')) + br2);x = 123;y = x.toString();document.write(&quot;y: &quot; + y + &quot;, typeof ( y ): &quot; + typeof(y) + br2);x = 35;y = x.toString(2); /* 轉換成二進位數字的字串 */document.write(&quot;y: &quot; + y + &quot;, typeof ( y ): &quot; + typeof(y) + br2);x = 123.4567;y = x.toFixed(2); /* 轉換成小數點下兩位的字串 */document.write(&quot;y: &quot; + y + &quot;, typeof ( y ): &quot; + typeof(y) + br2);&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+關於字串的一些方法：
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;br2 = &quot;&lt;br/&gt;&lt;br/&gt;&quot;;str = &quot;這是一枝筆。This is a pen.&quot;;document.write(&quot;字串長度 str.length: &quot; + str.length + br2);document.write(&quot;變粗體 str.bold ( ) : &quot; + str.bold() + br2);document.write(&quot;變斜體 str.italics ( ) : &quot; + str.italics() + br2);document.write(&quot;變上標 str.sup ( ): &quot; + str.sup() + br2);document.write(&quot;換大寫 str.toUpperCase ( ) : &quot; + str.toUpperCase() + br2);/* 帶入之參數為索引值 */document.write(&quot;抽出字元 str.charAt ( 0 ) : &quot; + str.charAt(0) + br2);document.write(&quot;抽出字元 str[0] : &quot; + str[0] + br2);document.write(&quot;抽出字元 str.charAt ( 6 ) : &quot; + str.charAt(6) + br2);/* 從 2 開始拿 3 個字元 */document.write(&quot;抽出子字串 str.substr ( 2 , 5 ) : &quot; + str.substr(2, 5) + br2);/* 從 2 開始拿到第 5-1 個字元 */document.write(&quot;抽出子字串 str.substring ( 2 , 5 ) : &quot; + str.substring(2, 5) + br2);/* 從頭找第一個出現 */document.write(&quot;尋找字串 str.indexOf ( \&quot;i\&quot; ) : &quot; + str.indexOf(&quot;i&quot;) + br2);/* 從尾找第一個出現 */document.write(&quot;尋找字串 str.lastIndexOf ( \&quot;i\&quot; ) : &quot; + str.lastIndexOf(&quot;i&quot;) + br2);&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+JavaScript 還有其他許多將字串樣式改變的功能，此處就不一一介紹。
+</p>
+
+</blockquote>
+</body></html>

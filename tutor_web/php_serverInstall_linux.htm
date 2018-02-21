@@ -1,0 +1,73 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushXml.js"></script>
+	<script type="text/javascript" src="shBrushMine.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	﻿</head>
+
+<body bgcolor="#ccccff">
+<blockquote>
+
+<p>
+而如果要在 Linux 下架設網頁伺服器，則通常會將 Apache, PHP, MySQL, phpMyAdmin 這四樣元件分開安裝。
+以下是以 Ubuntu Linux 為例，使用 apt-get 安裝相關套件以及細部設定的指令，
+你必須有 root 權限才能執行相關指令。
+以下是安裝部分之指令與說明，為了醒目，指令部分將以引號夾住：
+<ul>
+	<li>安裝 Apache2: 「sudo apt-get install apache2」</li>
+	<li>安裝 php: 「sudo apt-get install php5」</li>
+	<li>安裝 mysql lib for apache2 and php: 「sudo apt-get install apache2 php5-mysql」</li>
+	<li>安裝 mysql: 「sudo apt-get install mysql-server」</li>
+	<ul>
+		<li>安裝時會詢問帳號密碼</li>
+		<li>如果是 Server 版，則在安裝整個作業系統時預設會進行 mysql 之安裝</li>
+	</ul>
+	<li>安裝 phpMyAdmin: 「sudo apt-get install phpMyAdmin」</li>
+	<ul>
+		<li>安裝時會詢問帳號密碼</li>
+	</ul>
+</ul><br/>
+再來是設定部分：<br/><br/>
+<ul>
+	<li>設定 Apace2 相關</li>
+	<ul>
+		<li>修改使用者家目錄下的網頁用資料夾名稱: 「sudo vim /etc/apache2/mods-available/userdir.conf」</li>
+		<ul>
+			<li>該資料夾預設名稱是 public_html </li>
+			<li>共兩處需修改</li>
+		</ul>
+		<li>讓一般使用者可以利用家目錄下的網頁資料夾: 「sudo a2enmod userdir」</li>
+		<li>設定完後重新啟動 Apache: 「sudo service apache2 restart」</li>
+		<li>若要於建立使用者時，自動增加網頁資料夾目錄: 「sudo mkdir /etc/skel/你要的名稱」</li>
+		<ul>
+			<li>/etc/skel為新建使用者創造家目錄時之模版目錄</li>
+		</ul>
+	</ul>
+	<li>設定 phpMyAdmin 相關</li>
+	<ul>
+		<li>修改 phpMyAdmin 連結路徑:
+				「sudo vim /etc/apache2/conf.d/phpmyadmin.conf」(Apache 2.2 版)或
+				「sudo vim /etc/apache2/conf-available/phpmyadmin.conf」(Apache 2.4 版)</li>
+		<ul>
+			<li>在最上面增加一行: Alias /yourNewPath /usr/share/phpmyadmin</li>
+			<li>修改完後可能需要重啟 Apache</li>
+		</ul>
+	</ul>
+</ul><br/>
+接下來，如果把 hello.php 範例放到你的家目錄下的 public_html (或你另外修改的)資料夾，
+則也可以經由 http://主機名稱/~使用者名稱/hello.php 看到結果。
+<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?phpecho &quot;Hello World!!&quot;?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+</blockquote>
+</body></html>

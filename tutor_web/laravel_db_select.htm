@@ -1,0 +1,71 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushXml.js"></script>
+	<script type="text/javascript" src="shBrushMine.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	﻿</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+本篇要簡介如何把資料庫的資料撈出來(SELECT)顯示，
+使用的資料表範例是之前的歌曲排行榜(songrank)。
+首先要在 .env 檔案中，填入資料庫帳密等資訊。
+</p>
+
+<p>
+接著加入一組測試用的檔案。可以在 Router 中新增如下：
+<pre class="brush: htmljsphp">Route::get('/dbTest', 'dbtestController@index');</pre><br />
+接著要新增對應的 controller 和 view。Controller 的部分是：
+<pre class="brush: htmljsphp">&lt;?php namespace App\Http\Controllers;
+use DB;
+class dbtestController extends Controller {
+	public function index()
+	{
+		$results = DB::select('select * from songrank');
+		$view = view('dbTest')-&gt;with('rank', $results);
+		return $view;
+	}
+}
+</pre><br />
+View 的部分：
+<pre class="brush: htmljsphp">&lt;html&gt;&lt;body&gt;
+&lt;?php var_dump($rank); ?&gt;
+&lt;/body&gt;&lt;/html&gt;</pre><br />
+此時，你就可以看到資料庫內容以原始的陣列格式被顯示出來。
+如果想要進行一些簡單的排版，可以參考以下：
+<pre class="brush: htmljsphp">&lt;html&gt;&lt;body&gt;
+&lt;table border=&quot;1&quot;&gt;
+&lt;tr&gt;
+	&lt;th&gt;資料序號(ssn)&lt;/th&gt;
+	&lt;th&gt;當日排名(thisrank)&lt;/th&gt;
+	&lt;th&gt;前日排名(prevrank)&lt;/th&gt;
+	&lt;th&gt;歌曲名稱(songname)&lt;/th&gt;
+	&lt;th&gt;演 唱 者(singername)&lt;/th&gt;
+&lt;/tr&gt;
+&lt;?php
+for($i=0;$i&lt;count($rank);$i++){
+	echo '&lt;tr&gt;&lt;td&gt;'.$rank[$i]-&gt;ssn.'&lt;/td&gt;';
+	echo '&lt;td&gt;'.$rank[$i]-&gt;thisRank.'&lt;/td&gt;';
+	echo '&lt;td&gt;'.$rank[$i]-&gt;prevRank.'&lt;/td&gt;';
+	echo '&lt;td&gt;'.$rank[$i]-&gt;songName.'&lt;/td&gt;';
+	echo '&lt;td&gt;'.$rank[$i]-&gt;singerName.'&lt;/td&gt;&lt;/tr&gt;';
+}
+?&gt;
+&lt;/body&gt;&lt;/html&gt;</pre><br />
+</p>
+
+</blockquote>
+</body></html>

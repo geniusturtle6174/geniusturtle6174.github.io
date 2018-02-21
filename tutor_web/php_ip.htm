@@ -1,0 +1,58 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushXml.js"></script>
+	<script type="text/javascript" src="shBrushMine.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	﻿</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+在 php 程式當中，若需要取得使用者的 IP，一般會透過 $_SERVER['REMOTE_ADDR']，
+或者 $_SERVER[] 當中，屬性以"HTTP_"開頭的一些值來進行：
+<ul>
+	<li>$_SERVER['HTTP_VIA']</li>
+	<li>$_SERVER['HTTP_CLIENT_IP']</li>
+	<li>$_SERVER['HTTP_X_CLIENT_IP']</li>
+	<li>$_SERVER['HTTP_FORWARDED_FOR']</li>
+	<li>$_SERVER['HTTP_X_FORWARDED_FOR']</li>
+	<li>$_SERVER['HTTP_FORWARDED']</li>
+	<li>$_SERVER['HTTP_X_FORWARDED']</li>
+</ul><br/>
+其中的"HTTP_"，表示該屬性是經由 http 封包的標頭(header)來設定；而中間的"X_"，則代表該屬性尚未標準化，
+由於該屬性可能由早期尚未標準化時設計的軟硬體提供，也可能由近期規格已標準化後的軟硬體提供，
+因此，有可能會需要多組屬性來輔助。
+而若是使用瀏覽器觀看網頁，則在送出的 Http header 當中，
+也另外提供了例如"User-Agent"之類的屬性，讓伺服器可以判斷瀏覽器的類別。
+以下的範例，會顯示 $_SERVER['REMOTE_ADDR']，以及屬性以"HTTP_"開頭的所有值：
+<pre class="brush: htmljsphp">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?phpecho '$_SERVER[\'REMOTE_ADDR\']: '.$_SERVER['REMOTE_ADDR'].'&lt;br/&gt;';foreach($_SERVER as $key=&gt;$val){	if(0==strncmp($key,'HTTP_',5)){		echo '$_SERVER['.$key.']: '.$val.'&lt;br/&gt;';	}}?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+如果你是直接連線到網頁，看到的 $_SERVER['REMOTE_ADDR'] 就會是自己的 IP 位置；
+但若使用了代理伺服器，則 $_SERVER['REMOTE_ADDR'] 有可能變為代理伺服器的 IP 位置，
+而 $_SERVER['HTTP_X_FORWARDED_FOR'] 才是你自己的 IP
+(事實上，"HTTP_X_FORWARDED_FOR"的內容，通常會是自己的以及所經過的數個代理伺服器的 IP，並用逗點分隔)。
+</p>
+
+<p>
+若要嘗試使用代理伺服器，可以到 <a href="http://proxy-list.org/">http://proxy-list.org/</a>
+或者 <a href="http://proxylist.hidemyass.com/">http://proxylist.hidemyass.com/</a> 挑選一些來使用。
+而在這些屬性值的可信度上面，REMOTE_ADDR 無法透過竄改 http header 來假造，而其他的屬性則很容易被修改。
+因此，比較完整的 IP 偵測，應該盡可能的將屬性值記錄下來。
+</p>
+
+</blockquote>
+</body></html>

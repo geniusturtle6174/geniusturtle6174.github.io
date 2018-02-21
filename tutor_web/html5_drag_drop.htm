@@ -1,0 +1,64 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushMine.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	﻿</head>
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+在拖放 API 尚未標準化以前，通常是利用一連串的滑鼠事件來達到拖放的效果：
+<pre class="brush: htmljs">﻿&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;	&lt;style&gt;		#win{height:300px;width:300px;background:rgba(118,175,135,0.7);border-radius:10px;}		#drag{position:relative;top:0px;left:0px;width:100%;height:7%;}		#txt{position:relative;top:0px;left:2px;width:97%;height:91%;resize:none;border-radius:10px;z-index:2;}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;div id=&quot;win&quot; style=&quot;position:absolute;top:100px;left:100px;&quot;&gt;	&lt;div id=&quot;drag&quot;&gt;&lt;/div&gt;	&lt;textarea type=&quot;text&quot; id=&quot;txt&quot;&gt;&lt;/textarea&gt;&lt;/div&gt;&lt;script&gt;var m = 0;var x, y;function mdown(){	m = 1;	x = window.event.clientX-parseInt(document.getElementById(&quot;win&quot;).style.left);	y = window.event.clientY-parseInt(document.getElementById(&quot;win&quot;).style.top);}function mmove(){	if(m==1){		document.getElementById(&quot;win&quot;).style.left = (window.event.clientX-x)+&quot;px&quot;;		document.getElementById(&quot;win&quot;).style.top = (window.event.clientY-y)+&quot;px&quot;;	}	return true;}function mup(){	m = 0;}document.getElementById(&quot;drag&quot;).onmousedown = mdown;document.getElementById(&quot;drag&quot;).onmousemove = mmove;document.getElementById(&quot;drag&quot;).onmouseup = mup;document.onmousemove = mmove;document.onmouseup = mup;&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+而 HTML5 的拖放操作，則定義了相關的事件。
+我們先來來一個簡單的範例，此範例可以把方框外的影像拖到方框內：
+<pre class="brush: htmljs">﻿&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;function allowDrop(e){	e.preventDefault();}function drag(e){	e.dataTransfer.setData(&quot;Text&quot;, e.target.id);}function drop(e){	e.preventDefault();	var data = e.dataTransfer.getData(&quot;Text&quot;);	e.target.appendChild(document.getElementById(data));}&lt;/script&gt;&lt;div id=&quot;div1&quot; ondragover=&quot;allowDrop(event)&quot; ondrop=&quot;drop(event)&quot;	 style=&quot;width:185px;height:211px;border:1px solid;&quot;&gt;&lt;/div&gt;&lt;img id=&quot;drag1&quot; src=&quot;../pics/alan.jpg&quot; draggable=&quot;true&quot; ondragstart=&quot;drag(event)&quot;&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+此範例的說明如下：
+<ul>
+	<li>首先對要被拖曳的對象設定「draggable="true"」，以及拖曳開始的事件「ondragstart」。</li>
+	<li>在拖曳開始的事件中，要將來源資料放到 dataTransfer 物件，此範例為圖片的 id</li>
+	<li>目標區則須設定「ondragover」事件，代表被拖曳的資料可以在哪裡放下；
+		並設定「drop」事件，代表放下時要發生的事。</li>
+	<li>在拖曳進行中的事件，由於瀏覽器的預設行為是不能將元素拖到其他地方，
+		所以加上「preventDefault」來防止預設行為的發生。</li>
+	<li>而拖曳結束時，首先也要防止瀏覽器的預設行為，
+		再來就是自己設計的處理，此例為將元素附加上去。</li>
+</ul><br/>
+也可以改成將圖片複製過去，此時，附加上去的是新創造的影像：
+<pre class="brush: htmljs">﻿&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;function allowDrop(e){	e.preventDefault();}function drag(e){	e.dataTransfer.setData(&quot;Text&quot;, e.target.id);}function drop(e){	e.preventDefault();	var data = e.dataTransfer.getData(&quot;Text&quot;);	var original = document.getElementById(data);	var copyimg = document.createElement(&quot;img&quot;); // 創造一個影像元素	copyimg.src = original.src;	e.target.appendChild(copyimg);}&lt;/script&gt;&lt;div id=&quot;div1&quot; ondrop=&quot;drop(event)&quot; ondragover=&quot;allowDrop(event)&quot;	 style=&quot;width:185px;height:211px;border:1px solid;&quot;&gt;&lt;/div&gt;&lt;img id=&quot;drag1&quot; src=&quot;../pics/alan.jpg&quot; draggable=&quot;true&quot; ondragstart=&quot;drag(event)&quot;&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+利用拖放操作來改寫第一個範例：
+<pre class="brush: htmljs">﻿&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;	&lt;style&gt;		#win{height:300px;width:300px;background:rgba(118,175,135,0.7);border-radius:10px;}		#drag{position:relative;top:0px;left:0px;width:100%;height:7%;}		#txt{position:relative;top:0px;left:2px;width:97%;height:91%;resize:none;border-radius:10px;z-index:2;}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;div id=&quot;win&quot; style=&quot;position:absolute;top:100px;left:100px;&quot;&gt;	&lt;div id=&quot;drag&quot; draggable=&quot;true&quot;&gt;&lt;/div&gt;	&lt;textarea type=&quot;text&quot; id=&quot;txt&quot;&gt;&lt;/textarea&gt;&lt;/div&gt;&lt;script&gt;var x, y;function mdown(){	x = window.event.clientX-parseInt(document.getElementById(&quot;win&quot;).style.left);	y = window.event.clientY-parseInt(document.getElementById(&quot;win&quot;).style.top);}function mmove(){	document.getElementById(&quot;win&quot;).style.left = (window.event.clientX-x)+&quot;px&quot;;	document.getElementById(&quot;win&quot;).style.top = (window.event.clientY-y)+&quot;px&quot;;}document.getElementById(&quot;drag&quot;).ondragstart = mdown;document.getElementById(&quot;drag&quot;).ondrag = mmove;document.body.ondragover = function(){event.preventDefault();}&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+至於拖放操作的相關事件，則除了前述的 ondragstart、ondragover、ondrop 以外，還有下列這些：
+<ul>
+	<li>ondrag: 來源元素正被拖曳中。</li>
+	<li>ondragenter: 元素被拖曳進入某元素範圍時，則引發該元素的此一事件。</li>
+	<li>ondragleave: 元素被拖曳離開某元素範圍時，則引發該元素的此一事件。</li>
+	<li>ondragend: 來源元素的拖曳結束。</li>
+</ul><br/>
+以下是一個綜合範例：
+<pre class="brush: htmljs">﻿&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;	&lt;style&gt;		.pad{width:250px;height:250px;border:solid 1px;position:absolute;}		.bead{width:50px;height:50px;			  border-radius:100px;			  position:absolute}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;div class=&quot;pad&quot; id=&quot;thepad&quot;&gt;&lt;/div&gt;&lt;script&gt;var x, y, oldX, oldY;var padWH = 250, beadWH = 50;function newPos(val){	if(val&gt;padWH-beadWH){		return padWH-beadWH;	}	else if(val&lt;0){		return 0;	}	else {		return Math.round(val/beadWH)*beadWH;	}}function movingStart(e){	oldX = document.getElementById(e.target.id).style.left;	oldY = document.getElementById(e.target.id).style.top	x = window.event.clientX-parseInt(oldX);	y = window.event.clientY-parseInt(oldY);	document.getElementById(e.target.id).style.zIndex = 0;	document.getElementById(e.target.id).ondragover = '';}function moving(e){	document.getElementById(e.target.id).style.left = (window.event.clientX-x)+&quot;px&quot;;    document.getElementById(e.target.id).style.top = (window.event.clientY-y)+&quot;px&quot;;}function movingEnd(e){	document.getElementById(e.target.id).style.left = oldX;	document.getElementById(e.target.id).style.top = oldY;	document.getElementById(e.target.id).style.zIndex = 1;	document.getElementById(e.target.id).ondragover = moveIn;}function moveIn(e){	if(newPos(window.event.clientX-x)==parseInt(document.getElementById(e.target.id).style.left)&amp;&amp;	   newPos(window.event.clientY-y)==parseInt(document.getElementById(e.target.id).style.top)){		document.getElementById(e.target.id).style.left = oldX;		document.getElementById(e.target.id).style.top = oldY;		oldX = newPos(window.event.clientX-x) + &quot;px&quot;;		oldY = newPos(window.event.clientY-y) + &quot;px&quot;;	}}color = new Array('#7ff', '#f7f', '#ff7', '#f77', '#7f7', '#77f', '#777', '#eee');for(i=0;i&lt;5;i++){	for(j=0;j&lt;5;j++){		var div = document.createElement(&quot;div&quot;);		div.className = 'bead';		document.getElementById('thepad').appendChild(div);		div.id = i*5+j;		div.setAttribute('draggable', true);		div.style.top = beadWH*i + &quot;px&quot;;		div.style.left = beadWH*j + &quot;px&quot;;		div.style.background = color[Math.floor(Math.random()*color.length)];		div.style.zIndex = 1;		div.ondragstart = movingStart;		div.ondrag = moving;		div.ondragend = movingEnd;		div.ondragover = moveIn;	}}&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+事實上，透過拖放操作，還可以達成許多華麗的效果，
+不過現在已經有很多包裝好的 plugin，能讓我們方便地進行撰寫，所以此處就不繼續介紹這些效果。
+</p>
+
+</blockquote>
+</body></html>

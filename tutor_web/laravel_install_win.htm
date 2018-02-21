@@ -1,0 +1,121 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushXml.js"></script>
+	<script type="text/javascript" src="shBrushMine.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	﻿</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+本篇內容將介紹如何安裝 Laravel Framework。
+以下的說明以 Windows 7 為例，並假設已安裝過 XAMPP。
+</p>
+
+<p>
+Laravel 使用 Composer 這個工具來管理 PHP 的依賴性，因此，我們首先要安裝 Composer。
+Windows 的使用者，可以到 <a href="https://getcomposer.org/download/">https://getcomposer.org/download/</a> 下載 Windows 的安裝程式來進行。
+開始安裝的提示畫面如下：
+</p>
+<center>
+<img src="pics/composer01.png" />
+</center>
+
+
+<p>
+詢問是否需要滑鼠右鍵選單開啟的功能，此處以預設的"否"進行即可：
+</p>
+<center>
+<img src="pics/composer02.png" />
+</center>
+
+<p>
+指定 php.exe 的路徑，如果你是安裝 XAMPP 組合包，那應該會與圖中相同：
+</p>
+<center>
+<img src="pics/composer03.png" />
+</center>
+
+<p>
+安裝設定確認：
+</p>
+<center>
+<img src="pics/composer04.png" />
+</center>
+
+<p>
+安裝時會從網路下載一些檔案，此為下載結束後的畫面，
+內容是告訴你環境變數 PATH 已經設定，不過目前開啟的視窗可能不會載入變更，
+也許會需要開啟新的命令視窗，甚至重新登入：
+</p>
+<center>
+<img src="pics/composer05.png" />
+</center>
+
+<p>
+Compoer 安裝完成：
+</p>
+<center>
+<img src="pics/composer06.png" />
+</center>
+
+<p>
+接下來要開始安裝 Laravel，請開啟命令提示字元視窗，
+輸入「composer global require "laravel/installer=~1.1"」並等待完成。
+此為完成後的畫面：
+</p>
+<center>
+<img src="pics/laravel01.png" />
+</center>
+
+<p>
+接下來，請把"C:\Users\geniusturtle\AppData\Roaming\Composer\vendor\bin"加到 Path 環境變數當中。
+(請記得換成自己的帳號！如果你自訂了安裝路徑也記得要更換目錄。)
+</p>
+
+<p>
+我們現在可以開始建立一個新專案。
+你可以找一個想要放置專案的目錄(此例為D:\)，
+開啟命令提示字元，輸入「laravel new 專案名稱」來進行，
+這個指令會幫你在該目錄下建立一個名稱是剛才訂立的專案名稱的資料夾，
+裡面會包含 Laravel Framework 的基本架構。
+下圖是完成後的畫面，專案名稱使用 laravelTest：
+</p>
+<center>
+<img src="pics/laravel02.png" />
+</center>
+
+<p>
+目錄建立完成後，請在 Apache 的設定檔(httpd.conf)裡面，
+加入一個指向"專案名稱\public"的資料夾，例如以下：
+<pre class="brush: html">Alias /laravelTest &quot;D:\laravelTest\public&quot;
+&lt;Directory &quot;D:\laravelTest\public&quot;&gt;
+    Options Indexes MultiViews
+    AllowOverride All
+    Require all granted
+&lt;/Directory&gt;</pre><br />
+</p>
+
+<p>
+若是設定正確，則以上述方式為例時，在瀏覽器網址列輸入"http://localhost/laravelTest"，
+就會看到以下畫面(如果出現 403 forbidden，
+請在 public 資料夾當中的 .htaccess 加入"Options +FollowSymLinks")：
+</p>
+<center>
+<img src="pics/laravel03.png" />
+</center>
+
+</blockquote>
+</body></html>

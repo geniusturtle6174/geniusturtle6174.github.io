@@ -1,0 +1,129 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushXml.js"></script>
+	<script type="text/javascript" src="shBrushMine.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	﻿</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+Damn Vulnerable Web App (DVWA) 是一個基於 PHP 和 MySQL 實作的 web 應用。
+如同它的名字一樣，這是一個充滿漏洞的應用，
+因為這個應用的主要目標，就是幫助 web 程式設計師了解安全性的問題。
+</p>
+
+<p>
+若要安裝 DVWA，請到 <a href="http://www.dvwa.co.uk/">http://www.dvwa.co.uk/</a>，
+下載後解壓縮，並放到網頁伺服器可讀取的目錄下。
+接著，我們要修改 config/config.inc.php 中的資料庫帳密，
+裡面預設使用 root，你也可以新增一個獨特的使用者來測試。
+上述設定完成後，請用瀏覽器連線到 setup.php，
+按下"Create / Reset Database"，DVWA 就會幫你設定好測試用的資料庫。
+</p>
+
+<p>
+接著要連到 login 登入。DVWA 的文件(docs\DVWA_v1.3.pdf)中提到，預設帳密是 admin/password。
+當然因為資料庫在自己手上，所以也可以直接用 phpmyadmin 連進去看密碼。
+DVWA 將密碼用 md5 加密儲存，不過因為範例的密碼是很"常見"的密碼，
+因此也可以將密文放到網路上搜尋，或者自己嘗試，例如 gordonb 的密碼是 abc123。
+登入後，在左下方的"DVWA Security"，可以讓你調整安全層級，這裡分成 high/medium/low 三種狀況讓你測試。
+</p>
+
+<p>
+首先我們來看"Brute Force"，這裡的範例是輸入帳號密碼，
+若正確的話就會顯示歡迎訊息，否則顯示錯誤。
+在 low 層級當中，寫法是這樣的：
+<pre class="brush: htmljsphp">$user = $_GET['username'];	
+$pass = $_GET['password'];
+$pass = md5($pass);
+$qry = &quot;SELECT * FROM `users` WHERE user='$user' AND password='$pass';&quot;;
+$result = mysql_query( $qry ) or die( '&lt;pre&gt;' . mysql_error() . '&lt;/pre&gt;' );
+
+if( $result &amp;&amp; mysql_num_rows( $result ) == 1 ) {
+	// ...
+}</pre><br />
+很明顯的，雖然密碼是加密過才送進去比對，但是 $user 可以被 SQL injection，
+各位可以用帳號為「admin' -- 」(請注意尾巴有空白)，搭配隨意密碼來測試。
+而 medium 或 high 的寫法，就需要用到暴力法破解。
+</p>
+
+<p>
+接著是"Command Execution"，這裡的範例是輸入 IP，網頁會幫你顯示 ping 指令的結果。
+Low 層級當中對輸入沒有做任何過濾，因此你可以使用「127.0.0.1 &amp;&amp; dir D:\」之類的指令；
+medium 層級當中，將用以區隔指令的"&amp;&amp;"和";"(for Linux)過濾掉，
+但仍可以用「127.0.0.1 | dir D:\」來繞過；
+high 層級則僅允許字串用"."分隔後洽有四個數字。
+</p>
+
+<p>
+CSRF 的全名是，Cross Site Request Forgery，跨站請求偽造，
+DVWA 使用的範例是變更密碼，參數使用 GET 傳遞。
+Low/medium 層級當中沒有驗證舊密碼，因此若提供一個惡意連結，
+誘使他人在登入狀態下進入，就可以任意變更他人密碼。
+(比較"正統"的玩法，是仿造一個表單，修改 action 的值。)
+</p>
+
+<p>
+File Inclusion 顧名思義就是含括檔案。
+DVWA 的範例使用 include 函式，讓使用者決定含括哪個檔案。
+Low/medium 層級當中分別是沒有設防，和僅擋掉無關緊要的字串，
+因此仍能任意檢視伺服端的任何檔案；
+high 層級則使用白名單防禦。
+</p>
+
+<p>
+SQL Injection 的範例是輸入使用者編號後顯示資料。
+Low 層級沒有做任何防禦，且會把查詢到的所有結果顯示出來。
+我們可以嘗試以下輸入：
+<ul>
+	<li>「1」：這是正常範例，顯示編號 1 的使用者資料</li>
+	<li>「1' or '1'='1」：會讓 WHERE 的條件變為「user_id = '<span style="color:red">1' or '1'='1'</span>」，
+		因此會顯示所有資料。</li>
+	<li>「0' union select 123,password from users -- 」：列出所有密碼(密文)，當然在此方法中，資料表和欄位名稱必須是已知。</li>
+	<li>「0' union select 123,user() -- 」：user() 是 MySQL 當中，顯示目前進行連線的使用者的方法。</li>
+	<li>「0' union select TABLE_SCHEMA,TABLE_NAME from information_schema.tables WHERE TABLE_SCHEMA='dvwa' -- 」：
+		information_schema 是 MySQL 中用來存放表格資訊的資料庫，
+		此語句顧名思義是撈出表格名稱。</li>
+	<li>「0' union select TABLE_NAME,COLUMN_NAME from information_schema.COLUMNS WHERE TABLE_SCHEMA='dvwa' -- 」：
+		依此類推，此語句會顯示出表格名稱和欄位名稱。</li>
+</ul><br/>
+至於 medium 層級，雖然進行了 mysql_real_escape_string，
+但是由於 sql 語句沒有單引號，所以將以上範例進行簡單代換後，依然可以使用。
+</p>
+
+<p>
+檔案上傳方面，low 層級沒有任何防禦，可以任意上傳 php 檔案，如果再搭配前面的 File Inclusion，
+則即使上傳後的位置不在網頁伺服器可讀取的範圍內，也可以經由 include 被當作 php 執行；
+medium 層級則是使用 MIME type 來驗證，但用 tamper data 很容易就可以繞過。
+</p>
+
+<p>
+關於 XSS reflected 方面，low 層級沒有任何防禦，因此可以輸入任意的 html 或 JavaScript 片段；
+medium 層級將「&lt;script&gt;」標籤刪除，
+但依然可以用「&lt;script &gt;alert('hi');&lt;/script &gt;」來繞過。
+(較新版的 Chrome 預設會擋掉 XSS，此範例可能需要用 Firefox 或 IE 來測試)
+</p>
+
+<p>
+最後是 XSS stored，low 層級除了 SQL injection 跳脫引號等字元以外，沒有任何防禦，
+因此仍然可以輸入幾乎是任意的 html 或 JavaScript 片段，
+例如「&lt;a href=javascript:alert(1)&gt;xxxxx&lt;/a&gt;」；
+medium 層級在留言欄位做了適當的防禦，但仍然很容易修改名稱欄位的長度限制，將程式碼注入其中。
+(較新版的 Chrome 預設會擋掉 XSS，此範例也可能需要用 Firefox 或 IE 來測試)
+</p>
+
+</blockquote>
+</body></html>

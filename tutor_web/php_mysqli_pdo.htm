@@ -1,0 +1,96 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushXml.js"></script>
+	<script type="text/javascript" src="shBrushMine.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	﻿</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+MySQLi 是 MySQL 針對 PHP 所設計的擴充模組，其中的 i 是 imporved 的意思。
+PHP 官方強烈建議，若是使用 MySQL 4.1.3 或之後的版本，請使用 mysqli 的擴充。
+其最顯而易見的優點，就是"prepared statement"的使用，
+讓設計者可以比較容易處理 SQL injection 的問題。
+不過我們仍然先從簡單的範例開始看起，
+以下是排行榜資料顯示的範例，只是改用 mysqli 來連線：
+<pre class="brush: htmljsphp">﻿&lt;?phpinclude(&quot;mysqliInc.php&quot;);?&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;table border=&quot;1&quot;&gt;	&lt;tr&gt;		&lt;th&gt;資料序號&lt;/th&gt;		&lt;th&gt;當日排名&lt;/th&gt;		&lt;th&gt;前日排名&lt;/th&gt;		&lt;th&gt;歌曲名稱&lt;/th&gt;		&lt;th&gt;演 唱 者&lt;/th&gt;	&lt;/tr&gt;	&lt;?php		$result = mysqli_query($link, &quot;SELECT * from songrank&quot;);		while($row=mysqli_fetch_array($result)){			echo &quot;&lt;tr&gt;&lt;td&gt;&quot;.$row['ssn'].&quot;&lt;/td&gt;&quot;;			echo &quot;&lt;td&gt;&quot;.$row['thisRank'].&quot;&lt;/td&gt;&quot;;			echo &quot;&lt;td&gt;&quot;.$row['prevRank'].&quot;&lt;/td&gt;&quot;;			echo &quot;&lt;td&gt;&quot;.$row['songName'].&quot;&lt;/td&gt;&quot;;			echo &quot;&lt;td&gt;&quot;.$row['singerName'].&quot;&lt;/td&gt;&lt;tr&gt;&quot;;		}		mysqli_free_result($result);		mysqli_close($link);	?&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+其中，mysqliInc.php 的內容如下
+<pre class="brush: htmljsphp">﻿&lt;?php$db_server = &quot;localhost&quot;;$db_user = &quot;abcd&quot;;$db_passwd = &quot;1234&quot;;$db_name = &quot;wxyz&quot;;$link = @mysqli_connect($db_server, $db_user, $db_passwd, $db_name);if(!$link){	die('無法對資料庫連線');}mysqli_query($link, &quot;SET NAMES utf8&quot;);?&gt;</pre>
+</p>
+
+<p>
+若想使用"prepared statement"，則有幾個基本步驟：
+<ol>
+	<li>預備：串出 sql 字串，但是把原本條件值的地方用問號取代，</li>
+	<li>綁定參數，此時必須同時指定型別，例如 i 為整數，d 為浮點數，s 為字串。</li>
+	<li>執行與取出結果。</li>
+</ol><br/>
+首先是用於 select 的範例，這個範例可以讓你選出當日排名在特定值之前的資料：
+<pre class="brush: htmljsphp">﻿&lt;?phpinclude(&quot;mysqliInc.php&quot;);?&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form action=&quot;php_mysqli_showRankTable_prepare.php&quot; method=&quot;post&quot;&gt;	&lt;input type=&quot;text&quot; name=&quot;maxrank&quot; placeholder=&quot;請輸入排名值&quot; value=&quot;&quot;&gt;	&lt;input type=&quot;submit&quot;&gt;&lt;/form&gt;&lt;table border=&quot;1&quot;&gt;	&lt;tr&gt;		&lt;th&gt;當日排名&lt;/th&gt;		&lt;th&gt;歌曲名稱&lt;/th&gt;		&lt;th&gt;演 唱 者&lt;/th&gt;	&lt;/tr&gt;	&lt;?php		$mr = (isset($_POST['maxrank'])&amp;&amp;$_POST['maxrank']!='')?$_POST['maxrank']:50;		$sql = &quot;SELECT thisRank,songName,singerName from songrank WHERE thisRank &lt;= ?&quot;;		$stmt = mysqli_prepare($link, $sql);		mysqli_stmt_bind_param($stmt, 'd', $mr);		mysqli_stmt_execute($stmt);		mysqli_stmt_bind_result($stmt, $row['thisRank'], $row['songName'], $row['singerName']);		while(mysqli_stmt_fetch($stmt)){			echo &quot;&lt;tr&gt;&lt;td&gt;&quot;.$row['thisRank'].&quot;&lt;/td&gt;&quot;;			echo &quot;&lt;td&gt;&quot;.$row['songName'].&quot;&lt;/td&gt;&quot;;			echo &quot;&lt;td&gt;&quot;.$row['singerName'].&quot;&lt;/td&gt;&lt;tr&gt;&quot;;		}	?&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+上述範例的寫法稱為 Procedural style，但也可以使用物件的風格(Object oriented style)來撰寫程式碼：
+<pre class="brush: htmljsphp">﻿&lt;?phpinclude(&quot;mysqliInc_obj.php&quot;);?&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form action=&quot;php_mysqli_showRankTable_prepare_obj.php&quot; method=&quot;post&quot;&gt;	&lt;input type=&quot;text&quot; name=&quot;maxrank&quot; placeholder=&quot;請輸入排名值&quot; value=&quot;&quot;&gt;	&lt;input type=&quot;submit&quot;&gt;&lt;/form&gt;&lt;table border=&quot;1&quot;&gt;	&lt;tr&gt;		&lt;th&gt;當日排名&lt;/th&gt;		&lt;th&gt;歌曲名稱&lt;/th&gt;		&lt;th&gt;演 唱 者&lt;/th&gt;	&lt;/tr&gt;	&lt;?php		$mr = (isset($_POST['maxrank'])&amp;&amp;$_POST['maxrank']!='')?$_POST['maxrank']:50;		$sql = &quot;SELECT thisRank,songName,singerName from songrank WHERE thisRank &lt;= ?&quot;;		$stmt = $link-&gt;prepare($sql);		$stmt-&gt;bind_param('d', $mr);		$stmt-&gt;execute();		$stmt-&gt;bind_result($row['thisRank'], $row['songName'], $row['singerName']);		while($stmt-&gt;fetch()){			echo &quot;&lt;tr&gt;&lt;td&gt;&quot;.$row['thisRank'].&quot;&lt;/td&gt;&quot;;			echo &quot;&lt;td&gt;&quot;.$row['songName'].&quot;&lt;/td&gt;&quot;;			echo &quot;&lt;td&gt;&quot;.$row['singerName'].&quot;&lt;/td&gt;&lt;tr&gt;&quot;;		}	?&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+若要將資料庫線方式也更換為 Object oriented style，則可參照以下範例：
+<pre class="brush: htmljsphp">&lt;?php$db_server = &quot;localhost&quot;;$db_user = &quot;abcd&quot;;$db_passwd = &quot;1234&quot;;$db_name = &quot;wxyz&quot;;$link = new mysqli($db_server, $db_user, $db_passwd, $db_name);if(!$link){	die('無法對資料庫連線');}$link-&gt;query(&quot;SET NAMES utf8&quot;);?&gt;</pre>
+</p>
+
+<p>
+在上面的幾個範例當中，如果 SQL 語句是"SELECT * FROM ..."，
+則在 bind_result 時會有一長串參數，並且需要知道欄位順序。
+此時，我們可以用 mysqli_stmt_result_metadata、mysqli_fetch_field、call_user_func_array 的組合來處理：
+<pre class="brush: htmljsphp">﻿&lt;?phpinclude(&quot;mysqliInc.php&quot;);?&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form action=&quot;php_mysqli_showRankTable_prepare_selstar.php&quot; method=&quot;post&quot;&gt;	&lt;input type=&quot;text&quot; name=&quot;maxrank&quot; placeholder=&quot;請輸入排名值&quot; value=&quot;&quot;&gt;	&lt;input type=&quot;submit&quot;&gt;&lt;/form&gt;&lt;table border=&quot;1&quot;&gt;	&lt;tr&gt;		&lt;th&gt;資料序號&lt;/th&gt;		&lt;th&gt;當日排名&lt;/th&gt;		&lt;th&gt;前日排名&lt;/th&gt;		&lt;th&gt;歌曲名稱&lt;/th&gt;		&lt;th&gt;演 唱 者&lt;/th&gt;	&lt;/tr&gt;	&lt;?php		$mr = (isset($_POST['maxrank'])&amp;&amp;$_POST['maxrank']!='')?$_POST['maxrank']:50;		$sql = &quot;SELECT * from songrank WHERE thisRank &lt;= ?&quot;;		$stmt = mysqli_prepare($link, $sql);		mysqli_stmt_bind_param($stmt, 'd', $mr);		mysqli_stmt_execute($stmt);		$meta = mysqli_stmt_result_metadata($stmt);		while($field=mysqli_fetch_field($meta)){			$params[] = &amp;$row[$field-&gt;name];		}		call_user_func_array(array($stmt, 'bind_result'), $params);		while(mysqli_stmt_fetch($stmt)){			echo &quot;&lt;tr&gt;&lt;td&gt;&quot;.$row['ssn'].&quot;&lt;/td&gt;&quot;;			echo &quot;&lt;td&gt;&quot;.$row['thisRank'].&quot;&lt;/td&gt;&quot;;			echo &quot;&lt;td&gt;&quot;.$row['prevRank'].&quot;&lt;/td&gt;&quot;;			echo &quot;&lt;td&gt;&quot;.$row['songName'].&quot;&lt;/td&gt;&quot;;			echo &quot;&lt;td&gt;&quot;.$row['singerName'].&quot;&lt;/td&gt;&lt;tr&gt;&quot;;		}	?&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+接著是匿名留言版的範例，將 prepared statement 用於 insert 敘述
+(此處混用了 Procedural style 和 Object oriented style，不過並不是很好的習慣)：
+<pre class="brush: htmljsphp">﻿&lt;?phpinclude(&quot;mysqliInc.php&quot;);function getIp(){	return $_SERVER['REMOTE_ADDR'];}function showMsg($row){	$nn = htmlspecialchars($row['nickName']);	$msg = htmlspecialchars($row['msgBody']);	$msg = str_replace(&quot;\n&quot;, &quot;&lt;br/&gt;&quot;, $msg);	echo &quot;&lt;table border=\&quot;1\&quot;&gt;&lt;tr&gt;&quot;;	echo &quot;&lt;td&gt;留言人: &quot;.$nn.&quot;&lt;/td&gt;&quot;;	echo &quot;&lt;td&gt;時間: &quot;.$row['time'].&quot;&lt;/td&gt;&quot;;	echo &quot;&lt;td&gt;位置: &quot;.$row['ip'].&quot;&lt;/td&gt;&lt;/tr&gt;&quot;;	echo &quot;&lt;tr&gt;&lt;td colspan=\&quot;3\&quot;&gt;留言內容:&lt;br/&gt;&quot;.$msg.&quot;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;br/&gt;&quot;;}// 如果有留言，則加入之if(isset($_POST['nickName']) &amp;&amp; isset($_POST['msgBody']) &amp;&amp; $_POST['nickName']!='' &amp;&amp; $_POST['msgBody']!=''){	$sql = &quot;INSERT INTO msgboard (nickName, time, ip, msgBody) VALUES (?, CURRENT_TIMESTAMP, ?, ?)&quot;;	$stmt = $mysqli-&gt;prepare($sql);	$stmt-&gt;bind_param('sss', $_POST['nickName'], getIp(), $_POST['msgBody']);	$stmt-&gt;execute();	echo '&lt;meta http-equiv=REFRESH CONTENT=0;url=php_msgBoard.php&gt;';}?&gt;&lt;html&gt;&lt;head&gt;&lt;style&gt;textarea{vertical-align:top}&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form action=&quot;php_mysqli_msgBoard.php&quot; method=&quot;post&quot;&gt;	綽號：&lt;input type=&quot;text&quot; name=&quot;nickName&quot;&gt;&lt;br&gt;	內容：&lt;textarea name=&quot;msgBody&quot;&gt;&lt;/textarea&gt;&lt;br&gt;	&lt;input type=&quot;submit&quot; value=&quot;送出&quot;&gt;&lt;/form&gt;&lt;hr&gt;&lt;?php	$result = mysqli_query($link, &quot;SELECT * from msgboard&quot;);	while($row=mysqli_fetch_array($result)){		showMsg($row);	}?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+PDO 則是 PHP Data Object 的意思，它是一個抽象的方式，
+所以若是後端需要更換資料庫，則在程式碼上的修改會花比較少的功夫。
+較新版本的 php 設定檔已預設開啟 PDO 功能，若使用較舊版的 php，例如 AppServ 附帶的版本，
+則需要對 php.ini 先進行一些修改(設定完成後，重新啟動 Apache，應該就可以開始測試)：
+<ul>
+	<li>extension_dir 設定，例如 "C:/AppServ\php5\ext"</li>
+	<li>找到 Dynamic Extensions，將 php_pdo_*.dll 取消註解</li>
+</ul><br/>
+我們再次使用歌曲排行榜的範例，並直接使用 Object oriented style。
+首先仍然是直接列出全部資料的狀況：
+<pre class="brush: htmljsphp">﻿&lt;?phpinclude(&quot;pdoInc.php&quot;);?&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;table border=&quot;1&quot;&gt;	&lt;tr&gt;		&lt;th&gt;資料序號&lt;/th&gt;		&lt;th&gt;當日排名&lt;/th&gt;		&lt;th&gt;前日排名&lt;/th&gt;		&lt;th&gt;歌曲名稱&lt;/th&gt;		&lt;th&gt;演 唱 者&lt;/th&gt;	&lt;/tr&gt;	&lt;?php		$sql = &quot;SELECT * from songrank&quot;;		$sth = $dbh-&gt;query($sql);		while($row=$sth-&gt;fetch(PDO::FETCH_ASSOC)){			echo &quot;&lt;tr&gt;&lt;td&gt;&quot;.$row['ssn'].&quot;&lt;/td&gt;&quot;;			echo &quot;&lt;td&gt;&quot;.$row['thisRank'].&quot;&lt;/td&gt;&quot;;			echo &quot;&lt;td&gt;&quot;.$row['prevRank'].&quot;&lt;/td&gt;&quot;;			echo &quot;&lt;td&gt;&quot;.$row['songName'].&quot;&lt;/td&gt;&quot;;			echo &quot;&lt;td&gt;&quot;.$row['singerName'].&quot;&lt;/td&gt;&lt;/tr&gt;&quot;;		}	?&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+其中，pdoInc.php 的內容如下
+<pre class="brush: htmljsphp">﻿&lt;?php$db_server = &quot;localhost&quot;;$db_user = &quot;abcd&quot;;$db_passwd = &quot;1234&quot;;$db_name = &quot;wxyx&quot;;$dsn = &quot;mysql:host=$db_server;dbname=$db_name&quot;;$dbh = new PDO($dsn, $db_user, $db_passwd);$dbh-&gt;exec(&quot;SET NAMES utf8&quot;);?&gt;</pre>
+在上述範例中，PDO 的 query 方法，會回傳對資料庫的查詢結果，故適用於取得資料的 select 敘述；
+而 exec 方法則會回傳影響到的資料筆數，因此可以用於 insert、update、delete 敘述。
+PDO::FETCH_ASSOC 則代表抓取出來的資料是 assocciative array，
+另外尚有 PDO::FETCH_NUM (indexed array)、
+PDO::FETCH_BOTH (indexed 與 assocciative 皆有，是預設值) 等可以選擇。
+</p>
+
+<p>
+接著是 prepared statement 的做法，其中在 execute 方法指定"?"代表的參數時，必須使用陣列的形式傳入：
+<pre class="brush: htmljsphp">﻿&lt;?phpinclude(&quot;pdoInc.php&quot;);?&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form action=&quot;php_pdo_showRankTable_prepare_selstar.php&quot; method=&quot;post&quot;&gt;	&lt;input type=&quot;text&quot; name=&quot;maxrank&quot; placeholder=&quot;請輸入排名值&quot; value=&quot;&quot;&gt;	&lt;input type=&quot;submit&quot;&gt;&lt;/form&gt;&lt;table border=&quot;1&quot;&gt;	&lt;tr&gt;		&lt;th&gt;資料序號&lt;/th&gt;		&lt;th&gt;當日排名&lt;/th&gt;		&lt;th&gt;前日排名&lt;/th&gt;		&lt;th&gt;歌曲名稱&lt;/th&gt;		&lt;th&gt;演 唱 者&lt;/th&gt;	&lt;/tr&gt;	&lt;?php		$mr = (isset($_POST['maxrank'])&amp;&amp;$_POST['maxrank']!='')?$_POST['maxrank']:50;		$sth = $dbh-&gt;prepare('SELECT * FROM songrank WHERE thisRank &lt; ?');		$sth-&gt;execute(array($mr));		while($row=$sth-&gt;fetch(PDO::FETCH_ASSOC)){			echo &quot;&lt;tr&gt;&lt;td&gt;&quot;.$row['ssn'].&quot;&lt;/td&gt;&quot;;			echo &quot;&lt;td&gt;&quot;.$row['thisRank'].&quot;&lt;/td&gt;&quot;;			echo &quot;&lt;td&gt;&quot;.$row['prevRank'].&quot;&lt;/td&gt;&quot;;			echo &quot;&lt;td&gt;&quot;.$row['songName'].&quot;&lt;/td&gt;&quot;;			echo &quot;&lt;td&gt;&quot;.$row['singerName'].&quot;&lt;/td&gt;&lt;/tr&gt;&quot;;		}	?&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+不過要注意的是，在 prepared statement 當中，表格和欄位名稱不能當作參數。
+若在你的程式中，表格或欄位名稱可能來自使用者輸入時，建議使用白名單過濾，
+例如用 switch...case 敘述列出各種表格或欄位名稱的處理狀況，
+或者用 in_array 判斷輸入之名稱是否在允許的清單之列。
+</p>
+
+</blockquote>
+</body></html>

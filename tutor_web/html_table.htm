@@ -1,0 +1,55 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushXml.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	﻿</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+要在網頁中顯示表格，可以使用 table 標籤，
+並利用 tr 來幫表格新增一個 row，以及利用 td 標籤新增一個儲存格。
+這個範例，會產生一個 2-by-3 的表格
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;title&gt;&lt;/title&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ffffcc&quot;&gt;&lt;table border=&quot;1&quot;&gt;	&lt;tr&gt;		&lt;td&gt;1&lt;/td&gt;		&lt;td&gt;2&lt;/td&gt;		&lt;td&gt;3&lt;/td&gt;	&lt;/tr&gt;	&lt;tr&gt;		&lt;td&gt;4&lt;/td&gt;		&lt;td&gt;5&lt;/td&gt;		&lt;td&gt;6&lt;/td&gt;	&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br />
+其中，「border="1"」代表表格邊框的寬度是一個像素。
+</p>
+
+<p>
+可以透過下列這些屬性，來對表格的樣子進行調整：
+<ul>
+	<li>width：寬度</li>
+	<li>cellspacing：格子與格子之間的距離</li>
+	<li>cellpadding：資料到格子之間的距離</li>
+	<li>bgcolor：底色</li>
+	<li>align：與段落 (p) 的 align 相同</li>
+</ul>
+<br />
+以下展示其中幾個：
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;title&gt;&lt;/title&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ffffcc&quot;&gt;&lt;table border=&quot;1&quot; align=&quot;center&quot; cellspacing=&quot;20&quot; cellpadding=&quot;50&quot;&gt;	&lt;tr&gt;		&lt;td&gt;1&lt;/td&gt;		&lt;td&gt;2&lt;/td&gt;		&lt;td&gt;3&lt;/td&gt;	&lt;/tr&gt;	&lt;tr&gt;		&lt;td&gt;4&lt;/td&gt;		&lt;td&gt;5&lt;/td&gt;		&lt;td&gt;6&lt;/td&gt;	&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+在 td 標籤中，可以透過 rowspan 或 colspan 屬性，來合併儲存格：
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;title&gt;&lt;/title&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ffffcc&quot;&gt;&lt;table border=&quot;1&quot; align=&quot;center&quot;&gt;	&lt;tr&gt;		&lt;td&gt;1&lt;/td&gt;		&lt;td colspan=&quot;2&quot;&gt;2&lt;/td&gt;	&lt;/tr&gt;	&lt;tr&gt;		&lt;td&gt;4&lt;/td&gt;		&lt;td rowspan=&quot;2&quot;&gt;5&lt;/td&gt;		&lt;td&gt;6&lt;/td&gt;	&lt;/tr&gt;	&lt;tr&gt;		&lt;td&gt;7&lt;/td&gt;		&lt;td&gt;8&lt;/td&gt;	&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+嘗試看看，下列語法會產生出怎樣的合併方式？
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;title&gt;&lt;/title&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ffffcc&quot;&gt;&lt;table border=&quot;1&quot; align=&quot;center&quot; cellspacing=&quot;20&quot; cellpadding=&quot;50&quot;&gt;	&lt;tr&gt;		&lt;td rowspan=&quot;2&quot;&gt;1&lt;/td&gt;		&lt;td colspan=&quot;2&quot;&gt;2&lt;/td&gt;	&lt;/tr&gt;	&lt;tr&gt;		&lt;td&gt;3&lt;/td&gt;		&lt;td rowspan=&quot;2&quot;&gt;4&lt;/td&gt;	&lt;/tr&gt;	&lt;tr&gt;		&lt;td colspan=&quot;2&quot;&gt;5&lt;/td&gt;	&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+</blockquote>
+</body></html>

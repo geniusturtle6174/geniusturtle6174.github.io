@@ -1,0 +1,170 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushSql.js"></script>
+	<script type="text/javascript" src="shBrushMine.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	﻿</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+於本篇中，我們將利用 phpmyadmin 來對 MySQL 資料庫進行一些操作。
+首先，連線到「http://localhost/phpmyadmin」，並用之前設定好的密碼登入(帳號是"root")。
+由於若將 php 程式用 root 帳號來連線，在碰到安全性上的問題時，後果會比較嚴重，
+所以我們要新創一個使用者。請點選「權限」→「新增使用者」來進行，應該會出現如下的畫面：
+</p>
+<center>
+<img src="pics/sql01.png" />
+</center>
+
+<p>
+其中，關於登入資訊的部分，我們可以：
+<ul>
+	<li>取一個自己的使用者名稱(不分大小寫，此處以"mytest"為例)</li>
+	<li>主機請改成"本地"，代表 php 程式要跟資料庫在同一台電腦才可以連線</li>
+	<li>進行設定密碼與確認密碼</li>
+</ul>
+</p>
+
+<p>
+"Database for user"則代表是否要建立資料庫 (Database)，
+三個選項依序的意思如下(本篇以選項二進行示範)：
+<ul>
+	<li>None: 不建立資料庫</li>
+	<li>Create database with same name and grant all privileges:
+		建立一個與使用者名稱相同的資料庫，並賦予所有權限</li>
+	<li>Grant all privileges on wildcard name (username\_%):
+		把現有的同名資料庫讓該使用者操作</li>
+</ul>
+</p>
+
+<p>
+"整體權限"的部分，代表對於其他資料庫的操作權限。
+如果這個帳號只是給網頁程式使用，則建議全部都不要勾選。
+</p>
+
+<p>
+接下來，我們要建立資料表 (Table)。
+事實上，資料庫裡面會包含一或多張資料表，
+每張資料表則由一或多筆記錄所組成。
+例如，我們可以建立以下的資料表(節錄自 KKBOX 某天之排行榜)：
+<table class="slide" align=center>
+	<tr>
+		<th class="slide">資料序號</th>
+		<th class="slide">當日排名</th>
+		<th class="slide">前日排名</th>
+		<th class="slide">歌曲名稱</th>
+		<th class="slide">演 唱 者</th>
+	</tr>
+	<tr><!--平-->
+		<td class="slide">1</td>
+		<td class="slide">1</td>
+		<td class="slide">1</td>
+		<td class="slide">修煉愛情</td>
+		<td class="slide">林俊傑</td>
+	</tr>
+	<tr><!--進-->
+		<td class="slide">2</td>
+		<td class="slide">11</td>
+		<td class="slide">12</td>
+		<td class="slide">存在的力量</td>
+		<td class="slide">朱俐靜</td>
+	</tr>
+	<tr><!--平-->
+		<td class="slide">3</td>
+		<td class="slide">17</td>
+		<td class="slide">17</td>
+		<td class="slide">Marry me</td>
+		<td class="slide">蕭敬騰</td>
+	</tr>
+	<tr><!--退-->
+		<td class="slide">4</td>
+		<td class="slide">46</td>
+		<td class="slide">42</td>
+		<td class="slide">好難得</td>
+		<td class="slide">丁噹</td>
+	</tr>
+	<tr><!--退，歌手重複-->
+		<td class="slide">5</td>
+		<td class="slide">60</td>
+		<td class="slide">57</td>
+		<td class="slide">我會在你身邊</td>
+		<td class="slide">朱俐靜</td>
+	</tr>
+	<tr><!--進，歌手重複-->
+		<td class="slide">6</td>
+		<td class="slide">63</td>
+		<td class="slide">64</td>
+		<td class="slide">飛機</td>
+		<td class="slide">林俊傑</td>
+	</tr>
+	<tr><!--進，歌手重複-->
+		<td class="slide">7</td>
+		<td class="slide">98</td>
+		<td class="slide">99</td>
+		<td class="slide">只能想念你</td>
+		<td class="slide">蕭敬騰</td>
+	</tr>
+</table><br/>
+這個資料表包含五個欄位，七筆記錄。
+每個資料表可以選定一個欄位做為主索引(primary key)，主索引的欄位值不能重複。
+例如，若有一張資料表記錄了同學的學號姓名，則可以選定學號做為主索引。
+</p>
+
+<p>
+上述範例的其中三個欄位是數字，另外兩個是文字。
+所以我們建立一個名為"songrank"的資料表，包含五個欄位：
+<center>
+<img src="pics/sql02.png" />
+</center>
+</p>
+
+<p>
+欄位的名稱與屬性分別設定如下：
+<center>
+<img src="pics/sql03.png" />
+</center><br/>
+其中：
+<ul>
+	<li>欄位名稱的大小寫還是沒有區別</li>
+	<li>型態的簡略說明如下</li>
+	<ul>
+		<li>CHAR: 固定長度的字串，後方會用空格補齊，長度極限是 65534 (Byte)</li>
+		<li>VARCHAR: 可變長度的字串，長度極限是 65534 (Byte)</li>
+		<li>TINYINT/SMALLINT/MEDIUMINT/INT/BIGINT: 分別佔用 1/2/3/4/8 個 Bytes</li>
+		<li>DATETIME: 以'0000-00-00 00:00:00'的格式儲存年月日時分秒</li>
+	</ul>
+	<li>如果型態是 CHAR 或 VARCHAR 之類，則需選擇長度</li>
+	<li>如果是主索引(捲軸往右拉可以勾選)，則可以將欄位設定成自動遞增</li>
+</ul>
+</p>
+
+<p>
+現在，我們可以點選「新增」，加入資料表中的記錄：
+<center>
+<img src="pics/sql04.png" />
+</center><br/>
+</p>
+
+<p>
+加入完畢後，點選「瀏覽」即可看到新增的結果。
+透過點選"輸出"，可以幫你把資料庫整個匯出備份，
+而"載入"則可載入之前存檔的資料庫，
+所以若是懶得輸入上述範例中的資料，也可以從<a href="examples/songrank.sql">這裡</a>下載，
+並點選「載入」來使用，帳號名稱不一樣也能載入。
+</p>
+
+</blockquote>
+</body></html>

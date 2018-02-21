@@ -1,0 +1,106 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushMine.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	﻿</head>
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+HTML 5 提供的網頁儲存(Web Storage)功能，跟 Cookie 一樣可以在用戶端儲存資料，
+而且依照存取範圍與生命週期的不同，又可以分為兩種：
+<ul>
+	<li>Local Storage: 來自同一個網站的網頁才可以存取，永久有效。</li>
+	<li>Session Storage: 來自同一個網站並開在同一個視窗才可存取，資料僅在關閉視窗前有效。</li>
+</ul><br/>
+在進入程式碼之前，我們先來跟 Cookie 比較一下特性：<br/><br/>
+<table  class="slide" align=center>
+	<tr>
+		<th class="slide">項目</th>
+		<th class="slide">網頁儲存</th>
+		<th class="slide">Cookie</th>
+	</tr>
+	<tr>
+		<td class="slide">生命週期</td>
+		<td class="slide">
+			<ul>
+				<li>Local Storage: 被使用者自行刪除前永久有效。</li>
+				<li>Session Storage: 關閉視窗前有效。</li>
+			</ul>
+		</td>
+		<td class="slide">預設是關閉視窗前有效，但可以設定有效期間。</td>
+	</tr>
+	<tr>
+		<td class="slide">儲存容量</td>
+		<td class="slide">
+			通常是 5 MB (5120 KB, or 5242880 Bytes)。
+		</td>
+		<td class="slide">通常是 4 KB，且最多 20 個。</td>
+	</tr>
+	<tr>
+		<td class="slide">與伺服器溝通</td>
+		<td class="slide">
+			不會自動溝通(不會自動附加在 http request 當中)。
+		</td>
+		<td class="slide">會自動溝通。</td>
+	</tr>
+	<tr>
+		<td class="slide">資料類型</td>
+		<td class="slide">
+			可以儲存物件。
+		</td>
+		<td class="slide">只能記錄字串、數值等。</td>
+	</tr>
+</table>
+</p>
+
+<p>
+Local Storage 是由 window.localStorage 物件來提供方法與屬性，
+包含如下(此處的 key，即相當於 Cookie 的 name)：
+<ul>
+	<li>length: 儲存幾筆資料。</li>
+	<li>key(i): 第 i 筆資料(由 0 開始)。</li>
+	<li>getItem(key): 把該 key 的值傳回。</li>
+	<li>setItem(key, value): 設定或更新 key/value 的資料。
+		如果超過空間限制，或功能被關閉，則會丟出 QuotaExceededError 的例外。</li>
+	<li>removeItem(key): 刪除該 key 的資料。</li>
+	<li>clear(): 刪除所有資料。</li>
+</ul>
+</p>
+
+<p>
+如果要檢測 Local Storage 是否被支援，則可直接檢查物件是否存在：
+<pre class="brush: htmljs">﻿&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;if(window.localStorage){	document.write(&quot;可以使用 Local Storage 功能&quot;);}else {	document.write(&quot;Local Storage 功能不被支援&quot;);}&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+以下範例，會展示 Local Storage 的相關操作：
+<pre class="brush: htmljs">﻿﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt; &lt;form&gt;    Key: &lt;input type=&quot;text&quot; id=&quot;localName&quot;&gt;&lt;br/&gt;    Value: &lt;input type=&quot;text&quot; id=&quot;localVal&quot;&gt;&lt;br/&gt;	    &lt;input type=&quot;button&quot; value=&quot;設定&quot;           onClick=&quot;window.localStorage.setItem(this.form.localName.value, this.form.localVal.value);&quot;&gt;		       &lt;input type=&quot;button&quot; value=&quot;刪除&quot;           onClick=&quot;window.localStorage.removeItem(this.form.localName.value)&quot;&gt;		       &lt;input type=&quot;button&quot; value=&quot;查詢&quot;           onClick=&quot;this.form.localVal.value=window.localStorage.getItem(this.form.localName.value)&quot;&gt;		   	&lt;input type=&quot;button&quot; value=&quot;清空&quot;           onClick=&quot;window.localStorage.clear()&quot;&gt;&lt;/form&gt; &lt;/body&gt;&lt;/html&gt;</pre>
+其中，windows 物件可以省略不寫，並且也可以利用陣列或屬性的方式來操作 Local Storage。
+亦即，以下幾個方式會有同樣的效果：
+<pre class="brush: htmljs">localStorage.setItem('aaa','bbb');
+localStorage.aaa = 'bbb';
+localStorage['aaa'] = 'bbb';</pre><br />
+</p>
+
+<p>
+Session Storage 的用法與 Local Storage 非常相似，
+其實只要把 window.localStorage 改成 window.sessionStorage，即可使用之。
+以下一樣是展示相關操作，但是你可以同時打開兩個範例網頁，
+以便觀察"來自同一個網站並開在同一個視窗才可存取"這件事實：
+<pre class="brush: htmljs">﻿﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt; &lt;form&gt;    Key: &lt;input type=&quot;text&quot; id=&quot;sessionName&quot;&gt;&lt;br/&gt;    Value: &lt;input type=&quot;text&quot; id=&quot;sessionVal&quot;&gt;&lt;br/&gt;	    &lt;input type=&quot;button&quot; value=&quot;設定&quot;           onClick=&quot;window.sessionStorage.setItem(this.form.sessionName.value, this.form.sessionVal.value);&quot;&gt;		       &lt;input type=&quot;button&quot; value=&quot;刪除&quot;           onClick=&quot;window.sessionStorage.removeItem(this.form.sessionName.value)&quot;&gt;		       &lt;input type=&quot;button&quot; value=&quot;查詢&quot;           onClick=&quot;this.form.sessionVal.value=window.sessionStorage.getItem(this.form.sessionName.value)&quot;&gt;		   	&lt;input type=&quot;button&quot; value=&quot;清空&quot;           onClick=&quot;window.sessionStorage.clear()&quot;&gt;&lt;/form&gt; &lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+</blockquote>
+</body></html>

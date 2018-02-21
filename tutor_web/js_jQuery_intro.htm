@@ -1,0 +1,99 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushMine.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	﻿</head>
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+jQuery 是一套 JavaScript 函式庫，透過 jQuery，
+可以用少量簡潔的程式碼，來完成物件操作、事件處理、動畫效果、AJAX 互動等事情。
+要使用 jQuery，可以先到 <a href="http://jquery.com">http://jquery.com</a> 取得最新資訊以及最新版的函式庫，
+並在網頁中包含進來即可，如下：
+<pre class="brush: htmljs">&lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.11.0.min.js&quot;&gt;&lt;/script&gt;</pre><br />
+也可以透過 Google 等網路公司提供的 CDN (Content Delivery Network) 來載入 jQuery，
+這樣做的好處是，除了不會占用自己伺服器的頻寬以外，
+如果使用者曾經造訪其他也使用相同公司 CDN 來載入的網站，就不用重新下載：
+<pre class="brush: htmljs">&lt;script src=&quot;//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js&quot;&gt;&lt;/script&gt;</pre><br />
+</p>
+
+<p>
+我們首先要知道的是如何選出要被操作的元素。
+jQuery 提供了以 CSS 語法來選取物件的選擇器：
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.11.0.min.js&quot;&gt;&lt;/script&gt;	&lt;script&gt;		function putText(){			$(&quot;#myText&quot;).val(&quot;12345&quot;);		}				function getText(){			console.log( $(&quot;#myText&quot;).val() );		}	&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;input type=&quot;text&quot; id=&quot;myText&quot;&gt;&lt;/input&gt;&lt;input type=&quot;button&quot; onClick=&quot;putText();&quot; value=&quot;新增文字&quot;&gt;&lt;input type=&quot;button&quot; onClick=&quot;getText();&quot; value=&quot;取得文字&quot;&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+在上例中，「$()」是一個函式，它會傳回一個特別的物件，
+該物件有許多方法，例如範例中的「val()」可以取得或設定表單元素的值。
+</p>
+
+<p>
+也可以一次選取很多物件，並對它們進行同樣的操作：
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.11.0.min.js&quot;&gt;&lt;/script&gt;	&lt;script&gt;		function putText(){			$(&quot;input&quot;).val(&quot;12345&quot;);		}	&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;input type=&quot;text&quot;&gt;&lt;input type=&quot;text&quot;&gt;&lt;input type=&quot;text&quot;&gt;&lt;input type=&quot;text&quot;&gt;&lt;input type=&quot;button&quot; onClick=&quot;putText();&quot; value=&quot;新增文字&quot;&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+透過 jQuery，要動態的新增元素也很簡單，甚至可以同時定義 CSS 樣式，以及事件發生時的處理方法。
+下面的範例中，使用了「$()」來建立新的元素，並同時指定各種屬性，並將元素加到網頁的尾端
+(關於加入元素的方法，稍後有比較詳細的範例)。
+jQuery 的許多方法還有一個特性，就是操作完成後會回傳同一個元素，因此可以將許多方法串接成一個「鏈」。
+如下：
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.11.0.min.js&quot;&gt;&lt;/script&gt;	&lt;script&gt;		function putElement(){			$(&quot;&lt;img&gt;&quot;,				{					src: &quot;../pics/alan.jpg&quot;,					click: function(){alert(&quot;OAO&quot;);}				}			).css(				{					border: &quot;10px dotted&quot;				}			).appendTo(&quot;body&quot;);		}	&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;input type=&quot;button&quot; onClick=&quot;putElement();&quot; value=&quot;新增元素&quot;&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+利用「$()」等 jQuery 的方法傳回的物件，稱為包裹集合，
+行為上就像是陣列，所以也有一些類似的方法來操作：
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.11.0.min.js&quot;&gt;&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;input type=&quot;text&quot; value=&quot;abc&quot;&gt;&lt;input type=&quot;text&quot; value=&quot;def&quot;&gt;&lt;input type=&quot;text&quot; value=&quot;OAO&quot;&gt;&lt;input type=&quot;text&quot; value=&quot;xyz&quot;&gt;&lt;br/&gt;&lt;script&gt;document.write(&quot;input 元素的個數: &quot; + $(&quot;input&quot;).size() + &quot;&lt;br/&gt;&quot;);document.write(&quot;get() 方法會回傳一般型式的元素: &quot; + $(&quot;input&quot;).get(2).value + &quot;&lt;br/&gt;&quot;);document.write(&quot;eq() 方法會回傳包裹集合: &quot; + $(&quot;input&quot;).eq(3).val() + &quot;&lt;br/&gt;&quot;);document.write(&quot;帶入負數時，會從尾端起算: &quot; + $(&quot;input&quot;).get(-1).value + &quot;&lt;br/&gt;&quot;);&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+對於包裹集合還有許多的操作，例如「slice()」可以取得集合的一部分，
+「each()」則相當於自己寫迴圈遍歷包裹集合：
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.11.0.min.js&quot;&gt;&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;input type=&quot;text&quot; value=&quot;A&quot;&gt;&lt;input type=&quot;text&quot; value=&quot;B&quot;&gt;&lt;input type=&quot;text&quot; value=&quot;C&quot;&gt;&lt;input type=&quot;text&quot; value=&quot;D&quot;&gt;&lt;input type=&quot;text&quot; value=&quot;E&quot;&gt;&lt;input type=&quot;text&quot; value=&quot;F&quot;&gt;&lt;input type=&quot;text&quot; value=&quot;G&quot;&gt;&lt;input type=&quot;button&quot; onclick=&quot;go();&quot; value=&quot;按我測試&quot;&gt;&lt;br/&gt;&lt;script&gt;function go(){	$(&quot;input[type=text]&quot;).slice(2,5).each(function (n){			this.value = n;		}	)}&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+利用純粹的 JavaScript 要操作元素的屬性有點麻煩，
+但是使用 jQuery，只需要知道原本的 HTML/CSS 的寫法：
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.11.0.min.js&quot;&gt;&lt;/script&gt;	&lt;script&gt;		function showFirst(){			console.log( $(&quot;img&quot;).attr(&quot;src&quot;) );		}				function setAll(){			$(&quot;img&quot;).attr(&quot;height&quot;,123);		}				function setAllMulti(){			$(&quot;img&quot;).attr({				height: 456,				width: 123,				title: &quot;OAO&quot;			});		}				function removeAll(){			$(&quot;img&quot;).removeAttr(&quot;height&quot;);		}	&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;img src=&quot;../pics/alan.jpg&quot;&gt;&lt;img src=&quot;../pics/safe_turtle.png&quot;&gt;&lt;br/&gt;&lt;input type=&quot;button&quot; value=&quot;取得集合中第一個元素的屬性&quot; onClick=&quot;showFirst()&quot;&gt;&lt;input type=&quot;button&quot; value=&quot;設定所有屬性&quot; onClick=&quot;setAll()&quot;&gt;&lt;input type=&quot;button&quot; value=&quot;一次設定多種屬性&quot; onClick=&quot;setAllMulti()&quot;&gt;&lt;input type=&quot;button&quot; value=&quot;移除屬性&quot; onClick=&quot;removeAll()&quot;&gt;&lt;p class=&quot;show&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+class 屬性比較特殊(Question: why?)，有專門的方法來處理：
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		.up{border-top: 10px dotted;}		.down{border-bottom: 10px dotted;}		.left{border-left: 10px dotted;}		.right{border-right: 10px dotted;}	&lt;/style&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.11.0.min.js&quot;&gt;&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;img src=&quot;../pics/alan.jpg&quot; class=&quot;up down left right&quot;&gt;&lt;br/&gt;&lt;input type=&quot;button&quot; value=&quot;移除 up 類別&quot; onClick=&quot;$('img').removeClass('up')&quot;&gt;&lt;input type=&quot;button&quot; value=&quot;加入 up 類別&quot; onClick=&quot;$('img').addClass('up')&quot;&gt;&lt;br/&gt;&lt;input type=&quot;button&quot; value=&quot;移除 down 類別&quot; onClick=&quot;$('img').removeClass('down')&quot;&gt;&lt;input type=&quot;button&quot; value=&quot;加入 down 類別&quot; onClick=&quot;$('img').addClass('down')&quot;&gt;&lt;br/&gt;&lt;input type=&quot;button&quot; value=&quot;移除 left 類別&quot; onClick=&quot;$('img').removeClass('left')&quot;&gt;&lt;input type=&quot;button&quot; value=&quot;加入 left 類別&quot; onClick=&quot;$('img').addClass('left')&quot;&gt;&lt;br/&gt;&lt;input type=&quot;button&quot; value=&quot;移除 right 類別&quot; onClick=&quot;$('img').removeClass('right')&quot;&gt;&lt;input type=&quot;button&quot; value=&quot;加入 right 類別&quot; onClick=&quot;$('img').addClass('right')&quot;&gt;&lt;br/&gt;利用「attr」取值的下場：&lt;script&gt;	document.write($(&quot;img&quot;).attr(&quot;class&quot;));&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+也可以在元素上儲存自訂的資料：
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.11.0.min.js&quot;&gt;&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;img src=&quot;../pics/alan.jpg&quot;&gt;&lt;br/&gt;資料名稱：&lt;input type=&quot;text&quot; id=&quot;n&quot;&gt;&lt;br/&gt;資料內容：&lt;input type=&quot;text&quot; id=&quot;v&quot;&gt;&lt;br/&gt;&lt;input type=&quot;button&quot; value=&quot;加入資料&quot; onClick=&quot;$('img').data( $('#n').val(),  $('#v').val())&quot;&gt;&lt;br/&gt;&lt;input type=&quot;button&quot; value=&quot;讀取資料&quot; onClick=&quot;alert( $('img').data( $('#n').val() ) )&quot;&gt;&lt;br/&gt;&lt;input type=&quot;button&quot; value=&quot;移除資料&quot; onClick=&quot;$('img').removeData( $('#n').val() )&quot;&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+「html」和「text」方法分別可以取得/修改 html 碼和純文字內容，以下展示修改的部分：
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.11.0.min.js&quot;&gt;&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;input type=&quot;button&quot; value=&quot;html()&quot; onClick=&quot;$('p').html('&lt;b&gt;test&lt;/b&gt;')&quot;&gt;&lt;input type=&quot;button&quot; value=&quot;text()&quot; onClick=&quot;$('p').text('test')&quot;&gt;&lt;input type=&quot;button&quot; value=&quot;text()&quot; onClick=&quot;$('p').text('&lt;b&gt;test&lt;/b&gt;')&quot;&gt;&lt;p&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+「append」、「prepend」、「before」、「after」可以用來插入元素：
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.11.0.min.js&quot;&gt;&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;input type=&quot;button&quot; value=&quot;prepend&quot; onClick=&quot;$('p').prepend('&lt;b&gt;W&lt;/b&gt;')&quot;&gt;&lt;input type=&quot;button&quot; value=&quot;append&quot; onClick=&quot;$('p').append('&lt;b&gt;X&lt;/b&gt;')&quot;&gt;&lt;input type=&quot;button&quot; value=&quot;before&quot; onClick=&quot;$('p').before('&lt;b&gt;Y&lt;/b&gt;')&quot;&gt;&lt;input type=&quot;button&quot; value=&quot;after&quot; onClick=&quot;$('p').after('&lt;b&gt;Z&lt;/b&gt;')&quot;&gt;&lt;p&gt;OAO&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+但是，如果是用物件的方式傳入，則相當於移動，有需要者可自行測試。
+</p>
+
+<p>
+「empty」可以把元素的子節點全部清空，「remove」可以把元素移除：
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.11.0.min.js&quot;&gt;&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;input type=&quot;button&quot; value=&quot;empty&quot; onClick=&quot;$('p').empty()&quot;&gt;&lt;input type=&quot;button&quot; value=&quot;remove&quot; onClick=&quot;$('p').remove()&quot;&gt;&lt;br/&gt;W&lt;p&gt;O&lt;i&gt;A&lt;/i&gt;O&lt;/p&gt;X&lt;p&gt;OAO&lt;/p&gt;Y&lt;p&gt;O&lt;b&gt;A&lt;/b&gt;O&lt;/p&gt;Z&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+</blockquote>
+</body></html>

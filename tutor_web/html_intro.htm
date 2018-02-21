@@ -1,0 +1,56 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushXml.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	﻿</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+HTML (HyperText Markup Language)照字面上翻譯為「超文字標示語言」，
+超文字(HyperText)和一般傳統文件最大的不同就是，傳統文件只能讓你循序地閱讀，
+而超文字藉由一些特殊標籤(例如連結)的協助，
+可以讓你以樹狀甚至網狀的方式(所以叫 Web)來組織你的文件。
+
+標示 (Markup) 是透過在文章中插入標籤 (Tags) 來賦予文字一些特性，
+如標題，段落，連結等等。標籤是由「小於」(&lt;)與「大於」(&gt;)這兩個符號所括住的文字，
+如果想對某段文字加上特別的意義，我們只要在前後分別加上開始與結束的標籤即可，例如：
+<pre class="brush: html">&lt;title&gt;這是標題&lt;/title&gt;</pre><br />
+HTML中，定義了許多跟文章架構、樣式等等有關的標籤，本課程將選擇其中一些來介紹。
+</p>
+
+<p>
+以下是一個網頁的基礎架構，只要將內容複製貼上到記事本內，並存成 htm 檔案，就可以看到結果：
+<pre class="brush: html">﻿&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot; &quot;http://www.w3.org/TR/html4/loose.dtd&quot;&gt;&lt;html&gt;&lt;head&gt;	&lt;title&gt;標題在這裡&lt;/title&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ffffcc&quot;&gt;	內容在這裡&lt;/body&gt;&lt;/html&gt;</pre>
+一開頭的「!DOCTYPE」並不屬於 HTML 標籤，但是它會告訴瀏覽器如何解讀以下的標籤。
+範例的解讀方式代表「HTML 4.01 Transitional」，若是 HTML 5，則為：
+<pre class="brush: html">&lt;!DOCTYPE html&gt;</pre><br />
+如果省略「!DOCTYPE」，則瀏覽器會用預設的方式解讀標籤(本課程之範例，大部分會將「!DOCTYPE」省略)。
+</p>
+
+<p>
+而在上述範例的標籤中，
+<ul>
+	<li>&lt;html&gt;，代表 HTML 網頁的開始，而 &lt;/html&gt; 則代表 HTML 網頁的結束。
+		在 HTML 網頁中，可大略分為「頭 (head)」和「身體 (body)」兩部分。</li>
+	<li>「頭」的部分是由 head 標籤所界定，大部分用於規範和整體網頁相關的資訊。</li>
+	<li>「身體」部分是由 body 標籤所界定，大部分用於擺置網頁的內容，</li>
+	<li>可以幫標籤加上屬性，例如在 body 標籤中使用 bgcolor 屬性來指定網頁的背景顏色，
+		或者使用 background 屬性來指定背景圖。</li>
+</ul>
+</p>
+
+</blockquote>
+</body></html>

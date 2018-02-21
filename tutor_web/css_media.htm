@@ -1,0 +1,63 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushXml.js"></script>
+	<script type="text/javascript" src="shBrushCss.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	﻿</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+"@media"這個 CSS 規則，在 CSS2 被稱為"media types"，
+而在 CSS3 則被稱為"media queries"，
+可以讓我們為不同的裝置定義不同的樣式。
+最常見的應用，就是讓你的網頁在不同解析度的螢幕上，呈現不同的排版，以達到較佳的視覺環境。
+</p>
+
+<p>
+一個簡單的範例如下，這個網頁的背景色會隨視窗大小改變
+(@media 通常被用於在不同螢幕大小之間變換排版，不過改變顏色的範例比較簡潔)：
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		body{background: #ccf}		@media (max-width: 500px){			body{background: #fcc}		}	&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+在這個範例中，我們可以看到 @media 的使用其實非常簡單，
+基本上就是指定某種設備屬性，在特定值範圍下使用不同樣式。
+而其中的"max-width: 500px"則代表瀏覽器寬度在最大 500px 的範圍內時，要改變的樣式。
+</p>
+
+<p>
+也可以設定稍微複雜的條件和多種規則。例如以下範例，
+在視窗寬度是 600 px 到 700 px 之間時，背景色是 #fcc (粉紅)；
+寬度是 800 px 以上時則是 #cfc (粉綠)；其餘情況則是 #ccf (粉藍)：
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		body{background: #ccf}		@media (min-width: 600px) and (max-width: 700px){			body{background: #fcc}		}		@media (min-width: 800px){			body{background: #cfc}		}	&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+關於可偵測的設備屬性還有很多，以下舉出其中一些：
+<ul>
+	<li>max-width、max-height、min-width、min-height：
+		視窗的最大、最小寬(高)度，可用於指定範圍</li>
+	<li>max-device-width、max-device-height、min-device-width、min-device-height：
+		顯示設備(例如螢幕)的最大、最小寬(高)度，可用於指定範圍</li>
+	<li>max-aspect-ratio、max-device-aspect-ratio、min-aspect-ratio、min-device-aspect-ratio：
+		視窗或顯示設備的最大、最小高:寬比值，可用於指定範圍
+		<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		body{background: #ccf;}		@media (max-aspect-ratio: 2/1){			body{background: #fcc}		}	&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</li>
+	<li>orientation：橫向(landscape)或直向(portrait)顯示
+		<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		body{background: #ccf;}		@media (orientation: landscape){			body{background: #fcc}		}	&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</li>
+</ul>
+</p>
+
+</blockquote>
+</body></html>

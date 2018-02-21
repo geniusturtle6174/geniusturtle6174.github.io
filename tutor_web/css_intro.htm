@@ -1,0 +1,65 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushXml.js"></script>
+	<script type="text/javascript" src="shBrushCss.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	﻿</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+CSS 是 Cascading Style Sheet (層疊樣式表)的縮寫，
+它可以用來讓網頁增加更多表現，使網頁原始碼更簡潔、易於維護。
+CSS 的基本語法如下：
+<pre class="brush: css">選擇器{性質一:值;性質二:值;...}</pre><br />
+選擇器代表的是這個樣式要適用的對象，後面用大括號包住你要設定的屬性和值。
+例如以下範例，可代表將超連結的底線設為沒有，顏色設為藍色：
+<pre class="brush: css">a{text-decoration:none; color:blue}</pre><br />
+</p>
+
+<p>要在網頁中加入 CSS 設定，有以下幾種方式。</p>
+
+<p>
+方法一：在 head 的範圍中加入 style 標籤。此方法的 CSS 樣式，會套用到這個頁面的每個連結。
+<pre class="brush: html">&lt;head&gt;
+	......
+	&lt;style type=&quot;text/css&quot;&gt;
+		a{text-decoration:none; color:blue}
+	&lt;/style&gt;
+	......
+&lt;/head&gt;</pre><br />
+方法二：寫在其他檔案(例如 myCss.css)，然後在 html 連結進來。
+此方法的樣式，一樣會套用至這個頁面的所有連結。
+不過，若你在其他頁面連結同樣的 CSS 檔案，則也會套用至該頁面。
+<pre class="brush: html">&lt;head&gt;
+	......
+	&lt;link rel=stylesheet type=&quot;text/css&quot; href=&quot;myCss.css&quot;&gt;
+	......
+&lt;/head&gt;</pre><br />
+其中，myCss.css 這個檔案的內容如下：
+<pre class="brush: css">a{text-decoration:none; color:blue}</pre><br />
+</p>
+
+方法三：在標籤中使用 style 屬性。此方法的樣式，只對被使用 style 屬性的標籤有效。
+<pre class="brush: html">&lt;a href=&quot;abc.htm&quot; style=&quot;text-decoration:none;color:blue&quot;&gt;</pre><br />
+</p>
+
+<p>
+一般來說，為了讓設計易於維護，採取方法二的外部呼叫，讓內容和樣式分離，是比較好的做法。
+但本篇以下部分，為了範例的呈現方便，主要將以方法一和三做示範。
+</p>
+
+</blockquote>
+</body></html>

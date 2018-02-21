@@ -1,0 +1,109 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushXml.js"></script>
+	<script type="text/javascript" src="shBrushMine.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	﻿</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+本篇要介紹基本的 Router、Controller，以及 View 的概念與使用。
+Router 的作用為依據網址列內容來呼叫不同的 Controller，Controller 處理過後傳送給 View 顯示。
+而在 Laravel 5 當中，Router、Controller，以及 View 分別位於
+app\Http\routes.php，app\Http\Controllers，以及 resources\views。
+</p>
+
+<p>
+首先我們要來建立"HelloWorld"範例。請在 routes.php 當中，加上以下程式碼：
+<pre class="brush: htmljsphp">Route::get('hello', function(){
+	return 'Hello World';
+});</pre><br />
+則若在網址列輸入 http://localhost/laravelTest/hello，就可以看見"Hello World"字樣。
+(若是出現 Internal Server Error，請在 public\.htaccess 當中，加入"RewriteBase /laravelTest")
+</p>
+
+<p>
+上述的寫法，代表不會經過 View 就直接回傳。
+如果需要比較複雜的樣式，就需要建立 View 之下的檔案。
+首先將前一段放在 routes.php 中的程式碼的內容改為以下：
+<pre class="brush: htmljsphp">Route::get('hello', function(){
+	return view('hello');
+});</pre><br />
+接著，在 resources\views 當中，新增 hello.blade.php 檔案，內容如下：
+<pre class="brush: htmljsphp">&lt;html&gt;
+&lt;head&gt;
+	&lt;title&gt;Laravel&lt;/title&gt;
+	&lt;link href='css/hello.css' rel='stylesheet' type='text/css'&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;p class='hi'&gt;Hello World&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;</pre><br />
+則一樣可經由 http://localhost/laravelTest/hello 看到"Hello World"字樣。
+而其中的 css/hello.css，則是放在 public 資料夾之下。
+日後若需要其他如圖片、JavaScript等與伺服端運算無關的靜態資源，都可以放在 public 當中。
+</p>
+
+<p>
+如果有比較複雜的伺服端運算資料要顯示，就必須透過 Controller 幫忙。
+底下要示範的是如何將 Controller 當中的資料傳遞給 view 顯示。
+首先需要將 router 改為如下：
+<pre class="brush: htmljsphp">Route::get('/hello', 'helloController@index');</pre><br />
+這段程式碼代表呼叫 helloController 中的 index 方法，
+因此，我們接著要在 Controllers 資料夾當中，新增 helloController.php，內容如下：
+<pre class="brush: htmljsphp">&lt;?php namespace App\Http\Controllers;
+class helloController extends Controller {
+	public function index()
+	{
+		$arr01 = ['a', 'b', 'c', 'd'];
+		$arr02 = ['a'=&gt;'b', 'c'=&gt;'d', 'e'=&gt;'f'];
+		$view = view('hello')-&gt;with('test01', $arr01)-&gt;with('test02', $arr02);
+		return $view;
+	}
+}</pre><br />
+其中的'test01'和'test02'，代表 view 當中對應的變數名稱。
+因此，我們再將 hello.blade.php 修改為以下，
+可以使用傳統 php 寫法，也可以使用 Laravel 模板的寫法：
+<pre class="brush: htmljsphp">&lt;html&gt;&lt;body&gt;
+&lt;?php
+foreach($test01 as $i){
+	echo $i.'&lt;br&gt;';
+}
+?&gt;
+&lt;hr&gt;
+@foreach($test02 as $key=&gt;$val)
+  {{$key}}=&gt;{{$val}}&lt;br/&gt;
+@endforeach
+&lt;/body&gt;&lt;/html&gt;</pre><br />
+</p>
+
+<p>
+參數也可以存在於網址當中，由 router 來傳遞。
+以下將示範如何將參數作為陣列的 key，來顯示其值。
+首先在 router 當中新增以下：
+<pre class="brush: htmljsphp">Route::get('/hello/{key}', 'helloController@indexWithKey');</pre><br />
+我們這次將輸入參數的狀況交由不同的方法來處理，
+因此，接著要在 helloController 當中新增一個方法，內容如下：
+<pre class="brush: htmljsphp">	public function indexWithKey($key)
+	{
+		$arr02 = ['a'=&gt;'b', 'c'=&gt;'d', 'e'=&gt;'f'];
+		$view = view('hello2')-&gt;with('val', array_key_exists($key,$arr02)?($arr02[$key]):('Not Found!!'));
+		return $view;
+	}</pre><br />
+你只要再自己新增一個 hello2 的 view (hello2.blade.php)，就可以測試這個範例。
+</p>
+
+</blockquote>
+</body></html>

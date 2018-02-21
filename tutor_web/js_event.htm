@@ -1,0 +1,123 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushXml.js"></script>
+	<script type="text/javascript" src="shBrushCss.js"></script>
+	<script type="text/javascript" src="shBrushMine.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	﻿</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<script>
+Gol_D_Roger("8"); // 顯示羅傑的書的章節對應
+</script>
+
+<p>
+在前面的篇章中，我們曾提到過「onClick」和「onMouseover」等事件。
+事實上，還有許多常見的事件，可以增加網頁的互動性，舉例如下：
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot; onLoad=&quot;alert('Hi~!')&quot; onBeforeUnload=&quot;return('bye~!')&quot;&gt;&lt;form&gt;	&lt;input type=&quot;text&quot; name=&quot;a&quot; onChange=&quot;this.form.c.value=this.form.a.value&quot;&gt;&lt;br/&gt;	&lt;input type=&quot;text&quot; name=&quot;b&quot; onKeyDown=&quot;this.form.c.value=this.form.b.value&quot;&gt;&lt;br/&gt;	&lt;input type=&quot;text&quot; name=&quot;c&quot;&gt;&lt;br/&gt;	&lt;input type=&quot;text&quot; name=&quot;d&quot; onFocus=&quot;this.value='Hi~'&quot; onBlur=&quot;this.value='Bye~'&quot;&gt;&lt;br/&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+將事件內容寫在標籤裡面的寫法，叫做"事件屬性"。
+雖然標準上來說必須是小寫(例如： onclick)，但大多數的瀏覽器在解讀時，會允許大寫(onClick)。
+不過若是寫在 JavaScript 當中時，就必須按照語言規定，全部是小寫，
+並且必須以函式的形式指派事件內容：
+<pre class="brush: htmljs">&lt;script&gt;
+document.getElementById('a').onclick = function(){
+	console.log('Hi~~');
+}
+&lt;/script&gt;
+</pre><br />
+或者，用「addeventlistener」來指派事件
+<pre class="brush: htmljs">&lt;script&gt;
+document.getElementById('a').addeventlistener('click', function(){
+	console.log('Hi~~');
+}
+&lt;/script&gt;
+</pre><br />
+除此之外，還存在其他的注意事項。例如你會發現這個範例不能動：
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;script&gt;document.getElementById('a').onclick = function(){	console.log('Hi~~');}&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form&gt;	&lt;input type=&quot;button&quot; id=&quot;a&quot; value=&quot;按我&quot;&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+這是因為事件在 HTML 文件結構還沒載入完成時就被指定的緣故。
+若要解決這個問題，我們可以把 JavaScript 程式片段移到相關的物件後面，
+或者在文件結構甚至完整內容載入完成時才來指定事件：
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;script&gt;// load: 文件完整內容載入完成window.onload = function(){	document.getElementById('a').onclick = function(){		console.log('This is a~');	}}// DOMContentLoaded: 文件結構載入完成document.addEventListener(&quot;DOMContentLoaded&quot;, function(){	document.getElementById('b').onclick = function(){		console.log('This is b~');	}});&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form&gt;	&lt;input type=&quot;button&quot; id=&quot;a&quot; value=&quot;按我(a)&quot;&gt;	&lt;input type=&quot;button&quot; id=&quot;b&quot; value=&quot;按我(b)&quot;&gt;	&lt;input type=&quot;button&quot; id=&quot;c&quot; value=&quot;按我(c)&quot;&gt;&lt;/form&gt;&lt;script&gt;document.getElementById('c').onclick = function(){	console.log('This is c~');}&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+而在 JavaScript 當中，假若你指定了某個物件的 click 事件，
+則除了使用者真正點擊時會觸發事件以外，也可以透過呼叫該物件的 click 方法來觸發事件。
+若要測試，可在操作上述範例時打開 console，輸入「document.getElementById('a').click()」。
+</p>
+
+<p>
+關於鍵盤中，我們可以利用以下事件：
+<ul>
+	<li>onkeydown: 按下按鍵</li>
+	<li>onkeypress: 壓住按鍵</li>
+	<li>onkeyup: 放開按鍵</li>
+</ul><br/>
+而若要知道是哪個鍵被按下，則可使用「event.keyCode」。
+範例如下：
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;	function myTest(){		alert(event.keyCode);		return false; // 如果要將某按鍵的功能取消，則可加上 return false	}	document.onkeyup = myTest;&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+偵測特殊按鍵以及複合鍵：
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;	function myTest(){		if(event.shiftKey &amp;&amp; event.keyCode!=16){			alert(&quot;Shift + &quot; + String.fromCharCode(event.keyCode));		}		if(event.ctrlKey &amp;&amp; event.keyCode!=17){			alert(&quot;Ctrl + &quot; + String.fromCharCode(event.keyCode));		}		if(event.altKey &amp;&amp; event.keyCode!=18){			alert(&quot;Alt + &quot; + String.fromCharCode(event.keyCode));		}	}	document.onkeydown = myTest;&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+利用鍵盤來控制物件：
+<pre class="brush: htmljs">﻿&lt;html&gt;
+&lt;head&gt;
+&lt;/head&gt;
+&lt;body bgcolor=&quot;#ccccff&quot;&gt;
+
+&lt;script&gt;
+	function myTest(){
+		sq = document.getElementById(&quot;mySquare&quot;);
+		if(event.keyCode==37){
+			sq.style.left = parseInt(sq.style.left)-50+&quot;px&quot;;
+		}
+		if(event.keyCode==38){
+			sq.style.top = parseInt(sq.style.top)-50+&quot;px&quot;;
+		}
+		if(event.keyCode==39){
+			sq.style.left = parseInt(sq.style.left)+50+&quot;px&quot;;
+			document.getElementById(&quot;mySquare&quot;).style.left += 50;
+		}
+		if(event.keyCode==40){
+			sq.style.top = parseInt(sq.style.top)+50+&quot;px&quot;;
+		}
+	}
+	document.onkeydown = myTest;
+&lt;/script&gt;
+
+&lt;div id=&quot;mySquare&quot; style=&quot;position:absolute;top:20;left:20;width:50px;height:50px;background:red&quot;&gt;&lt;/div&gt;
+
+&lt;/body&gt;&lt;/html&gt;
+</pre>
+</p>
+
+<p>
+跟著滑鼠游標動的方塊：
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;	function myTest(){		sq = document.getElementById(&quot;mySquare&quot;);		sq.style.left = event.clientX + 10 + &quot;px&quot;;		sq.style.top = event.clientY + 15 + &quot;px&quot;;	}	document.onmousemove = myTest;&lt;/script&gt;&lt;div id=&quot;mySquare&quot; style=&quot;position:absolute;top:20;left:20;width:50px;height:50px;background:red&quot;&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+用來改變 style，則可以產生有趣的效果：
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		#slideShow{			position: absolute; top: 0; left: 0;			width: 100%; height: 100%; background: rgba(0,0,0,0.5);			display: none;			z-index: 1;		}		#slideShowImg{			position: absolute; top: 100px; left: 350px;			z-index: 2;			display: none;		}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;	function showSlide(str){		document.getElementById(&quot;slideShowImg&quot;).src = str;		document.getElementById(&quot;slideShow&quot;).style.display = &quot;block&quot;;		document.getElementById(&quot;slideShowImg&quot;).style.display = &quot;block&quot;;	}	function myHide(){		document.getElementById(&quot;slideShow&quot;).style.display = &quot;none&quot;;		document.getElementById(&quot;slideShowImg&quot;).style.display = &quot;none&quot;;	}&lt;/script&gt;&lt;image src=&quot;../pics/bg01.jpg&quot; width=&quot;300&quot; onClick=&quot;showSlide('../pics/bg01.jpg')&quot;&gt;&lt;div id=&quot;slideShow&quot; onClick=&quot;myHide()&quot;&gt;&lt;/div&gt;&lt;image id=&quot;slideShowImg&quot; src=&quot;&quot;&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+</blockquote>
+</body></html>

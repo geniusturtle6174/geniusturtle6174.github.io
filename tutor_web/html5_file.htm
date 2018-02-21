@@ -1,0 +1,45 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushMine.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	﻿</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+在 HTML5 當中，新增了與用戶端檔案讀取相關的功能，
+透過這些功能，可以對使用者經由拖放操作或「&lt;input type="file"&gt;」所選擇的檔案進行讀取。
+我們直接先來看一個範例，此範例可以讓你選擇多個檔案，並列出其相關資訊：
+<pre class="brush: htmljs">﻿&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;input type=&quot;file&quot; id=&quot;fileSelector&quot; multiple&gt;&lt;script&gt;var selector = document.getElementById(&quot;fileSelector&quot;);selector.addEventListener('change', function(){	var files = selector.files;	for(i=0;i&lt;files.length;i++){		console.log('檔名: ' + files[i].name +					', 大小: ' + files[i].size +					', 類型: ' + files[i].type +					', 最後修改時間: ' + files[i].lastModifiedDate);	}});&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+若要讀取檔案內容，則需使用 FileReader 物件。以下是一個讀取文字檔的範例：
+<pre class="brush: htmljs">﻿&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;input type=&quot;file&quot; id=&quot;fileSelector&quot;&gt;&lt;script&gt;var selector = document.getElementById(&quot;fileSelector&quot;);selector.addEventListener('change', showContent);function showContent(e){	var theFile = e.target.files[0];	var reader = new FileReader();	reader.onload = function(){		console.log(reader.result);	}	reader.readAsText(theFile);}&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+讀取圖片檔的作法也很相似，主要是改用 readAsDataURL 函式：
+<pre class="brush: htmljs">﻿&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;input type=&quot;file&quot; id=&quot;fileSelector&quot;&gt;&lt;img id=&quot;imgviewer&quot;&gt;&lt;script&gt;var selector = document.getElementById(&quot;fileSelector&quot;);selector.addEventListener('change', showContent);function showContent(e){	var theFile = e.target.files[0];	var reader = new FileReader();	reader.onload = function(){		document.getElementById(&quot;imgviewer&quot;).src = reader.result;	}	reader.readAsDataURL(theFile);}&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+<p>
+audio：
+<pre class="brush: htmljs">﻿&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;input type=&quot;file&quot; id=&quot;fileSelector&quot;&gt;&lt;canvas id=&quot;myCanvas&quot; width=&quot;1500&quot; height=&quot;500&quot; style=&quot;border:1px solid&quot;&gt;&lt;/canvas&gt;&lt;p id=&quot;viewer&quot;&gt;&lt;/p&gt;&lt;script&gt;var selector = document.getElementById(&quot;fileSelector&quot;);var audioContext = new AudioContext();selector.addEventListener('change', showContent);var canvas = document.getElementById(&quot;myCanvas&quot;); // 取得物件var ctx = canvas.getContext(&quot;2d&quot;); // 取得繪圖環境ctx.beginPath();function showContent(e){	var theFile = e.target.files[0];	var reader = new FileReader();	reader.onload = function(){		audioContext.decodeAudioData(reader.result, function(buffer){			//document.getElementById(&quot;viewer&quot;).innerHTML = buffer.length;			var analyser = audioContext.createAnalyser();			var source = audioContext.createBufferSource();			console.log(buffer);			var y = buffer.getChannelData(0);			ctx.moveTo(0,canvas.height/2-y[0]/canvas.height);			for(i=0;i&lt;canvas.width;i++){				ctx.lineTo(i,canvas.height/2+10000*y[Math.floor(y.length/i)]);				ctx.stroke();				ctx.moveTo(i,canvas.height/2+10000*y[Math.floor(y.length/i)]);				console.log(y[Math.floor(y.length/i)]);			}			console.log('OAO');			/**			source.buffer = buffer;			source.connect(analyser);			analyser.connect(audioContext.destination);			document.getElementById(&quot;viewer&quot;).innerHTML = '';			var waveByteData = new Uint8Array(64000);			analyser.getByteTimeDomainData(waveByteData);			console.log(waveByteData.length);			for(i=0;i&lt;waveByteData.length;i+=64){				document.getElementById(&quot;viewer&quot;).innerHTML += (waveByteData[i]/255*100) + &quot;&lt;br/&gt;&quot;;			}			**/			/**			ttt = setInterval(function(){				var waveByteData = new Uint8Array(analyser.frequencyBinCount);				analyser.getByteTimeDomainData(waveByteData);				for(i=0;i&lt;waveByteData.length;i++){					//document.getElementById(&quot;viewer&quot;).innerHTML += i + &quot; &quot; + (waveByteData[i]/255*100) + &quot;&lt;br/&gt;&quot;;					document.getElementById(&quot;viewer&quot;).innerHTML += (waveByteData[i]/255*100) + &quot;&lt;br/&gt;&quot;;					//console.log(i + &quot; &quot; + (waveByteData[i]));				}			}, 500);			source.start(0);			source.onended = function(){				clearInterval(ttt);				console.log('OAO');			};			*/		});	}	reader.readAsArrayBuffer(theFile);}&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+</p>
+
+
+</blockquote>
+</body></html>
