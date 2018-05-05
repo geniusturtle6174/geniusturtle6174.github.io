@@ -83,7 +83,7 @@ print(b)
 此處也順帶介紹一下 map，他可以隱含的幫你把串列的每個元素都處理過一遍：
 <pre class="brush: py">
 a = ['12', '34', '56']
-b = [x for x in map(int, a)] # Python 2 當中，用 b = map(int, a) 就可以了
+b = list(map(int, a)) # 在 Python 2 當中，用 b = map(int, a) 就可以了
 print(a, b)
 </pre>
 </p>

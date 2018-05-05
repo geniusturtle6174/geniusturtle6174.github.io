@@ -101,7 +101,7 @@ import numpy as np
 
 a = np.array([[1,5,3], [4,2,6]])
 print(np.max(a)) # 在所有元素裡面找
-print(np.max(a, axis=0)) # 對每個 column 找
+print(np.max(a, axis=0)) # 求每個 column 找
 print(np.max(a, axis=1)) # 對每個 row 找
 
 b = np.array([[4,2,5,3,1], [8,6,7,9,0]])
@@ -167,13 +167,23 @@ print(c.reshape(cLen, -1), c.reshape(cLen, -1).shape) # 若需要轉，可以這
 </p>
 
 <p>
-矩陣相乘的方法如下。若是利用 ndarray，可以呼叫 multiply：
+矩陣相乘可以使用 matmul，若是元素對元素相乘，可以呼叫 multiply：
 <pre class="brush: py">
 import numpy as np
-
+ 
 a = np.array([[1,5,3], [4,2,6]])
 b = np.array([[3,5,4,6,7], [8,2,4,7,1], [9,0,2,7,1]])
+print(a)
+print(b)
 print(np.matmul(a, b))
+ 
+print('------------')
+ 
+c = np.array([[1,5,3], [4,2,6]])
+d = np.array([[3,5,4], [9,0,2]])
+print(c)
+print(d)
+print(np.multiply(c, d))
 </pre>
 </p>
 
@@ -187,7 +197,7 @@ print(np.linalg.det(a))
 print('------------')
 b = np.linalg.inv(a)
 print(b)
-print(np.matmul(a,b))
+print(np.matmul(a,b)) # Should be identity
 </pre>
 </p>
 
