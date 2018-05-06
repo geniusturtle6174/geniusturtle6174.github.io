@@ -1,0 +1,96 @@
+﻿<html>
+<head>
+	<title>線上教材：Python 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<ul>
+<li>分類問題(classification problem)
+	<ul>
+	<li>身高體重分性別
+		<ul>
+		<li>特徵抽取(feature extraction): 找人來量身高體重</li>
+		<li>訓練(training): 用一堆你知道身高體重和性別的人，來學出一套分辨的標準(模型)
+			<ul>
+			<li>通常，學得愈久，會學得愈好</li>
+			</ul>
+		</li>
+		<li>測試(test): 用訓練好的模型，猜測其他那些你能量到身高體重但是不知道性別的人的性別
+			<ul>
+			<li>如果只是假裝不知道，就可以拿答案來計算模型的「準確度」</li>
+			</ul>
+		</li>
+		<li>過擬合(over fitting): 模型把練資料學得太好，導致無法應付有變化的測試資料
+			<ul>
+			<li>公式背太死，考試換個數字就不會寫</li>
+			</ul>
+		</li>
+		<li>驗證(validation): 為了防止模型過擬合，為了保護模型的穩定
+			<ul>
+			<li>從訓練資料中切出一小部分，假裝不知道答案，稱為驗證資料(validation data)</li>
+			<li>如果學了一段時間，發現 validation data 的準確度下降，就是過擬合了</li>
+			<li>K 次交叉驗證(K-fold cross validation): 把訓練資料切成 N 分，每一份輪流當 validation</li>
+			</ul>
+		</li>
+		<li>身高體重不夠準？那就抽別的 feature: 頭髮長度、臉型</li>
+		<li>亂抽特徵可能不一定有用
+			<ul>
+				<li>跟分類目標八成沒什麼關聯的: 血型</li>
+				<li>幾乎大部分資料都有相同值的: 鼻子有幾個</li>
+				<li>冗餘的(互相可輕易推得的): 生日&amp;星座</li>
+			</ul>
+		</li>
+		<li>分類錯誤(classification error): 這麼可愛一定是男孩子</li>
+		<li>錯誤分析(error analysis): 戴假髮？腿很細？皮膚白？</li>
+		</ul>
+	</li>
+	<li>有哪些經典模型呢？
+		<ul>
+		<li>線性分類: 一刀兩斷</li>
+		<li>最近鄰居分群(Nearest Neighbor): 跟誰最近就跟它同一國
+			<ul>
+			<li>可以找 K 個最近的來投票，稱為 K-NN</li>
+			<li>基本上沒有什麼訓練，就是拿記憶吐司全部背起來</li>
+			</ul>
+		</li>
+		<li>高斯混合模型(Gaussian Mixture Model): 不同類別會各自聚成小團體，小團體裡面可能還有小小團體
+			<ul>
+			<li>用高斯分布來描述小小團體的位置和大小</li>
+			<li>我屬於哪個小小團體的機率最高？</li>
+			</ul>
+		</li>
+		<li>支撐向量機(Support Vector Machine): 把資料投影到高維空間，再一刀兩斷</li>
+		<li>決策樹(Decision Tree): 依照值的大小、範圍等等來判斷</li>
+		<li>自適應增強(AdaBoost, Adaptive Boosting): 一刀不夠，你有沒有砍兩刀？</li>
+		<li>神經網路(Neural Network): 下回待續...
+			<ul>
+			<li>可以當作佛系分類器</li>
+			<li>不用費心思設計 feature，網路走完了自然會有答案</li>
+			</ul>
+		</li>
+		</ul>
+	</li>
+	</ul>
+</li>
+<li>回歸問題: 如果預測目標是連續的數字
+	<ul>
+	<li>以身高預測體重: 就解方程式啊不然咧？</li>
+	<li>不過方程式長什麼樣子，需要事先假設
+		<ul>
+			<li>一次式？二次式？指數對數？其他？</li>
+			<li>要算的是那些係數</li>
+		</ul>
+	</li>
+	</ul>
+</li>
+</ul>
+
+</blockquote>
+
+</body></html>
