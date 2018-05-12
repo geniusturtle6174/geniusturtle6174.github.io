@@ -1,0 +1,57 @@
+﻿<html>
+<head>
+	<title>線上教材：Python 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<ul>
+<li>一維輸入對一個 Neuron (神經元): y = f(x*w+b)
+	<ul>
+	<li>x: input</li>
+	<li>w: weight</li>
+	<li>b: bias</li>
+	<li>f: activation function</li>
+	<li>y: output</li>
+	</ul>
+</li>
+<li>多維輸入對一個 Neuron: y = f(<b>x</b><sup>T</sup><b>w</b>+b)
+	<ul>
+	<li>x 和 w 是向量</li>
+	</ul>
+</li>
+<li>多維輸入對多個 Neuron: <b>y</b> = f(<b>x</b><sup>T</sup>W+<b>b</b>)
+	<ul>
+	<li>W 是矩陣，x, b 和 y 是向量</li>
+	</ul>
+</li>
+<li>Deep Neural Network: 一層不夠，你有沒有用多層？
+	<ul>
+	<li>不一定要幾層才算是深</li>
+	<li>影像處理常常是幾十層或一百層起跳，音訊處理通常用個十多層就很了不起了</li>
+	</ul>
+</li>
+<li>往前算，很簡單: 給 <b>x</b> 和中間所有的 W, <b>b</b>，可以算出對應的 <b>y</b></li>
+<li>Loss function: 評估網路算出來的 <b>y</b> 和標準答案的 <b>y'</b> 之間差多少
+	<ul>
+	<li>常見的 loss functions: mean squared error, cross entropy, ...</li>
+	</ul>
+</li>
+<li>Loss 算出來以後呢？<strike>這是很好的研究題目，你有興趣讀博士班嗎？</strike>
+	<ul>
+	<li>微分！</li>
+	<li>很難嗎？就相信 libary 會幫你算吧~</li>
+	<li>基本概念: 梯度下降法(Gradient Descent)</li>
+	<li>常用的最佳化方法(optmizer)名稱: SGD (stochastic gradient descent), Momentum, AdaGrad, RMSProp, Adam</li>
+	</ul>
+</li>
+</ul>
+
+</blockquote>
+
+</body></html>

@@ -1,0 +1,227 @@
+﻿<html>
+<head>
+	<title>線上教材：Python 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushPython.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+本篇將介紹如何以 tensorflow，架構出一個可以辨識手寫數字的類神經網路。
+請先透過 pip 安裝 tensorflow，若想要嘗試在 GPU 上訓練，且已安裝好正確的 CUDA 版本，可以安裝 tensorflow-gpu。
+另外，本篇內容也需要 numpy 進行一些簡單的矩陣操作與顯示，
+故以下範例皆假設各位已在 cmd 或程式當中輸入過這兩行：
+<pre class="brush: python">
+import numpy as np
+import tensorflow as tf
+</pre>
+</p>
+
+<p>
+我們使用的是 MNIST 這個 dataset，其內容是手寫阿拉伯數字的 0~9。
+這個 dataset 的取得方式，已經內建在 tensorflow 當中，所以先透過下列的方式取得：
+<pre class="brush: python">
+from tensorflow.examples.tutorials.mnist import input_data
+mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
+</pre>
+</p>
+
+<p>
+利用上面的方法，tensorflow 會自動幫你分割好 traning/validation/test 各為 55000, 5000, 1000 筆。
+我們可以這樣來看看資料量的大小：
+<pre class="brush: python">
+print(mnist.train.images.shape)
+print(mnist.train.labels.shape)
+print(mnist.validation.images.shape)
+print(mnist.test.images.shape)
+</pre>
+</p>
+
+<p>
+上面看到的例如「(55000, 784)」，前者是資料量，也就是圖片有幾張；
+後面的 784 則是每張圖片的大小，此處的資料是用 row-major 的方式展開的，
+一般而言，採用什麼方式展開都沒有差別，只要你在整個 dataset 的展開方法都一樣就可以。
+另外，如果覺得 google "mnist" 看到的範例還不算眼見為憑，可以這樣子看看資料的內容
+(此處為了顯示方便，將原本的灰階資料改為純黑白)：
+<pre class="brush: python">
+print(mnist.train.labels[1000])
+tmp = mnist.train.images[1000].reshape((28,28))
+tmp[tmp>0] = 1
+for t in tmp:
+    print(''.join(map(str,t.astype('int'))))
+</pre>
+</p>
+
+<p>
+「(55000, 10)」的 10 則是答案有幾種，因為我們進行的是數字 0~9 的辨識，所以是 10 種。
+每一個 row 的格式是，當數字是 x 的時候，陣列的 index 為 x 的地方就會"亮燈"，這個稱為"one hot"。
+如果你想要有另一份只包含 x 的向量，可以這樣做(範例的後半部，會用到一份這樣的格式)：
+<pre class="brush: python">
+gt = np.argmax(mnist.train.labels, axis=1)
+</pre>
+</p>
+
+<p>
+接著，我們來建構類神經網路，此處僅使用一層 300 個 nodes 的 hidden layer，
+選用 relu 作為 activation function，並加上 dropout：
+<pre class="brush: python">
+ph_x = tf.placeholder(tf.float32, [None, 784])
+h = tf.layers.dense(ph_x, 300, activation=tf.nn.relu)
+h = tf.layers.dropout(h, rate=0.5, training=True)
+out = tf.layers.dense(h, 10)
+</pre>
+</p>
+
+<p>
+建構網路最佳化的方式，此處選用 Adam，並使用預設參數；
+loss function 為 softmax，這是適合分類問題的 loss function 之一：
+<pre class="brush: python">
+ph_gt = tf.placeholder(tf.float32, shape=(None, 10))
+optimizer = tf.train.AdamOptimizer()
+loss = tf.losses.softmax_cross_entropy(ph_gt, out)
+train_op = optimizer.minimize(loss)
+</pre>
+</p>
+
+<p>
+準備開始訓練，先進行一些環境與變數的初始化：
+<pre class="brush: python">
+sess = tf.Session()
+init = tf.global_variables_initializer()
+saver = tf.train.Saver()
+sess.run(init)
+batch_size = 100
+train_data_num = mnist.train.labels.shape[0]
+</pre>
+</p>
+
+<p>
+訓練與儲存結果，此處我們使用 mini batch 的方式進行訓練，
+並且在訓練途中會顯示出 loss 的值，以及網路對於 training data 的辨識率。
+但為了不要讓範例太複雜，此處並未使用 validation set。
+另外，因為這裡用了「os.path.join」來指定儲存路徑，所以必須在程式碼中「import os」：
+<pre class="brush: python">
+for epoch in range(50):
+    loss_all = 0
+    recog_all = np.array([])
+    for batch in range(0, train_data_num, batch_size):
+        _, loss_val, recog = sess.run([train_op, loss, out], feed_dict={
+            ph_x: mnist.train.images[batch:batch+batch_size],
+            ph_gt: mnist.train.labels[batch:batch+batch_size]
+        })
+        loss_all += loss_val
+        recog_all = np.vstack([recog_all, recog]) if recog_all.size else recog
+    recog_idx = np.argmax(recog_all, axis=1)
+    print('Epoch: {}, loss: {}'.format(epoch+1, loss_val))
+    print('\tRecog rate: {:.2f}%'.format(100*np.mean(recog_idx==gt)))
+saver.save(sess, os.path.join('model', 'model.ckpt'))
+</pre>
+</p>
+
+<p>
+一個完整可用的範例如下。在一台使用 i5-3230M CPU 的電腦上，大約五分鐘以內可以訓練完畢：
+<pre class="brush: python">
+import tensorflow as tf
+import numpy as np
+from tensorflow.examples.tutorials.mnist import input_data
+import os
+
+mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
+gt = np.argmax(mnist.train.labels, axis=1)
+
+# Make network
+ph_x = tf.placeholder(tf.float32, [None, 784])
+h = tf.layers.dense(ph_x, 300, activation=tf.nn.relu)
+h = tf.layers.dropout(h, rate=0.5, training=True)
+out = tf.layers.dense(h, 10)
+
+# Make optimizer
+ph_gt = tf.placeholder(tf.float32, shape=(None, 10))
+optimizer = tf.train.AdamOptimizer()
+loss = tf.losses.softmax_cross_entropy(ph_gt, out)
+train_op = optimizer.minimize(loss)
+
+sess = tf.Session()
+init = tf.global_variables_initializer()
+saver = tf.train.Saver()
+sess.run(init)
+batch_size = 100
+train_data_num = mnist.train.labels.shape[0]
+
+for epoch in range(50):
+    loss_all = 0
+    recog_all = np.array([])
+    for batch in range(0, train_data_num, batch_size):
+        _, loss_val, recog = sess.run([train_op, loss, out], feed_dict={
+            ph_x: mnist.train.images[batch:batch+batch_size],
+            ph_gt: mnist.train.labels[batch:batch+batch_size]
+        })
+        loss_all += loss_val
+        recog_all = np.vstack([recog_all, recog]) if recog_all.size else recog
+    recog_idx = np.argmax(recog_all, axis=1)
+    print('Epoch: {}, loss: {}'.format(epoch+1, loss_val))
+    print('\tRecog rate: {:.2f}%'.format(100*np.mean(recog_idx==gt)))
+saver.save(sess, os.path.join('model', 'model.ckpt'))
+</pre>
+</p>
+
+<p>
+模型測試的部分就簡單多了，不過有幾個地方要注意，
+首先是如果網路當中有 dropout 這樣的架構時，必須將代表是否在訓練中的參數設為 False：
+<pre class="brush: python">
+h = tf.layers.dropout(h, training=False)
+</pre>
+</p>
+
+<p>
+完整的程式碼如下。如果是使用本範例的參數，辨識率大約會在 98% 上下：
+<pre class="brush: python">import tensorflow as tf
+import numpy as np
+from tensorflow.examples.tutorials.mnist import input_data
+import os
+
+mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
+test_data = mnist.test.images
+test_label = np.argmax(mnist.test.labels, axis=1)
+
+# Make network
+ph_x = tf.placeholder(tf.float32, [None, 784])
+h = tf.layers.dense(ph_x, 300, activation=tf.nn.relu)
+h = tf.layers.dropout(h, training=False)
+out = tf.layers.dense(h, 10)
+
+sess = tf.Session()
+saver = tf.train.Saver()
+saver.restore(sess, os.path.join('model', 'model.ckpt'))
+recog_result_raw = sess.run([out], feed_dict={
+    ph_x: test_data
+})[0]
+recog_result = np.argmax(recog_result_raw, axis=1)
+print('Recog rate: {:.2f}%'.format(100*np.mean(recog_result==test_label)))
+</pre>
+</p>
+
+<p>
+如果想要自己畫些圖丟進去看看，則可以透過 pip 安裝 imageio 套件來讀取，再把讀進來的影像矩陣丟進模型即可。
+此處提供一個 28-by-28 的<a href="pics/blank_for_hdr.png">空白圖檔</a>，以及相關的小提示：
+<ul>
+<li>雖然看上去是黑白，不過這個圖檔是由 RGB 三種顏色組成(28*28*3)，你可以取出任意一個維度，例如以「img[:,:,0]」取出紅色部分</li>
+<li>圖片是 28*28，必須改成 1*784，此步驟可以使用「img.flatten()[np.newaxis,:]」</li>
+<li>值的範圍由黑到白是 0~255，必須改成跟訓練資料一樣的由白到黑是 0~1</li>
+<li>畫的跟訓練資料愈像，愈容易辨識正確</li>
+</ul>
+</p>
+
+</blockquote>
+</body></html>
