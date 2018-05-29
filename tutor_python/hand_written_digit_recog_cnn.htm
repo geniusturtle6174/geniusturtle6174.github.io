@@ -1,0 +1,168 @@
+﻿<html>
+<head>
+	<title>線上教材：Python 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushPython.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+本篇將介紹如何在 tensorflow 中，使用 convolutional neural network (CNN) 進行手寫數字辨識。
+關於此種網路的原理，請參考網路上豐富的說明；此處以使用方式為主，將只進行簡單的介紹。
+</p>
+
+<p>
+首先，由於 convolution 不像 MLP 一樣需要攤平成一維，
+而是可以使用二維的概念來進行辨識，所以我們將資料轉回二維，讓每一張圖片都是 28 * 28 的灰階圖：
+<pre class="brush: python">
+train_images = mnist.train.images.reshape((-1, 28, 28, 1))
+print(train_images.shape)
+</pre>
+其中的四個數字，第一個 -1 可以當作保留圖片張數，接下來的兩個 28 是圖片的高度和寬度；
+最後一個 1 稱為"channel 數"，因為是灰階所以只有 1，如果像是 RGB 三原色的圖片，就會是 3。
+</p>
+
+<p>
+如果你希望的話，一樣可以把圖片印出來看看，這邊跟 MLP 篇的方法大致相同，
+只是因為多了一個軸，所以操作的方法要做一點修改：
+<pre class="brush: python">
+tmp = train_images[1000]
+tmp[tmp>0] = 1
+for t in tmp:
+    print(''.join(map(str,t[:,0].astype('int'))))
+</pre>
+</p>
+
+<p>
+建構類神經網路的部分如下，...：
+<pre class="brush: python">
+# Make network
+ph_x = tf.placeholder(tf.float32, [None, 28, 28, 1])
+# Conv layer 1
+h = tf.layers.conv2d(ph_x, 16, [5, 5], activation=tf.nn.relu)
+h = tf.layers.max_pooling2d(h, [2, 2], [2, 2])
+# Conv layer 2
+h = tf.layers.conv2d(h, 32, [5, 5], activation=tf.nn.relu)
+h = tf.layers.max_pooling2d(h, [2, 2], [2, 2])
+# Dense layer
+h = tf.layers.flatten(h)
+h = tf.layers.dense(h, 256, activation=tf.nn.relu)
+h = tf.layers.dropout(h, rate=0.5, training=True)
+out = tf.layers.dense(h, 10)
+</pre>
+</p>
+
+<p>
+其餘部分與 MLP 篇的內容相差無幾，此處直接來看完整的訓練程式碼。
+在一台使用 i5-3230M CPU 的電腦上，大約二十分鐘左右可以訓練完畢：
+<pre class="brush: python">
+import tensorflow as tf
+import numpy as np
+from tensorflow.examples.tutorials.mnist import input_data
+import os
+
+mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
+train_images = mnist.train.images.reshape((-1, 28, 28, 1))
+gt = np.argmax(mnist.train.labels, axis=1)
+
+# Make network
+ph_x = tf.placeholder(tf.float32, [None, 28, 28, 1])
+# Conv layer 1
+h = tf.layers.conv2d(ph_x, 16, [5, 5], activation=tf.nn.relu)
+h = tf.layers.max_pooling2d(h, [2, 2], [2, 2])
+# Conv layer 2
+h = tf.layers.conv2d(h, 32, [5, 5], activation=tf.nn.relu)
+h = tf.layers.max_pooling2d(h, [2, 2], [2, 2])
+# Dense layer
+h = tf.layers.flatten(h)
+h = tf.layers.dense(h, 256, activation=tf.nn.relu)
+h = tf.layers.dropout(h, rate=0.5, training=True)
+out = tf.layers.dense(h, 10)
+
+# Make optimizer
+ph_gt = tf.placeholder(tf.float32, shape=(None, 10))
+optimizer = tf.train.AdamOptimizer()
+loss = tf.losses.softmax_cross_entropy(ph_gt, out)
+train_op = optimizer.minimize(loss)
+
+sess = tf.Session()
+init = tf.global_variables_initializer()
+saver = tf.train.Saver()
+sess.run(init)
+batch_size = 100
+train_data_num = train_images.shape[0]
+
+for epoch in range(30):
+    loss_all = 0
+    recog_all = np.array([])
+    for batch in range(0, train_data_num, batch_size):
+        _, loss_val, recog = sess.run([train_op, loss, out], feed_dict={
+            ph_x: train_images[batch:batch+batch_size],
+            ph_gt: mnist.train.labels[batch:batch+batch_size]
+        })
+        loss_all += loss_val
+        recog_all = np.vstack([recog_all, recog]) if recog_all.size else recog
+    recog_idx = np.argmax(recog_all, axis=1)
+    print('Epoch: {}, loss: {}'.format(epoch+1, loss_val))
+    print('\tRecog rate: {:.2f}%'.format(100*np.mean(recog_idx==gt)))
+saver.save(sess, os.path.join('model_cnn', 'model.ckpt'))
+</pre>
+</p>
+
+<p>
+完整的測試程式碼如下。如果是使用本範例的參數，辨識率大約會在 99% 上下：
+<pre class="brush: python">import tensorflow as tf
+import numpy as np
+from tensorflow.examples.tutorials.mnist import input_data
+import os
+
+mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
+test_images = mnist.test.images.reshape((-1, 28, 28, 1))
+gt = np.argmax(mnist.test.labels, axis=1)
+
+# Make network
+ph_x = tf.placeholder(tf.float32, [None, 28, 28, 1])
+# Conv layer 1
+h = tf.layers.conv2d(ph_x, 16, [5, 5], activation=tf.nn.relu)
+h = tf.layers.max_pooling2d(h, [2, 2], [2, 2])
+# Conv layer 2
+h = tf.layers.conv2d(h, 32, [5, 5], activation=tf.nn.relu)
+h = tf.layers.max_pooling2d(h, [2, 2], [2, 2])
+# Dense layer
+h = tf.layers.flatten(h)
+h = tf.layers.dense(h, 256, activation=tf.nn.relu)
+h = tf.layers.dropout(h, rate=0.5, training=False)
+out = tf.layers.dense(h, 10)
+
+sess = tf.Session()
+saver = tf.train.Saver()
+saver.restore(sess, os.path.join('model_cnn', 'model.ckpt'))
+test_data_num = test_images.shape[0]
+
+recog_all = np.array([])
+test_batch_size = 100
+for batch in range(0, test_data_num, test_batch_size):
+    print('Recoging batch', batch)
+    recog = sess.run([out], feed_dict={
+        ph_x: test_images[batch:batch+test_batch_size],
+    })[0]
+    recog_all = np.vstack([recog_all, recog]) if recog_all.size else recog
+recog_idx = np.argmax(recog_all, axis=1)
+print('\tRecog rate: {:.2f}%'.format(100*np.mean(recog_idx==gt)))
+</pre>
+</p>
+
+
+</blockquote>
+</body></html>

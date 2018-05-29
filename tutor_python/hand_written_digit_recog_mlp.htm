@@ -19,7 +19,7 @@
 
 <p>
 本篇將介紹如何以 tensorflow，架構出一個可以辨識手寫數字的類神經網路。
-請先透過 pip 安裝 tensorflow，若想要嘗試在 GPU 上訓練，且已安裝好正確的 CUDA 版本，可以安裝 tensorflow-gpu。
+要執行以下範例，請先透過 pip 安裝 tensorflow，若想要嘗試在 GPU 上訓練，且已安裝好正確的 CUDA 版本，可以安裝 tensorflow-gpu。
 另外，本篇內容也需要 numpy 進行一些簡單的矩陣操作與顯示，
 故以下範例皆假設各位已在 cmd 或程式當中輸入過這兩行：
 <pre class="brush: python">
@@ -130,7 +130,7 @@ saver.save(sess, os.path.join('model', 'model.ckpt'))
 </p>
 
 <p>
-一個完整可用的範例如下。在一台使用 i5-3230M CPU 的電腦上，大約五分鐘以內可以訓練完畢：
+一個完整可用的範例如下。在一台使用 i5-3230M CPU 的電腦上，大約三分鐘以內可以訓練完畢：
 <pre class="brush: python">
 import tensorflow as tf
 import numpy as np
@@ -178,7 +178,7 @@ saver.save(sess, os.path.join('model', 'model.ckpt'))
 
 <p>
 模型測試的部分就簡單多了，不過有幾個地方要注意，
-首先是如果網路當中有 dropout 這樣的架構時，必須將代表是否在訓練中的參數設為 False：
+例如若網路當中有 dropout 這樣的架構時，必須將代表是否在訓練中的參數設為 False：
 <pre class="brush: python">
 h = tf.layers.dropout(h, training=False)
 </pre>
