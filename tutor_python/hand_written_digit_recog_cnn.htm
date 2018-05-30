@@ -45,7 +45,10 @@ for t in tmp:
 </p>
 
 <p>
-建構類神經網路的部分如下，...：
+建構類神經網路的部分如下，
+conv2d 的第二和第三個參數分別是 mask 的數量和大小，還有其他選用參數可以控制 mask 一次要移動多少等等；
+max pooling 的目的則是挑出一塊區域內的最大值，可以同時做到減少資料量和抗雜訊的效果，兩個參數則分別是區塊的大小和每次移動多少。
+在 convolution 之後，我們還可以接上一些 dense layer，如同 MLP 篇一樣，如下：
 <pre class="brush: python">
 # Make network
 ph_x = tf.placeholder(tf.float32, [None, 28, 28, 1])
@@ -162,7 +165,6 @@ recog_idx = np.argmax(recog_all, axis=1)
 print('\tRecog rate: {:.2f}%'.format(100*np.mean(recog_idx==gt)))
 </pre>
 </p>
-
 
 </blockquote>
 </body></html>
