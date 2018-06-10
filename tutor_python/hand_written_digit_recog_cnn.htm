@@ -74,6 +74,7 @@ import tensorflow as tf
 import numpy as np
 from tensorflow.examples.tutorials.mnist import input_data
 import os
+import time
 
 mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
 train_images = mnist.train.images.reshape((-1, 28, 28, 1))
@@ -106,7 +107,11 @@ sess.run(init)
 batch_size = 100
 train_data_num = train_images.shape[0]
 
-for epoch in range(30):
+epoch_num = 30
+total_time = 0
+print('Start training...')
+for epoch in range(epoch_num):
+    tic = time.time()
     loss_all = 0
     recog_all = np.array([])
     for batch in range(0, train_data_num, batch_size):
@@ -117,11 +122,19 @@ for epoch in range(30):
         loss_all += loss_val
         recog_all = np.vstack([recog_all, recog]) if recog_all.size else recog
     recog_idx = np.argmax(recog_all, axis=1)
-    print('Epoch: {}, loss: {}'.format(epoch+1, loss_val))
+    toc = time.time()
+    total_time += toc - tic
+    print('Epoch: {}, loss: {}, time: {:.2f} sec, est remain: {:.2f} hr'.format(
+        epoch+1, loss_val, toc-tic,
+        total_time / (epoch+1) * (epoch_num - (epoch + 1)) / 3600
+    ))
     print('\tRecog rate: {:.2f}%'.format(100*np.mean(recog_idx==gt)))
+    
 saver.save(sess, os.path.join('model_cnn', 'model.ckpt'))
 </pre>
 </p>
+
+<p>提示：<strike>找飯店，XXgo；</strike>嫌慢嗎？<a href="tf_install_gpu.htm">GPU</a></p>
 
 <p>
 完整的測試程式碼如下。如果是使用本範例的參數，辨識率大約會在 99% 上下：
@@ -166,5 +179,6 @@ print('\tRecog rate: {:.2f}%'.format(100*np.mean(recog_idx==gt)))
 </pre>
 </p>
 
-</blockquote>
+</blockquote>
+
 </body></html>

@@ -1,0 +1,248 @@
+﻿<html>
+<head>
+	<title>線上教材：Python 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushPython.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+本篇將介紹如何在 tensorflow 中，進行口說數字辨識。
+此處使用的資料集是<a href="https://www.tensorflow.org/tutorials/audio_recognition">Tensorflow 官方範例</a>中，Speech Commands dataset 的數字部分。
+該資料集亦包含 left, right, up, down, ... 等語音指令，各位若對較多指令的效果有興趣，也可以修改本篇範例，或使用官方範例進行實驗。
+</p>
+
+<p>
+在該資料集中的數字部分，每個數字各有大約 2300 個以上的錄音；
+每個錄音都大約是一秒鐘，取樣率(sampling rate) 16 kHz 的檔案，因此約有 16000 個點。
+通常，我們會把音訊切成許多數十毫秒的小片段(frame)，並且轉成頻譜來分析。
+此處使用 0.064 毫秒的 frame size，每個 frame 間隔 0.032 毫秒的方式，把音檔轉換成特徵並存檔。
+由於每個數字各使用了 2100 個檔案作為訓練，以及 200 個檔案做為測試，
+因此特徵抽取的過程也需要花一些時間，但通常大約一分鐘左右可以執行完畢
+(如果並非像本範例一樣事先配置好空間，而是使用 numpy 的 stack 系列一塊一塊疊起來的話，速度會慢很多)。
+<pre class="brush: python">
+import numpy as np
+import os
+import time
+import scipy.io.wavfile
+import scipy.fftpack
+
+def recursiveFileList(path, ext):
+    fListFullPath = []
+    fListMainName = []
+    for (dirPath, dirNames, fileNames) in os.walk(path):
+        for f in fileNames:
+            thisExt  = f.split('.')[-1]
+            thisMain = f.split('.')[0]
+            if(thisExt==ext):
+                fListFullPath.append(os.path.join(dirPath, f))
+                fListMainName.append(thisMain)
+    fListFullPath = np.array(fListFullPath)
+    fListMainName = np.array(fListMainName)
+    sortIdx = np.argsort(fListFullPath)
+    fListFullPath = fListFullPath[sortIdx]
+    fListMainName = fListMainName[sortIdx]
+    return (fListFullPath, fListMainName)
+
+def fftOneSide(frameMat, fftLen):
+    magSpec = abs(scipy.fftpack.fft(frameMat, n=fftLen, axis=0))[0:fftLen//2+1, :]
+    magSpec[1:fftLen//2, :] = magSpec[1:fftLen//2, :] * 2
+    return magSpec
+
+def buffer(y, frameSize, overlap):
+    step = frameSize - overlap
+    frameCount = int(np.floor((len(y)-overlap)/step))
+    out = np.zeros((frameSize, frameCount))
+    for i in range(0, frameCount):
+        startIndex = i*step
+        out[:, i] = y[startIndex:(startIndex+frameSize)]
+    return out
+
+def wavToFea(inputFileName, frameSize, hopSize):
+    fs, y = scipy.io.wavfile.read(inputFileName)
+    y = y / 32768.0
+    if(len(y)&lt;16000):
+        y = np.hstack([y, np.zeros(16000-len(y))])
+    else:
+        y = y[:16000]
+    overlap = frameSize - hopSize
+    frameMat = buffer(y, frameSize, overlap)
+    frameSize, frameNum = frameMat.shape
+    magSpec = fftOneSide(frameMat, frameSize)
+    return magSpec
+
+data_path = 'C:\\Users\\geniusturtle\\Desktop\\speech_commands_v0.01'
+train_num = 2100
+test_num = 200
+frame_size = 1024
+hop_size = 512
+overlap = frame_size - hop_size
+
+# Space allocation for speed
+frameCount = int(np.floor((16000-overlap)/hop_size))
+fea_train_all = np.zeros((train_num*10, frame_size//2+1, frameCount), dtype='float32')
+label_train_all = np.zeros(train_num*10)
+fea_test_all = np.zeros((test_num*10, frame_size//2+1, frameCount), dtype='float32')
+label_test_all = np.zeros(test_num*10)
+
+tic = time.time()
+for num, digit_name in enumerate([
+    'zero', 'one', 'two', 'three', 'four',
+    'five', 'six', 'seven', 'eight', 'nine'
+]):
+    wav_files, _ = recursiveFileList(os.path.join(data_path, digit_name), 'wav')
+    for i, w in enumerate(wav_files):
+        if(i%100==0):
+            print('{}-{}'.format(digit_name, i))
+        fea = wavToFea(w, frame_size, hop_size).astype('float32')
+        if(i&gt;=(train_num+test_num)):
+            break
+        elif(i&lt;train_num):
+            fea_train_all[i*num] = fea
+            label_train_all[i*num] = num
+        else:
+            fea_test_all[(i-train_num)*num] = fea
+            label_test_all[(i-train_num)*num] = num
+toc = time.time()
+print("Done, time: {:.2f} sec".format(toc-tic))
+
+np.save('train_fea', fea_train_all)
+np.save('train_lab', label_train_all)
+np.save('test_fea', fea_test_all)
+np.save('test_lab', label_test_all)
+</pre>
+</p>
+
+<p>
+接著就可以進入訓練部分，在一台 i5-3230M CPU 的筆電上，大約十多分鐘可以訓練完畢。
+<pre class="brush: python">
+import tensorflow as tf
+import numpy as np
+import os
+import time
+
+fea = np.load('train_fea.npy')[:, :, :, np.newaxis]
+gt = np.load('train_lab.npy')
+print('Loading done, shape: ', fea.shape, gt.shape)
+
+# Make one-hot label
+gt_mat = np.zeros((gt.shape[0], 10))
+gt_mat[np.arange(gt.shape[0]).astype('int'), gt.astype('int')] = 1
+
+# Make network
+ph_x = tf.placeholder(tf.float32, [None, fea.shape[1], fea.shape[2], 1])
+# Conv layer 1
+h = tf.layers.conv2d(ph_x, 64, [513, 4], activation=tf.nn.relu)
+h = tf.layers.max_pooling2d(h, [1, 2], [1, 2])
+# Conv layer 2
+h = tf.layers.conv2d(h, 64, [1, 4], activation=tf.nn.relu)
+h = tf.layers.max_pooling2d(h, [1, 2], [1, 2])
+# Dense layer
+h = tf.layers.flatten(h)
+h = tf.layers.dense(h, 256, activation=tf.nn.relu)
+h = tf.layers.dropout(h, rate=0.5, training=True)
+out = tf.layers.dense(h, 10)
+
+# Make optimizer
+ph_gt = tf.placeholder(tf.float32, shape=(None, 10))
+optimizer = tf.train.AdamOptimizer()
+loss = tf.losses.softmax_cross_entropy(ph_gt, out)
+train_op = optimizer.minimize(loss)
+
+sess = tf.Session()
+init = tf.global_variables_initializer()
+saver = tf.train.Saver()
+sess.run(init)
+batch_size = 128
+train_data_num = fea.shape[0]
+
+epoch_num = 30
+total_time = 0
+print('Start training...')
+for epoch in range(epoch_num):
+    tic = time.time()
+    loss_all = 0
+    recog_all = np.array([])
+    for batch in range(0, train_data_num, batch_size):
+        _, loss_val, recog = sess.run([train_op, loss, out], feed_dict={
+            ph_x: fea[batch:batch+batch_size],
+            ph_gt: gt_mat[batch:batch+batch_size]
+        })
+        loss_all += loss_val
+        recog_all = np.vstack([recog_all, recog]) if recog_all.size else recog
+    recog_idx = np.argmax(recog_all, axis=1)
+    toc = time.time()
+    total_time += toc - tic
+    print('Epoch: {}, loss: {}, time: {:.2f} sec, est remain: {:.2f} hr'.format(
+        epoch+1, loss_val, toc-tic,
+        total_time / (epoch+1) * (epoch_num - (epoch + 1)) / 3600
+    ))
+    print('\tRecog rate: {:.2f}%'.format(100*np.mean(recog_idx==gt)))
+saver.save(sess, os.path.join('model_sd', 'model.ckpt'))
+</pre>
+</p>
+
+<p>提示：<strike>找飯店，XXgo；</strike>嫌慢嗎？<a href="tf_install_gpu.htm">GPU</a></p>
+
+<p>
+測試部分如下，若使用本範例的參數，辨識率大約會是 93%。
+<pre class="brush: python">
+import tensorflow as tf
+import numpy as np
+import os
+import time
+
+fea = np.load('test_fea.npy')[:, :, :, np.newaxis]
+gt = np.load('test_lab.npy')
+print('Loading done, shape: ', fea.shape, gt.shape)
+
+# Make one-hot label
+gt_mat = np.zeros((gt.shape[0], 10))
+gt_mat[np.arange(gt.shape[0]).astype('int'), gt.astype('int')] = 1
+
+# Make network
+ph_x = tf.placeholder(tf.float32, [None, fea.shape[1], fea.shape[2], 1])
+# Conv layer 1
+h = tf.layers.conv2d(ph_x, 64, [513, 4], activation=tf.nn.relu)
+h = tf.layers.max_pooling2d(h, [1, 2], [1, 2])
+# Conv layer 2
+h = tf.layers.conv2d(h, 64, [1, 4], activation=tf.nn.relu)
+h = tf.layers.max_pooling2d(h, [1, 2], [1, 2])
+# Dense layer
+h = tf.layers.flatten(h)
+h = tf.layers.dense(h, 256, activation=tf.nn.relu)
+h = tf.layers.dropout(h, rate=0.5, training=False)
+out = tf.layers.dense(h, 10)
+
+sess = tf.Session()
+saver = tf.train.Saver()
+saver.restore(sess, os.path.join('model_sd', 'model.ckpt'))
+test_batch_size = 128
+test_data_num = fea.shape[0]
+
+recog_all = np.array([])
+for batch in range(0, test_data_num, test_batch_size):
+    print('Recoging batch', batch)
+    recog = sess.run([out], feed_dict={
+        ph_x: fea[batch:batch+test_batch_size],
+    })[0]
+    recog_all = np.vstack([recog_all, recog]) if recog_all.size else recog
+recog_idx = np.argmax(recog_all, axis=1)
+print('\tRecog rate: {:.2f}%'.format(100*np.mean(recog_idx==gt)))
+</pre>
+</p>
+
+</blockquote>
+
+</body></html>
