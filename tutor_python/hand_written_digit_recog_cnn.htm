@@ -18,19 +18,43 @@
 <blockquote>
 
 <p>
-本篇將介紹如何在 tensorflow 中，使用 convolutional neural network (CNN) 進行手寫數字辨識。
-關於此種網路的原理，請參考網路上豐富的說明；此處以使用方式為主，將只進行簡單的介紹。
+本篇將介紹 convolution 的基本操作，並說明如何在 tensorflow 中，使用 convolutional neural network (CNN) 進行手寫數字辨識。
 </p>
 
 <p>
-首先，由於 convolution 不像 MLP 一樣需要攤平成一維，
-而是可以使用二維的概念來進行辨識，所以我們將資料轉回二維，讓每一張圖片都是 28 * 28 的灰階圖：
+首先，convolution 這個操作，是由一塊小的矩陣(通常稱為 kernel)對一個大的矩陣(例如影像)，逐次進行點對點相乘後再相加的動作。
+以下圖為例，大矩陣的尺寸是 5 * 5，kernel 的尺寸是 2 * 2，逐點移動後，會得到 (5-2+1) * (5-2+1) 的輸出。
+當然，你也可以不要逐點移動，而是一次跳過兩點、三點，甚至更多，這個就是 tensorflow 或其他常見工具裡的 strides；
+而如果希望輸出的矩陣大小與輸入相同，也可以在輸入矩陣的四周多補上一些內容，我們稱之為 padding。
+</p>
+<center><img src="pics/conv_op.png" width="450"/></center>
+
+<p>
+有了這個觀念以後，我們來看看比較實際的操作。在神經網路中，一個"convolution layer"(以影像為例)的示意圖如下：
+範例的輸入是一張高和寬都是 100 的 RGB (所以有 3 個 channels)影像，並且有 5 個 4 * 4 * 3 的 kernel (kernel 的 channel 數量，必須跟輸入一樣)，則輸出會是一個 97 * 97 * 5 的影像；對於輸出影像上面每一層(channel)的每個點，都是由一個 kernel 跟輸入影像做 convolution 運算得到的。
+</p>
+<center><img src="pics/conv_layer.png" width="600"/></center>
+
+<p>
+圖片下方的數字，則代表在 tensorflow 當中的矩陣形狀：
+影像部分的後三個數字代表高、寬，及 channel 數量，第一個數字代表在訓練階段一次放幾張進去(batch_size)；
+kernel 部分則是高、寬、輸入影像的 channel 數量，以及輸出的 channel 數量。
+</p>
+
+<p>
+為了減少運算量和抗雜訊，通常還會加入 pooling (池化)的運算，就是一小塊區域裡，只用一個數字來代表；
+比較常見的方法是以平均或最大值來挑選，分別稱為 avg_pooling 和 max_pooling (函式的稱呼，在各家工具當中可能有所不同)。
+以 max_pooling 為例，若只有一個 channel 時，示意如下：
+</p>
+<center><img src="pics/pool_op.png" width="300"/></center>
+
+<p>
+接著來看程式部分。首先，由於 convolution 不像 MLP 一樣需要攤平成一維，
+而是對於影像可以使用二維的概念來進行辨識，所以我們將資料轉回二維，讓每一張圖片都是 28 * 28 的灰階圖：
 <pre class="brush: python">
 train_images = mnist.train.images.reshape((-1, 28, 28, 1))
 print(train_images.shape)
 </pre>
-其中的四個數字，第一個 -1 可以當作保留圖片張數，接下來的兩個 28 是圖片的高度和寬度；
-最後一個 1 稱為"channel 數"，因為是灰階所以只有 1，如果像是 RGB 三原色的圖片，就會是 3。
 </p>
 
 <p>
@@ -46,8 +70,8 @@ for t in tmp:
 
 <p>
 建構類神經網路的部分如下，
-conv2d 的第二和第三個參數分別是 mask 的數量和大小，還有其他選用參數可以控制 mask 一次要移動多少等等；
-max pooling 的目的則是挑出一塊區域內的最大值，可以同時做到減少資料量和抗雜訊的效果，兩個參數則分別是區塊的大小和每次移動多少。
+conv2d 的第二和第三個參數分別是 kernel 的數量和大小，還有其他選用參數可以控制 kernel 一次要移動多少等等(就是上面說的 strides)；
+max pooling 的兩個參數則分別是區塊的大小和每次移動多少。
 在 convolution 之後，我們還可以接上一些 dense layer，如同 MLP 篇一樣，如下：
 <pre class="brush: python">
 # Make network
