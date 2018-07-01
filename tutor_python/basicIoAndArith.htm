@@ -18,6 +18,29 @@
 <blockquote>
 
 <p>
+<script>
+var status = 0;
+function toggle(){
+	var newbie = document.getElementsByClassName("newbie");
+	if(status==1){
+		status = 0;
+		for(var i=0;i<newbie.length;i++){
+			newbie[i].style.display = 'none';
+		}
+	}
+	else {
+		status = 1;
+		for(var i=0;i<newbie.length;i++){
+			newbie[i].style.display = 'block';
+		}
+	}
+}
+</script>
+本篇將程式初學者所需的內容預設為隱藏，若需閱讀請點<a onclick="toggle()">這裡</a>切換
+</p>
+
+
+<p>
 在 Python 要印出固定的內容非常簡單，以下範例會在螢幕上印出"Hello World!!"：
 <pre class="brush: py">
 print('Hello World!!') # 印出一些東西
@@ -47,6 +70,7 @@ print('OAO')
 第一行的 import，主要用於使用外掛功能。較細節的說明，日後會另外介紹
 </p>
 
+<div class="newbie">
 <p>
 目前為止，已經能輸出大部分的固定內容，
 而程式中的資料若要能隨著狀況(例如使用者輸入或者運算結果)改變，則需要用變數來儲存。
@@ -57,7 +81,9 @@ print('OAO')
 	<li>不可使用保留字(例如：if)與函式名稱(例如：print)</li>
 </ul>
 </p>
+</div>
 
+<div class="newbie">
 <p>
 Question: 下列哪些變數名稱合法？
 <ul>
@@ -67,7 +93,9 @@ Question: 下列哪些變數名稱合法？
 	<li>ab123</li>
 </ul>
 </p>
+</div>
 
+<div class="newbie">
 <p>
 將資料塞進變數當中的方法，是使用「=」(指派運算子)，
 例如程式敘述「a=2」的結果，就是讓變數 a 的值為 2。
@@ -79,6 +107,7 @@ c = a + b
 print(c) # 因為是單純印出變數，所以不用加引號
 </pre>
 </p>
+</div>
 
 <p>
 以下將基本的運算符號稍做整理：
@@ -95,6 +124,7 @@ print(c) # 因為是單純印出變數，所以不用加引號
 以下展示幾個範例。
 </p>
 
+<div class="newbie">
 <p>
 三個整數取平均：
 <pre class="brush: py">
@@ -105,7 +135,9 @@ d = (a + b + c) / 3
 print("Avg of {}, {}, and {}: {}".format(a, b, c, d)) # 變數跟固定文字混在一起印的方法很多，這是其中一種
 </pre>
 </p>
+</div>
 
+<div class="newbie">
 <p>
 運算優先順序：
 <pre class="brush: py">
@@ -117,7 +149,9 @@ e = a + d / b - c # 3 + 4 / 2 - 1
 print('Result:', e)
 </pre>
 </p>
+</div>
 
+<div class="newbie">
 <p>
 Question: 兩行 print 分別會印出什麼？
 <pre class="brush: py">
@@ -128,6 +162,7 @@ b = a + 1
 print(a, b)
 </pre>
 </p>
+</div>
 
 <p>
 在前面幾個範例中，除法的結果都恰好是整數，
@@ -148,7 +183,7 @@ print(a, b, c)
 </p>
 
 <p>
-在 Python 語言中，餘數的符號會與除數相同，即 a % b 相當於計算 a - a//b*b。
+在 Python 語言中，餘數的正負號會與除數相同，即 a % b 相當於計算 a - a//b*b。
 以下是用「%」符號求餘數的範例：
 <pre class="brush: py">
 print(15 % 4)
@@ -163,9 +198,9 @@ print(-15 % -4)
 <pre class="brush: py">
 ''' 以下為了讓不同格式間的輸出效果更明顯，
     因此在前後都加上其他不相干的符號 '''
-print('!!{:5d}!!'.format(123))  # 靠右輸出 5 位整數，前方空白
-print('!!{:05d}!!'.format(123)) # 靠右輸出 5 位整數，前方補 0
-print('!!{:10.2f}!!'.format(12345.678))  # 靠右輸出浮點數，總共 10 位，小數點部分 2 位。輸出結果會被四捨五入
+print('__{:5d}__'.format(123))  # 靠右輸出 5 位整數，前方空白
+print('__{:05d}__'.format(123)) # 靠右輸出 5 位整數，前方補 0
+print('__{:10.2f}__'.format(12345.678))  # 靠右輸出浮點數，總共 10 位，小數點部分 2 位。輸出結果會被四捨五入
 </pre>
 其中，三個單引號是多行字串，但也可以當作多行註解使用
 </p>
@@ -180,7 +215,7 @@ print(a + b)
 </pre>
 你可能會發現結果跟預期的不太一樣，這是因為輸入的內容被當成一般文字，而加號為文字的連接。
 若要修正，可以將第三行改為「print int(a) + int(b)」，就會當成整數運算。
-如果希望是數字但是不一定是整數，可以把「int」改為「float」。
+如果希望進行小數的運算，可以把「int」改為「float」。
 另外，若使用 Python 2，則會自動判斷輸入的類型，
 但是像這樣明確地寫出要使用整數運算，仍會對釐清程式的運作細節有幫助。
 </p>

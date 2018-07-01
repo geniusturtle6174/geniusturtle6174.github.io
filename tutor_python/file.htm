@@ -18,7 +18,8 @@
 <blockquote>
 
 <p>
-讀取檔案的示範。執行此範例之前，請先創造一個 OAO.txt，並任意的輸入幾行內容：
+本篇介紹檔案的基本操作，首先是讀取檔案的示範。
+執行此範例之前，請先創造一個 OAO.txt，並任意的輸入幾行內容。
 <pre class="brush: python">
 fin = open('OAO.txt', 'r')
 
@@ -31,16 +32,27 @@ fin.close()
 檔案在使用前，必須開啟。開啟檔案的函式為「open」，
 第一個參數是一個字串，代表檔案名稱；
 第二個參數是開啟的模式，這裡的「"r"」代表這個檔案會被用來讀取。
-「fin.readlines()」會把檔案的全部內容切成一行一行的，
-用串列存放，並且會保留原本的換行字元；
+「fin.readlines()」會把檔案的全部內容切成一行一行，用串列存放，並且會保留原本的換行字元；
 如果你希望把原本的換行字元刪掉，可以用 strip。
-檔案操作完畢後，必須用「fclose」關閉。
+檔案操作完畢後，必須用「close」關閉。
+</p>
+
+<p>
+你也可以使用 read 一次讀取全部內容後，再用 splitlines 切出一行一行的內容：
+<pre class="brush: python">
+fin = open('OAO.txt', 'r')
+
+for s in fin.read().splitlines():
+    print(s)
+   
+fin.close()
+</pre>
 </p>
 
 <p>
 如果要寫入檔案，則可以在開啟時使用「"w"」。
 使用 w 模式時，如果檔案不存在，則會建立一個新的；
-但如果檔案存在，則舊的內容會被清掉重寫。：
+但如果檔案存在，則舊的內容會被清掉重寫：
 <pre class="brush: python">
 fout = open('QQ.txt', 'w')
 fout.write('123\n456')
@@ -56,6 +68,15 @@ w 模式會把檔案覆蓋並重寫，而 a 模式則可以把新的內容，附
 fout = open('QQ.txt', 'a')
 fout.write('GG\nOAO')
 fout.close()
+</pre>
+</p>
+
+<p>
+除了自己把檔案關閉以外，還可以利用 Pytohn 的 with...as 功能，
+接在 with 後面開啟的檔案，會自動關閉：
+<pre class="brush: python">
+with open('QQ.txt', 'w') as fout:
+	fout.write('123\n456')
 </pre>
 </p>
 

@@ -18,6 +18,28 @@
 <blockquote>
 
 <p>
+<script>
+var status = 0;
+function toggle(){
+	var newbie = document.getElementsByClassName("newbie");
+	if(status==1){
+		status = 0;
+		for(var i=0;i<newbie.length;i++){
+			newbie[i].style.display = 'none';
+		}
+	}
+	else {
+		status = 1;
+		for(var i=0;i<newbie.length;i++){
+			newbie[i].style.display = 'block';
+		}
+	}
+}
+</script>
+本篇將程式初學者所需的內容預設為隱藏，若需閱讀請點<a onclick="toggle()">這裡</a>切換
+</p>
+
+<p>
 程式可以如此靈活的原因之一，就是能依據不同的條件，來進行不同的工作。
 要進行判斷，可以使用 if...else 的語法，如下：
 <pre class="brush: py">
@@ -37,7 +59,7 @@ else:
 其邏輯上為「60分以上及格，否則被當」。寫成程式碼時的範例如下：
 <pre class="brush: py">
 grade = int(input('Please enter grade: ')) # 接受使用者輸入一個整數
-if(grade&gt;=60):
+if(grade &gt;= 60):
 	print('Pass')
 else:
 	print('GG')
@@ -54,12 +76,12 @@ else:
 	<li>不等於：「!=」</li>
 	<li>且：「and」</li>
 		<ul>
-			<li>範例：「a==b and 5==c」</li>
+			<li>範例：「a == b and 5 == c」</li>
 			<li>發現第一個條件不成立時，則不判斷第二個條件</li>
 		</ul>
 	<li>或：「or」</li>
 		<ul>
-			<li>範例：「x!=y or z==3」</li>
+			<li>範例：「x != y or z == 3」</li>
 			<li>發現第一個條件成立時，則不判斷第二個條件</li>
 		</ul>
 </ul>
@@ -88,6 +110,7 @@ if( a &gt; 60 or b &gt; 70 ):
 </pre>
 </p>
 
+<div class="newbie">
 <p>
 或和且的混用：
 <pre class="brush: py">
@@ -116,7 +139,9 @@ else:
 	print("Test 2: GG")
 </pre>
 </p>
+</div>
 
+<div class="newbie">
 <p>
 "或"就像加法，"且"就像乘法，它們也遵守先乘除後加減的規則。
 我們把前面範例最後一段的括號拿掉看看：
@@ -135,6 +160,7 @@ else:
 	print("Test 2: GG")
 </pre>
 </p>
+</div>
 
 <p>
 在數學式子中，我們會寫"a &gt; b &gt; c"，這是大家很熟悉的遞移律。
@@ -160,10 +186,10 @@ a = 1
 b = 2
 
 # 例如第一個範例，可以簡化成這樣
-print('Pass') if (grade&gt;=60) else print('GG')
+print('Pass') if (grade &gt;= 60) else print('GG')
 
 # 也可以這樣用
-c = a+b if (a&gt;b) else (a-b)
+c = a + b if (a &gt; b) else (a - b)
 </pre>
 </p>
 
@@ -173,31 +199,33 @@ c = a+b if (a&gt;b) else (a-b)
 例如<a href="http://zh.wikipedia.org/zh-tw/%E9%97%B0%E5%B9%B4">閏年</a>的判斷，
 其規則為逢 4 的倍數閏、100 的倍數不閏、400 的倍數閏，程式碼可以寫成以下的樣子：
 <pre class="brush: py">
-year = 2017
+year = 2018
 
-if(year%400==0):
+if(year % 400 == 0):
 	print("Leap")
-elif(year%100==0):
+elif(year % 100 == 0):
 	print("Common")
-elif(year%4==0):
+elif(year % 4 == 0):
 	print("Leap")
 else:
 	print("Common")
 </pre>
 </p>
 
+<div class="newbie">
 <p>
 條件判斷也可以一層包一層(巢狀)，例如把第一個範例中，80 分以上的加一個特別鼓勵：
 <pre class="brush: py">
 grade = int(input('Please enter grade: ')) # 接受使用者輸入一個整數
-if(grade&gt;=60):
+if(grade &gt;= 60):
 	print('Pass')
-	if(grade&gt;=80):
+	if(grade &gt;= 80):
 		print('Good')
 else:
 	print('GG')
 </pre>
 </p>
+</div>
 
 </blockquote>
 </body></html>

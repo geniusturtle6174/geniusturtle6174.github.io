@@ -18,3 +18,5 @@ td.tutor{border:solid 2px;background-color:#eeffff;padding:4px;}
 th.slide{border:solid 1px;padding:4px;}
 tr.slide{border:solid 1px;background-color:#eeffff;}
 td.slide{border:solid 1px;background-color:#eeffff;padding:4px;}
+
+.newbie{display: none}

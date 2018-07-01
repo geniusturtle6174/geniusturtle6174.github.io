@@ -28,7 +28,7 @@ def test(x):
 
 a = int(input('Please enter a number: '))
 a = test(a)
-print("New a: ", a)
+print("New a:", a)
 </pre>
 </p>
 
@@ -67,7 +67,7 @@ print("When x = 1.2, 2x^3 + 3x^2 + 2.5x + 1 is", cubicPolyval(2, 3, 2.5, 1, 1.2)
 在程式中，我們也可以透過"預設參數"，讓函式有預設行為。
 以下範例也會把把兩個數字相加，但是只給一個數字的時候，會把那個數字 +1：
 <pre class="brush: py">
-def test(x, y = 1):
+def test(x, y=1):
 	return x + y
 
 a = int(input('Please enter a number: '))
@@ -85,7 +85,7 @@ print(c)
 <p>
 函式當中的預設參數，在每次呼叫時都會重新給值：
 <pre class="brush: py">
-def test(a = 1):
+def test(a=1):
 	print("Value of a when entering test", a)
 	a = a + 1
 	print("Value of a when exiting test", a)
@@ -102,12 +102,12 @@ test()
 <pre class="brush: py">
 def test(a):
 	a = a + 1
-	print('a in test: ', a)
+	print('a in test:', a)
 
 a = 3
-print('a outside: ', a)
+print('a outside:', a)
 test(a)
-print('a outside: ', a)
+print('a outside:', a)
 </pre>
 </p>
 
@@ -115,18 +115,16 @@ print('a outside: ', a)
 如果想在函式當中取用外部的變數(全域變數)，可以使用"global"關鍵字：
 <pre class="brush: py">
 def test(a):
-	global b, c
+	global b
 	a = a + 1
 	b = b + 1
-	c = c + 1
-	print('a, b, c in test: ', a, b, c)
+	print('a, b in test:', a, b)
 
 a = 3
 b = 4
-c = 5
-print('a, b, c outside test: ', a, b, c)
+print('a, b outside test:', a, b)
 test(a)
-print('a, b, c outside test: ', a, b, c)
+print('a, b outside test:', a, b)
 </pre>
 </p>
 
@@ -139,7 +137,7 @@ def test(x):
 a = int(input('Please enter a number: '))
 b = test
 a = b(a)
-print("New a: ", a)
+print("New a:", a)
 </pre>
 </p>
 

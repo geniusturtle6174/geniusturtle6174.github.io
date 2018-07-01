@@ -157,9 +157,9 @@ print(b) # 總算不會受影響了
 但是若預設參數是串列時，附加的值會被保留：
 <pre class="brush: py">
 def test(x, a = []):
-	print("Content of a when entering test", a)
+	print("Content of a when entering test:", a)
 	a.append(x)
-	print("Content of a when exiting test", a)
+	print("Content of a when exiting test:", a)
 
 test(12)
 test(34)

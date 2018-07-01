@@ -101,17 +101,17 @@ import numpy as np
 
 a = np.array([[1,5,3], [4,2,6]])
 print(np.max(a)) # 在所有元素裡面找
-print(np.max(a, axis=0)) # 求每個 column 找
-print(np.max(a, axis=1)) # 對每個 row 找
+print(np.max(a, axis=0)) # 沿著 row index 的方向找
+print(np.max(a, axis=1)) # 沿著 column index 的方向找
 
 b = np.array([[4,2,5,3,1], [8,6,7,9,0]])
-print(np.sort(b))         # 每個 row 各自排序
-print(np.sort(b, axis=0)) # 每個 column 各自排序
+print(np.sort(b))         # 沿著 column index 的方向排序(預設)
+print(np.sort(b, axis=0)) # 沿著 row index 的方向排序
 
 c = np.array([[4,2,5,3,1], [8,6,7,9,0]])
 print(np.mean(c)) # 所有元素平均
-print(np.mean(c, axis=0)) # 每個 column 各自平均
-print(np.mean(c, axis=1)) # 每個 row 各自平均
+print(np.mean(c, axis=0)) # 沿著 row index 的方向平均
+print(np.mean(c, axis=1)) # 沿著 column index 的方向平均
 
 d = np.array([[4,2,5,3,1], [8,6,7,9,0], [15,27,42,17,83]])
 print(np.cov(d)) # 每個 column 當作一個資料點，故總共 5 筆，每筆 3 維
@@ -120,7 +120,8 @@ print(np.cov(d, rowvar=False)) # 每個 row 當作一個資料點，故總共 3 
 </p>
 
 <p>
-上列的極值或排序，如果想要找出位置或順序(僅以向量示範)：
+關於上列的極值或排序，如果想要找出位置或順序再做進一步利用時，
+可以使用 argmax 或 argsort (僅以向量示範)：
 <pre class="brush: py">
 import numpy as np
 
@@ -151,11 +152,13 @@ import numpy as np
 
 a = np.array([[1,5,3], [4,2,6]])
 print(a.T)
+
 print('------------')
 
 b = np.array([[4],[2],[3]])
 print(b, b.shape)
 print(b.T, b.T.shape)
+
 print('------------')
 
 c = np.array([4,2,3,5,1])
@@ -194,10 +197,12 @@ import numpy as np
 
 a = np.array([[4,3,5], [2,6,1], [0,5,8]])
 print(np.linalg.det(a))
+
 print('------------')
+
 b = np.linalg.inv(a)
 print(b)
-print(np.matmul(a,b)) # Should be identity
+print(np.matmul(a,b)) # Should be very closed to identity
 </pre>
 </p>
 

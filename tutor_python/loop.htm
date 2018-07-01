@@ -18,29 +18,54 @@
 <blockquote>
 
 <p>
+<script>
+var status = 0;
+function toggle(){
+	var newbie = document.getElementsByClassName("newbie");
+	if(status==1){
+		status = 0;
+		for(var i=0;i<newbie.length;i++){
+			newbie[i].style.display = 'none';
+		}
+	}
+	else {
+		status = 1;
+		for(var i=0;i<newbie.length;i++){
+			newbie[i].style.display = 'block';
+		}
+	}
+}
+</script>
+本篇將程式初學者所需的內容預設為隱藏，若需閱讀請點<a onclick="toggle()">這裡</a>切換
+</p>
+
+<p>
 程式中，經常需要重複的進行某些動作，這時候，就需要用到"迴圈"。
 其中一種方法是 for 迴圈，其基本的用法如下：
 <pre class="brush: python">
 for 變數 in 串列或其他任何一串東西:
 	程式敘述
 </pre>
+</p>
+
+<p>
 迴圈中的程式敘述，會依照變數值的變化，被重複的執行。
 例如，下面這個程式可以有規則的印出一些數字：
 <pre class="brush: python">
 for i in range(10):
 	print(i)
 
-print('===================')
-    
+print('-----')
+	
 for i in range(1, 10):
 	print(i)
 
-print('===================')
+print('-----')
 
 for i in range(1, 10, 2):
 	print(i)
 
-print('===================')
+print('-----')
 
 for i in range(10, 1, -1):
 	print(i)
@@ -49,6 +74,7 @@ for i in range(10, 1, -1):
 程式裡面的 print，會因會變數 i 的跳動，而印出不同的數字。
 </p>
 
+<div class="newbie">
 <p>
 我們將前面的範例稍微變更一點點，則可以從 1 加到 100：
 <pre class="brush: python">
@@ -61,7 +87,9 @@ print(s)
 記得一開始要初始化為 0 (歸零)，否則會得到不正確的結果。
 當然，若是利用內建指令，則可以寫成「sum(range(1, 101))」。
 </p>
+</div>
 
+<div class="newbie">
 <p>
 如果是計算階乘，千萬記得改變一下初始值。以下示範計算 10 的階乘：
 <pre class="brush: python">
@@ -71,7 +99,9 @@ for i in range(1, 11):
 print(s)
 </pre>
 </p>
+</div>
 
+<div class="newbie">
 <p>
 如果要計算比較一般化的等差級數和，
 則可簡單的把迴圈變數跳動的範圍，改用變數來給值或判斷：
@@ -92,7 +122,9 @@ print(n*(a1+an)/2)
 當然，也可以如最後一段，用公式計算級數和。
 尤其是項數多的時候，用公式計算會比迴圈來的有效率。
 </p>
+</div>
 
+<div class="newbie">
 <p>
 <a href="http://zh.wikipedia.org/wiki/%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97">費氏數列</a>也很適合用迴圈來計算，
 以下程式可以計算費氏數列第 n (n ≥ 2)項的值：
@@ -107,6 +139,7 @@ for i in range(2, n+1):
 print(fn)
 </pre>
 </p>
+</div>
 
 <p>
 迴圈跟 list 結合時，有以下幾種用法：
@@ -115,14 +148,17 @@ a = [3, 5, 2, 4, 1]
 
 for i in range(len(a)):
 	print(i, a[i])
+
 print('---------')
 
 for x in a:
 	print(x)
+
 print('---------')
 
 for i, x in enumerate(a):
 	print(i, x)
+
 print('---------')
 
 for i, x in enumerate(a, 10):
@@ -137,20 +173,22 @@ d = {'AB': 'CDE', 'QQ': 'OAO', 123: 456}
 
 for k in d:
 	print(k, d[k])
+
 print('---------')
 
 for k, v in d.items(): # 在 Python 2 請改用 iteritems
-    print(k, v)
+	print(k, v)
 </pre>
 </p>
 
+<div class="newbie">
 <p>
 迴圈跟條件判斷一樣，也可以是巢狀(一層包一層)的。以下程式使用了兩層的 for 迴圈來輸出九九乘法表：
 <pre class="brush: python">
 for i in range(1, 10):
-    for j in range(1, 10):
-        print('{:d}*{:d}={:2d} '.format(i, j, i*j), end = '')
-    print('')
+	for j in range(1, 10):
+		print('{:d}*{:d}={:2d} '.format(i, j, i*j), end = '')
+	print('')
 </pre>
 這支程式的輸出為：
 <pre>
@@ -161,6 +199,7 @@ for i in range(1, 10):
 </pre>
 Question: 如何改成印直的？
 </p>
+</div>
 
 <p>
 另外一種迴圈指令是 while，其語法為：
@@ -171,6 +210,7 @@ while(條件式):
 只要條件符合，迴圈就會一直執行。
 </p>
 
+<div class="newbie">
 <p>
 以下程式也會印出 1 到 10，各位可以體會一下 while 與 for 的語法差異：
 <pre class="brush: python">
@@ -180,7 +220,9 @@ while(i&lt;=10):
 	i = i + 1
 </pre>
 </p>
+</div>
 
+<div class="newbie">
 <p>
 利用 while 迴圈，很適合觀察「3n+1問題」的數列。這個問題的規則是這樣的：
 <ul>
@@ -201,31 +243,33 @@ while(n!=1):
 	print(int(n))
 </pre>
 </p>
+</div>
 
 <p>
 「break」可以跳出所在的這一層迴圈，「continue」可以繼續下一層迴圈：
 <pre class="brush: python">
 print("First loop:")
 for i in range(1, 6):
-    if(3==i):
-        break
-    print(i)
-print('')
+	if(3==i):
+		break
+	print(i)
+
+print('-----')
 
 print("Second loop:")
 for i in range(1, 6):
-    if(3==i):
-        continue
-    print(i)
-print('')
+	if(3==i):
+		continue
+	print(i)
+
+print('-----')
 
 print("Nested loop:")
 for i in range(1, 4):
-    for j in range(1, 6):
-        print(i, j)
-        if(i==2):
-            break
-    print('')
+	for j in range(1, 6):
+		print(i, j)
+		if(i==2):
+			break
 </pre>
 </p>
 

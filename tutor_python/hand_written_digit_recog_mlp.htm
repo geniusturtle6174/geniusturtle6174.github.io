@@ -50,7 +50,7 @@ print(mnist.test.images.shape)
 
 <p>
 上面看到的例如「(55000, 784)」，前者是資料量，也就是圖片有幾張；
-後面的 784 則是每張圖片的大小，此處的資料是用 row-major 的方式展開的，
+後面的 784 則是每張圖片的大小，是從原來的 28 * 28 的圖片，用 row-major 的方式展開的。
 一般而言，採用什麼方式展開都沒有差別，只要你在整個 dataset 的展開方法都一樣就可以。
 另外，如果覺得 google "mnist" 看到的範例還不算眼見為憑，可以這樣子看看資料的內容
 (此處為了顯示方便，將原本的灰階資料改為純黑白)：
@@ -66,7 +66,7 @@ for t in tmp:
 <p>
 「(55000, 10)」的 10 則是答案有幾種，因為我們進行的是數字 0~9 的辨識，所以是 10 種。
 每一個 row 的格式是，當數字是 x 的時候，陣列的 index 為 x 的地方就會"亮燈"，這個稱為"one hot"。
-如果你想要有另一份只包含 x 的向量，可以這樣做(範例的後半部，會用到一份這樣的格式)：
+如果你想要有另一份只包含 x 的向量，可以這樣做(為了在訓練過程中方便計算準確度，本篇會用到一份這樣的格式)：
 <pre class="brush: python">
 gt = np.argmax(mnist.train.labels, axis=1)
 </pre>
@@ -130,7 +130,7 @@ saver.save(sess, os.path.join('model', 'model.ckpt'))
 </p>
 
 <p>
-一個完整可用的範例如下。在一台使用 i5-3230M CPU 的電腦上，大約三分鐘以內可以訓練完畢：
+完整的訓練用程式碼如下。在一台使用 i5-3230M CPU 的電腦上，大約三分鐘以內可以訓練完畢：
 <pre class="brush: python">
 import tensorflow as tf
 import numpy as np
@@ -185,7 +185,7 @@ h = tf.layers.dropout(h, training=False)
 </p>
 
 <p>
-完整的程式碼如下。如果是使用本範例的參數，辨識率大約會在 98% 上下：
+完整的測試用程式碼如下。如果是使用本範例的參數，辨識率大約會在 98% 上下：
 <pre class="brush: python">import tensorflow as tf
 import numpy as np
 from tensorflow.examples.tutorials.mnist import input_data
@@ -214,7 +214,7 @@ print('Recog rate: {:.2f}%'.format(100*np.mean(recog_result==test_label)))
 
 <p>
 如果想要自己畫些圖丟進去看看，則可以透過 pip 安裝 imageio 套件來讀取，再把讀進來的影像矩陣丟進模型即可。
-此處提供一個 28-by-28 的<a href="pics/blank_for_hdr.png">空白圖檔</a>，以及相關的小提示：
+此處提供一個 28-by-28 的<a href="pics/blank_for_hdr.png">空白圖檔</a>讓各位自行繪製，以及相關的小提示：
 <ul>
 <li>雖然看上去是黑白，不過這個圖檔是由 RGB 三種顏色組成(28*28*3)，你可以取出任意一個維度，例如以「img[:,:,0]」取出紅色部分</li>
 <li>圖片是 28*28，必須改成 1*784，此步驟可以使用「img.flatten()[np.newaxis,:]」</li>
