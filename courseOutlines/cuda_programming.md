@@ -2,32 +2,30 @@
 
 ## 課程目標
 
-學習 CUDA 程式設計
+了解 GPU 硬體架構，並學習 CUDA 程式設計
 
 ## 預先要求
 
-修畢 C 語言相關課程
+* 修畢 C 語言相關課程
+* (非必要)修畢計算機結構與作業系統
+
+## 相關書目
+
+本課程使用教師自編教材，不指定教科書
 
 ## 課程進度
 
-Tentative schedule 
-1.	Introduction to heterogeneous computing (1 week) 
-2.	CUDA programming language (3 weeks) 
-2.A.	Basic language elements 
-2.B.	Thread, block, and thread 
-2.C. Parallel algorithms of summation and prefix sum 
-3.	Basic performance optimization techniques (3 weeks) 
-2.A.	Memory access model 
-2.B.	Program execution model 
-2.C.	Performance measurement and tuning tools 
-2.D. Parallel algorithms of matrix transport and multiplication 
-4.	Advanced performance optimization techniques (4 weeks) 
-2.A.	Data streaming, data compression 
-2.B.	Data structure and algorithms 
-2.C.	Multiple GPU with MPI or MapReduce 
-2.D. Parallel algorithms of ray-tracing 
-5.	Other accelerators and programming languages (4 weeks) 
-2.A. CUDA in Matlab, Python, and Fortran, etc 
-2.B.	OpenCL, OpenAcc, etc 
-2.C.	RedDragon, IBM Cell, Intel MIC, FPGA, etc 
-6.	Case studies and project presentations (2 weeks) 
+* GPU 架構與 CUDA 程式設計簡介(3~4w)
+* 基礎最佳化技巧(3~4w)
+  * 記憶體存取模式
+  * 程式執行流程
+  * 效能評估
+* 進階最佳化技巧(3~4w)
+  * 資料傳輸模式
+  * 演算法設計
+  * (optional)多 GPU 程式設計
+* 其他加速方式(3w)
+  * CUDA in python
+  * OpenCL
+
+* 以上包含三至四次作業與一次期末專案，作業之優良作品與期末專案作品於課堂進行報告
