@@ -17,9 +17,7 @@
 
 <blockquote>
 
-<p>
-字串，顧名思義就是一串字元形成的序列。
-我們首先來看一些比較通用的運算：
+<p>字串，顧名思義就是一串字元形成的序列。我們首先來看一些比較通用的運算：</p>
 <pre class="brush: py">
 s = 'Hello'
 t = 'World'
@@ -34,11 +32,8 @@ print('A' in u)     # 字串中是否存在某字元
 print(u.index('r')) # 某字元第一個出現的位置(Question: 如果是沒出現的字會怎樣？)
 print(u.count('l')) # 某字元出現的次數(Question: 如果是沒出現的字會怎樣？)
 </pre>
-</p>
 
-<p>
-字串的比較，基本上是依照字典的順序，但所有大寫比所有的小寫還小。
-另外，如果要判斷特定的開頭或結尾，也有專用的方法：
+<p>字串的比較，基本上是依照字典的順序，但所有大寫比所有的小寫還小。另外，如果要判斷特定的開頭或結尾，也有專用的方法：</p>
 <pre class="brush: py">
 print('\'ABC\'&lt;\'BBB\':', 'ABC'&lt'BBB')
 print('\'Dog\'&lt;\'cat\':', 'Dog'&lt'cat')
@@ -47,10 +42,8 @@ print('\'OAO\'==\'QQ\':', 'OAO'=='QQ')
 print('\'Hello World\'.startswith(\'He\'):', 'Hello World'.startswith('He'))
 print('\'Hello World\'.endswith(\'ld\'):', 'Hello World'.endswith('ld'))
 </pre>
-</p>
 
-<p>
-Python 提供了一系列的 isxxx 功能，可以判斷字串是否有 xxx 屬性。以下介紹其中一些：
+<p>Python 提供了一系列的 isxxx 功能，可以判斷字串是否有 xxx 屬性。以下介紹其中一些：</p>
 <pre class="brush: py">
 print('\'123\'.isdigit():', '123'.isdigit())      # 是否全為數字
 print('\'AbC\'.isalpha():', 'AbC'.isalpha())      # 是否全為字母
@@ -58,20 +51,16 @@ print('\'12cd5\'.isalnum():', '12cd5'.isalnum())  # 是否全為數字或字母
 print('\'ab345\'.islower():', 'ab345'.islower())  # 是否全為小寫
 print('\'123DE\'.isupper():', '123DE'.isupper())  # 是否全為大寫
 </pre>
-</p>
 
-<p>
-如果要搜尋子字串，有 find 和 rfind 可以使用；若是計算子字串的出現次數，則是使用 count：
+<p>如果要搜尋子字串，有 find 和 rfind 可以使用；若是計算子字串的出現次數，則是使用 count：</p>
 <pre class="brush: py">
 s = 'I saw a saw saw a saw'
 print(s.find('saw'))
 print(s.rfind('saw'))
 print(s.count('saw'))
 </pre>
-</p>
 
-<p>
-如果要把字串中的特定內容取代掉，則可以使用 replace (取代字串)或者 strip (從端點取代字元)：
+<p>如果要把字串中的特定內容取代掉，則可以使用 replace (取代字串)或者 strip (從端點取代字元)：</p>
 <pre class="brush: py">
 s = 'I saw a saw saw a saw'
 t = 'aeifubeetkoeitauo'
@@ -81,10 +70,8 @@ print(t.strip('aeiou'))  # 從左右刪除特定的一些字元
 print(t.lstrip('aeiou')) # 從左邊刪除特定的一些字元
 print(t.rstrip('aeiou')) # 從右邊刪除特定的一些字元
 </pre>
-</p>
 
-<p>
-用 split 可以把字串以特定字元切開成串列，join 則可以把多個字串依照指定的方式連接起來：
+<p>用 split 可以把字串以特定字元切開成串列，join 則可以把多個字串依照指定的方式連接起來：</p>
 <pre class="brush: py">
 s = 'I saw a saw saw a saw'
 t = 'a,b,c,d,e,f,g,h'
@@ -93,11 +80,8 @@ print(s.split())
 print(t.split(','))
 print('~'.join(['a', 'b', 'c']))
 </pre>
-</p>
 
-<p>
-需要注意的是，字串並無法像串列一樣，直接取代掉特定位置的字元。
-如果真的需要這麼做，你可以把該字串先拆解成 list，取代完成以後再拚回去：
+<p>需要注意的是，字串並無法像串列一樣，直接取代掉特定位置的字元。如果真的需要這麼做，你可以把該字串先拆解成 list，取代完成以後再拚回去：</p>
 <pre class="brush: py">
 s = 'aifbeeftkofita'
 
@@ -108,7 +92,7 @@ t[6] = 'X'
 s2 = ''.join(t)
 print(s2)
 </pre>
-</p>
 
-</blockquote>
+</blockquote>
+
 </body></html>

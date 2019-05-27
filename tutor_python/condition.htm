@@ -22,7 +22,7 @@
 var status = 0;
 function toggle(){
 	var newbie = document.getElementsByClassName("newbie");
-	if(status==1){
+	if(status == 1){
 		status = 0;
 		for(var i=0;i<newbie.length;i++){
 			newbie[i].style.display = 'none';
@@ -39,80 +39,67 @@ function toggle(){
 本篇將程式初學者所需的內容預設為隱藏，若需閱讀請點<a onclick="toggle()">這裡</a>切換
 </p>
 
-<p>
-程式可以如此靈活的原因之一，就是能依據不同的條件，來進行不同的工作。
-要進行判斷，可以使用 if...else 的語法，如下：
+<p>程式可以如此靈活的原因之一，就是能依據不同的條件，來進行不同的工作。要進行判斷，可以使用 if...else 的語法，如下：</p>
 <pre class="brush: py">
-if(條件運算式):
+if 條件運算式:
 	程式敘述一 # 當然也可以是很多筆敘述
 else:
 	程式敘述二
 </pre>
-當條件成立時，將執行敘述一，否則會執行敘述二。如果不需要敘述二，則可省略 else 以下的部分。
-在一行的開頭加入空白使程式往右靠稱為縮排，縮排在 Python 當中是必須的。
-本範例使用四個空白作為縮排(但因編輯器的緣故，如果你看的是網頁原始碼，則是使用 Tab 縮排)，Python 內建的 IDLE 環境也會使用空白縮排；
-你可以依照喜好選擇空白的數量或者改用 Tab，但請留意，這些方式應避免混用，否則可能導致程式無法執行或難以除錯。
-</p>
 
-<p>
-以成績及格與否的判斷做為一個簡單的範例，
-其邏輯上為「60分以上及格，否則被當」。寫成程式碼時的範例如下：
+<p>當條件成立時，將執行敘述一，否則會執行敘述二。如果不需要敘述二，則可省略 else 以下的部分。在一行的開頭加入空白使程式往右靠稱為縮排，縮排在 Python 當中是必須的。本範例使用四個空白作為縮排(但因編輯器的緣故，如果你看的是網頁原始碼，則是使用 Tab 縮排)，Python 內建的 IDLE 環境也會使用空白縮排；你可以依照喜好選擇空白的數量或者改用 Tab，但請留意，這些方式應避免混用，否則可能導致程式無法執行或難以除錯。</p>
+
+<p>以成績及格與否的判斷做為一個簡單的範例，其邏輯上為「60分以上及格，否則被當」。寫成程式碼時的範例如下：</p>
 <pre class="brush: py">
 grade = int(input('Please enter grade: ')) # 接受使用者輸入一個整數
-if(grade &gt;= 60):
+if grade &gt;= 60:
 	print('Pass')
 else:
 	print('GG')
 </pre>
-</p>
 
-<p>
-上例中的「>=」，稱之為條件運算子，可以用來判斷左邊的運算結果，是否大於等於右邊的運算結果。
-其餘的條件運算子有：
+<p>上例中的「>=」，稱之為條件運算子，可以用來判斷左邊的運算結果，是否大於等於右邊的運算結果。其餘的條件運算子有：</p>
 <ul>
-	<li>大於：「&gt;」，等於：「==」，小於：「&lt;」。
-		需注意判斷是否等於的用法是兩個等號(一個等號是變數指派)</li>
+	<li>大於：「&gt;」，等於：「==」，小於：「&lt;」。需注意判斷是否等於的用法是兩個等號(一個等號是變數指派)</li>
 	<li>大於等於：「&gt;=」，小於等於：「&lt;=」</li>
 	<li>不等於：「!=」</li>
-	<li>且：「and」</li>
+	<li>且：「and」
 		<ul>
 			<li>範例：「a == b and 5 == c」</li>
 			<li>發現第一個條件不成立時，則不判斷第二個條件</li>
 		</ul>
-	<li>或：「or」</li>
+	</li>
+	<li>或：「or」
 		<ul>
 			<li>範例：「x != y or z == 3」</li>
 			<li>發現第一個條件成立時，則不判斷第二個條件</li>
 		</ul>
+	</li>
 </ul>
-</p>
 
-<p>
-使用範例如下：
+<p>使用範例如下：</p>
 <pre class="brush: py">
 a = 10
-if( a &gt; 5 ):
+if a &gt; 5:
 	print("a &gt; 5")
 
 b = 7
-if( b % 2 != 0 ):
+if b % 2 != 0:
 	print("b is odd")
 
 a = 2
 b = 3
-if( a &gt; 0 and b &gt; 0 ):
+if a &gt; 0 and b &gt; 0:
 	print("a and b are both positive")
 
 a = 20
 b = 90
-if( a &gt; 60 or b &gt; 70 ):
+if a &gt; 60 or b &gt; 70:
 	print("a or b passed")
 </pre>
-</p>
 
 <div class="newbie">
-<p>
-或和且的混用：
+<p>或和且的混用：</p>
 <pre class="brush: py">
 a = 10
 b = 20
@@ -122,7 +109,7 @@ c = 30
 1. a 比 5 大，而且 b 比 10 大
 2. c 比 15 大
 '''
-if( a &gt; 5 and b &gt; 10 or c &gt; 15):
+if a &gt; 5 and b &gt; 10 or c &gt; 15:
 	print("Test 1: OK")
 
 a = 15
@@ -133,18 +120,15 @@ c = 3
 1. a 比 5 大，或者 b 比 10 大
 2. c 比 15 大
 '''
-if( (a &gt; 5 or b &gt; 10) and c &gt; 15):
+if (a &gt; 5 or b &gt; 10) and c &gt; 15:
 	print("Test 2: match")
 else:
 	print("Test 2: GG")
 </pre>
-</p>
 </div>
 
 <div class="newbie">
-<p>
-"或"就像加法，"且"就像乘法，它們也遵守先乘除後加減的規則。
-我們把前面範例最後一段的括號拿掉看看：
+<p>"或"就像加法，"且"就像乘法，它們也遵守先乘除後加減的規則。我們把前面範例最後一段的括號拿掉看看：
 <pre class="brush: py">
 a = 15
 b = 20
@@ -154,78 +138,66 @@ c = 3
 1. a 比 5 大，或者 b 比 10 大
 2. c 比 15 大
 '''
-if( a &gt; 5 or b &gt; 10 and c &gt; 15):
+if a &gt; 5 or b &gt; 10 and c &gt; 15:
 	print("Test 2: match")
 else:
 	print("Test 2: GG")
 </pre>
-</p>
 </div>
 
-<p>
-在數學式子中，我們會寫"a &gt; b &gt; c"，這是大家很熟悉的遞移律。
-在其他某些語言當中，直接寫"a &gt; b &gt; c"作為判斷式是會有問題的，
-但是在 Python 當中，可以直接使用遞移律來撰寫判斷式：
+<p>在數學式子中，我們會寫"a &gt; b &gt; c"，這是大家很熟悉的遞移律。在其他某些語言當中，直接寫"a &gt; b &gt; c"作為判斷式是會有問題的，但是在 Python 當中，可以直接使用遞移律來撰寫判斷式：</p>
 <pre class="brush: py">
 a = 3
 b = 2
 c = 1
 	
-if(a &gt; b &gt; c):
+if a &gt; b &gt; c:
 	print("Match\n")
 else:
 	print("Ha ha ha UCCU\n")
 </pre>
-</p>
 
-<p>
-如果要進行的條件判斷或動作比較簡單，可以用以下的方法縮成一行：
+<p>如果要進行的條件判斷或動作比較簡單，可以用以下的方法縮成一行：</p>
 <pre class="brush: py">
 grade = 70
 a = 1
 b = 2
 
 # 例如第一個範例，可以簡化成這樣
-print('Pass') if (grade &gt;= 60) else print('GG')
+print('Pass') if grade &gt;= 60 else print('GG')
 
 # 也可以這樣用
-c = a + b if (a &gt; b) else (a - b)
+c = (a + b) if a &gt; b else (a - b)
 </pre>
-</p>
 
-<p>
-進行程式設計時，可以依照自己的流程需求，使用合適的條件判斷方式。
-而如果所需要的邏輯較為複雜時，則可使用「elif」(為"else if"的意思)的敘述，
-例如<a href="http://zh.wikipedia.org/zh-tw/%E9%97%B0%E5%B9%B4">閏年</a>的判斷，
-其規則為逢 4 的倍數閏、100 的倍數不閏、400 的倍數閏，程式碼可以寫成以下的樣子：
+<p>進行程式設計時，可以依照自己的流程需求，使用合適的條件判斷方式。而如果所需要的邏輯較為複雜時，則可使用「elif」(為"else if"的意思)的敘述，例如<a href="http://zh.wikipedia.org/zh-tw/%E9%97%B0%E5%B9%B4">閏年</a>的判斷，
+其規則為逢 4 的倍數閏、100 的倍數不閏、400 的倍數閏，程式碼可以寫成以下的樣子：</p>
 <pre class="brush: py">
 year = 2018
 
-if(year % 400 == 0):
+if year % 400 == 0:
 	print("Leap")
-elif(year % 100 == 0):
+elif year % 100 == 0:
 	print("Common")
-elif(year % 4 == 0):
+elif year % 4 == 0:
 	print("Leap")
 else:
 	print("Common")
 </pre>
-</p>
 
 <div class="newbie">
-<p>
-條件判斷也可以一層包一層(巢狀)，例如把第一個範例中，80 分以上的加一個特別鼓勵：
+<p>條件判斷也可以一層包一層(巢狀)，例如把第一個範例中，80 分以上的加一個特別鼓勵：</p>
 <pre class="brush: py">
 grade = int(input('Please enter grade: ')) # 接受使用者輸入一個整數
-if(grade &gt;= 60):
+if grade &gt;= 60:
 	print('Pass')
-	if(grade &gt;= 80):
+	if grade &gt;= 80:
 		print('Good')
 else:
 	print('GG')
 </pre>
-</p>
 </div>
 
-</blockquote>
+</blockquote>
+
 </body></html>

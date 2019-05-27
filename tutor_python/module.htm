@@ -17,9 +17,7 @@
 
 <blockquote>
 
-<p>
-每個 Python 的檔案都可以看作模組，import 以後就可以使用裡面的函式或變數。
-假設我們有一個 test.py，內容為以下：
+<p>每個 Python 的檔案都可以看作模組，import 以後就可以使用裡面的函式或變數。假設我們有一個 test.py，內容為以下：</p>
 <pre class="brush: py">
 def inc(x):
 	return x + 1
@@ -30,7 +28,8 @@ def dec(x):
 a = 10
 b = 20
 </pre>
-則我們可以在同一目錄下的 Python 環境或檔案中這樣使用：
+
+<p>則我們可以在同一目錄下的 Python 環境或檔案中這樣使用：</p>
 <pre class="brush: py">
 import test
 
@@ -39,26 +38,22 @@ print(test.b)
 print(test.inc(1))
 print(test.dec(100))
 </pre>
-</p>
 
-<p>
-Import 的時候，利用 as 可以換個名稱：
+<p>Import 的時候，利用 as 可以換個名稱：</p>
 <pre class="brush: py">
 import test as QQ
 
 print(QQ.a)
 print(QQ.inc(1))
 </pre>
-</p>
 
-<p>
-也可以只 import 一部分(這時候，在呼叫時就不需要再寫出原本的模組名稱"test")：
+<p>也可以只 import 一部分(這時候，在呼叫時就不需要再寫出原本的模組名稱"test")：</p>
 <pre class="brush: py">
 from test import inc
 
 print(inc(1))
 </pre>
-</p>
 
-</blockquote>
+</blockquote>
+
 </body></html>

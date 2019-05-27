@@ -18,15 +18,10 @@
 <blockquote>
 
 <p>
-Numpy 是 Python 的一個函式庫，支援了非常多種的向量和矩陣等等的運算。
-要安裝 numpy，你必須先在 cmd 當中執行「pip install numpy」或「python -m pip install numpy」
-(根據電腦的設定，可能在指令細節還會有些許差異)；
-安裝完成後，在 Python 程式中 import，就可以使用。
+Numpy 是 Python 的一個函式庫，支援了非常多種的向量和矩陣等等的運算。要安裝 numpy，你必須先在 cmd 當中執行「pip install numpy」或「python -m pip install numpy」(根據電腦的設定，可能在指令細節還會有些許差異)；安裝完成後，在 Python 程式中 import，就可以使用。
 </p>
 
-<p>
-首先來看一些基本的數學運算。
-由於常見的部分在 Math 當中也有提供很多，故以下僅任意列出其中一些，作為語法的介紹：
+<p>首先來看一些基本的數學運算。由於常見的部分在 Math 當中也有提供很多，故以下僅任意列出其中一些，作為語法的介紹：</p>
 <pre class="brush: py">
 import numpy as np
 
@@ -34,11 +29,8 @@ print(np.abs(-123.45))
 print(np.log2(1024))
 print(np.log10(2))
 </pre>
-</p>
 
-<p>
-Numpy 當中，最基本與常見的資料結構，就是多維陣列(ndarray)；
-而向量，當然就是一維陣列：
+<p>Numpy 當中，最基本與常見的資料結構，就是多維陣列(ndarray)；而向量，當然就是一維陣列：</p>
 <pre class="brush: py">
 import numpy as np
 
@@ -51,10 +43,8 @@ print(b * c) # 元素對元素計算
 print(b / c) # 元素對元素計算
 print(b.shape)
 </pre>
-</p>
 
-<p>
-創建規則向量，可以用 arange (相當於 range 的 numpy 版本)，甚至也有 linspace 可用：
+<p>創建規則向量，可以用 arange (相當於 range 的 numpy 版本)，甚至也有 linspace 可用：</p>
 <pre class="brush: py">
 import numpy as np
 
@@ -63,10 +53,8 @@ print(np.arange(1,10))
 print(np.arange(1,10,2))
 print(np.linspace(0, 1, 11))
 </pre>
-</p>
 
-<p>
-二維陣列，就是很多個一維陣列排在一起：
+<p>二維陣列，就是很多個一維陣列排在一起：</p>
 <pre class="brush: py">
 import numpy as np
 
@@ -75,10 +63,8 @@ print(np.zeros(5))     # 也有 ones 可以用
 print(np.zeros((2,3)))
 print(np.zeros((5,1)))
 </pre>
-</p>
 
-<p>
-矩陣的合併：
+<p>矩陣的合併：</p>
 <pre class="brush: py">
 import numpy as np
 
@@ -87,15 +73,13 @@ b = np.array([[7,8,9], [0,0,0]])
 print(np.vstack([a, b]))
 print(np.hstack([a, b]))
 </pre>
-需要注意的是，如果其中一方是空矩陣的話，可能會產生問題，所以必須對其 size 屬性進行判斷，
-例如下列程式片段中，已知 a 有可能為空，則可以這樣處理：
+
+<p>需要注意的是，如果其中一方是空矩陣的話，可能會產生問題，所以必須對其 size 屬性進行判斷，例如下列程式片段中，已知 a 有可能為空，則可以這樣處理：</p>
 <pre class="brush: py">
 c = np.vstack([a, b]) if(a.size) else b
 </pre>
-</p>
 
-<p>
-一些統計等運算，例如極值、排序、平均、共變異矩陣：
+<p>一些統計等運算，例如極值、排序、平均、共變異矩陣：</p>
 <pre class="brush: py">
 import numpy as np
 
@@ -117,11 +101,8 @@ d = np.array([[4,2,5,3,1], [8,6,7,9,0], [15,27,42,17,83]])
 print(np.cov(d)) # 每個 column 當作一個資料點，故總共 5 筆，每筆 3 維
 print(np.cov(d, rowvar=False)) # 每個 row 當作一個資料點，故總共 3 筆，每筆 5 維
 </pre>
-</p>
 
-<p>
-關於上列的極值或排序，如果想要找出位置或順序再做進一步利用時，
-可以使用 argmax 或 argsort (僅以向量示範)：
+<p>關於上列的極值或排序，如果想要找出位置或順序再做進一步利用時，可以使用 argmax 或 argsort (僅以向量示範)：</p>
 <pre class="brush: py">
 import numpy as np
 
@@ -129,10 +110,8 @@ a = np.array([4,2,3,1,5])
 print(np.argmax(a))
 print(np.argsort(a))
 </pre>
-</p>
 
-<p>
-邏輯運算與尋找(僅以向量示範)：
+<p>邏輯運算與尋找(僅以向量示範)：</p>
 <pre class="brush: py">
 import numpy as np
 
@@ -143,10 +122,8 @@ print(np.where(a&gt;=5)[0])
 print(np.bitwise_or(a&gt;=7, a&lt;=3))
 print(np.where(np.bitwise_or(a&gt;=7, a&lt;=3))[0])
 </pre>
-</p>
 
-<p>
-轉置：
+<p>轉置：</p>
 <pre class="brush: py">
 import numpy as np
 
@@ -167,10 +144,8 @@ print(c, c.shape)
 print(c.T, c.T.shape) # 一開始就是一維的不能轉
 print(c.reshape(cLen, -1), c.reshape(cLen, -1).shape) # 若需要轉，可以這樣用
 </pre>
-</p>
 
-<p>
-矩陣相乘可以使用 matmul，若是元素對元素相乘，可以呼叫 multiply：
+<p>矩陣相乘可以使用 matmul，若是元素對元素相乘，可以呼叫 multiply：</p>
 <pre class="brush: py">
 import numpy as np
  
@@ -188,10 +163,8 @@ print(c)
 print(d)
 print(np.multiply(c, d))
 </pre>
-</p>
 
-<p>
-行列式值與反矩陣：
+<p>行列式值與反矩陣：</p>
 <pre class="brush: py">
 import numpy as np
 
@@ -204,10 +177,8 @@ b = np.linalg.inv(a)
 print(b)
 print(np.matmul(a,b)) # Should be very closed to identity
 </pre>
-</p>
 
-<p>
-線性方程求解：
+<p>線性方程求解：</p>
 <pre class="brush: py">
 import numpy as np
 
@@ -226,7 +197,7 @@ x, resid, rank, s = np.linalg.lstsq(A.T, b.T)
 print(x)
 print(np.matmul(x, A))
 </pre>
-</p>
 
-</blockquote>
+</blockquote>
+
 </body></html>

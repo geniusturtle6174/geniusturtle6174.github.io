@@ -17,40 +17,28 @@
 
 <blockquote>
 
-<p>
-本篇介紹 tensorflow GPU 版安裝時的注意事項，關於完整的細節，可以參考官方網站。
-</p>
+<p>本篇介紹 tensorflow GPU 版安裝時的注意事項，關於完整的細節，可以參考官方網站。</p>
 
-<p>
-要安裝 tensorflow 的 GPU 版其實相當簡單，只要把安裝指令的"tensorflow"改成"tensorflow-gpu"即可。
-比較需要注意的是，CUDA Toolkit 和 cuDNN 需要自己安裝，並且版本需要正確。
-在官方網站中，提到了三個要件(以下為教材撰寫時所記載的內容，搭配的 tensorflow 版本為 1.8 版)：
+<p>要安裝 tensorflow 的 GPU 版其實相當簡單，只要把安裝指令的"tensorflow"改成"tensorflow-gpu"即可。比較需要注意的是，CUDA Toolkit 和 cuDNN 需要自己安裝，並且版本需要正確。在官方網站中，提到了三個要件(以下為教材撰寫時所記載的內容，搭配的 tensorflow 版本為 1.8 版)：
 </p>
 
 <ul>
-<li>CUDA Toolkit 版本為 9.0</li>
-<li>cuDNN 版本為 7.0</li>
-<li>GPU 必須支援 CUDA Compute Capability 3.5 以上</li>
+	<li>CUDA Toolkit 版本為 9.0</li>
+	<li>cuDNN 版本為 7.0</li>
+	<li>GPU 必須支援 CUDA Compute Capability 3.5 以上</li>
 </ul>
 
 <p>
-其中關於 CUDA Compute Capability 的版本，只要你的顯示卡不是 2012 或 2013 年以前這麼早買的，都可以當作它有支援。
-而比較需要注意的是 CUDA Toolkit 和 cuDNN 的版本，這兩樣軟體在官方網站上容易連結之處，只提供了最新的版本(本教材撰寫時，分別為 9.2 和 7.1)；
-我們必須自己用搜尋功能找到 tensorflow 所要求的版本並安裝。
+其中關於 CUDA Compute Capability 的版本，只要你的顯示卡不是 2012 或 2013 年以前這麼早買的，都可以當作它有支援。而比較需要注意的是 CUDA Toolkit 和 cuDNN 的版本，這兩樣軟體在官方網站上容易連結之處，只提供了最新的版本(本教材撰寫時，分別為 9.2 和 7.1)；我們必須自己用搜尋功能找到 tensorflow 所要求的版本並安裝。
 </p>
 
 <p>
-CUDA Toolkit 和 cuDNN 的檔案大小分別約是 1.3 GB 和 200 多 MB。
-CUDA Toolkit 的安裝基本上是一直按"下一步"即可完成，該調整的環境設定，安裝時會自動幫你完成。
-cuDNN 則是要解壓縮後放在特定的地方，環境變數也要自己設定：你需要自己將 bin 資料夾的位置，設定到電腦的 Path 變數中。
+CUDA Toolkit 和 cuDNN 的檔案大小分別約是 1.3 GB 和 200 多 MB。CUDA Toolkit 的安裝基本上是一直按"下一步"即可完成，該調整的環境設定，安裝時會自動幫你完成。cuDNN 則是要解壓縮後放在特定的地方，環境變數也要自己設定：你需要自己將 bin 資料夾的位置，設定到電腦的 Path 變數中。
 </p>
 
 <p>
-安裝完成後，就可以像 CPU 版本一樣的使用。雖然 GPU 版本在初始化會稍微多花幾秒鐘的時間，但與漫長的訓練過程相比，應該是值得的。
-若以 GT 740M 顯示卡執行手寫數字辨識的範例，與 i5-3230M CPU 相比，
-一個 epoch 的時間，可以從 30 多秒降到 10 秒以內，口說數字辨識則可從 20 多秒降到 5 秒以內。
-另外，若有特殊狀況(例如記憶體容量的限制)需要使用 CPU 來運算的時候，可以把相關程式碼用「with tf.device('/cpu:0'):」包住；
-以全部使用 CPU 運算為例，就是把原本的這樣：
+安裝完成後，就可以像 CPU 版本一樣的使用。雖然 GPU 版本在初始化會稍微多花幾秒鐘的時間，但與漫長的訓練過程相比，應該是值得的。若以 GT 740M 顯示卡執行手寫數字辨識的範例，與 i5-3230M CPU 相比，一個 epoch 的時間，可以從 30 多秒降到 10 秒以內，口說數字辨識則可從 20 多秒降到 5 秒以內。另外，若有特殊狀況(例如記憶體容量的限制)需要使用 CPU 來運算的時候，可以把相關程式碼用「with tf.device('/cpu:0'):」包住；以全部使用 CPU 運算為例，就是把原本的這樣：
+</p>
 <pre class="brush: python">
 # Make network
 ph_x = tf.placeholder(tf.float32, [None, 28, 28, 1])
@@ -63,7 +51,8 @@ ph_gt = tf.placeholder(tf.float32, shape=(None, 10))
 optimizer = tf.train.AdamOptimizer()
 ...
 </pre>
-改成這樣：
+
+<p>改成這樣：</p>
 <pre class="brush: python">
 with tf.device('/cpu:0'):
 	# Make network
@@ -77,7 +66,6 @@ with tf.device('/cpu:0'):
 	optimizer = tf.train.AdamOptimizer()
 	...
 </pre>
-</p>
 
 </blockquote>
 
