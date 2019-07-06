@@ -12,61 +12,42 @@
 	<script type="text/javascript">
 		SyntaxHighlighter.all();
 	</script>
-	﻿</head>
+	</head>
 
 <body bgcolor="#ccccff">
 
 <blockquote>
 
 <p>
-HTML 的 meta 標籤，可用於描述該網頁的 metadata。
-一般對 metadata 常見的說明，是"描述資料的資料"，亦即資料的屬性。
-例如，以一首歌曲來說，它的歌名、作詞(曲)者、所屬專輯、曲風...等等，都算是 metadata。
-而以網頁來說，則可以是編碼、關鍵字，甚至是更新頻率等等資訊。
+HTML 的 meta 標籤，可用於描述該網頁的 metadata。一般對 metadata 常見的說明，是"描述資料的資料"，亦即資料的屬性。例如，以一首歌曲來說，它的歌名、作詞(曲)者、所屬專輯、曲風...等等，都算是 metadata。而以網頁來說，則可以是編碼、關鍵字，甚至是更新頻率等等資訊。
 </p>
+
+<p>這個標籤的效果其實很常見，例如我們在 yahoo 想要轉貼一則新聞到 facebook 的時候，通常會看到如下的畫面：</p>
+<center><img src="pics/meta01.png"></center>
+<p>而你如果打開新聞頁面的原始碼，就會發現一些相似之處：</p>
+<center><img src="pics/meta02.png"></center>
+<p>這些就是網站利用 meta 標籤，將關鍵或摘要內容提示給社群網站或搜尋引擎讀取時使用的例子。</p>
+
+<p>meta 標籤還有其他比較基本的用途，例如若要將網頁每隔五分鐘(300 秒)就重新整理，則可將這一小段語法加到 head 的範圍當中：</p>
+<pre class="brush: html">&lt;meta http-equiv=&quot;refresh&quot; content=&quot;300&quot;&gt;</pre><br>
+
+<p>想要自動轉向到其他網頁，使用方式也非常類似：</p>
+<pre class="brush: html">&lt;meta http-equiv=&quot;refresh&quot; CONTENT=&quot;0;url=test.htm&quot;&gt;</pre><br>
 
 <p>
-這個標籤的效果其實很常見，例如我們在 yahoo 想要轉貼一則新聞到 facebook 的時候，
-通常會看到如下的畫面：
-<center><img src="pics/meta01.png"></center><br/>
-而你如果打開新聞頁面的原始碼，就會發現一些相似之處：<br/><br/>
-<center><img src="pics/meta02.png"></center><br/>
-這些就是網站利用 meta 標籤，將關鍵或摘要內容提示給社群網站或搜尋引擎讀取時使用的例子。
+meta 標籤的另外一個功能，就是指定網頁的編碼。如果你的網頁原始檔在編輯時使用的編碼，跟使用者瀏覽器的預設編碼或自動判定的結果不同時，就會看到亂碼。而解決這個問題的方法，就是透過 meta 標籤來明確地把網頁該使用的編碼告訴瀏覽器。相關語法如下，其中的"UTF-8"就是一種編碼，必須視檔案的實際編碼代換，例如以正體中文來說，"Big5"就是另一種常用的編碼。詳盡的列表可以參考 <a href="http://www.iana.org/assignments/character-sets/character-sets.xhtml">http://www.iana.org/assignments/character-sets/character-sets.xhtml</a>。
 </p>
+<pre class="brush: html">&lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;</pre><br>
+
+<p>這段語法在 HTML 5 裡面比較簡單：</p>
+<pre class="brush: html">&lt;meta charset=&quot;UTF-8&quot;&gt;</pre><br>
 
 <p>
-meta 標籤還有其他比較基本的用途，例如若要將網頁每隔五分鐘(300 秒)就重新整理，
-則可將這一小段語法加到 head 的範圍當中：
-<pre class="brush: html">&lt;meta http-equiv=&quot;refresh&quot; content=&quot;300&quot;&gt;</pre><br />
-想要自動轉向到其他網頁，使用方式也非常類似：
-<pre class="brush: html">&lt;meta http-equiv=&quot;refresh&quot; CONTENT=&quot;0;url=test.htm&quot;&gt;</pre><br />
+若是需要轉換檔案本身的編碼，就需要透過編輯器的幫忙。以 Notepad++ 為例，可以在"編碼"的選單中指定如下；如果使用較新版 Windows 中的記事本，也可以在存檔時指定。而若是使用 Linux，也可以利用"iconv"這個指令來幫你轉換編碼。
 </p>
+<center><img src="pics/encode01.png"></center><br>
 
-<p>
-meta 標籤的另外一個功能，就是指定網頁的編碼。
-如果你的網頁原始檔在編輯時使用的編碼，
-跟使用者瀏覽器的預設編碼或自動判定的結果不同時，就會看到亂碼。
-而解決這個問題的方法，就是透過 meta 標籤來明確地把網頁該使用的編碼告訴瀏覽器。
-</p>
-
-<p>
-語法如下，其中的"UTF-8"就是一種編碼，必須視檔案的實際編碼代換，
-例如以正體中文來說，"Big5"就是另一種常用的編碼。
-詳盡的列表可以參考 <a href="http://www.iana.org/assignments/character-sets/character-sets.xhtml">http://www.iana.org/assignments/character-sets/character-sets.xhtml</a>。
-<pre class="brush: html">&lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;</pre><br />
-這段語法在 HTML 5 裡面比較簡單：
-<pre class="brush: html">&lt;meta charset=&quot;UTF-8&quot;&gt;</pre><br />
-</p>
-
-<p>
-若是需要轉換檔案本身的編碼，就需要透過編輯器的幫忙。
-以 Notepad++ 為例，可以在"編碼"的選單中指定：
-<center><img src="pics/encode01.png"></center><br/>
-如果使用較新版 Windows 中的記事本，也可以在存檔時指定。
-而若是使用 Linux，也可以利用"iconv"這個指令來幫你轉換編碼。
-</p>
-
-</blockquote>
+</blockquote>
 
 </body>
 </html>

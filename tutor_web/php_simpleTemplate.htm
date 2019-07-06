@@ -1,0 +1,267 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushXml.js"></script>
+	<script type="text/javascript" src="shBrushMine.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>在以往的範例中，我們是將後端的 PHP 程式碼，與前端的 HTML, CSS 和 JavaScript 混在同一個檔案撰寫，當專案規模開始增加時，這樣的做法會不利於分工。因此，市面上有許多模板引擎(Smarty, Twig, ...)乃至於框架(CakePHP, CodeIgniter, Laravel, ...)，來幫你對程式架構做更好的安排。本篇將以匿名留言版為例，提供一個簡易的模板化做法，以做為各位開始使用市面相關工具前的參考。</p>
+
+<p>最容易想到的做法之一，通常是是盡可能把所有容易分離的 php 部分丟進 include 或 require，此時主要介面部分的程式碼如下：</p>
+<pre class="brush: htmljsphp">﻿&lt;?phpinclude(&quot;php_template_01_back_01.php&quot;);?&gt;&lt;html&gt;&lt;head&gt;&lt;style&gt;textarea{vertical-align:top}&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form action=&quot;&lt;?php echo basename($_SERVER['PHP_SELF']);?&gt;&quot; method=&quot;post&quot;&gt;	綽號：&lt;input type=&quot;text&quot; name=&quot;nickName&quot;&gt;&lt;br&gt;	內容：&lt;textarea name=&quot;msgBody&quot;&gt;&lt;/textarea&gt;&lt;br&gt;	&lt;input type=&quot;submit&quot; value=&quot;送出&quot;&gt;&lt;/form&gt;&lt;hr&gt;&lt;?phpinclude(&quot;php_template_01_back_02.php&quot;);?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+
+<p>其中，php_template_01_back_01.php 的內容如下：</p>
+<pre class="brush: htmljsphp">﻿&lt;?phpinclude(&quot;pdoInc.php&quot;);function getIp(){	return $_SERVER['REMOTE_ADDR'];}function showMsg($row){	$nn = htmlspecialchars($row['nickname']);	$msg = htmlspecialchars($row['content']);	$msg = str_replace(&quot;\n&quot;, &quot;&lt;br/&gt;&quot;, $msg);	echo &quot;&lt;table border=\&quot;1\&quot;&gt;&lt;tr&gt;&quot;;	echo &quot;&lt;td&gt;留言人: &quot;.$nn.&quot;&lt;/td&gt;&quot;;	echo &quot;&lt;td&gt;時間: &quot;.$row['time'].&quot;&lt;/td&gt;&quot;;	echo &quot;&lt;td&gt;位置: &quot;.$row['ip'].&quot;&lt;/td&gt;&lt;/tr&gt;&quot;;	echo &quot;&lt;tr&gt;&lt;td colspan=\&quot;3\&quot;&gt;留言內容:&lt;br/&gt;&quot;.$msg.&quot;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;br/&gt;&quot;;}// 如果有留言，則加入之if(isset($_POST['nickName']) &amp;&amp; isset($_POST['msgBody']) &amp;&amp; $_POST['nickName']!='' &amp;&amp; $_POST['msgBody']!=''){	$sth = $dbh-&gt;prepare('INSERT INTO msgboard (nickname, content, ip) VALUES (?, ?, ?)');	$sth-&gt;execute(array($_POST['nickName'], $_POST['msgBody'], getIp()));	echo '&lt;meta http-equiv=REFRESH CONTENT=0;url=php_mysqli_msgBoard.php&gt;';}?&gt;</pre>
+
+<p>而 php_template_01_back_02.php 的內容如下：</p>
+<pre class="brush: htmljsphp">﻿&lt;?php	$sth = $dbh-&gt;query('SELECT * from msgboard ORDER BY id DESC');	while($row = $sth-&gt;fetch(PDO::FETCH_ASSOC)){		showMsg($row);	}?&gt;</pre>
+
+<p>在這種方法中，仍然會有一些部份無法拆開，例如表單中的 action (如果你希望用程式自動取得自己檔名的時候)，以及 showMsg 當中的 HTML 排版。我們也可以只將跟顯示直接相關以外的部分拆開，此時的顯示部分如下：</p>
+<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;style&gt;textarea{vertical-align:top}&lt;/style&gt;&lt;/head&gt;
+&lt;body bgcolor=&quot;#ccccff&quot;&gt;
+
+&lt;form action=&quot;php_template_02_back.php&quot; method=&quot;post&quot;&gt;
+	綽號：&lt;input type=&quot;text&quot; name=&quot;nickName&quot;&gt;&lt;br&gt;
+	內容：&lt;textarea name=&quot;msgBody&quot;&gt;&lt;/textarea&gt;&lt;br&gt;
+	&lt;input type=&quot;submit&quot; value=&quot;送出&quot;&gt;
+&lt;/form&gt;
+
+&lt;hr&gt;
+
+&lt;?php
+
+include(&quot;pdoInc.php&quot;);
+
+function showMsg($row){
+	$nn = htmlspecialchars($row['nickname']);
+	$msg = htmlspecialchars($row['content']);
+	$msg = str_replace(&quot;\n&quot;, &quot;&lt;br/&gt;&quot;, $msg);
+	echo &quot;&lt;table border=\&quot;1\&quot;&gt;&lt;tr&gt;&quot;;
+	echo &quot;&lt;td&gt;留言人: &quot;.$nn.&quot;&lt;/td&gt;&quot;;
+	echo &quot;&lt;td&gt;時間: &quot;.$row['time'].&quot;&lt;/td&gt;&quot;;
+	echo &quot;&lt;td&gt;位置: &quot;.$row['ip'].&quot;&lt;/td&gt;&lt;/tr&gt;&quot;;
+	echo &quot;&lt;tr&gt;&lt;td colspan=\&quot;3\&quot;&gt;留言內容:&lt;br/&gt;&quot;.$msg.&quot;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;br/&gt;&quot;;
+}
+
+$sth = $dbh-&gt;query('SELECT * from msgboard ORDER BY id DESC');
+while($row = $sth-&gt;fetch(PDO::FETCH_ASSOC)){
+	showMsg($row);
+}
+
+?&gt;
+
+&lt;/body&gt;&lt;/html&gt;
+</pre>
+
+<p>後端存取資料等的部分如下。在此法中，顯示部分的表單送出時，是送給處理資料部分的 php 程式，並且不論是否需要處理都導向回來：</p>
+<pre class="brush: htmljsphp">﻿&lt;?php
+include(&quot;pdoInc.php&quot;);
+
+function getIp(){
+    return $_SERVER['REMOTE_ADDR'];
+}
+
+// 如果有留言，則加入之
+if(isset($_POST['nickName']) &amp;&amp; isset($_POST['msgBody']) &amp;&amp; $_POST['nickName']!='' &amp;&amp; $_POST['msgBody']!=''){
+	$sth = $dbh-&gt;prepare('INSERT INTO msgboard (nickname, content, ip) VALUES (?, ?, ?)');
+	$sth-&gt;execute(array($_POST['nickName'], $_POST['msgBody'], getIp()));
+}
+
+echo '&lt;meta http-equiv=REFRESH CONTENT=0;url=php_template_02_front.php&gt;';
+
+?&gt;</pre>
+
+<p>在這個方法中，仍然有(並且有不少的)排版相關的 php 程式碼被留下來。若要將排版做比較好的分離，就可以考慮模板化的方式。它的運作原則是，php 收到使用者請求後，會讀取模板並做適當取代後，再回傳給使用者，示意圖如下：</p>
+<center><img src="pics/php_template_struct.png"></center>
+
+<p>我們先來看一個較簡單的顯示使用者資訊的範例，此處使用 session 篇提到的 user 資料表，頁面功能是輸入帳號顯示暱稱。模板的部分如下，跟 HTML 檔案長得非常相似，只是有些地方留下了似乎是要被代換的空白：</p>
+<pre class="brush: htmljsphp">﻿&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+	&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+	&lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;div class=&quot;container-fluid&quot;&gt;
+	&lt;form class=&quot;form-inline&quot; action=&quot;{:php}&quot; method=&quot;POST&quot;&gt;
+		&lt;input name=&quot;account&quot; placeholder=&quot;請輸入帳號&quot; class=&quot;form-control&quot;&gt;
+		&lt;input type=&quot;submit&quot; class=&quot;btn btn-default&quot;&gt;
+	&lt;/form&gt;
+	&lt;div class=&quot;alert alert-success&quot;&gt;
+		Hi, {:nickname}
+	&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<p>那些似乎要被代換的位置，就是會被 php 處理的位置。根據前面的圖片和說明，php 要負責的任務，就是讀取模板和塞資料，如下：</p>
+<pre class="brush: htmljsphp">﻿&lt;?php
+include(&quot;pdoInc.php&quot;);
+
+if(file_exists('php_template_user.tpl')){
+	$fileCnt = file_get_contents('php_template_user.tpl');
+	$fileCnt = str_replace('{:php}', basename($_SERVER['PHP_SELF']), $fileCnt);
+	if(isset($_POST['account'])){
+		$sth = $dbh-&gt;prepare('SELECT nickname FROM user WHERE account = ?');
+		$sth-&gt;execute(array($_POST['account']));
+		if($sth-&gt;rowCount() == 1){
+			$row = $sth-&gt;fetch(PDO::FETCH_ASSOC);
+			$fileCnt = str_replace('{:nickname}', htmlspecialchars($row['nickname']), $fileCnt);
+		}
+		else {
+			$fileCnt = str_replace('{:nickname}', 'account not exist.', $fileCnt);
+		}
+	}
+	else {
+		$fileCnt = str_replace('{:nickname}', 'please enter an account.', $fileCnt);
+	}
+	echo $fileCnt;
+}
+else {
+	die('Server error: template not found.');
+}
+
+?&gt;</pre>
+
+<p>如果你喜歡的話，也可以包裝成物件，此時若有多個檔案都使用了模板化的設計，就不需要每次都重新撰寫開啟檔案、讀取檔案、...等固定的步驟。物件本身的撰寫範例如下：</p>
+<pre class="brush: htmljsphp">﻿&lt;?php
+
+class template{
+	private $fileCnt;
+	private $tags = [];
+
+	public function __construct($fileName){
+		if(file_exists($fileName)){
+			$this-&gt;fileCnt = file_get_contents($fileName);
+		}
+		else {
+			die('Server error: template not found.');
+		}
+	}
+
+	public function set($tag, $value){
+		$this-&gt;tags[$tag] = $value;
+	}
+
+	public function render(){
+		foreach ($this-&gt;tags as $tag =&gt; $value){
+			$this-&gt;fileCnt = str_replace('{:'.$tag.'}', $value, $this-&gt;fileCnt);
+		}
+
+		return $this-&gt;fileCnt;
+	}
+}
+
+?&gt;</pre>
+
+<p>使用物件時的範例如下：</p>
+<pre class="brush: htmljsphp">﻿&lt;?php
+include(&quot;pdoInc.php&quot;);
+include('php_template_class.php');
+
+$tpl = new template('php_template_user.tpl');
+$tpl-&gt;set('php', basename($_SERVER['PHP_SELF']));
+if(isset($_POST['account'])){
+	$sth = $dbh-&gt;prepare('SELECT nickname FROM user WHERE account = ?');
+	$sth-&gt;execute(array($_POST['account']));
+	if($sth-&gt;rowCount() == 1){
+		$row = $sth-&gt;fetch(PDO::FETCH_ASSOC);
+		$tpl-&gt;set('nickname', $row['nickname']);
+	}
+	else {
+		$tpl-&gt;set('nickname', 'account not exist.');
+	}
+}
+else {
+	$tpl-&gt;set('nickname', 'please enter an account.');
+}
+
+echo $tpl-&gt;render();
+
+?&gt;</pre>
+
+<p>我們回到匿名留言板的範例。由於留言的筆數對模板來說是未知的，因此必須將其獨立開來(若是使用市面上的樣板引擎，就會在模板裡有迴圈等語法可以撰寫)，單一留言的模板如下：</p>
+<pre class="brush: htmljsphp">&lt;table border=&quot;1&quot;&gt;
+	&lt;tr&gt;
+		&lt;td&gt;留言人: {:nickname}&lt;/td&gt;
+		&lt;td&gt;時間: {:time}&lt;/td&gt;
+		&lt;td&gt;位置: {:ip}&lt;/td&gt;
+	&lt;/tr&gt;
+	&lt;tr&gt;
+		&lt;td colspan=&quot;3&quot;&gt;留言內容:&lt;br/&gt;{:msg}&lt;/td&gt;
+	&lt;/tr&gt;
+&lt;/table&gt;
+&lt;br&gt;</pre>
+
+<p>整體頁面的模板如下：</p>
+<pre class="brush: htmljsphp">&lt;html&gt;&lt;head&gt;&lt;style&gt;textarea{vertical-align:top}&lt;/style&gt;&lt;/head&gt;
+&lt;body bgcolor=&quot;#ccccff&quot;&gt;
+
+&lt;form action=&quot;{:php}&quot; method=&quot;post&quot;&gt;
+	綽號：&lt;input type=&quot;text&quot; name=&quot;nickName&quot;&gt;&lt;br&gt;
+	內容：&lt;textarea name=&quot;msgBody&quot;&gt;&lt;/textarea&gt;&lt;br&gt;
+	&lt;input type=&quot;submit&quot; value=&quot;送出&quot;&gt;
+&lt;/form&gt;
+
+&lt;hr&gt;
+
+{:messages}
+
+&lt;/body&gt;&lt;/html&gt;
+</pre>
+
+<p>PHP 程式碼如下，我們需要先用迴圈處理個別留言的模板，才能套用到整體頁面的模板：</p>
+<pre class="brush: htmljsphp">&lt;?php
+include(&quot;pdoInc.php&quot;);
+include('php_template_class.php');
+
+function getIp(){
+	return $_SERVER['REMOTE_ADDR'];
+}
+
+// 如果有留言，則加入之
+if(
+	isset($_POST['nickName']) &amp;&amp; isset($_POST['msgBody']) &amp;&amp;
+	$_POST['nickName'] != '' &amp;&amp; $_POST['msgBody'] != ''
+){
+	$sth = $dbh-&gt;prepare('INSERT INTO msgboard (nickname, content, ip) VALUES (?, ?, ?)');
+	$sth-&gt;execute(array($_POST['nickName'], $_POST['msgBody'], getIp()));
+	echo '&lt;meta http-equiv=REFRESH CONTENT=0;url=php_mysqli_msgBoard.php&gt;';
+}
+
+$sth = $dbh-&gt;query('SELECT * from msgboard ORDER BY id DESC');
+while($row = $sth-&gt;fetch(PDO::FETCH_ASSOC)){
+	$msgTpl = new template('php_template_msgBoard_single.tpl');
+	$msgTpl-&gt;set('nickname', htmlspecialchars($row['nickname']));
+	$msgTpl-&gt;set('time', $row['time']);
+	$msgTpl-&gt;set('ip', $row['ip']);
+	$msgTpl-&gt;set('msg', str_replace(&quot;\n&quot;, &quot;&lt;br/&gt;&quot;, htmlspecialchars($row['content'])));
+	$msgs[] = $msgTpl-&gt;render();
+}
+
+$tpl = new template('php_template_msgBoard.tpl');
+$tpl-&gt;set('php', basename($_SERVER['PHP_SELF']));
+$tpl-&gt;set('messages', join(&quot;\n&quot;, $msgs));
+echo $tpl-&gt;render();
+?&gt;</pre>
+
+</blockquote>
+
+</body></html>

@@ -1,0 +1,91 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushXml.js"></script>
+	<script type="text/javascript" src="shBrushCss.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+Bootstrap 是一個基於 HTML 與 CSS 的設計模板，它為文字、表單、等元素，設計了一套樣式，讓網頁開發者可以很快速的套用，並讓你能很容易的做到 RWD。它也另外包含了 JavaScript 的對話方塊等功能，但本篇將只對 CSS 的部分進行敘述。
+</p>
+
+<p>要取得 Bootstrap 有兩種方法，第一種是到<a href="https://getbootstrap.com/">官方網站</a>下載已經編譯好和最小化的檔案，第二種是直接取用 CDN (Content Delivery Network，內容傳遞網路)的檔案。在第一種方法中，會提到"編譯"的原因是，Bootstrap 的原始語法是用 Sass (Syntactically Awesome Stylesheets) 寫成，這是一個 CSS 語法的擴充，可以讓你用變數、巢狀結構、迴圈、包含等方法，更靈活且模組化的設計樣式，並需要用相關軟體解析成 CSS 語法；而下載的檔案中的 map 檔案，則是讓你在開啟開發者工具檢視時，很容易的可以找到樣式的原始內容，而不是把非必要排版都移除的最小化版本。若沒有相關的修改需求，則直接使用第二種方法即可，此時只需要用 link 標籤將它引用進來，如下</p>
+<pre class="brush: css">&lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css&quot;&gt;</pre><br>
+
+<p>接著我們就可以開始使用，但除了將 CSS 檔案引用進來以外，還需要以下設定的配合(<span style="text-decoration: line-through;">不喜歡的同學可以不加</span>有興趣的同學，可以試試看不加入的效果，基本上除了版面比較不美觀以外，影響應該不大)：</p>
+<ul>
+	<li>加入 HTML5 的 doctype 指示：<pre class="brush: html">&lt;!DOCTYPE html&gt;</pre><br>
+</li>
+	<li>加入適合手機排版的顯示方式，以便在網頁載入時有比較恰當的縮放比例：<pre class="brush: html">&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;</pre><br>
+</li>
+	<li>用 class 為 container-fluid 或 container 的 div，包住網頁內容。container-fluid 會直接佔滿整個版面，container 則是在固定的視窗大小區間內，版面只會有一種寬度，如果你去翻找 boostrap.css，就會發現以下設定：
+		<pre class="brush: css">
+@media (min-width: 576px) {
+  .container {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+}</pre><br>
+	</li>
+</ul>
+
+<p>一個最簡單的完整範例如下(再次提醒，本篇不包含 JavaScrtipt，因此不將相關檔案引入)：</p>
+<pre class="brush: html">﻿&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;	&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;	&lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css&quot;&gt;&lt;/head&gt;&lt;body&gt;&lt;div class=&quot;container-fluid&quot;&gt;	&lt;h1&gt;早安&lt;/h1&gt;	&lt;p&gt;這是一些充版面的廢文這是一些充版面的廢文這是一些充版面的廢文這是一些充版面的廢文這是一些充版面的廢文這是一些充版面的廢文這是一些充版面的廢文這是一些充版面的廢文這是一些充版面的廢文這是一些充版面的廢文&lt;/p&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+
+<p>如果你的頁面上，需要用很多小方格來排版(例如購物網站的商品展示等)，就很適合使用 grid 來進行。Grid 的用法跟表格很相似，我們需要將內容放在由 row 組成的框框(column)裡面，如下：</p>
+<pre class="brush: html">﻿&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;	&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;	&lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css&quot;&gt;&lt;/head&gt;&lt;body&gt;&lt;div class=&quot;container-fluid&quot;&gt;	&lt;p&gt;預設是等分：&lt;/p&gt;	&lt;div class=&quot;row&quot;&gt;		&lt;div class=&quot;col&quot; style=&quot;background-color: #eee;&quot;&gt;AAA&lt;/div&gt;		&lt;div class=&quot;col&quot; style=&quot;background-color: #aaa;&quot;&gt;BBB&lt;/div&gt;		&lt;div class=&quot;col&quot; style=&quot;background-color: #eee;&quot;&gt;CCC&lt;/div&gt;	&lt;/div&gt;	&lt;p&gt;Bootstrap 的 grid 是分成 12 份，也可以選擇每份的佔比：&lt;/p&gt;	&lt;div class=&quot;row&quot;&gt;		&lt;div class=&quot;col-9&quot; style=&quot;background-color: #eee;&quot;&gt;AAA&lt;/div&gt;		&lt;div class=&quot;col-3&quot; style=&quot;background-color: #aaa;&quot;&gt;BBB&lt;/div&gt;	&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+
+<p>前面的範例，在視窗較小時會仍會維持原本的等分，如果你希望在視窗較小時從橫的排列切換成直的排列，可以使用「col-sm|md|lg|xl」來指定不同視窗大小時的版面樣貌。其中，四種縮寫分別代表 small, medium, large 與 xlarge，對應的寬度下限分別是 576, 768, 992, 與 1200 像素。例如下面的範例，會在 md 以下的範圍內排成直版(因為每個都佔 100%)，md 到 lg 為一橫版，lg 以上為 2 * 2 的排法：</p>
+<pre class="brush: html">﻿&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;	&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;	&lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css&quot;&gt;&lt;/head&gt;&lt;body&gt;&lt;div class=&quot;container-fluid&quot;&gt;	&lt;div class=&quot;row&quot;&gt;		&lt;div class=&quot;col-md-3 col-lg-6&quot; style=&quot;background-color: #eee;&quot;&gt;AAA&lt;/div&gt;		&lt;div class=&quot;col-md-3 col-lg-6&quot; style=&quot;background-color: #aaa;&quot;&gt;BBB&lt;/div&gt;		&lt;div class=&quot;col-md-3 col-lg-6&quot; style=&quot;background-color: #eee;&quot;&gt;CCC&lt;/div&gt;		&lt;div class=&quot;col-md-3 col-lg-6&quot; style=&quot;background-color: #aaa;&quot;&gt;DDD&lt;/div&gt;	&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+
+<p>之前提過，瀏覽器會對標籤套用預設的樣式，例如 h1 的字體會比較大等等。Bootstrap 對部分預設樣式做了一點改變，以下展示其中一些：</p>
+<pre class="brush: html">﻿&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;	&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;	&lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css&quot;&gt;&lt;/head&gt;&lt;body&gt;&lt;div class=&quot;container-fluid&quot;&gt;	&lt;p&gt;可以把文字加上 &lt;mark&gt;醒目底色&lt;/mark&gt; 的 mark 標籤&lt;/p&gt;	&lt;p&gt;代表 &lt;abbr title=&quot;縮寫&quot;&gt;縮寫&lt;/abbr&gt; 的 abbr (abbreviation)標籤&lt;/p&gt;	&lt;p&gt;代表 &lt;code&gt;程式碼&lt;/code&gt; 的 code 標籤&lt;/p&gt;	&lt;p&gt;代表 &lt;kbd&gt;鍵盤輸入&lt;/kbd&gt; 的 kbd 標籤&lt;/p&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+
+<p>Bootstrap 有一系列不一樣的表格樣式，以下展示其中一些：</p>
+<pre class="brush: html">﻿&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;	&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;	&lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css&quot;&gt;&lt;/head&gt;&lt;body&gt;&lt;div class=&quot;container-fluid&quot;&gt;	&lt;div class=&quot;row&quot;&gt;		&lt;div class=&quot;col&quot;&gt;			&lt;p&gt;只有橫線的表格&lt;/p&gt;			&lt;table class=&quot;table&quot;&gt;				&lt;thead&gt;&lt;tr&gt;					&lt;th&gt;姓名&lt;/th&gt;					&lt;th&gt;學號&lt;/th&gt;				&lt;/tr&gt;&lt;/thead&gt;				&lt;tbody&gt;					&lt;tr&gt;&lt;td&gt;ABC&lt;/td&gt;&lt;td&gt;123&lt;/td&gt;&lt;/tr&gt;					&lt;tr&gt;&lt;td&gt;DEF&lt;/td&gt;&lt;td&gt;456&lt;/td&gt;&lt;/tr&gt;					&lt;tr&gt;&lt;td&gt;XYZ&lt;/td&gt;&lt;td&gt;789&lt;/td&gt;&lt;/tr&gt;				&lt;/tbody&gt;			&lt;/table&gt;		&lt;/div&gt;		&lt;div class=&quot;col&quot;&gt;			&lt;p&gt;在奇數列標上條紋&lt;/p&gt;			&lt;table class=&quot;table table-striped&quot;&gt;				&lt;thead&gt;&lt;tr&gt;					&lt;th&gt;姓名&lt;/th&gt;					&lt;th&gt;學號&lt;/th&gt;				&lt;/tr&gt;&lt;/thead&gt;				&lt;tbody&gt;					&lt;tr&gt;&lt;td&gt;ABC&lt;/td&gt;&lt;td&gt;123&lt;/td&gt;&lt;/tr&gt;					&lt;tr&gt;&lt;td&gt;DEF&lt;/td&gt;&lt;td&gt;456&lt;/td&gt;&lt;/tr&gt;					&lt;tr&gt;&lt;td&gt;XYZ&lt;/td&gt;&lt;td&gt;789&lt;/td&gt;&lt;/tr&gt;				&lt;/tbody&gt;			&lt;/table&gt;		&lt;/div&gt;		&lt;div class=&quot;col&quot;&gt;			&lt;p&gt;滑鼠指到的 row 會變色&lt;/p&gt;			&lt;table class=&quot;table table-hover&quot;&gt;				&lt;thead&gt;&lt;tr&gt;					&lt;th&gt;姓名&lt;/th&gt;					&lt;th&gt;學號&lt;/th&gt;				&lt;/tr&gt;&lt;/thead&gt;				&lt;tbody&gt;					&lt;tr&gt;&lt;td&gt;ABC&lt;/td&gt;&lt;td&gt;123&lt;/td&gt;&lt;/tr&gt;					&lt;tr&gt;&lt;td&gt;DEF&lt;/td&gt;&lt;td&gt;456&lt;/td&gt;&lt;/tr&gt;					&lt;tr&gt;&lt;td&gt;XYZ&lt;/td&gt;&lt;td&gt;789&lt;/td&gt;&lt;/tr&gt;				&lt;/tbody&gt;			&lt;/table&gt;		&lt;/div&gt;		&lt;div class=&quot;col&quot;&gt;			&lt;p&gt;一些預設的底色&lt;/p&gt;			&lt;table class=&quot;table&quot;&gt;				&lt;thead&gt;&lt;tr&gt;					&lt;th&gt;姓名&lt;/th&gt;					&lt;th&gt;學號&lt;/th&gt;					&lt;th&gt;備註&lt;/th&gt;				&lt;/tr&gt;&lt;/thead&gt;				&lt;tbody&gt;					&lt;tr&gt;&lt;td&gt;ABC&lt;/td&gt;&lt;td&gt;123&lt;/td&gt;&lt;td&gt;123&lt;/td&gt;&lt;/tr&gt;					&lt;tr class=&quot;table-success&quot;&gt;&lt;td&gt;DEF&lt;/td&gt;&lt;td&gt;456&lt;/td&gt;&lt;td&gt;很高分&lt;/td&gt;&lt;/tr&gt;					&lt;tr class=&quot;table-warning&quot;&gt;&lt;td&gt;GHI&lt;/td&gt;&lt;td&gt;000&lt;/td&gt;&lt;td&gt;有點慘&lt;/td&gt;&lt;/tr&gt;					&lt;tr class=&quot;table-danger&quot;&gt;&lt;td&gt;XYZ&lt;/td&gt;&lt;td&gt;789&lt;/td&gt;&lt;td&gt;不及格&lt;/td&gt;&lt;/tr&gt;				&lt;/tbody&gt;			&lt;/table&gt;		&lt;/div&gt;	&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+
+<p>關於警告訊息(alert)的樣式：</p>
+<pre class="brush: html">﻿&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;	&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;	&lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css&quot;&gt;&lt;/head&gt;&lt;body&gt;&lt;div class=&quot;container-fluid&quot;&gt;	&lt;p&gt;一個基本用法：&lt;/p&gt;	&lt;div class=&quot;alert alert-success&quot;&gt;		Success!	&lt;/div&gt;	&lt;p&gt;可以在訊息中附上連結：&lt;/p&gt;	&lt;div class=&quot;alert alert-info&quot;&gt;		Info! Read &lt;a href=&quot;#&quot; class=&quot;alert-link&quot;&gt;this medssage&lt;/a&gt;.	&lt;/div&gt;	&lt;p&gt;Bootstrap 也有提供可以將訊息關閉的按鈕，但完整的功能需要引入 JavaScript：&lt;/p&gt;	&lt;div class=&quot;alert alert-warning&quot;&gt;		Wanging! Read &lt;a href=&quot;#&quot; class=&quot;alert-link&quot;&gt;this medssage&lt;/a&gt;.		&lt;button type=&quot;button&quot; class=&quot;close&quot; data-dismiss=&quot;alert&quot;&gt;&amp;times;&lt;/button&gt;	&lt;/div&gt;	&lt;p&gt;其他的樣式們：&lt;/p&gt;	&lt;div class=&quot;alert alert-danger&quot;&gt;Danger!&lt;/div&gt;	&lt;div class=&quot;alert alert-primary&quot;&gt;Primary!&lt;/div&gt;	&lt;div class=&quot;alert alert-secondary&quot;&gt;Secondary!&lt;/div&gt;	&lt;div class=&quot;alert alert-dark&quot;&gt;Dark!&lt;/div&gt;	&lt;div class=&quot;alert alert-light&quot;&gt;Light!&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+
+<p>瀏覽網路論壇時，經常看到的分頁(pagination)的樣式：</p>
+<pre class="brush: html">﻿&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;	&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;	&lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css&quot;&gt;&lt;/head&gt;&lt;body&gt;&lt;div class=&quot;container-fluid&quot;&gt;	&lt;p&gt;可以把目前的頁數加上 active，已經沒有頁面的連結可以加上 disabled：&lt;/p&gt;	&lt;ul class=&quot;pagination&quot;&gt;		&lt;li class=&quot;page-item&quot;&gt;&lt;a class=&quot;page-link&quot; href=&quot;#&quot;&gt;Previous&lt;/a&gt;&lt;/li&gt;		&lt;li class=&quot;page-item&quot;&gt;&lt;a class=&quot;page-link&quot; href=&quot;#&quot;&gt;1&lt;/a&gt;&lt;/li&gt;		&lt;li class=&quot;page-item active&quot;&gt;&lt;a class=&quot;page-link&quot; href=&quot;#&quot;&gt;2&lt;/a&gt;&lt;/li&gt;		&lt;li class=&quot;page-item&quot;&gt;&lt;a class=&quot;page-link&quot; href=&quot;#&quot;&gt;3&lt;/a&gt;&lt;/li&gt;		&lt;li class=&quot;page-item disabled&quot;&gt;&lt;a class=&quot;page-link&quot; href=&quot;#&quot;&gt;Next&lt;/a&gt;&lt;/li&gt;	&lt;/ul&gt;	&lt;p&gt;可以置中或靠右：&lt;/p&gt;	&lt;ul class=&quot;pagination justify-content-center&quot;&gt;		&lt;li class=&quot;page-item&quot;&gt;&lt;a class=&quot;page-link&quot; href=&quot;#&quot;&gt;Previous&lt;/a&gt;&lt;/li&gt;		&lt;li class=&quot;page-item&quot;&gt;&lt;a class=&quot;page-link&quot; href=&quot;#&quot;&gt;1&lt;/a&gt;&lt;/li&gt;		&lt;li class=&quot;page-item disabled&quot;&gt;&lt;a class=&quot;page-link&quot; href=&quot;#&quot;&gt;Next&lt;/a&gt;&lt;/li&gt;	&lt;/ul&gt;	&lt;ul class=&quot;pagination justify-content-end&quot;&gt;		&lt;li class=&quot;page-item&quot;&gt;&lt;a class=&quot;page-link&quot; href=&quot;#&quot;&gt;Previous&lt;/a&gt;&lt;/li&gt;		&lt;li class=&quot;page-item&quot;&gt;&lt;a class=&quot;page-link&quot; href=&quot;#&quot;&gt;1&lt;/a&gt;&lt;/li&gt;		&lt;li class=&quot;page-item disabled&quot;&gt;&lt;a class=&quot;page-link&quot; href=&quot;#&quot;&gt;Next&lt;/a&gt;&lt;/li&gt;	&lt;/ul&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+
+<p>適合做資料展示的 Card 樣式：</p>
+<pre class="brush: html">﻿&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;	&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;	&lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css&quot;&gt;&lt;/head&gt;&lt;body&gt;&lt;div class=&quot;container-fluid&quot;&gt;	&lt;p&gt;一個簡單的卡片樣貌：&lt;/p&gt;	&lt;div class=&quot;card&quot; style=&quot;width:300px&quot;&gt;		&lt;div class=&quot;card-body&quot;&gt;			&lt;h3 class=&quot;card-title&quot;&gt;早安&lt;/h3&gt;			&lt;p class=&quot;card-text&quot;&gt;當我們睡覺的時候，美國人正在努力工作&lt;/p&gt;			&lt;a href=&quot;https://zh.wikipedia.org/wiki/%E6%97%B6%E5%8C%BA&quot; class=&quot;card-link&quot;&gt;See more info&lt;/a&gt;		&lt;/div&gt;	&lt;/div&gt;	&lt;p&gt;在卡片上加入圖片：&lt;/p&gt;	&lt;div class=&quot;card&quot; style=&quot;width:300px&quot;&gt;		&lt;img class=&quot;card-img-top&quot; src=&quot;../pics/HuShih.jpg&quot; alt=&quot;HuShih&quot; style=&quot;width:100%&quot;&gt;		&lt;div class=&quot;card-body&quot;&gt;			&lt;h3 class=&quot;card-title&quot;&gt;胡適&lt;/h3&gt;			&lt;p class=&quot;card-text&quot;&gt;不要因為有配著偉人照片，就隨便相信網路上流傳的名言佳句。&lt;/p&gt;			&lt;a href=&quot;https://zh.wikipedia.org/wiki/%E8%83%A1%E9%81%A9&quot; class=&quot;btn btn-primary&quot;&gt;See Profile&lt;/a&gt;		&lt;/div&gt;	&lt;/div&gt;	&lt;p&gt;如果在超連結的類別中加入 stretched-link，則整張卡片都可以點選：&lt;/p&gt;	&lt;div class=&quot;card&quot; style=&quot;width:300px&quot;&gt;		&lt;img class=&quot;card-img-top&quot; src=&quot;../pics/Einstein.jpg&quot; alt=&quot;Einstein&quot; style=&quot;width:100%&quot;&gt;		&lt;div class=&quot;card-body&quot;&gt;			&lt;h3 class=&quot;card-title&quot;&gt;愛因斯坦&lt;/h3&gt;			&lt;p class=&quot;card-text&quot;&gt;不要相信胡適。&lt;/p&gt;			&lt;a href=&quot;https://zh.wikipedia.org/wiki/%E9%98%BF%E5%B0%94%E4%BC%AF%E7%89%B9%C2%B7%E7%88%B1%E5%9B%A0%E6%96%AF%E5%9D%A6&quot; class=&quot;btn btn-primary stretched-link&quot;&gt;See Profile&lt;/a&gt;		&lt;/div&gt;	&lt;/div&gt;	&lt;p&gt;把 card-body 改為 card-img-overlay，則文字可以跟圖片重疊：&lt;/p&gt;	&lt;div class=&quot;card&quot; style=&quot;width:300px&quot;&gt;		&lt;img class=&quot;card-img-top&quot; src=&quot;../pics/Edison.jpg&quot; alt=&quot;Edison&quot; style=&quot;width:100%&quot;&gt;		&lt;div class=&quot;card-img-overlay&quot;&gt;			&lt;h3 class=&quot;card-title text-white&quot;&gt;愛迪生&lt;/h3&gt;			&lt;p class=&quot;card-text text-white&quot;&gt;發明燈泡不是給你裝奶茶用的&lt;/p&gt;			&lt;a href=&quot;https://www.youtube.com/watch?v=2QlzgZPxg1c&quot; class=&quot;btn btn-primary&quot;&gt;See Profile&lt;/a&gt;		&lt;/div&gt;	&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+
+<p>其他如 navbar, button group, badge, progress bar, spinner, form 等設計，此處就不一一介紹，若有興趣可以參考<a href="https://getbootstrap.com/">官方網站</a>或者 <a href="https://www.w3schools.com/html/html_responsive.asp">W3 Schools</a>。</p>
+
+</blockquote>
+
+</body></html>

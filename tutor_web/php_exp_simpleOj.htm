@@ -14,407 +14,4 @@
 	<script type="text/javascript">
 		SyntaxHighlighter.all();
 	</script>
-	﻿</head>
-
-<body bgcolor="#ccccff">
-
-<blockquote>
-
-<p>
-於本篇中，我們將製作一個簡易版的 online judge，
-允許使用者匿名繳送程式(*.c)，系統會編譯與執行該程式，並回傳判斷結果。
-首先在 PHP 部分，有兩支程式，分別用於提交檔案與檢視結果：
-<ul>
-	<li>oj_submit.php: 提交檔案，並將資料塞入資料庫</li>
-	<li>oj_viewResult.php: 檢視結果</li>
-</ul><br/>
-資料表有兩張，其中一張用來記錄使用者繳送的程式(ojsubmit)，設計與資料範例如下：
-<table class="slide" align=center>
-	<tr>
-		<th>繳送編號(submitId)</th>
-		<th>題目編號(problemId)</th>
-		<th>伺服端存檔路徑(path)</th>
-		<th>繳送時間(time)</th>
-		<th>結果(verdict)</th>
-	</tr>
-	<tr><td>1</td><td>1</td><td>D:\uploadCode</td><td>2015-04-28 12:34:56</td><td>CE</td></tr>
-</table><br/>
-另外一張記錄的是每個題目的相關資訊(ojproblem)，設計與資料範例如下：
-<table class="slide" align=center>
-	<tr>
-		<th>題目編號(problemId)</th>
-		<th>題目內容(problemContent)</th>
-		<th>設定檔位置(infoPath)</th>
-	</tr>
-	<tr><td>1</td><td>輸入兩個整數相加，EOF 結束</td><td>1.inf</td></tr>
-	<tr><td>2</td><td>輸入兩個整數，輸出比較大的，EOF 結束</td><td>2.inf</td></tr>
-</table><br/>
-設定完成的資料表，可以在<a href="examples/oj.sql">這裡</a>下載。
-</p>
-
-<p>
-那麼要由誰把使用者上傳的程式編譯與執行呢？
-答案是，我們另外還需要一些 C 程式來讀取資料庫，以及進行正確性的判斷。
-意思是這邊使用的架構，是透過資料庫做為溝通的媒介，
-這樣的好處是 judge 部分的抽換方便，以及若繳送之程式執行太久時，連線不會被占住。
-另外，由於此部分跟平台之關連較為強烈，所以本篇範例不會完整實際的在伺服器上執行。
-以下關於如何讓 C 程式讀取資料庫的部分，是以在 win 7 上安裝 XAMPP 後的環境為例。
-</p>
-
-<p>
-檢視結果的頁面比較簡單，只需要 SELECT 再印出來即可：
-<pre class="brush: htmljsphp">&lt;?phpinclude(&quot;mysqlInc.php&quot;);?&gt;&lt;html&gt;&lt;head&gt;	&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;	&lt;style&gt;		table,td,tr,th{border-collapse:collapse;padding:3px}		th{padding:3px 7px;background:#bbb;font-weight:normal;}		tr:nth-child(2n+1){background:#ddd;}		tr:nth-child(2n){background:#fff;}		td:last-child{font-weight:bold}		td.AC{color:green}		td.WA{color:red}		td.CE{color:red}		td.RE{color:red}		td.TLE{color:red}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;br/&gt;&lt;center&gt;&lt;table&gt;&lt;tr&gt;&lt;th&gt;繳送編號&lt;/th&gt;&lt;th&gt;題目編號&lt;/th&gt;&lt;th&gt;繳送時間&lt;/th&gt;&lt;th&gt;結果&lt;/th&gt;&lt;/tr&gt;&lt;?php$sql = &quot;SELECT * from ojsubmit ORDER BY submitId DESC&quot;;$result = mysql_query($sql);if(mysql_num_rows($result)&gt;0){	while($row=mysql_fetch_array($result)){		echo &quot;&lt;tr&gt;&quot;;		echo &quot;&lt;td&gt;&quot;.$row['submitId'].&quot;&lt;/td&gt;&quot;;		echo &quot;&lt;td&gt;&quot;.$row['problemId'].&quot;&lt;/td&gt;&quot;;		echo &quot;&lt;td&gt;&quot;.$row['time'].&quot;&lt;/td&gt;&quot;;		echo &quot;&lt;td class='&quot;.$row['verdict'].&quot;'&gt;&quot;.$row['verdict'].&quot;&lt;/td&gt;&quot;;		echo &quot;&lt;/tr&gt;&quot;;	}}?&gt;&lt;/table&gt;&lt;/center&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-</p>
-
-<p>
-繳送程式碼的頁面，需要用到檔案的上傳與寫入等操作：
-<pre class="brush: htmljsphp">&lt;?phpinclude(&quot;../examples/mysqlInc.php&quot;);$newFilePath = &quot;D:\\\\myTemp\\\\&quot;.time().&quot;.c&quot;;$resultStr = '';if(isset($_POST[&quot;probId&quot;]) &amp;&amp; 0&lt;(int)$_POST[&quot;probId&quot;]){	$id = (int)$_POST[&quot;probId&quot;];	if(isset($_POST[&quot;code&quot;]) &amp;&amp; $_POST[&quot;code&quot;]!=NULL){ // 透過文字框輸入程式		if(strlen($_POST[&quot;code&quot;])&lt;=1024*1024){			$fp = fopen($newFilePath, &quot;w&quot;);			fwrite($fp, $_POST[&quot;code&quot;]);			fclose($fp);			$sql = &quot;INSERT INTO ojsubmit (problemId,path,verdict) VALUES ($id,'$newFilePath','Judging')&quot;;			mysql_query($sql);			$resultStr = &quot;Submit from textara OK, id: &quot;.mysql_insert_id();		}		else {			$resultStr = &quot;Submit from textara, GG.&quot;;		}	}	elseif(isset($_FILES[&quot;codeFile&quot;]) &amp;&amp; $_FILES[&quot;codeFile&quot;][&quot;name&quot;]!=NULL){ // 程式從檔案上傳		$extension = end(explode(&quot;.&quot;, $_FILES[&quot;codeFile&quot;][&quot;name&quot;]));		if( ($extension==&quot;c&quot;||$extension==&quot;C&quot;) &amp;&amp;			$_FILES[&quot;codeFile&quot;][&quot;size&quot;]&lt;=1024*1024){				move_uploaded_file($_FILES[&quot;codeFile&quot;][&quot;tmp_name&quot;], $newFilePath);				$sql = &quot;INSERT INTO ojsubmit (problemId,path,verdict) VALUES ($id,'$newFilePath','Judging')&quot;;				mysql_query($sql);				$resultStr = &quot;Submit from file upload OK, id: &quot;.mysql_insert_id();		}		else {			$resultStr = &quot;Submit from file upload, GG!!&quot;;		}	}}?&gt;&lt;html&gt;&lt;head&gt;&lt;style&gt;textarea{vertical-align:top}&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form action=&quot;oj_submit.php&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;	題目編號: &lt;input type=&quot;text&quot; name=&quot;probId&quot;&gt;&lt;br/&gt;	&lt;label for=&quot;file&quot;&gt;上傳檔案: &lt;/label&gt;	&lt;input type=&quot;file&quot; name=&quot;codeFile&quot; id=&quot;codeFile&quot;&gt;&lt;br/&gt;	或者貼上程式碼:	&lt;textarea name=&quot;code&quot; cols=&quot;60&quot; rows=&quot;30&quot;&gt;&lt;/textarea&gt;&lt;br/&gt;	&lt;input type=&quot;submit&quot; name=&quot;submit&quot; value=&quot;Submit&quot;&gt;	&lt;?php	echo $resultStr;	?&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-</p>
-
-<p>
-接下來要開始透過 C 呼叫 MySQL 函式庫。
-如果是用 AppServ 來安裝，則系統裡面不會有函式庫，
-需要連到 <a href="http://dev.mysql.com/downloads/">MySQL 的下載頁面</a>去取得。
-選擇使用的語言(此處是 C)和作業系統版本後，即可下載。解壓縮後，請自行放到適合的地方。
-</p>
-
-<p>
-我們以 Code::Blocks 這個 IDE 來示範如何以 C 程式連接 MySQL。
-請點選 Settings→Compiler 來設定，總共有兩個地方需要變更：
-<ul>
-	<li>在 linker 頁面，加入函式庫完整路徑，例如 "C:\xampp\mysql\lib\libmysql.lib"</li>
-	<li>在 Search directories 頁面加入含括檔路徑，例如 "C:\xampp\mysql\include"</li>
-</ul><br/>
-(此種作法會變更全域設定，若你不希望如此，
-可以新增一個專案，點選 "Project"→"Build Options"來進行)
-</p>
-
-<p>
-以 C 程式連接 MySQL 中的大部分函式名稱，
-很容易跟 PHP 連結 MySQL 的方式對照，
-故以下僅針對特點進行敘述：
-<ul>
-	<li>mysql_init: 初始化與配置 MYSQL 結構，若記憶體不足則回傳 NULL。</li>
-	<li>mysql_real_connect: 連接資料庫，若成功則回傳與輸入時相同之 MYSQL 結構，
-		若失敗則回傳 NULL。</li>
-	<li>mysql_store_result: 取回查詢結果。</li>
-</ul><br/>
-完整的 C 程式碼如下，請記得修改資料庫連線的帳號密碼。：
-<pre class="brush: c">#include &lt;windows.h&gt;
-#include &lt;process.h&gt;
-#include &lt;stdio.h&gt;
-#include &lt;stdlib.h&gt;
-#include &lt;time.h&gt;
-#include &quot;mysql.h&quot;
-
-enum JUDGE_RESULT{AC=1, WA, TLE, RE, CE};
-
-int sysReturn;
-char systemCall[512];
-clock_t startClock;
-clock_t runClock;
-
-void run(void * tmp) {
-    printf(&quot;start running...\n&quot;);
-	sysReturn = system(systemCall);
-	printf(&quot;end running, return %d\n&quot;,sysReturn);
-	runClock = clock()-startClock;
-}
-
-int main()
-{
-    MYSQL mysql, *sock;
-    MYSQL_RES *res;
-    MYSQL_FIELD *fd;
-    MYSQL_ROW row;
-    char sql[256];
-    FILE *fin;
-    int judgeResult;
-    char submitId[16];
-
-    mysql_init(&amp;mysql);
-    sock = mysql_real_connect(&amp;mysql,&quot;localhost&quot;,
-                              &quot;user&quot;,&quot;password&quot;,
-                              &quot;dbname&quot;,0,NULL,0);
-    if(sock==NULL){
-        printf(&quot;mysql_real_connect GG\n&quot;);
-        return 0;
-    }
-
-    while(1){
-        sprintf(sql, &quot;SELECT ojsubmit.submitId, ojsubmit.path, ojproblem.infoPath from ojsubmit, ojproblem WHERE ojsubmit.verdict='Judging' AND ojproblem.problemId = ojsubmit.problemId&quot;);
-        if(mysql_query(&amp;mysql,sql)){
-            printf(&quot;mysql_query GG\n&quot;);
-            break;
-        }
-
-        res = mysql_store_result(&amp;mysql);
-        if (res==NULL){
-            printf(&quot;mysql_store_result GG\n&quot;);
-            break;
-        }
-
-        if(0==mysql_num_rows(res)){
-            printf(&quot;Queue is empty empty now...\n&quot;);
-        }
-        else {
-            while(row = mysql_fetch_row(res)){
-                sprintf(submitId,&quot;%s&quot;, row[0]);
-                sprintf(systemCall, &quot;run.exe %s %s&quot;, row[1], row[2]);
-                printf(&quot;%s\n&quot;, systemCall);
-                runClock = -1;
-                startClock = clock();
-                _beginthread(run,0,NULL);
-                while ( runClock == -1 ) { // wait for function &quot;run&quot;
-                    if ( clock() - startClock &gt; 40*CLOCKS_PER_SEC ) {
-                        sprintf(systemCall,&quot;taskkill.exe /F /IM %s&quot;, &quot;run.exe&quot;);
-                        system(systemCall);
-                        runClock = clock()-startClock;
-                        break;
-                    }
-                }
-
-                fin = fopen(&quot;result.out&quot;,&quot;r&quot;);
-                if(fin!=NULL){
-                    fscanf(fin, &quot;%d&quot;, &amp;judgeResult);
-                    printf(&quot;judgeResult: %d\n&quot;, judgeResult);
-                    fclose(fin);
-                }
-                else {
-                    judgeResult = 0;
-                }
-
-                switch(judgeResult){
-                    case AC:
-                        sprintf(sql, &quot;UPDATE ojsubmit SET verdict='%s' WHERE submitId='%s'&quot;, &quot;AC&quot;, submitId);
-                        break;
-                    case WA:
-                        sprintf(sql, &quot;UPDATE ojsubmit SET verdict='%s' WHERE submitId='%s'&quot;, &quot;WA&quot;, submitId);
-                        break;
-                    case TLE:
-                        sprintf(sql, &quot;UPDATE ojsubmit SET verdict='%s' WHERE submitId='%s'&quot;, &quot;TLE&quot;, submitId);
-                        break;
-                    case RE:
-                        sprintf(sql, &quot;UPDATE ojsubmit SET verdict='%s' WHERE submitId='%s'&quot;, &quot;RE&quot;, submitId);
-                        break;
-                    case CE:
-                        sprintf(sql, &quot;UPDATE ojsubmit SET verdict='%s' WHERE submitId='%s'&quot;, &quot;CE&quot;, submitId);
-                        break;
-                    default:
-                        sprintf(sql, &quot;UPDATE ojsubmit SET verdict='%s' WHERE submitId='%s'&quot;, &quot;JUDGE ERR&quot;, submitId);
-                        break;
-                }
-                mysql_query(&amp;mysql,sql);
-            }
-        }
-        _sleep(2000);
-    }
-    return 0;
-}
-</pre>
-用以實際負責判斷的程式碼跟網頁部分較為無關，故此處僅附上而不說明：
-<pre class="brush: c">#include&lt;stdio.h&gt;
-#include&lt;stdlib.h&gt;
-#include&lt;string.h&gt;
-#include&lt;process.h&gt;
-#include&lt;windows.h&gt;
-#include&lt;time.h&gt;
-#define INFO_STR_SIZE 4096
-
-enum JUDGE_RESULT{AC=1, WA, TLE, RE, CE};
-
-int sysReturn;
-char systemCall[512];
-clock_t startClock;
-clock_t runClock;
-
-int checkFileExist(char name[]){
-    FILE *fp = fopen(name,&quot;r&quot;);
-    if(fp == NULL){
-        return 0;
-    }
-    fclose(fp);
-    return 1;
-}
-
-int stringToInt(char str[]){
-    int i,num;
-    for(i=num=0;str[i]!='\0';++i){
-        num = num*10+str[i]-'0';
-    }
-    return num;
-}
-
-void run(void * tmp) {
-    printf(&quot;start running...\n&quot;);
-	sysReturn = system(systemCall);
-	printf(&quot;end running, return %d\n&quot;,sysReturn);
-	runClock = clock()-startClock;
-}
-
-int updateResult(int oldValue, int newValue){
-    return (newValue&gt;oldValue)?newValue:oldValue;
-}
-
-void writeJudgResult(FILE *fp, int value, double runTime){
-    fprintf(fp, &quot;%d\n%.3f\n&quot;,value, runTime);
-}
-
-void deleteFile(char *fileName){
-    int sysRet;
-    printf(&quot;Trying to delete %s...\n&quot;, fileName);
-    sprintf(systemCall, &quot;del /f %s&quot;, fileName);
-    sysRet = system(systemCall);
-    printf(&quot;End try, sysRet: %d...\n&quot;, sysRet);
-}
-
-int main(int argc,char *argv[]){
-    FILE *fp;
-    char compilerPath[] = &quot;c:\\Program Files (x86)\\CodeBlocks\\MinGW\\bin\\mingw32-gcc.exe&quot;;
-    char ioPairs[INFO_STR_SIZE]; // file names of test cases / answer
-    char *currentInput; // pointer to the input case that is running currently
-    char *currentOutput;// pointer to the answer of the running case
-    char tempFileName[1024] = &quot;a.txt&quot;;// program output
-    char codeFileName[1024];   // source code
-    char exeFileName[1024] = &quot;a.exe&quot;; // compiled executable
-    char resultFileName[1024]; // judge result
-    char infoFileName[1024];   // file name of judge info
-    char path[2000];           // pwd
-    char judgeTime[2000];      // start time of judge
-
-    char tempStr[INFO_STR_SIZE];
-    char *key;
-    char *value;
-    clock_t timeLimitClock;
-    int judgeResult = 0; // AC/WA/TLE/RE/CE: 1/2/3/4/5
-    double runTime = 0.0;
-    int caseCounter = 1;
-
-    if(argc!=3){
-        printf(&quot;Usage: %s codeFileName infoFileName\n&quot;, argv[0]);
-        return 0;
-    }
-    else {
-        printf ( &quot;OK\ncode: %s\ninfo: %s\ncompilerPath: %s\n&quot; , argv[1] , argv[2] , compilerPath ) ;
-    }
-    sprintf(codeFileName, argv[1]);
-    sprintf(infoFileName, argv[2]);
-
-    // read info file
-    if(checkFileExist(infoFileName) == 0){
-        printf(&quot;file: %s doesn't exist\n&quot;,infoFileName);
-        return 0;
-    }
-    fp = fopen(infoFileName,&quot;r&quot;);
-    while(fgets(tempStr, INFO_STR_SIZE-2, fp)){// one for &quot;\n&quot;, one for NULL
-        tempStr[strlen(tempStr)-1] = '\0';
-        key = strtok(tempStr, &quot;=&quot;);
-        value = strtok(NULL, &quot;=&quot;);
-
-        if(0==strcmp(key,&quot;timeLimit&quot;)){
-            timeLimitClock = stringToInt(value) * CLOCKS_PER_SEC;
-        }
-        else if(0==strcmp(key,&quot;ioPairs&quot;)){
-            strcpy(ioPairs,value);
-            printf(&quot;ioPairs: %s\n&quot;,ioPairs);
-        }
-        else if(0==strcmp(key,&quot;resultFileName&quot;)){
-            strcpy(resultFileName, value);
-        }
-    }
-    fclose(fp);
-
-    deleteFile(resultFileName);// delete previous result
-    fp = fopen(resultFileName,&quot;w&quot;);// open file for judge result
-
-    // compile
-    sprintf(exeFileName, &quot;%ld.exe&quot;,time(NULL)); // use current time as name of executable
-    sprintf(systemCall,&quot;\&quot;%s\&quot; %s -O2 -o %s&quot;, compilerPath, codeFileName, exeFileName);
-    printf(&quot;%s\n&quot;, systemCall);
-    if( (sysReturn = system(systemCall))==1 ){
-        judgeResult = updateResult(judgeResult, CE);
-        runTime = 0.0;
-    }else {
-        // get first pair
-        currentInput = strtok(ioPairs, &quot;,&quot;);
-        currentOutput = strtok(NULL, &quot;,&quot;);
-        while(currentInput!=NULL &amp;&amp; currentOutput!=NULL){ // for all the input/output pairs
-            printf(&quot;===== begin to judge case %d =====\n&quot;, caseCounter);
-
-            // check test case exist
-            if(checkFileExist(currentInput)==0||checkFileExist(currentOutput)==0){
-                printf(&quot;I/O file for case %s doesn't exist\n&quot;,currentInput);
-                return 0;
-            }
-
-            // running
-            sprintf(tempFileName, &quot;%ld.txt&quot;,time(NULL)); // use current time as name of program output
-            sprintf(systemCall,&quot;%s &lt; %s &gt; %s&quot;, exeFileName, currentInput, tempFileName);
-            runClock = -1;
-            startClock = clock();
-            _beginthread(run,0,NULL);
-            while ( runClock == -1 ) { // wait for function &quot;run&quot;
-                if ( clock() - startClock &gt; timeLimitClock ) {
-                    printf(&quot;TLE, need to be killed.\n&quot;);
-                    sprintf(systemCall,&quot;taskkill.exe /F /IM %s&quot;,exeFileName);
-                    system(systemCall);
-                    runClock = clock()-startClock;
-                    _sleep(1000);
-                    break;
-                }
-            }
-
-            printf(&quot;runTime :%lf \n&quot;,(double)(runClock)/CLOCKS_PER_SEC);// judge result
-
-            if(sysReturn &lt; 0){ // RE
-                judgeResult = updateResult(judgeResult, RE);
-                runTime += (double)(runClock)/CLOCKS_PER_SEC;
-            }else if(runClock &gt; timeLimitClock){ // TLE
-                judgeResult = updateResult(judgeResult, TLE);
-                runTime += (double)(runClock)/CLOCKS_PER_SEC;
-                printf(&quot;TLE, Judge stop.\n&quot;);
-                deleteFile(tempFileName);
-                break;
-            }else {
-                sprintf(systemCall,&quot;fc /b %s \&quot;%s\&quot; &gt; fc.out&quot;, tempFileName, currentOutput);
-                sysReturn = system(systemCall);
-                if(sysReturn == 1){ // WA
-                    judgeResult = updateResult(judgeResult, WA);
-                    runTime += (double)(runClock)/CLOCKS_PER_SEC;
-                }else { // AC
-                    judgeResult = updateResult(judgeResult, AC);
-                    runTime += (double)(runClock)/CLOCKS_PER_SEC;
-                }
-            }
-
-            deleteFile(tempFileName);// del temp file (program output) after each run
-
-            // next case
-            currentInput = strtok(NULL, &quot;,&quot;);
-            currentOutput = strtok(NULL, &quot;,&quot;);
-
-            caseCounter++;
-        }// end while (for all cases)
-
-        //del exe file after judge finish
-        deleteFile(exeFileName);
-    }// end else (sucessfully compiled)
-
-    writeJudgResult(fp, judgeResult, runTime);
-
-    fclose(fp);
-
-    return 0;
-}
-</pre>
-info 檔和測資的部分，則可以在<a href="examples/info_and_case.rar">這裡</a>下載。
-</p>
-
-<p>
-本範例另外還存在一個沒有處理的問題：
-系統會編譯並執行使用者上傳的程式，但是對上傳的程式內容沒有設限。
-但由於此部分在不同語言或不同系統的做法差異甚大，因此不在介紹之列。
-</p>
-
-</blockquote>
-</body></html>
+	disabled...

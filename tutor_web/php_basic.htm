@@ -13,56 +13,40 @@
 	<script type="text/javascript">
 		SyntaxHighlighter.all();
 	</script>
-	﻿</head>
+	</head>
 
 <body bgcolor="#ccccff">
 
 <blockquote>
 
-<p>
-php 當中的變數，命名規則與 C/JavaScript 相同，但是前面必須加上「$」符號：
-<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php$a = 1;$b = 2;echo $a+$b;?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-由於 php 程式碼會先經過伺服器解析執行，所以我們在網頁的原始碼只會看到 3 這個結果。
-</p>
+<p>php 當中的變數，命名規則與 C/JavaScript 相同，但是前面必須加上「$」符號：</p>
+<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php$a = 1;$b = 2;echo $a + $b;?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 
-<p>
-可以利用「include」或是「require」，將外部檔案含括進來。
-兩者的差別在於在檔案找不到時，「include」只產生警告，會繼續執行；
-而「require」會產生錯誤，停止執行。以下是「include」的正常範例：
+<p>由於 php 程式碼會先經過伺服器解析執行，所以我們在網頁的原始碼只會看到 3 這個結果。</p>
+
+<p>可以利用「include」或是「require」，將外部檔案含括進來。兩者的差別在於在檔案找不到時，「include」只產生警告，會繼續執行；而「require」會產生錯誤，停止執行。以下是「include」的正常範例：</p>
 <pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;?php include('myTest.php') ?&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php echo $a+$b; ?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-其中，myTest.php 的內容如下：
+
+<p>其中，myTest.php 的內容如下：</p>
 <pre class="brush: htmljsphp">﻿&lt;?php$a = 1;$b = 2;?&gt;</pre>
-另外，還有「include_once」與「require_once」可以使用，差別只在於加了「_once」，代表只會含括一次。
-</p>
 
-<p>
-php 的變數也會自動轉型，你也可以強制進行轉型。若要知道變數類型，則可使用「gettype」：
-<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php$a = &quot;123&quot;;		echo &quot;a is: &quot;.$a.&quot;, type is: &quot;.gettype($a).&quot;&lt;br/&gt;&quot;;$a += 456;		echo &quot;a is: &quot;.$a.&quot;, type is: &quot;.gettype($a).&quot;&lt;br/&gt;&quot;;$a += 78.9;		echo &quot;a is: &quot;.$a.&quot;, type is: &quot;.gettype($a).&quot;&lt;br/&gt;&quot;;$a += &quot;10 xyz&quot;;	echo &quot;a is: &quot;.$a.&quot;, type is: &quot;.gettype($a).&quot;&lt;br/&gt;&quot;;$a .= &quot;10 xyz&quot;;	echo &quot;a is: &quot;.$a.&quot;, type is: &quot;.gettype($a).&quot;&lt;br/&gt;&quot;;echo &quot;&lt;hr&gt;&quot;;$b = &quot;123.456&quot;;			echo &quot;b is: &quot;.$b.&quot;, type is: &quot;.gettype($b).&quot;&lt;br/&gt;&quot;;$b = (int)&quot;123.456&quot;;	echo &quot;b is: &quot;.$b.&quot;, type is: &quot;.gettype($b).&quot;&lt;br/&gt;&quot;;$b = (double)&quot;123.456&quot;;	echo &quot;b is: &quot;.$b.&quot;, type is: &quot;.gettype($b).&quot;&lt;br/&gt;&quot;;$b = (string)78.9;		echo &quot;b is: &quot;.$b.&quot;, type is: &quot;.gettype($b).&quot;&lt;br/&gt;&quot;;?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-</p>
+<p>另外，還有「include_once」與「require_once」可以使用，差別只在於加了「_once」，代表只會含括一次。</p>
 
-<p>
-字串也可以使用單引號或雙引號，差別在於其中的變數是否會轉換後再輸出：
+<p>php 的變數也會自動轉型，你也可以強制進行轉型。若要知道變數類型，則可使用「gettype」：</p>
+<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php$a = &quot;123&quot;;		echo &quot;a is: &quot;.$a.&quot;, type is: &quot;.gettype($a).&quot;&lt;br/&gt;&quot;;$a += 456;		echo &quot;a is: &quot;.$a.&quot;, type is: &quot;.gettype($a).&quot;&lt;br/&gt;&quot;;$a += 78.9;		echo &quot;a is: &quot;.$a.&quot;, type is: &quot;.gettype($a).&quot;&lt;br/&gt;&quot;;$a += &quot;10 xyz&quot;;	echo &quot;a is: &quot;.$a.&quot;, type is: &quot;.gettype($a).&quot;&lt;br/&gt;&quot;; // This line produces a Notice$a .= &quot;10 xyz&quot;;	echo &quot;a is: &quot;.$a.&quot;, type is: &quot;.gettype($a).&quot;&lt;br/&gt;&quot;;echo &quot;&lt;hr&gt;&quot;;$b = &quot;123.456&quot;;			echo &quot;b is: &quot;.$b.&quot;, type is: &quot;.gettype($b).&quot;&lt;br/&gt;&quot;;$b = (int)&quot;123.456&quot;;	echo &quot;b is: &quot;.$b.&quot;, type is: &quot;.gettype($b).&quot;&lt;br/&gt;&quot;;$b = (double)&quot;123.456&quot;;	echo &quot;b is: &quot;.$b.&quot;, type is: &quot;.gettype($b).&quot;&lt;br/&gt;&quot;;$b = (string)78.9;		echo &quot;b is: &quot;.$b.&quot;, type is: &quot;.gettype($b).&quot;&lt;br/&gt;&quot;;?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+
+<p>字串也可以使用單引號或雙引號，差別在於其中的變數是否會轉換後再輸出：</p>
 <pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php$x = 123;echo 'this is $x.&lt;br/&gt;';echo &quot;this is $x.&lt;br/&gt;&quot;;echo &quot;this is \$x.&lt;br/&gt;&quot;;?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-</p>
 
-<p>
-陣列也跟 JavaScript 一樣，可以放入不同類型的資料，
-也可以動態新增：
-<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php$test = array(1, 2.3, &quot;4567&quot;);$test[3] = 'abc'; // 動態新增echo $test[0].&quot; &quot;.gettype($test[0]).&quot;&lt;br/&gt;&quot;;echo $test[1].&quot; &quot;.gettype($test[1]).&quot;&lt;br/&gt;&quot;;echo $test[2].&quot; &quot;.gettype($test[2]).&quot;&lt;br/&gt;&quot;;echo $test[3].&quot; &quot;.gettype($test[3]).&quot;&lt;br/&gt;&quot;;?&gt;&lt;hr&gt;&lt;?phpfor( $i=0 ; $i&lt;count($test) ; $i++ ){	echo $i.&quot;-th element of \$test: &quot;.$test[$i].&quot;&lt;br/&gt;&quot;;}?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-</p>
+<p>陣列也跟 JavaScript 一樣，可以放入不同類型的資料，也可以動態新增：</p>
+<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php$test = array(1, 2.3, &quot;4567&quot;);$test[3] = 'abc'; // 動態新增echo $test[0].&quot; &quot;.gettype($test[0]).&quot;&lt;br/&gt;&quot;;echo $test[1].&quot; &quot;.gettype($test[1]).&quot;&lt;br/&gt;&quot;;echo $test[2].&quot; &quot;.gettype($test[2]).&quot;&lt;br/&gt;&quot;;echo $test[3].&quot; &quot;.gettype($test[3]).&quot;&lt;br/&gt;&quot;;?&gt;&lt;hr&gt;&lt;?phpfor( $i = 0 ; $i &lt; count($test) ; $i++ ){	echo $i.&quot;-th element of \$test: &quot;.$test[$i].&quot;&lt;br/&gt;&quot;;}?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 
-<p>
-當然也還可以使用 key/value 的形式來指定資料。
-而若要用迴圈取得陣列的元素，除了傳統的 for i=1~n 以外，還有「for each」可以使用：
+<p>當然也還可以使用 key/value 的形式來指定資料。而若要用迴圈取得陣列的元素，除了傳統的 for i=1~n 以外，還有「for each」可以使用：</p>
 <pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php$test = array(1, 2.3, &quot;4567&quot;);foreach( $test as $val ){	echo &quot;element of \$test: &quot;.$val.&quot;&lt;br/&gt;&quot;;}?&gt;&lt;hr&gt;&lt;?php$abc = array(123=&gt;456, &quot;789&quot;=&gt;&quot;abc&quot;);$abc['OAO'] = &quot;QQ&quot;;echo $abc[123].&quot; &quot;.gettype($abc[123]).&quot;&lt;br/&gt;&quot;;echo $abc['789'].&quot; &quot;.gettype($abc[&quot;789&quot;]).&quot;&lt;br/&gt;&quot;;echo $abc[&quot;OAO&quot;].&quot; &quot;.gettype($abc['OAO']).&quot;&lt;br/&gt;&quot;;?&gt;&lt;hr&gt;&lt;?phpforeach( $abc as $val ){	echo &quot;element of \$abc: &quot;.$val.&quot;&lt;br/&gt;&quot;;}?&gt;&lt;hr&gt;&lt;?phpforeach( $abc as $key =&gt; $val ){	echo &quot;element of \$abc[&quot;.$key.&quot;]: &quot;.$val.&quot;&lt;br/&gt;&quot;;}?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-</p>
 
-<p>
-php 在函式內部的變數，與 C 和 JavaScript 有點不一樣。
-預設情況下，函式內部都是 local 變數，如果要取用 global 變數，
-則需使用「$GLOBALS」或者「global」：
+<p>php 在函式內部的變數，與 C 和 JavaScript 有點不一樣。預設情況下，函式內部都是 local 變數，如果要取用 global 變數，則需使用「$GLOBALS」或者「global」：</p>
 <pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php$x = 10;$y = 20;$z = 30;function test(){	$x = 40;	$GLOBALS['y'] = 50;	global $z;	$z = 60;	echo &quot;in test: &quot;.$x.&quot; &quot;.$GLOBALS['y'].&quot; &quot;.$z.&quot;&lt;br/&gt;&quot;;}echo &quot;Before test: &quot;.$x.&quot; &quot;.$y.&quot; &quot;.$z.&quot;&lt;br/&gt;&quot;;test();echo &quot;After test: &quot;.$x.&quot; &quot;.$y.&quot; &quot;.$z.&quot;&lt;br/&gt;&quot;;?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-</p>
 
-</blockquote>
+</blockquote>
+
 </body></html>

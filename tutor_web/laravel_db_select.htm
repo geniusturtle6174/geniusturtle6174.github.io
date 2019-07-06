@@ -13,7 +13,7 @@
 	<script type="text/javascript">
 		SyntaxHighlighter.all();
 	</script>
-	﻿</head>
+	</head>
 
 <body bgcolor="#ccccff">
 
@@ -27,7 +27,7 @@
 
 <p>
 接著加入一組測試用的檔案。可以在 Router 中新增如下：
-<pre class="brush: htmljsphp">Route::get('/dbTest', 'dbtestController@index');</pre><br />
+<pre class="brush: htmljsphp">Route::get('/dbTest', 'dbtestController@index');</pre><br>
 接著要新增對應的 controller 和 view。Controller 的部分是：
 <pre class="brush: htmljsphp">&lt;?php namespace App\Http\Controllers;
 use DB;
@@ -39,11 +39,11 @@ class dbtestController extends Controller {
 		return $view;
 	}
 }
-</pre><br />
+</pre><br>
 View 的部分：
 <pre class="brush: htmljsphp">&lt;html&gt;&lt;body&gt;
 &lt;?php var_dump($rank); ?&gt;
-&lt;/body&gt;&lt;/html&gt;</pre><br />
+&lt;/body&gt;&lt;/html&gt;</pre><br>
 此時，你就可以看到資料庫內容以原始的陣列格式被顯示出來。
 如果想要進行一些簡單的排版，可以參考以下：
 <pre class="brush: htmljsphp">&lt;html&gt;&lt;body&gt;
@@ -64,7 +64,7 @@ for($i=0;$i&lt;count($rank);$i++){
 	echo '&lt;td&gt;'.$rank[$i]-&gt;singerName.'&lt;/td&gt;&lt;/tr&gt;';
 }
 ?&gt;
-&lt;/body&gt;&lt;/html&gt;</pre><br />
+&lt;/body&gt;&lt;/html&gt;</pre><br>
 </p>
 
 </blockquote>

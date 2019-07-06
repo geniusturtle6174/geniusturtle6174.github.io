@@ -14,7 +14,7 @@
 	<script type="text/javascript">
 		SyntaxHighlighter.all();
 	</script>
-	﻿</head>
+	</head>
 
 <body bgcolor="#ccccff">
 
@@ -24,55 +24,42 @@
 Gol_D_Roger("9"); // 顯示羅傑的書的章節對應
 </script>
 
-<p>
-一般來說，為了安全起見，JavaScript 不能對硬碟進行任何存取。
-但是透過 Cookie，可以在客戶端存取極少量的資料。例如，可以用來記錄使用者的瀏覽偏好等等。
-此時，所有的資料和相關的運算皆會在客戶端的電腦儲存/進行，不會對伺服器造成負擔。
-但是，當客戶端更換電腦/瀏覽器，或者關閉 Cookie 功能時，就會造成 Cookie 的資訊流失，或者無法使用。
-</p>
+<p>一般來說，為了安全起見，JavaScript 不能對硬碟進行任何存取。但是透過 Cookie，可以在客戶端存取極少量的資料。例如，可以用來記錄使用者的瀏覽偏好等等。此時，所有的資料和相關的運算皆會在客戶端的電腦儲存/進行，不會對伺服器造成負擔。但是，當客戶端更換電腦/瀏覽器，或者關閉 Cookie 功能時，就會造成 Cookie 的資訊流失，或者無法使用。</p>
 
-<p>
-利用「navigator.cookieEnabled」，可以知道 Cookie 功能是否被關閉：
+<p>利用「navigator.cookieEnabled」，可以知道 Cookie 功能是否被關閉：</p>
 <pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;	if(navigator.cookieEnabled){		document.write(&quot;此網頁的 cookie 是：&quot; + document.cookie);	}	else {		document.write(&quot;Cookie 設定被關閉或者不支援&quot;);	}&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-其中， Cookie 是一個字串，存放在「document.cookie」當中，格式如下：
-<pre class="brush: html">name=value;expires=date;path=path;domain=domain;secure</pre><br />
-每個參數的意義是：
+
+<p>其中， Cookie 是一個字串，存放在「document.cookie」當中，格式如下：</p>
+<pre class="brush: html">name=value;expires=date;path=path;domain=domain;secure</pre><br>
+
+<p>每個參數的意義是：</p>
 <ul>
 	<li>name=value: Cookie 的名稱和對應的值，這個參數是當然必須的。</li>
-	<li>expires=date: Cookie 的有效時間，以 GMT (Greenwich Mean Time) 的格式指定時間。
-		如果不指定這個參數，則有效時間是你關掉瀏覽器之前。</li>
-	<li>path=path: 可以存取該 Cookie 的路徑。
-		如果不指定這個參數，則可存取該 Cookie 的路徑，即為設定 Cookie 的網頁所在的路徑。</li>
-	<li>domain=domain: 可以存取該 Cookie 的網域。
-		如果不指定這個參數，則可存取該 Cookie 的網域，即為設定 Cookie 的網頁所在的網域。</li>
+	<li>expires=date: Cookie 的有效時間，以 GMT (Greenwich Mean Time) 的格式指定時間。		如果不指定這個參數，則有效時間是你關掉瀏覽器之前。</li>
+	<li>path=path: 可以存取該 Cookie 的路徑。如果不指定這個參數，則可存取該 Cookie 的路徑，即為設定 Cookie 的網頁所在的路徑。</li>
+	<li>domain=domain: 可以存取該 Cookie 的網域。如果不指定這個參數，則可存取該 Cookie 的網域，即為設定 Cookie 的網頁所在的網域。</li>
 	<li>secure: 指定 Cookie 只能傳送給伺服器。</li>
 </ul>
-</p>
 
-<p>
-以下範例展示如何寫入一些 Cookie：
+<p>以下範例展示如何寫入一些 Cookie：</p>
 <pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;document.cookie = &quot;123=xyz&quot;;document.cookie = &quot;123=ggg&quot;;document.cookie = &quot;abc=def&quot;;document.write(&quot;此網頁的 Cookie 字串: &quot; + document.cookie);&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-由此範例中，可以看出一些事實：
+
+<p>由此範例中，可以看出一些事實：</p>
 <ul>
 	<li>指定新的 value，則舊的會被蓋過去</li>
 	<li>當設定「document.cookie = "aaa=bbb"」時，並不是將 Cookie 資料洗掉重設，而是附加上去</li>
 </ul>
-</p>
 
-<p>
-如果要指定失效日期，則可用以下的方式：
+<p>如果要指定失效日期，則可用以下的方式：</p>
 <pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;now = new Date();expDate = new Date();expDate.setTime(now.getTime() + 1000*10); // 十秒document.cookie = &quot;test=123;expires=&quot; + expDate.toGMTString();document.write(&quot;此網頁的 Cookie 字串: &quot; + document.cookie);&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-在上述範例中，我們讓 Cookie 在十秒後消失。
-由於每次重新整理會指定新的時間，所以各位可以同時打開前一個範例，
-或者利用瀏覽器的開發者工具來輔助觀察。
-</p>
 
-<p>
-所以，如果要刪除 Cookie，只要將失效時間設定為比當下還早即可。
-以下範例，會展示 Cookie 的設定、移除與查詢：
+
+<p>在上述範例中，我們讓 Cookie 在十秒後消失。由於每次重新整理會指定新的時間，所以各位可以同時打開前一個範例，或者利用瀏覽器的開發者工具來輔助觀察。</p>
+
+<p>所以，如果要刪除 Cookie，只要將失效時間設定為比當下還早即可。以下範例，會展示 Cookie 的設定、移除與查詢：</p>
 <pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;script&gt;		function setCookie(name, value){			document.cookie = name + &quot;=&quot; + value;		}				function delCookie(name){			now = new Date();			now.setTime(now.getTime() - 1);			document.cookie = name + &quot;=;expires=&quot; + now.toGMTString();		}				function getCookie(name, valForm){			cookieArr = document.cookie.split('; ');			for(i=0;i&lt;cookieArr.length;i++){				thisCookie = cookieArr[i].split('=');				thisName = thisCookie[0];				thisVal = thisCookie[1];				if(thisName==name){					valForm.value = thisVal;					return;				}			}			valForm.value = '';		}	&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form&gt;	Cookie Name: &lt;input type=&quot;text&quot; id=&quot;cookieName&quot;&gt;&lt;br/&gt;	Cookie Value: &lt;input type=&quot;text&quot; id=&quot;cookieVal&quot;&gt;&lt;br/&gt;	&lt;input type=&quot;button&quot; value=&quot;設定&quot;		   onClick=&quot;setCookie(this.form.cookieName.value, this.form.cookieVal.value);&quot;&gt;	&lt;input type=&quot;button&quot; value=&quot;刪除&quot;		   onClick=&quot;delCookie(this.form.cookieName.value)&quot;&gt;	&lt;input type=&quot;button&quot; value=&quot;查詢&quot;		   onClick=&quot;getCookie(this.form.cookieName.value, this.form.cookieVal)&quot;&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-</p>
 
-</blockquote>
+</blockquote>
+
 </body>
 </html>

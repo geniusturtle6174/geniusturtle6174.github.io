@@ -12,7 +12,7 @@
 	<script type="text/javascript">
 		SyntaxHighlighter.all();
 	</script>
-	﻿</head>
+	</head>
 
 <body bgcolor="#ccccff">
 
@@ -22,59 +22,43 @@
 Gol_D_Roger("10"); // 顯示羅傑的書的章節對應
 </script>
 
-<p>
-通用表示法(或稱通用式)的基本概念，是利用一套符號，來定義字串的格式；
-並且，可以利用格式的定義，來對字串進行搜尋、取代等等的操作。
-以下先來看幾個關於格式檢查的例子。
-</p>
+<p>通用表示法(或稱通用式)的基本概念，是利用一套符號，來定義字串的格式；並且，可以利用格式的定義，來對字串進行搜尋、取代等等的操作。以下先來看幾個關於格式檢查的例子。</p>
 
 <p>
-例如，在 C 語言中，變數命名的規則是"英文或底線開頭"、"後面用英文數字或底線皆可"，
-古早一點的編譯器還會限制最多 31 個字元。那麼？我們要如何使用通用表示法來檢測呢？
-請先看以下範例：
+例如，在 C 語言中，變數命名的規則是"英文或底線開頭"、"後面用英文數字或底線皆可"，古早一點的編譯器還會限制最多 31 個字元。那麼？我們要如何使用通用表示法來檢測呢？請看以下範例：</p>
 <pre class="brush: htmljs">﻿﻿&lt;html&gt;&lt;head&gt;	&lt;script&gt;		function chk(str){			re = /^[A-Za-z_]\w{0,30}$/;			//re = new RegExp(/^[A-za-z_]\w{0,30}$/);			//re = new RegExp(&quot;^[A-za-z_]\\w{0,30}$&quot;);			document.getElementById(&quot;result&quot;).innerHTML = re.test(str)?&quot;符合格式&quot;:&quot;不符!!&quot;;		}	&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form&gt;    &lt;input type=&quot;text&quot; id=&quot;cVar&quot;&gt;	&lt;input type=&quot;button&quot; value=&quot;驗證&quot; onClick=&quot;chk(this.form.cVar.value)&quot;&gt;&lt;/form&gt;&lt;p id=&quot;result&quot;&gt;&lt;/p&gt; &lt;/body&gt;&lt;/html&gt;</pre>
-首先，通用式可以用兩條斜線夾住來定義，
-這種定義方式可以直接作為通用式的物件，也可以透過 RegExp 來建立物件。
-透過 RegExp 建立通用式物件時，也可以使用字串來定義，但此時就必須注意跳脫字元的問題。
-而通用式的「test」方法，則可檢測代入的字串是否符合 re 中的格式要求。
-關於上述範例中用到的規則，說明如下：<br/><br/>
+
+<p>首先，通用式可以用兩條斜線夾住來定義，這種定義方式可以直接作為通用式的物件，也可以透過 RegExp 來建立物件。透過 RegExp 建立通用式物件時，也可以使用字串來定義，但此時就必須注意跳脫字元的問題。而通用式的「test」方法，則可檢測代入的字串是否符合 re 中的格式要求。關於上述範例中用到的規則，說明如下：</p>
+
 <ul>
-	<li>「^」和「$」放在開頭/結尾時，分別代表字串的開頭或結尾
-		(所以上述範例中，前後多敲一些空白是不行的)。</li>
-	<li>方括號夾住的內容，代表可以出現其中任意一種。
-		在方括號中，還可以用「-」來表示範圍，例如「A-Z」代表英文字母大寫 A 到 Z。</li>
+	<li>「^」和「$」放在開頭/結尾時，分別代表字串的開頭或結尾(所以上述範例中，前後多敲一些空白是不行的)。</li>
+	<li>方括號夾住的內容，代表可以出現其中任意一種。	在方括號中，還可以用「-」來表示範圍，例如「A-Z」代表英文字母大寫 A 到 Z。</li>
 	<li>有些通用式經常被使用，因此有較簡單的定義方法。例如「\w」可以比對數字、字母、底線。</li>
 	<li>大括號夾住數字，代表指定重複次數。</li>
 </ul>
-</p>
 
-<p>
-又例如信用卡號，其中一種格式是"四位數字-四位數字-四位數字-四位數字"，所以也可以用通用式來檢驗：
+<p>又例如信用卡號，其中一種格式是"四位數字-四位數字-四位數字-四位數字"，所以也可以用通用式來檢驗：</p>
 <pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;script&gt;		function chk(str){			re = /^(\d{4}-){3}\d{4}$/;			document.getElementById(&quot;result&quot;).innerHTML = re.test(str)?&quot;符合格式&quot;:&quot;不符!!&quot;;		}	&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form&gt;    &lt;input type=&quot;text&quot; id=&quot;ip&quot; value=&quot;1234-5678-9011-1213&quot;&gt;	&lt;input type=&quot;button&quot; value=&quot;驗證&quot; onClick=&quot;chk(this.form.ip.value)&quot;&gt;&lt;/form&gt;&lt;p id=&quot;result&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-在上述範例中：<br/><br/>
+
+<p>在上述範例中：</p>
+
 <ul>
 	<li>「\d」可以比對數字。</li>
 	<li>如果想要重複的部分不只一個字元，則可以使用小括號包起來。</li>
-</ul><br/>
-當然，通用式只能檢查是否符合格式，如果要進行檢查碼等更完整的驗證，還是要使用其他程式方法進行。
-</p>
+</ul>
 
-<p>
-又例如電子郵件格式驗證，此處定義的要求是，
-帳號可以含數字、字母、底線、加號、小數點
-(有些信箱，例如 GMail 提供有<a href="http://briian.com/?p=1428">分身功能</a>，所以允許加號和小數點。
- 只是為了範例簡潔，此處沒有完全依照 GMail之使用方法來定義)，
-後面的 domain name 只能包含數字、字母、底線：
+<p>當然，通用式只能檢查是否符合格式，如果要進行檢查碼等更完整的驗證，還是要使用其他程式方法進行。</p>
+
+<p>又例如電子郵件格式驗證，定義的要求可能是，帳號可以含數字、字母、底線、加號、小數點(有些信箱，例如 GMail 提供有<a href="http://briian.com/?p=1428">分身功能</a>，所以允許加號和小數點， 只是為了範例簡潔，此處沒有完全依照 相關規則來定義)，後面的 domain name 只能包含數字、字母、底線：</p>
 <pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;script&gt;		function chk(str){			re = /^[\w.+]+@(\w+\.)+(\w+)$/;			document.getElementById(&quot;result&quot;).innerHTML = re.test(str)?&quot;符合格式&quot;:&quot;不符!!&quot;;		}	&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form&gt;    &lt;input type=&quot;text&quot; id=&quot;email&quot; value=&quot;a.b@cd.edu&quot;&gt;	&lt;input type=&quot;button&quot; value=&quot;驗證&quot; onClick=&quot;chk(this.form.email.value)&quot;&gt;&lt;/form&gt;&lt;p id=&quot;result&quot;&gt;&lt;/p&gt; &lt;/body&gt;&lt;/html&gt;</pre>
-在上述範例中：<br/><br/>
+
+<p>在上述範例中：</p>
 <ul>
 	<li>「+」放在方括號外的時候，代表允許出現一或多次。</li>
 	<li>「.」放在方括號外的時候，代表比對換行以外的任意字元，如果想要比對「.」本身，則必須跳脫它。</li>
 </ul>
-</p>
 
-<p>
-以下將通用式的格式定義稍作整理：
+<p>以下將通用式的格式定義稍作整理：</p>
 <table align=center class="slide">
 	<tr><th>字元</th><th>說明</th><th>範例</th></tr>
 	<!---------------------------------------->
@@ -101,24 +85,17 @@ Gol_D_Roger("10"); // 顯示羅傑的書的章節對應
 	<tr><td>\s 與 \S</td><td>空白與非空白</td><td>(略)</td></tr>
 	<tr><td>\w 與 \W</td><td>數字字母底線與非數字字母底線</td><td>(略)</td></tr>
 	<tr><td>\</td><td>跳脫特殊字元</td><td>\+-*/ 可配對加號接著 0 或多個減號再接著除號</td></tr>
-</table><br/>
-此處是是簡單的試驗場，各位可以輸入通用式和字串，看看結果是否符合你的預期：
-<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;script&gt;		function chk(patt, str){			re = new RegExp(patt);			document.getElementById(&quot;regexp&quot;).innerHTML = re;			document.getElementById(&quot;testResult&quot;).innerHTML = re.test(str)?&quot;符合格式&quot;:&quot;不符!!&quot;;		}	&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form&gt;    通用式：&lt;input type=&quot;text&quot; id=&quot;patt&quot;&gt;&lt;br/&gt;	字　串：&lt;input type=&quot;text&quot; id=&quot;str&quot;&gt;&lt;br/&gt;	&lt;input type=&quot;button&quot; value=&quot;驗證&quot; onClick=&quot;chk(this.form.patt.value, this.form.str.value)&quot;&gt;&lt;/form&gt;&lt;p id=&quot;regexp&quot;&gt;&lt;/p&gt;&lt;p id=&quot;testResult&quot;&gt;&lt;/p&gt; &lt;/body&gt;&lt;/html&gt;</pre>
-這個試驗場並沒有自動加上代表字串開頭和結尾的「^」和「$」，
-所以若是以「a*」作為通用式，而以"ccc"做為字串，會發現結果符合(Question: Why?)。
-而 HTML 5 的表單當中，則有一個「pattern」屬性，可以讓我們在其中撰寫通用式。
-此時的「^」和「$」已經隱含在其中，因此不需要自己加入：
-<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form&gt;    &lt;input type=&quot;text&quot; pattern=&quot;\w*&quot; title=&quot;只能有英文、數字、底線&quot;&gt;	&lt;input type=&quot;submit&quot; value=&quot;送出&quot;&gt;&lt;/form&gt; &lt;/body&gt;&lt;/html&gt;</pre>
-另外，通用式也可以從"狀態機"的角度來看。我們可以利用
-<a href="http://www.regexper.com/">regexper</a>、
-<a href="https://www.debuggex.com/">debuggex</a>、
-<a href="http://jex.im/regulex/">Regulex</a> 等網站幫忙畫圖。
-有了圖形的幫助，相信能更容易地瞭解通用式。
-</p>
+</table>
 
-<p>
-接著是如何透過通用式，來進行字串處理的部分。
-JavaScript 對此提供了一些相關的方法：
+<p>此處是是簡單的試驗場，各位可以輸入通用式和字串，看看結果是否符合你的預期：</p>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;script&gt;		function chk(patt, str){			re = new RegExp(patt);			document.getElementById(&quot;regexp&quot;).innerHTML = re;			document.getElementById(&quot;testResult&quot;).innerHTML = re.test(str)?&quot;符合格式&quot;:&quot;不符!!&quot;;		}	&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form&gt;    通用式：&lt;input type=&quot;text&quot; id=&quot;patt&quot;&gt;&lt;br/&gt;	字　串：&lt;input type=&quot;text&quot; id=&quot;str&quot;&gt;&lt;br/&gt;	&lt;input type=&quot;button&quot; value=&quot;驗證&quot; onClick=&quot;chk(this.form.patt.value, this.form.str.value)&quot;&gt;&lt;/form&gt;&lt;p id=&quot;regexp&quot;&gt;&lt;/p&gt;&lt;p id=&quot;testResult&quot;&gt;&lt;/p&gt; &lt;/body&gt;&lt;/html&gt;</pre>
+
+<p>這個試驗場並沒有自動加上代表字串開頭和結尾的「^」和「$」，所以若是以「a*」作為通用式，而以"ccc"做為字串，會發現結果符合(Question: Why?)。而 HTML 5 的表單當中，則有一個「pattern」屬性，可以讓我們在其中撰寫通用式。此時的「^」和「$」已經隱含在其中，因此不需要自己加入：</p>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form&gt;    &lt;input type=&quot;text&quot; pattern=&quot;\w*&quot; title=&quot;只能有英文、數字、底線&quot;&gt;	&lt;input type=&quot;submit&quot; value=&quot;送出&quot;&gt;&lt;/form&gt; &lt;/body&gt;&lt;/html&gt;</pre>
+
+<p>另外，通用式也可以從"狀態機"的角度來看。我們可以利用<a href="http://www.regexper.com/">regexper</a>、<a href="https://www.debuggex.com/">debuggex</a>、<a href="http://jex.im/regulex/">Regulex</a> 等網站幫忙畫圖。有了圖形的幫助，你可以更容易地瞭解通用式。</p>
+
+<p>接著是如何透過通用式，來進行字串處理的部分。JavaScript 對此提供了一些相關的方法：</p>
 <table  align=center class="slide">
 	<tr><th>方法</th><th>功能</th></tr>
 	<tr><td>re.test(str)</td><td>字串 str 是否符合 re 的格式要求</td></tr>
@@ -126,34 +103,23 @@ JavaScript 對此提供了一些相關的方法：
 	<tr><td>str.search(re)</td><td>通用式 re 在字串 str 中第一次出現的位置</td></tr>
 	<tr><td>str.replace(re, newStr)</td><td>將字串中符合格式的部分，取代成新的字串</td></tr>	
 </table>
-</p>
 
-<p>
-match 的用法如下：
+<p>match 的用法如下：</p>
 <pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;script&gt;		function wordList(){			document.getElementsByTagName(&quot;p&quot;)[0].innerHTML = &quot;&quot;;			str = document.getElementsByTagName(&quot;textarea&quot;)[0].value;			re = /(^|\s)[Cc][A-Za-z]*/g;			result = str.match(re);			for(i=0;i&lt;result.length;i++){				document.getElementsByTagName(&quot;p&quot;)[0].innerHTML += result[i] + &quot;&lt;br/&gt;&quot;;			}		}	&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form&gt;	&lt;textarea rows=&quot;5&quot; cols=&quot;100&quot;&gt;CCCC Ten years ago coalition forces began military action against Iraq,causing deep divisions around the world.Thousands of lives were changed.	&lt;/textarea&gt;&lt;br/&gt;	&lt;input type=&quot;button&quot; value=&quot;按我列出所有 c 開頭的單字&quot; onClick=&quot;wordList()&quot;&gt;&lt;/form&gt;&lt;p&gt;&lt;/p&gt; &lt;/body&gt;&lt;/html&gt;</pre>
-其中，通用式後面的 g 是比對的方式，
-g 代表全域比對，i 代表忽略大小寫，gi 代表全域比對與忽略大小寫。
-比對完成的結果，會以陣列的型式傳回。
-</p>
 
-<p>
-通用式在比對的時候，會盡可能比對出最長的結果，
-如果希望盡可能比對短一點，則可在重複字元後面加上問號(代表出現 0 或 1 次)：
+<p>其中，通用式後面的 g 是比對的方式，g 代表全域比對，i 代表忽略大小寫，gi 代表全域比對與忽略大小寫。比對完成的結果，會以陣列的型式傳回。</p>
+
+<p>通用式在比對的時候，會盡可能比對出最長的結果，如果希望盡可能比對短一點，則可在重複字元後面加上問號(代表出現 0 或 1 次)：</p>
 <pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;script&gt;		function match(patt){			str = document.getElementsByTagName(&quot;textarea&quot;)[0].value;			document.getElementsByTagName(&quot;p&quot;)[0].innerHTML = str.match(patt);		}	&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form&gt;	&lt;textarea rows=&quot;5&quot; cols=&quot;50&quot;&gt;One little two little three little Indians	&lt;/textarea&gt;&lt;br/&gt;	&lt;input type=&quot;button&quot; value=&quot;按我展示 longest match&quot; onClick=&quot;match(/l[^\r\n]*e/)&quot;&gt;	&lt;input type=&quot;button&quot; value=&quot;按我展示 shortest match&quot; onClick=&quot;match(/l[^\r\n]*?e/)&quot;&gt;&lt;/form&gt;&lt;p&gt;&lt;/p&gt; &lt;/body&gt;&lt;/html&gt;</pre>
-</p>
 
-<p>
-以下的試驗場，各位可以輸入通用式和字串，觀察配對的結果：
+<p>以下的試驗場，各位可以輸入通用式和字串，觀察配對的結果：</p>
 <pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;script&gt;		function chk(patt, str){			re = new RegExp(patt);			result = str.match(re);			document.getElementById(&quot;regexp&quot;).innerHTML = re;			document.getElementById(&quot;result&quot;).innerHTML = str.match(re);		}	&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form&gt;    通用式：&lt;input type=&quot;text&quot; id=&quot;patt&quot;&gt;&lt;br/&gt;	字　串：&lt;input type=&quot;text&quot; id=&quot;str&quot;&gt;&lt;br/&gt;	&lt;input type=&quot;button&quot; value=&quot;驗證&quot; onClick=&quot;chk(this.form.patt.value, this.form.str.value)&quot;&gt;&lt;/form&gt;&lt;p id=&quot;regexp&quot;&gt;&lt;/p&gt;&lt;p id=&quot;result&quot;&gt;&lt;/p&gt; &lt;/body&gt;&lt;/html&gt;</pre>
-</p>
 
-<p>
-下面以移除註解為例，示範 replace 的用法：
+<p>下面以移除註解為例，示範 replace 的用法：</p>
 <pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;script&gt;		function removeSingleLineComment(){			code = document.getElementsByTagName(&quot;textarea&quot;)[0].value;			re = new RegExp(&quot;//[^\\r\\n]*&quot;,&quot;g&quot;);			//re = /\/\/[^\r\n]/g;			newCode = code.replace(re,&quot;&quot;);			document.getElementsByTagName(&quot;textarea&quot;)[1].innerHTML = newCode;		}				function removeMultiLineComment(){			code = document.getElementsByTagName(&quot;textarea&quot;)[0].value;			re = new RegExp('/\\*([^*]|[\\r\\n]|(\\*+([^*/]|[\\r\\n])))*\\*+/',&quot;g&quot;);			//re = /\/\*([^*]|[\r\n]|(\*+([^*\/]|[\r\n])))*\*+\//g;			newCode = code.replace(re,&quot;&quot;);			document.getElementsByTagName(&quot;textarea&quot;)[1].innerHTML = newCode;		}				function removeComment(){			code = document.getElementsByTagName(&quot;textarea&quot;)[0].value;			re = new RegExp('//[^\\r\\n]*|/\\*([^*]|[\\r\\n]|(\\*+([^*/]|[\\r\\n])))*\\*+/',&quot;g&quot;);			//re = /\/\/[^\r\n]*|\/\*([^*]|[\r\n]|(\*+([^*\/]|[\r\n])))*\*+\//g;			newCode = code.replace(re,&quot;&quot;);			document.getElementsByTagName(&quot;textarea&quot;)[1].innerHTML = newCode;		}	&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form&gt;    &lt;table&gt;&lt;tr&gt;        &lt;td&gt;            &lt;textarea cols=&quot;40&quot; rows=&quot;25&quot;&gt;#include &amp;lt;stdio.h&amp;gt;int main(){	/* 我是註解 */	int a=1, b=1;	// 我也是註解	printf(&quot;a+b=%d\n&quot;, a+b);	/**	 * printf(&quot;這一行不會被印出來喔&quot;);	 **/	return 0;	/* OAO */	// 再來一個}			&lt;/textarea&gt;        &lt;/td&gt;        &lt;td&gt;            &lt;input type=&quot;button&quot; value=&quot;只移除單行註解&quot; onClick=&quot;removeSingleLineComment()&quot;&gt;            &lt;br/&gt;&lt;br/&gt;            &lt;input type=&quot;button&quot; value=&quot;只移除多行註解&quot; onClick=&quot;removeMultiLineComment()&quot;&gt;			&lt;br/&gt;&lt;br/&gt;            &lt;input type=&quot;button&quot; value=&quot;移除所有註解&quot; onClick=&quot;removeComment()&quot;&gt;        &lt;/td&gt;        &lt;td&gt;            &lt;textarea cols=&quot;40&quot; rows=&quot;25&quot;&gt;&lt;/textarea&gt;        &lt;/td&gt;    &lt;/tr&gt;&lt;/table&gt;&lt;/form&gt;&lt;p&gt;&lt;/p&gt; &lt;/body&gt;&lt;/html&gt;</pre>
-其中，我們必須留意，通用式也不是萬能的。
-由於範例中並沒有加入程式語法(syntax)的規則來解析(parse)，
-所以各位可能會看到很不尋常的移除效果(特別是對於單行註解的部分)。
-</p>
 
-</blockquote>
+<p>其中，我們必須留意，通用式也不是萬能的。由於範例中並沒有加入程式語法(syntax)的規則來解析(parse)，所以各位可能會看到很不尋常的移除效果(特別是對於單行註解的部分)。</p>
+
+</blockquote>
+
 </body></html>

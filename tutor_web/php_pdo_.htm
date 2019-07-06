@@ -1,0 +1,82 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushXml.js"></script>
+	<script type="text/javascript" src="shBrushMine.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<script>showWarning("本篇在概念上為承接 mysqli_* 而撰寫，因此關於那些會造成 SQL injection 等安全性問題的危險範例，請參照該篇章，本篇不再說明之。");</script>
+
+<p>
+PDO 是 PHP Data Object 的意思，它是一個抽象的方式，所以若是後端需要更換資料庫，則在程式碼上的修改會花比較少的功夫。較新版本的 php 設定檔已預設開啟 PDO 功能，若使用較舊版的 php，例如 AppServ 附帶的版本，則需要對 php.ini 先進行一些修改(設定完成後，重新啟動 Apache，應該就可以開始測試)：</p>
+<ul>
+	<li>extension_dir 設定，例如 "C:/AppServ\php5\ext"</li>
+	<li>找到 Dynamic Extensions，將 php_pdo_*.dll 取消註解</li>
+</ul>
+
+<p>我們再次使用歌曲排行榜的範例，並直接使用 object oriented style。首先仍然是直接列出全部資料的狀況：</p>
+<pre class="brush: htmljsphp">﻿&lt;?phpinclude(&quot;pdoInc.php&quot;);?&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;table border=&quot;1&quot;&gt;	&lt;tr&gt;		&lt;th&gt;資料序號&lt;/th&gt;		&lt;th&gt;當日排名&lt;/th&gt;		&lt;th&gt;前日排名&lt;/th&gt;		&lt;th&gt;歌曲名稱&lt;/th&gt;		&lt;th&gt;演 唱 者&lt;/th&gt;	&lt;/tr&gt;	&lt;?php		$sql = &quot;SELECT * from songrank&quot;;		$sth = $dbh-&gt;query($sql);		while($row = $sth-&gt;fetch(PDO::FETCH_ASSOC)){			echo &quot;&lt;tr&gt;&lt;td&gt;&quot;.$row['id'].&quot;&lt;/td&gt;&quot;;			echo &quot;&lt;td&gt;&quot;.$row['this_rank'].&quot;&lt;/td&gt;&quot;;			echo &quot;&lt;td&gt;&quot;.$row['prev_rank'].&quot;&lt;/td&gt;&quot;;			echo &quot;&lt;td&gt;&quot;.$row['song_name'].&quot;&lt;/td&gt;&quot;;			echo &quot;&lt;td&gt;&quot;.$row['singer_name'].&quot;&lt;/td&gt;&lt;tr&gt;&quot;;		}	?&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+
+<p>其中，pdoInc.php 的內容如下</p>
+<pre class="brush: htmljsphp">﻿&lt;?php$db_server = &quot;localhost&quot;;$db_user = &quot;abcd&quot;;$db_passwd = &quot;1234&quot;;$db_name = &quot;wxyx&quot;;try {	$dsn = &quot;mysql:host=$db_server;dbname=$db_name&quot;;	$dbh = new PDO($dsn, $db_user, $db_passwd);}catch (Exception $e){	die('無法對資料庫連線');}$dbh-&gt;exec(&quot;SET NAMES utf8&quot;);?&gt;</pre>
+
+<p>在上述範例中，PDO 的 query 方法，會回傳對資料庫的查詢結果，故適用於取得資料的 select 敘述；而 exec 方法則會回傳影響到的資料筆數，因此可以用於 insert、update、delete 敘述。PDO::FETCH_ASSOC 代表抓取出來的資料是 assocciative array，另外尚有 PDO::FETCH_NUM (indexed array)、PDO::FETCH_BOTH (indexed 與 assocciative 皆有，是預設值) 等可以選擇。</p>
+
+<p>接著是 prepared statement 的做法，其中在 execute 方法指定"?"代表的參數時，必須使用陣列的形式傳入：</p>
+<pre class="brush: htmljsphp">﻿&lt;?phpinclude(&quot;pdoInc.php&quot;);?&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form action=&quot;php_pdo_showRankTable_prepare_selstar.php&quot; method=&quot;post&quot;&gt;	&lt;input type=&quot;text&quot; name=&quot;maxrank&quot; placeholder=&quot;請輸入排名值&quot; value=&quot;&quot;&gt;	&lt;input type=&quot;submit&quot;&gt;&lt;/form&gt;&lt;table border=&quot;1&quot;&gt;	&lt;tr&gt;		&lt;th&gt;資料序號&lt;/th&gt;		&lt;th&gt;當日排名&lt;/th&gt;		&lt;th&gt;前日排名&lt;/th&gt;		&lt;th&gt;歌曲名稱&lt;/th&gt;		&lt;th&gt;演 唱 者&lt;/th&gt;	&lt;/tr&gt;	&lt;?php		$mr = (isset($_POST['maxrank'])&amp;&amp;$_POST['maxrank']!='')?$_POST['maxrank']:50;		$sth = $dbh-&gt;prepare('SELECT * FROM songrank WHERE this_rank &lt; ?');		$sth-&gt;execute(array($mr));		while($row = $sth-&gt;fetch(PDO::FETCH_ASSOC)){			echo &quot;&lt;tr&gt;&lt;td&gt;&quot;.$row['id'].&quot;&lt;/td&gt;&quot;;			echo &quot;&lt;td&gt;&quot;.$row['this_rank'].&quot;&lt;/td&gt;&quot;;			echo &quot;&lt;td&gt;&quot;.$row['prev_rank'].&quot;&lt;/td&gt;&quot;;			echo &quot;&lt;td&gt;&quot;.$row['song_name'].&quot;&lt;/td&gt;&quot;;			echo &quot;&lt;td&gt;&quot;.$row['singer_name'].&quot;&lt;/td&gt;&lt;tr&gt;&quot;;		}	?&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+
+<p>將 PDO + prepared statement 用於留言板的範例：</p>
+<pre class="brush: htmljsphp">﻿&lt;?phpinclude(&quot;pdoInc.php&quot;);function getIp(){	return $_SERVER['REMOTE_ADDR'];}function showMsg($row){	$nn = htmlspecialchars($row['nickname']);	$msg = htmlspecialchars($row['content']);	$msg = str_replace(&quot;\n&quot;, &quot;&lt;br/&gt;&quot;, $msg);	echo &quot;&lt;table border=\&quot;1\&quot;&gt;&lt;tr&gt;&quot;;	echo &quot;&lt;td&gt;留言人: &quot;.$nn.&quot;&lt;/td&gt;&quot;;	echo &quot;&lt;td&gt;時間: &quot;.$row['time'].&quot;&lt;/td&gt;&quot;;	echo &quot;&lt;td&gt;位置: &quot;.$row['ip'].&quot;&lt;/td&gt;&lt;/tr&gt;&quot;;	echo &quot;&lt;tr&gt;&lt;td colspan=\&quot;3\&quot;&gt;留言內容:&lt;br/&gt;&quot;.$msg.&quot;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;br/&gt;&quot;;}// 如果有留言，則加入之if(isset($_POST['nickName']) &amp;&amp; isset($_POST['msgBody']) &amp;&amp; $_POST['nickName']!='' &amp;&amp; $_POST['msgBody']!=''){	$sth = $dbh-&gt;prepare('INSERT INTO msgboard (nickname, content, ip) VALUES (?, ?, ?)');	$sth-&gt;execute(array($_POST['nickName'], $_POST['msgBody'], getIp()));	echo '&lt;meta http-equiv=REFRESH CONTENT=0;url=php_mysqli_msgBoard.php&gt;';}?&gt;&lt;html&gt;&lt;head&gt;&lt;style&gt;textarea{vertical-align:top}&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form action=&quot;php_pdo_msgBoard.php&quot; method=&quot;post&quot;&gt;	綽號：&lt;input type=&quot;text&quot; name=&quot;nickName&quot;&gt;&lt;br&gt;	內容：&lt;textarea name=&quot;msgBody&quot;&gt;&lt;/textarea&gt;&lt;br&gt;	&lt;input type=&quot;submit&quot; value=&quot;送出&quot;&gt;&lt;/form&gt;&lt;hr&gt;&lt;?php	$sth = $dbh-&gt;query('SELECT * from msgboard ORDER BY id DESC');	while($row = $sth-&gt;fetch(PDO::FETCH_ASSOC)){		showMsg($row);	}?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+
+<p>
+不過要注意的是，在 prepared statement 當中，表格和欄位名稱不能當作參數。若在你的程式中，表格或欄位名稱可能來自使用者輸入時，建議使用白名單過濾，例如用 switch...case 敘述列出各種表格或欄位名稱的處理狀況，或者用 in_array 判斷輸入之名稱是否在允許的清單之列。
+</p>
+
+<p>接著來看看一個架構比較多層的簡易討論板。此討論板將內容會區分成不同的看板，接著才是各個討論串與其回應。在資料表的設定上，我們分成兩張表，包含其參考設定如下：</p>
+<ul>
+	<li>dz_board
+		<ul>
+			<li>id: 看板 id，primary key + auto increment</li>
+			<li>name: 看板名稱，VARCHAR 64, utf8_general_ci</li>
+		</ul>
+	</li>
+	<li>dz_thread
+		<ul>
+			<li>id: 討論串文章 id，primary key + auto increment</li>
+			<li>board_id: 討論串所屬的看板 id，若非樓主則此欄為 0 (或空，視建表時的細節選項而定)</li>
+			<li>time: 發表時間, TIMESTAMP, CURRENT_TIMESTAMP</li>
+			<li>nickname: 發文者暱稱，VARCHAR 32, utf8_general_ci</li>
+			<li>title: 文章標題，VARCHAR 64, utf8_general_ci</li>
+			<li>content: 文章內容，VARCHAR 1024, utf8_general_ci</li>
+			<li>root_thread_id: 所屬於哪一串討論串，若為樓主則此欄為 0 (或空，視建表時的細節選項而定)</li>
+			<li>ip: 發文者 IP, VARCHAR 64</li>
+		</ul>
+	</li>
+</ul>
+
+<p>顯示看表列表的部分非常簡單：</p>
+<pre class="brush: htmljsphp">﻿&lt;?phpinclude(&quot;pdoInc.php&quot;);?&gt;&lt;html&gt;&lt;head&gt;&lt;style&gt;textarea{vertical-align:top}&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php	$sth = $dbh-&gt;query('SELECT * from dz_board ORDER BY id');	while($row = $sth-&gt;fetch(PDO::FETCH_ASSOC)){		echo '&lt;a href=&quot;php_dz_viewBoard.php?id='.$row['id'].'&quot;&gt;'.$row['name'].'&lt;/a&gt;&lt;br&gt;';	}?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+
+<p>其中，超連結內的 php_dz_viewBoard.php 會負責顯示各個看板下的討論串，以及發起新的討論串。其中，我們先對 dz_board 看板做查詢，以知道使用者送來的看板 id 是否真實存在，以避免使用者將討論串發起到不存在的看板。</p>
+<pre class="brush: htmljsphp">﻿&lt;?phpinclude(&quot;pdoInc.php&quot;);if(isset($_GET['id']) &amp;&amp; isset($_POST['nickname']) &amp;&amp; isset($_POST['title']) &amp;&amp; isset($_POST['content'])){	$sth = $dbh-&gt;prepare('SELECT id FROM dz_board WHERE id = ?');	$sth-&gt;execute(array((int)$_GET['id']));	if($sth-&gt;rowCount() == 1){		$sth2 = $dbh-&gt;prepare(			'INSERT INTO dz_thread (board_id, nickname, title, content, ip) VALUES (?, ?, ?, ?, ?)'		);		$sth2-&gt;execute(array(			(int)$_GET['id'],			$_POST['nickname'],			$_POST['title'],			$_POST['content'],			$_SERVER['REMOTE_ADDR']		));		echo '&lt;meta http-equiv=REFRESH CONTENT=0;url=php_dz_viewBoard.php?id='.(int)$_GET['id'].'&gt;';	}}?&gt;&lt;html&gt;&lt;head&gt;&lt;style&gt;textarea{vertical-align:top}&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form action=&quot;php_dz_viewBoard.php?id=&lt;?php echo (int)$_GET['id'];?&gt;&quot; method=&quot;post&quot;&gt;發表主題：&lt;br/&gt;暱稱：&lt;input name=&quot;nickname&quot;&gt;&lt;br/&gt;標題：&lt;input name=&quot;title&quot;&gt;&lt;br/&gt;內容：&lt;textarea name=&quot;content&quot;&gt;&lt;/textarea&gt;&lt;br/&gt;&lt;input type=&quot;submit&quot;&gt;&lt;/form&gt;&lt;hr&gt;&lt;?php	$sth = $dbh-&gt;prepare('SELECT id FROM dz_board WHERE id = ?');	$sth-&gt;execute(array((int)$_GET['id']));	if($sth-&gt;rowCount() == 1){		$sth2 = $dbh-&gt;prepare('SELECT * from dz_thread WHERE board_id = ? ORDER BY id');		$sth2-&gt;execute(array((int)$_GET['id']));		while($row = $sth2-&gt;fetch(PDO::FETCH_ASSOC)){			echo '&lt;a href=&quot;php_dz_viewThread.php?id='.$row['id'].'&quot;&gt;'.htmlspecialchars($row['title']).'&lt;/a&gt; by '.htmlspecialchars($row['nickname']).' from '.$row['ip'].'&lt;br&gt;';		}	}	else {		echo '看板不存在';	}?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+
+<p>顯示討論串和發表回應的部分也非常相似，如下：</p>
+<pre class="brush: htmljsphp">﻿&lt;?phpinclude(&quot;pdoInc.php&quot;);function showMsg($row, $counter){	$title = htmlspecialchars($row['title']);	$nn = htmlspecialchars($row['nickname']);	$msg = htmlspecialchars($row['content']);	$msg = str_replace(&quot;\n&quot;, &quot;&lt;br/&gt;&quot;, $msg);	if($counter == 0){		echo $title.'&lt;br&gt;&lt;br&gt;';	}	echo &quot;&lt;table border=\&quot;1\&quot;&gt;&lt;tr&gt;&quot;;	echo &quot;&lt;td&gt;留言人: &quot;.$nn.&quot;&lt;/td&gt;&quot;;	echo &quot;&lt;td&gt;時間: &quot;.$row['time'].&quot;&lt;/td&gt;&quot;;	echo &quot;&lt;td&gt;位置: &quot;.$row['ip'].&quot;&lt;/td&gt;&lt;/tr&gt;&quot;;	echo &quot;&lt;tr&gt;&lt;td colspan=\&quot;3\&quot;&gt;留言內容:&lt;br/&gt;&quot;.$msg.&quot;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;br/&gt;&quot;;}if(isset($_GET['id']) &amp;&amp; isset($_POST['nickname']) &amp;&amp; isset($_POST['content'])){	$sth = $dbh-&gt;prepare('SELECT id FROM dz_thread WHERE id = ?');	$sth-&gt;execute(array((int)$_GET['id']));	if($sth-&gt;rowCount() &gt; 0){		$sth2 = $dbh-&gt;prepare(			'INSERT INTO dz_thread (nickname, content, ip, root_thread_id) VALUES (?, ?, ?, ?)'		);		$sth2-&gt;execute(array(			$_POST['nickname'],			$_POST['content'],			$_SERVER['REMOTE_ADDR'],			(int)$_GET['id']		));		echo '&lt;meta http-equiv=REFRESH CONTENT=0;url=php_dz_viewThread.php?id='.(int)$_GET['id'].'&gt;';	}}?&gt;&lt;html&gt;&lt;head&gt;&lt;style&gt;textarea{vertical-align:top}&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form action=&quot;php_dz_viewThread.php?id=&lt;?php echo (int)$_GET['id'];?&gt;&quot; method=&quot;post&quot;&gt;發表回應：&lt;br/&gt;暱稱：&lt;input name=&quot;nickname&quot;&gt;&lt;br/&gt;內容：&lt;textarea name=&quot;content&quot;&gt;&lt;/textarea&gt;&lt;br/&gt;&lt;input type=&quot;submit&quot;&gt;&lt;/form&gt;&lt;hr&gt;&lt;?php	if(isset($_GET['id'])){		$sth = $dbh-&gt;prepare('			SELECT * from dz_thread			WHERE (id = ? and board_id &lt;&gt; 0)			OR (root_thread_id = ? and board_id = 0)			ORDER BY id		');		$sth-&gt;execute(array((int)$_GET['id'], (int)$_GET['id']));		if($sth-&gt;rowCount() &gt; 0){			$counter = 0;			while($row = $sth-&gt;fetch(PDO::FETCH_ASSOC)){				showMsg($row, $counter++);			}		}		else {			echo '討論串不存在';		}	}	else {		echo '未指定討論串';	}?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+
+</blockquote>
+
+</body></html>

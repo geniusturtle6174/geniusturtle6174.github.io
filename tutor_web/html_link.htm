@@ -12,28 +12,26 @@
 	<script type="text/javascript">
 		SyntaxHighlighter.all();
 	</script>
-	﻿</head>
+	</head>
 
 <body bgcolor="#ccccff">
 
 <blockquote>
 
-<p>
-在說明連結之前，我們先要瞭解「絕對路徑」和「相對路徑」的差異：
+<p>在說明連結之前，我們先要瞭解「絕對路徑」和「相對路徑」的差異：</p>
 <ul>
-	<li>相對路徑：相對於現在目錄的路徑表示法。
-	    「相對路徑」所指到的檔案或目錄，會隨著現在目錄的不同而改變</li>
+	<li>相對路徑：相對於現在目錄的路徑表示法。「相對路徑」所指到的檔案或目錄，會隨著現在目錄的不同而改變</li>
 	<li>絕對路徑：一個絕對的位置，並不會隨著現在目錄的改變而改變</li>
 </ul>
-<br/>
-以下是一些舉例說明：
+
+<p>以下是一些舉例說明：</p>
 <table align=center class="slide">
 	<tr>
 		<th>類別</th><th>範例</th><th>說明</th>
 	</tr>
 	<tr>
 		<td rowspan=2>絕對路徑</td>
-		<td><a href="http://ppt.cc/4O3T" style="color:black;hover">file:///C:/Users/acer/Desktop/1639408618.jpg</a></td>
+		<td><a href="https://www.ptt.cc/man/joke/DE63/DCC3/DC37/M.1271832145.A.199.html" style="color:black;hover">file:///C:/Users/acer/Desktop/1639408618.jpg</a></td>
 		<td>本機 C 槽上的一個圖片檔案</td>
 	</tr>
 	<tr>
@@ -43,41 +41,35 @@
 	<tr>
 		<td rowspan=4>相對路徑</td>
 		<td>text.html 或 ./text.html</td>
-		<td>表同一層目錄下的 text.html 檔案</td>
+		<td>同一層目錄下的 text.html 檔案</td>
 	</tr>
 	<tr>
 		<td>image/text.gif 或 ./image/text.gif</td>
-		<td>表示 image 子目錄下的 text.gif 檔案</td>
+		<td>image 子目錄下的 text.gif 檔案</td>
 	</tr>
 	<tr>
 		<td>../index.html</td>
-		<td>表示上一層目錄下的 index.html 檔案</td>
+		<td>上一層目錄下的 index.html 檔案</td>
 	</tr>
 	<tr>
 		<td>../htm123/abc.html</td>
-		<td>表示上一層目錄下 htm123 子目錄的 abc.html 檔案</td>
+		<td>上一層目錄下 htm123 子目錄的 abc.html 檔案</td>
 	</tr>
 </table>
-<br />
-除非有特殊需求，否則在 HTML 文件中，建議用相對路徑來表示網址。
-使用相對路徑的好處是：當我們將包含許多網頁的目錄轉移到另一個位置時，
-雖然絕對位置改變，但是在此目錄下的網頁相對位置並沒有改變，因此我們並不需要大幅修改網頁內的連結。
-</p>
 
 <p>
-以下是一個基本的範例：
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;title&gt;&lt;/title&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ffffcc&quot;&gt;這是清華大學的&lt;a href=&quot;http://www.nthu.edu.tw&quot;&gt;首頁&lt;/a&gt;（絕對網址）&lt;br /&gt;這是交通大學的&lt;a href=&quot;http://www.nctu.edu.tw&quot;&gt;首頁&lt;/a&gt;（絕對網址）&lt;br /&gt;這是本教材的&lt;a href=&quot;../index.htm&quot;&gt;範例首頁&lt;/a&gt;（相對網址）&lt;br /&gt;圖片也可以用連結標籤包起來：&lt;br /&gt;&lt;a href=&quot;http://mirlab.org/users/chungche.wang/&quot;&gt;&lt;img src=&quot;../pics/safe_turtle.png&quot;&gt;&lt;/a&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+除非有特殊需求，否則在 HTML 文件中，建議用相對路徑來表示網址。使用相對路徑的好處是：當我們將包含許多網頁的目錄轉移到另一個位置時，雖然絕對位置改變，但是在此目錄下的網頁相對位置並沒有改變，因此我們並不需要大幅修改網頁內的連結。
 </p>
 
-<p>
-可以利用「target」屬性，將連結開啟在不同的視窗：
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;title&gt;&lt;/title&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ffffcc&quot;&gt;&lt;a href=&quot;http://www.ntu.edu.tw&quot; target=&quot;abc&quot;&gt;台大首頁&lt;/a&gt;&lt;br /&gt;&lt;a href=&quot;http://www.nthu.edu.tw&quot; target=&quot;abc&quot;&gt;清大首頁&lt;/a&gt;&lt;br /&gt;&lt;a href=&quot;http://www.nctu.edu.tw&quot; target=&quot;def&quot;&gt;交大首頁&lt;/a&gt;&lt;br /&gt;&lt;a href=&quot;http://www.cs.nthu.edu.tw&quot; target=&quot;_blank&quot;&gt;清大資工首頁&lt;/a&gt;&lt;br /&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-</p>
+<p>以下是一個基本的範例：</p>
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;title&gt;&lt;/title&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ffffcc&quot;&gt;這是清華大學的&lt;a href=&quot;http://www.nthu.edu.tw&quot;&gt;首頁&lt;/a&gt;（絕對網址）&lt;br&gt;這是交通大學的&lt;a href=&quot;http://www.nctu.edu.tw&quot;&gt;首頁&lt;/a&gt;（絕對網址）&lt;br&gt;這是本教材的&lt;a href=&quot;../index.htm&quot;&gt;範例首頁&lt;/a&gt;（相對網址）&lt;br&gt;圖片也可以用連結標籤包起來：&lt;br&gt;&lt;a href=&quot;http://mirlab.org&quot;&gt;&lt;img src=&quot;../pics/safe_turtle.png&quot;&gt;&lt;/a&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 
-<p>
-連結也可以用「name」屬性，在文件當中跳上跳下：
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;title&gt;&lt;/title&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ffffcc&quot;&gt;&lt;a href=&quot;#abc&quot;&gt;跳到最後一列&lt;/a&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;a name=&quot;abc&quot; /&gt;這是最後一列&lt;/body&gt;&lt;/html&gt;</pre>
-</p>
+<p>可以利用 target 屬性，將連結開啟在不同的視窗：</p>
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;title&gt;&lt;/title&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ffffcc&quot;&gt;&lt;a href=&quot;http://www.ntu.edu.tw&quot; target=&quot;abc&quot;&gt;台大首頁&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://www.nthu.edu.tw&quot; target=&quot;abc&quot;&gt;清大首頁&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://www.nctu.edu.tw&quot; target=&quot;def&quot;&gt;交大首頁&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://www.cs.nthu.edu.tw&quot; target=&quot;_blank&quot;&gt;清大資工首頁&lt;/a&gt;&lt;br&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 
-</blockquote>
+<p>連結也可以用 name 或 id 屬性，在文件當中跳上跳下。現在的 HTML5 標準是使用 id 屬性，但早期慣用的 name 屬性依然可以使用。</p>
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;title&gt;&lt;/title&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ffffcc&quot;&gt;&lt;a href=&quot;#abc&quot;&gt;跳到最後一列&lt;/a&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;a id=&quot;abc&quot;&gt;&lt;/a&gt;這是最後一列&lt;/body&gt;&lt;/html&gt;</pre>
+
+</blockquote>
+
 </body></html>

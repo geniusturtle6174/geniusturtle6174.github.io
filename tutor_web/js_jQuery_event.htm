@@ -12,58 +12,43 @@
 	<script type="text/javascript">
 		SyntaxHighlighter.all();
 	</script>
-	﻿</head>
+	</head>
 
 <body bgcolor="#ccccff">
 
 <blockquote>
 
-<p>
-透過 jQuery 綁定(bind)和觸發(trigger)事件的方法，與原始的 JavaScript 其實非常相似：
+<script>showWarning("本篇以 1.11.0 版本為主，與最新版的差異請自行留意");</script>
+
+<script>showWarning("感謝政大 105 級會計系蔡同學提醒，bind 跟 unbind 已將被棄用，整合至 on 與 off");</script>
+
+<p>透過 jQuery 綁定(bind)和觸發(trigger)事件的方法，與原始的 JavaScript 其實非常相似：</p>
 <pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.11.0.min.js&quot;&gt;&lt;/script&gt;	&lt;script&gt;		$(document).ready(function() {			// 跟 A 有關的事件			$(&quot;#A&quot;).click(				function(){					$(&quot;p&quot;).text(&quot;你按到了A&quot;);				}			).mouseout(				function(){					$(&quot;p&quot;).text(&quot;你離開了A&quot;);				}			);			// 跟 B 有關的事件			$(&quot;#B&quot;).click(				function(){					$(&quot;#A&quot;).click();				}			).mouseout(				function(){					$(&quot;#A&quot;).mouseout();				}			);		});	&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;input type=&quot;button&quot; id=&quot;A&quot; value=&quot;AAA&quot;&gt;&lt;input type=&quot;button&quot; id=&quot;B&quot; value=&quot;BBBB&quot;&gt;&lt;p&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-上例中有兩個按鈕，我們在 A 上面綁了一些事件的動作，然後設定點到 B 的時候也可以觸發 A 的事件。
-其中的這一段：
+
+<p>上例中有兩個按鈕，我們在 A 上面綁了一些事件的動作，然後設定點到 B 的時候也可以觸發 A 的事件。其中的這一段：</p>
 <pre class="brush: htmljs">$(document).ready(function(){
 	......
-})</pre><br />
-代表等文件結構載入後才可以開始執行程式(更精確的說，是文件結構載入完成的事件)，
-相當於「window.onload」，不過「window.onload」會等圖片和其他外部檔案都載入後，才能開始執行。
-使用這種做法的原因在於瀏覽器讀到上面的 script 時，文件結構尚未載入完成，
-那時還不會知道「$("#A")」是什麼東西，所以需要等到載入完成。另外，也可以寫成這樣：
+})</pre><br>
+
+<p>代表等文件結構載入後才可以開始執行程式(更精確的說，是文件結構載入完成的事件)，相當於「window.onload」，不過「window.onload」會等圖片和其他外部檔案都載入後，才能開始執行。使用這種做法的原因在於瀏覽器讀到上面的 script 時，文件結構尚未載入完成，那時還不會知道「$("#A")」是什麼東西，所以需要等到載入完成。另外，也可以寫成這樣：</p>
 <pre class="brush: htmljs">$(function(){
 	......
-})</pre><br />
-</p>
+})</pre><br>
 
-<p>
-同樣的，也可以偵測滑鼠事件：
+<p>同樣的，也可以偵測滑鼠事件：</p>
 <pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.11.0.min.js&quot;&gt;&lt;/script&gt;	&lt;script&gt;		$(document).mousemove(function() {			$(&quot;p&quot;).text(event.clientX + &quot;, &quot; + event.clientY);		});	&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;p&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-</p>
 
-<p>
-「hover()」事件可以一次指定兩個 funcions，一個代表滑進來，一個代表滑出去：
+<p>「hover()」事件可以一次指定兩個 funcions，一個代表滑進來，一個代表滑出去：</p>
 <pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.11.0.min.js&quot;&gt;&lt;/script&gt;	&lt;script&gt;		$(function() {			$(&quot;p&quot;).hover(				function(){$(this).css(&quot;background&quot;,&quot;#ffc&quot;);},				function(){$(this).css(&quot;background&quot;,&quot;#cfc&quot;);}			);		});	&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;p&gt;指進來看看~&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-</p>
 
-<p>
-如果透過「bind()」和「unbind()」來綁定/解除綁定事件，還能幫你達成自訂事件的功能；
-「tirgger()」則可以用來觸發自訂事件；而如果想要只觸發一次，則應該使用「one()」：
+<p>如果透過「bind()」和「unbind()」來綁定/解除綁定事件，還能幫你達成自訂事件的功能；「tirgger()」則可以用來觸發自訂事件；而如果想要只觸發一次，則應該使用「one()」：</p>
 <pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.11.0.min.js&quot;&gt;&lt;/script&gt;	&lt;script&gt;		$(document).ready(function() {			// 在 A 上面綁事件			$(&quot;#A&quot;).bind(&quot;myEvent&quot;,				function(){					$(&quot;p&quot;).text(&quot;你按了A&quot;);				}			).one(&quot;oneEvent&quot;,				function(){					alert(&quot;只會跳一次&quot;);				}			);			// 點到 B 時觸發 A 的事件			$(&quot;#B&quot;).click(				function(){					$(&quot;#A&quot;).trigger(&quot;myEvent&quot;).trigger(&quot;oneEvent&quot;);				}			).mouseout(				function(){					$(&quot;p&quot;).text(&quot;&quot;);				}			);		});	&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;input type=&quot;button&quot; id=&quot;A&quot; value=&quot;AAA&quot;&gt;&lt;input type=&quot;button&quot; id=&quot;B&quot; value=&quot;BBBB&quot;&gt;&lt;p&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-</p>
 
-<p>
-我們來看一個範例，當中綜合了事件綁定與物件動態增刪等技巧。
-請想像一下找尋論文，往往會有一大堆的條件，
-例如標題或摘要是否要包含某些字、作者是誰、出處、年份等等，
-如果搜尋的頁面一下子將所有選項列出，會佔用太多空間，
-也同時造成使用者的心理負擔，可能不是個很好的設計；
-而如果能動態的調整選項的數量，則在使用上應該會比較方便。
-要完成這件事情，只需要建立一些隱藏模板，然後動態的新增或刪除這些模板，以及綁定一些事件即可：
+<p>我們來看一個範例，當中綜合了事件綁定與物件動態增刪等技巧。請想像一下找尋論文，往往會有一大堆的條件，例如標題或摘要是否要包含某些字、作者是誰、出處、年份等等，如果搜尋的頁面一下子將所有選項列出，會佔用太多空間，也同時造成使用者的心理負擔，可能不是個很好的設計；而如果能動態的調整選項的數量，則在使用上應該會比較方便。要完成這件事情，只需要建立一些隱藏模板，然後動態的新增或刪除這些模板，以及綁定一些事件即可：</p>
 <pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		#templateAll{display:none;}	&lt;/style&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.11.0.min.js&quot;&gt;&lt;/script&gt;	&lt;script&gt;		$(document).ready(function(){			// 新增條件			$(&quot;#addFilter&quot;).click(function(){				var item = $(&quot;&lt;div&gt;&quot;).addClass(&quot;filter&quot;).appendTo(&quot;#panel&quot;);				$(&quot;#templateAll .chooser&quot;).clone().appendTo(item);			});			// 刪除條件			$(document).on(&quot;click&quot;, &quot;.remover&quot;, function(){				$(this).closest('.filter').remove();			});			// 選單變化			$(document).on(&quot;change&quot;, &quot;.chooserList&quot;, function(){				var type = $(':selected', this).attr('data-condType');				var item = $(this).closest('.filter');				$('.qualifier', item).remove();				$(&quot;#templateAll .&quot; + type).clone().addClass('qualifier').appendTo(item);			});		});	&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;div id=&quot;panel&quot;&gt;&lt;/div&gt;&lt;input type=&quot;button&quot; id=&quot;addFilter&quot; value=&quot;新增搜尋條件&quot;&gt;&lt;input type=&quot;submit&quot; value=&quot;送出&quot;&gt;&lt;div id=&quot;templateAll&quot;&gt;	&lt;!--條件類型選單--&gt;	&lt;div class=&quot;chooser&quot; style=&quot;display:inline&quot;&gt;		&lt;input type=&quot;button&quot; value=&quot;X&quot; class=&quot;remover&quot;&gt;		&lt;select class=&quot;chooserList&quot;&gt;			&lt;option data-condType=&quot;&quot;&gt;--請選擇條件--&lt;/option&gt;			&lt;option data-condType=&quot;string&quot;&gt;標題包含：&lt;/option&gt;			&lt;option data-condType=&quot;string&quot;&gt;摘要包含：&lt;/option&gt;			&lt;option data-condType=&quot;choose&quot;&gt;論文類別：&lt;/option&gt;			&lt;option data-condType=&quot;num&quot;&gt;年份：&lt;/option&gt;		&lt;/select&gt;	&lt;/div&gt;	&lt;!--字串型條件--&gt;	&lt;div class=&quot;string&quot; style=&quot;display:inline&quot;&gt;		&lt;input type=&quot;text&quot;&gt;	&lt;/div&gt;	&lt;!--選擇型條件--&gt;	&lt;div class=&quot;choose&quot; style=&quot;display:inline&quot;&gt;		&lt;input type=&quot;checkbox&quot;&gt;期刊		&lt;input type=&quot;checkbox&quot;&gt;會議	&lt;/div&gt;	&lt;!--數值型條件--&gt;	&lt;div class=&quot;num&quot; style=&quot;display:inline&quot;&gt;		from: &lt;input type=&quot;numeric&quot;&gt;		to: &lt;input type=&quot;numeric&quot;&gt;	&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-只要在伺服器端撰寫一些程式碼來接收訊息，就可以達成真正搜尋功能。
-但是，需要請各位留意的是，這個範例目前將伺服器接收所需的屬性省略了，
-各位若有需要，可以在日後回頭來嘗試修改這個範例。
-</p>
 
-</blockquote>
+<p>只要在伺服器端撰寫一些程式碼來接收訊息，就可以達成真正搜尋功能。但是，需要請各位留意的是，這個範例目前將伺服器接收所需的屬性省略了，各位若有需要，可以在日後回頭來嘗試修改這個範例。</p>
+
+</blockquote>
+
 </body></html>

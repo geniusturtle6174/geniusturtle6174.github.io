@@ -13,42 +13,37 @@
 	<script type="text/javascript">
 		SyntaxHighlighter.all();
 	</script>
-	﻿</head>
+	</head>
 
 <body bgcolor="#ccccff">
 
 <blockquote>
 
-<p>
-在表單標籤中，是透過「action」屬性來指定送出的表單要用哪支程式來處理；
-而「method」屬性則是設定送出的方法，分為：
+<script>showWarning("本教材的互動部分是以 HTML 和 PHP 撰寫在同一檔案的方式進行，若希望將前後端分開撰寫，可參考 AJAX 或各種框架");</script>
+
+<p>在表單標籤中，是透過「action」屬性來指定送出的表單要用哪支程式來處理；而「method」屬性則是設定送出的方法，分為：</p>
 <ul>
 	<li>get: 會附帶在 url 裡面送出，長度較為受限</li>
 	<li>post: 嵌在封包內部送出，可允許較大量的資料</li>
-</ul><br/>
-而用「name」屬性，即可讓 php 取出送過來的值。
-此時需要留意，雖然 html 不分大小寫，但是 php 跟 JavaScript 都一樣會區分。
-以下是「get」的範例，：
-<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?phpif(isset($_GET['OAO']) &amp;&amp; isset($_GET['QQ'])){	echo $_GET['OAO']+$_GET['QQ'];}?&gt;&lt;form action=&quot;php_formGet.php&quot; method=&quot;get&quot;&gt;	&lt;input type=&quot;text&quot; name=&quot;OAO&quot;&gt;	&lt;input type=&quot;text&quot; name=&quot;QQ&quot;&gt;	&lt;input type=&quot;submit&quot;&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-「post」的範例：
-<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?phpif(isset($_POST['OAO']) &amp;&amp; isset($_POST['QQ'])){	echo $_POST['OAO']+$_POST['QQ'];}?&gt;&lt;form action=&quot;php_formPost.php&quot; method=&quot;post&quot;&gt;	&lt;input type=&quot;text&quot; name=&quot;OAO&quot;&gt;	&lt;input type=&quot;text&quot; name=&quot;QQ&quot;&gt;	&lt;input type=&quot;submit&quot;&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-</p>
+</ul>
 
-<p>
-上述範例的「isset」，可以判斷變數是否存在，以使得一開始不會印出訊息。
-不過「isset」只會在變數未宣告、未定義或者值為 null 時回傳 false，
-如果需要判斷是否為空字串，必須使用「==""」或者「empty」進行。
-</p>
+<p>而用「name」屬性，即可讓 php 取出送過來的值。此時需要留意，雖然 html 不分大小寫，但是 php 跟 JavaScript 都一樣會區分。以下是「get」的範例，：</p>
+<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?phpif(isset($_GET['OAO']) &amp;&amp; isset($_GET['QQ'])){	echo $_GET['OAO'] + $_GET['QQ'];}?&gt;&lt;form action=&quot;php_formGet.php&quot; method=&quot;get&quot;&gt;	&lt;input type=&quot;text&quot; name=&quot;OAO&quot;&gt;	&lt;input type=&quot;text&quot; name=&quot;QQ&quot;&gt;	&lt;input type=&quot;submit&quot;&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 
-<p>
-與按鈕互動：
+<p>「post」的範例：</p>
+<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?phpif(isset($_POST['OAO']) &amp;&amp; isset($_POST['QQ'])){	echo $_POST['OAO'] + $_POST['QQ'];}?&gt;&lt;form action=&quot;php_formPost.php&quot; method=&quot;post&quot;&gt;	&lt;input type=&quot;text&quot; name=&quot;OAO&quot;&gt;	&lt;input type=&quot;text&quot; name=&quot;QQ&quot;&gt;	&lt;input type=&quot;submit&quot;&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+
+<p>上述範例的「isset」，可以判斷變數是否存在，以使得一開始不會印出訊息。不過「isset」只會在變數未宣告、未定義或者值為 null 時回傳 false，如果需要判斷是否為空字串，必須使用「==""」或者「empty」進行。</p>
+
+<p>與按鈕互動：</p>
 <pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;style&gt;body, select{font-size:50px}&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?phpfor($i=1;$i&lt;=10;$i++){	echo &quot;按鈕 $i 是否被按下: &quot;.(isset($_POST[$i])?&quot;是&quot;:&quot;否&quot;).&quot;&lt;br/&gt;&quot;;}?&gt;&lt;form action=&quot;php_formBtn.php&quot; method=&quot;post&quot;&gt;	&lt;?php		for($i=1;$i&lt;=10;$i++){			echo &quot;&lt;input type=\&quot;submit\&quot; name=\&quot;$i\&quot;&gt;&quot;;		}	?&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-若要與選單互動，則需在名稱後面加上「[]」，以代表形成陣列
-(各位可以自行測試看看不加「[]」的效果)：
-<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;style&gt;body, select{font-size:70px}&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?phpif(isset($_POST['number']) &amp;&amp; gettype($_POST['number'])=='array'){	$sum = 0;	foreach($_POST['number'] as $i){		$sum += $i;	}	echo $sum;}?&gt;&lt;form action=&quot;php_formSelect.php&quot; method=&quot;post&quot;&gt;	&lt;select name=&quot;number[]&quot; multiple&gt;		&lt;?php			for($i=1;$i&lt;=10;$i++){				echo &quot;&lt;option&gt;&quot;.$i.&quot;&lt;/option&gt;&quot;;			}		?&gt;	&lt;/select&gt;	&lt;input type=&quot;submit&quot;&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-與多選方塊互動，也要加上「[]」：
-<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;style&gt;body, select{font-size:70px}&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?phpif(isset($_POST['number']) &amp;&amp; gettype($_POST['number'])=='array'){	$sum = 0;	foreach($_POST['number'] as $i){		$sum += $i;	}	echo $sum;}?&gt;&lt;form action=&quot;php_formChkbox.php&quot; method=&quot;post&quot;&gt;	&lt;?php		for($i=1;$i&lt;=10;$i++){			echo &quot;&lt;input type=\&quot;checkbox\&quot; name=\&quot;number[]\&quot; id=\&quot;$i\&quot; value=\&quot;$i\&quot;&gt;&quot;;			echo &quot;&lt;label for=\&quot;$i\&quot;&gt;$i&lt;/label&gt;&amp;nbsp;&quot;;		}	?&gt;	&lt;input type=&quot;submit&quot;&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-</p>
 
-</blockquote>
+<p>若要與選單互動，則需在名稱後面加上「[]」，以代表形成陣列(各位可以自行測試看看不加「[]」的效果)：</p>
+<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;style&gt;body, select{font-size:70px}&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?phpif(isset($_POST['number']) &amp;&amp; gettype($_POST['number']) == 'array'){	$sum = 0;	foreach($_POST['number'] as $i){		$sum += $i;	}	echo $sum;}?&gt;&lt;form action=&quot;php_formSelect.php&quot; method=&quot;post&quot;&gt;	&lt;select name=&quot;number[]&quot; multiple&gt;		&lt;?php			for($i=1;$i&lt;=10;$i++){				echo &quot;&lt;option&gt;&quot;.$i.&quot;&lt;/option&gt;&quot;;			}		?&gt;	&lt;/select&gt;	&lt;input type=&quot;submit&quot;&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+
+<p>與多選方塊互動，也要加上「[]」：</p>
+<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;style&gt;body, select{font-size:70px}&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?phpif(isset($_POST['number']) &amp;&amp; gettype($_POST['number']) == 'array'){	$sum = 0;	foreach($_POST['number'] as $i){		$sum += $i;	}	echo $sum;}?&gt;&lt;form action=&quot;php_formChkbox.php&quot; method=&quot;post&quot;&gt;	&lt;?php		for($i=1;$i&lt;=10;$i++){			echo &quot;&lt;input type=\&quot;checkbox\&quot; name=\&quot;number[]\&quot; id=\&quot;$i\&quot; value=\&quot;$i\&quot;&gt;&quot;;			echo &quot;&lt;label for=\&quot;$i\&quot;&gt;$i&lt;/label&gt;&amp;nbsp;&quot;;		}	?&gt;	&lt;input type=&quot;submit&quot;&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+
+</blockquote>
+
 </body></html>

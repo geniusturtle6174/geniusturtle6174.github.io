@@ -14,7 +14,7 @@
 	<script type="text/javascript">
 		SyntaxHighlighter.all();
 	</script>
-	﻿</head>
+	</head>
 
 <body bgcolor="#ccccff">
 
@@ -24,13 +24,10 @@
 Gol_D_Roger("4-1", "4-2"); // 顯示羅傑的書的章節對應
 </script>
 
-<p>
-JavaScript 的陣列，和 C 一樣是從 0 開始索引，但是元素可以比較動態的加入：
-<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;myArr = new Array();myArr[0] = '...QQ';myArr[1] = 1234;myArr[2] = (1==4);for(i=0;i&lt;myArr.length;i++){	document.write(&quot;第 i 元素的型別：&quot; + typeof(myArr[i]) + &quot;&lt;br/&gt;&lt;br/&gt;&quot;);}// 上述宣告方法，等於// myArr = new Array('...QQ', 1234, (1==4));// 或者// myArr = ['...QQ', 1234, (1==4)];myArr2 = new Array(5);document.write(&quot;myArr2的長度：&quot; + myArr2.length + &quot;&lt;br/&gt;&lt;br/&gt;&quot;);document.write(&quot;myArr2[0]：&quot; + myArr2[0] + &quot;&lt;br/&gt;&lt;br/&gt;&quot;);&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-</p>
+<p>JavaScript 的陣列，和 C 一樣是從 0 開始索引，但是元素可以比較動態的加入：</p>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;myArr = new Array();myArr[0] = '...QQ';myArr[1] = 1234;myArr[2] = (1==4);for(i=0;i&lt;myArr.length;i++){	document.write(&quot;第 &quot; + i + &quot; 元素的型別：&quot; + typeof(myArr[i]) + &quot;&lt;br/&gt;&lt;br/&gt;&quot;);}// 上述宣告方法，等於// myArr = new Array('...QQ', 1234, (1==4));// 或者// myArr = ['...QQ', 1234, (1==4)];myArr2 = new Array(5);document.write(&quot;myArr2的長度：&quot; + myArr2.length + &quot;&lt;br/&gt;&lt;br/&gt;&quot;);document.write(&quot;myArr2[0]：&quot; + myArr2[0] + &quot;&lt;br/&gt;&lt;br/&gt;&quot;);&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 
-<p>
-JavaScript 的 array 有下列方法：
+<p>JavaScript 的 array 有下列方法：</p>
 <ul>
 	<li>concat: 將陣列連接起來</li>
 	<li>join: 把陣列元素串成字串</li>
@@ -43,17 +40,15 @@ JavaScript 的 array 有下列方法：
 	<li>sort: 排序</li>
 	<li>toString: 傳回陣列的字串表示法</li>
 	<li>unshift: 加一個新元素到陣列最前面，並傳回新陣列</li>
-</ul><br/>
-以下示範其中一些：
+</ul>
+
+<p>以下示範其中一些：</p>
 <pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;br2 = &quot;&lt;br/&gt;&lt;br/&gt;&quot;;myArr = new Array();myArr[0] = '...QQ';myArr[1] = 1234;myArr[2] = (1==4); // falsedocument.write(&quot;join 的結果： &quot; + myArr.join() + br2);document.write(&quot;join 的結果(自訂分隔方式)： &quot; + myArr.join('~~') + br2);document.write(&quot;toString 的結果： &quot; + myArr.toString() + br2);document.write(&quot;反轉後的結果： &quot; + myArr.reverse().toString() + br2);document.write(&quot;反轉後會改變原陣列： &quot; + myArr.toString() + br2);myArr2 = [3,2,4,1,7,8,5,9,6,0];document.write(&quot;排序前： &quot; + myArr2.toString() + br2);myArr2.sort();document.write(&quot;排序後： &quot; + myArr2.toString() + br2);// JavaScript 是把元素視為字串進行排序myArr2 = [&quot;Apple&quot;, &quot;action&quot;, 1234 ,'%(#)%', '^________&lt;'];document.write(&quot;排序前： &quot; + myArr2.toString() + br2);myArr2.sort();document.write(&quot;排序後： &quot; + myArr2.toString() + br2);&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-</p>
 
-<p>
-排序時，也可以定義自己的 comparison function：
+<p>排序時，也可以定義自己的 comparison function：</p>
 <pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;br2 = &quot;&lt;br/&gt;&lt;br/&gt;&quot;;function myCmp(a, b){	return (a.length-b.length);}myArr = [&quot;lion&quot;, &quot;monkey&quot;, &quot;brother&quot;, &quot;rhino&quot;];document.write(&quot;字典排序： &quot; + myArr.sort().toString() + br2);document.write(&quot;使用自定義比較，進行字串長度排序： &quot; + myArr.sort(myCmp).toString() + br2);&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-</p>
 
-</blockquote>
+</blockquote>
 
 </body>
 </html>

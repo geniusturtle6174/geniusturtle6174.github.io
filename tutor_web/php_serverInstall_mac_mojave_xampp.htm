@@ -1,0 +1,55 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushXml.js"></script>
+	<script type="text/javascript" src="shBrushMine.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>XAMPP 在 Mac 上的安裝方式與 Windows 上大致相同，但是多了一種會幫你建立一個虛擬環境的版本。由於後者不方便使用 http://localhost 來連線，因此本篇將說明的是如同其他作業系統一樣，不會建立虛擬環境的版本。請點選<a href="https://www.apachefriends.org/">首頁</a>上方的"下載"，並找到 Mac 的最新版本，並請再次注意 dmg 檔名的尾巴沒有"vm"字樣。本篇使用 7.3.4 版本為範例。</p>
+
+<p>下載完成後可用一般的方式打開，若出現如圖的視窗，請點選"打開"即可。若有需要輸入密碼的視窗，則請輸入之。</p>
+<center><img src="pics/xampp01_mac_mojave.png" width="520"/></center>
+
+<p>點選"Next"，開始進行安裝前的設定：</p>
+<center><img src="pics/xampp02_mac_mojave.png" width="520"/></center>
+
+<p>選擇安裝元件。此處使用預設值(全部安裝)，按 Next：</p>
+<center><img src="pics/xampp03_mac_mojave.png" width="520"/></center>
+
+<p>Mac 上的路徑通常不能變更，請直接按 Next：</p>
+<center><img src="pics/xampp04_mac_mojave.png" width="520"/></center>
+
+<p>問你要不要到附帶的其他框架的官網上逛逛，若不需要請將打勾取消，也可以直接按 Next：</p>
+<center><img src="pics/xampp05_mac_mojave.png" width="520"/></center>
+
+<p>請按 Next，開始安裝：</p>
+<center><img src="pics/xampp06_mac_mojave.png" width="520"/></center>
+
+<p>安裝中，請稍候：</p>
+<center><img src="pics/xampp07_mac_mojave.png" width="520"/></center>
+
+<p>安裝完成，畫面上的選項是問你要不要立刻啟動主控台：</p>
+<center><img src="pics/xampp08_mac_mojave.png" width="520"/></center>
+
+<p>主控台畫面，啟動 Apache 和 MySQL 時，可能會要求你允許該程式的網路連線。之後，就可以用 http://localhost 連線到首頁和 phpmyadmin：</p>
+<center><img src="pics/xampp09_mac_mojave.png" width="520"/></center>
+
+<p>接下來，把自己撰寫的 php 檔案，放在安裝路徑下的 htdocs，應該就可以看到結果。若需要將網頁放在不同的路徑，請打開設定檔，並參考 Windows 篇的設定檔修改方式。若是 Apache 無法啟動，則代表內建的 Apache 正在使用中，請在終端機輸入"sudo apachectl stop"來關掉它。若是 MySQL 也無法啟動，則代表你可能自己安裝了 MySQL，請在終端機輸入"ps -ax | grep mysql"，並將出現的 porcess id 以"kill -9 {pid}"指令關閉</p>
+
+</blockquote>
+
+</body></html>

@@ -13,26 +13,22 @@
 	<script type="text/javascript">
 		SyntaxHighlighter.all();
 	</script>
-	﻿</head>
+	</head>
 
 <body bgcolor="#ccccff">
 
 <blockquote>
 
-<p>
-於本篇中，將要介紹一些基本的 SQL 指令(若有興趣學習更進階的概念與用法，可以修習資料庫相關課程)。
-用於示範的資料表共有三張，可由<a href="examples/singer_song_songrank.sql">這裡</a>下載，內容如下：
-</p>
+<p>於本篇中，將要介紹一些基本的 SQL 指令(若有興趣學習更進階的概念與用法，可以修習資料庫相關課程)。用於示範的資料表共有三張，可由<a href="examples/singer_song_songrank.sql">這裡</a>下載，內容如下：</p>
 
-<p>
-songrank 資料表：
+<p>songrank 資料表(實務上可能會將歌曲名稱與演唱者改以各自的 id 數字作為欄位資料，此處為便於範例閱讀，故採用文字)：</p>
 <table class="slide" align=center>
 	<tr>
-		<th class="slide">資料序號(ssn)</th>
-		<th class="slide">當日排名(thisrank)</th>
-		<th class="slide">前日排名(prevrank)</th>
-		<th class="slide">歌曲名稱(songname)</th>
-		<th class="slide">演 唱 者(singername)</th>
+		<th class="slide">id (資料序號)</th>
+		<th class="slide">this_rank (當日排名)</th>
+		<th class="slide">prev_rank (前日排名)</th>
+		<th class="slide">song_name (歌曲名稱)</th>
+		<th class="slide">singer_name (演 唱 者)</th>
 	</tr>
 	<tr><!--平-->
 		<td class="slide">1</td>
@@ -83,146 +79,216 @@ songrank 資料表：
 		<td class="slide">只能想念你</td>
 		<td class="slide">蕭敬騰</td>
 	</tr>
-</table><br/><br/>
-singer 資料表：
+</table>
+
+<p>singer 資料表：</p>
 <table class="slide" align=center>
 	<tr>
-		<th class="slide">歌手序號(singerId)</th>
-		<th class="slide">歌手名稱(singerName)</th>
-		<th class="slide">歌手類別(singerType)</th>
+		<th class="slide">id (歌手序號)</th>
+		<th class="slide">name (歌手名稱)</th>
+		<th class="slide">type (歌手類別)</th>
 	</tr>
 	<tr><td class="slide">1</td><td class="slide">梁靜茹</td><td class="slide">女歌手</td></tr>
 	<tr><td class="slide">2</td><td class="slide">伍佰</td><td class="slide">男歌手</td></tr>
 	<tr><td class="slide">3</td><td class="slide">五月天</td><td class="slide">團體</td></tr>
 	<tr><td class="slide">4</td><td class="slide">初音未來</td><td class="slide">軟體</td></tr>
 	<tr><td class="slide">5</td><td class="slide">鏡音鈴</td><td class="slide">軟體</td></tr>
-</table><br/><br/>
-song 資料表：
+</table>
+
+<p>song 資料表：</p>
 <table class="slide" align=center>
 	<tr>
-		<th class="slide">歌曲名稱(songName)</th>
-		<th class="slide">歌手序號(singerId)</th>
-		<th class="slide">歌曲語言(songLang)</th>
-		<th class="slide">水管連結(youtube)</th>
+		<th class="slide">id (歌曲序號)</th>
+		<th class="slide">name (歌曲名稱)</th>
+		<th class="slide">singer_id (歌手序號)</th>
+		<th class="slide">language (歌曲語言)</th>
+		<th class="slide">youtube (水管連結)</th>
 	</tr>
-	<tr><td class="slide">會呼吸的痛</td><td class="slide">1</td><td class="slide">華語</td>	<td class="slide"><a href="http://www.youtube.com/watch?v=SZnmpF9K_VQ">http://www.youtube.com/watch?v=SZnmpF9K_VQ</a></td></tr>
-	<tr><td class="slide">乾杯</td><td class="slide">3</td><td class="slide">華語</td>			<td class="slide"><a href="http://www.youtube.com/watch?v=qX2GsMj7154">http://www.youtube.com/watch?v=qX2GsMj7154</a></td></tr>
-	<tr><td class="slide">溫柔</td><td class="slide">3</td><td class="slide">華語</td>			<td class="slide"><a href="http://www.youtube.com/watch?v=nWb_X3ZJQjw">http://www.youtube.com/watch?v=nWb_X3ZJQjw</a></td></tr>
-	<tr><td class="slide">OK啦</td><td class="slide">3</td><td class="slide">台語</td>			<td class="slide"><a href="http://www.youtube.com/watch?v=_FV1NDdHHEo">http://www.youtube.com/watch?v=_FV1NDdHHEo</a></td></tr>
-	<tr><td class="slide">愛情限時批</td><td class="slide">2</td><td class="slide">台語</td>	<td class="slide"><a href="http://www.youtube.com/watch?v=b5Qrin1tRDk">http://www.youtube.com/watch?v=b5Qrin1tRDk</a></td></tr>
-	<tr><td class="slide">夢醒時分</td><td class="slide">2</td><td class="slide">華語</td>		<td class="slide"><a href="http://www.youtube.com/watch?v=m9Y5z5sYm3s">http://www.youtube.com/watch?v=m9Y5z5sYm3s</a></td></tr>
-	<tr><td class="slide">夢醒時分</td><td class="slide">1</td><td class="slide">華語</td>		<td class="slide"><a href="http://www.youtube.com/watch?v=JbvnzMZnEfc">http://www.youtube.com/watch?v=JbvnzMZnEfc</a></td></tr>
-	<tr><td class="slide">甩蔥歌</td><td class="slide">4</td><td class="slide">日語</td>		<td class="slide"><a href="http://www.youtube.com/watch?v=QwZ_VKBTjWo">http://www.youtube.com/watch?v=QwZ_VKBTjWo</a></td></tr>
-	<tr><td class="slide">千本櫻</td><td class="slide">4</td><td class="slide">日語</td>		<td class="slide"><a href="http://www.youtube.com/watch?v=UcwcedDh8vc">http://www.youtube.com/watch?v=K7E3Aw4brMM</a></td></tr>
-</table><br/><br/>
-由於尚未介紹到 PHP 與 MySQL 的連接，所以我們先透過 phpmyadmin 來執行 SQL 指令。
-下載資料表並載入後，點選「SQL」即可開始測試以下的指令效果。
-</p>
+	<tr>
+		<td class="slide">1</td>
+		<td class="slide">會呼吸的痛</td>
+		<td class="slide">1</td>
+		<td class="slide">華語</td>
+		<td class="slide"><a href="https://www.youtube.com/watch?v=-dry2N6RYM4">https://www.youtube.com/watch?v=-dry2N6RYM4</a></td>
+	</tr>
+	<tr>
+		<td class="slide">2</td>
+		<td class="slide">乾杯</td>
+		<td class="slide">3</td>
+		<td class="slide">華語</td>
+		<td class="slide"><a href="http://www.youtube.com/watch?v=qX2GsMj7154">http://www.youtube.com/watch?v=qX2GsMj7154</a></td>
+	</tr>
+	<tr>
+		<td class="slide">3</td>
+		<td class="slide">溫柔</td>
+		<td class="slide">3</td>
+		<td class="slide">華語</td>
+		<td class="slide"><a href="http://www.youtube.com/watch?v=nWb_X3ZJQjw">http://www.youtube.com/watch?v=nWb_X3ZJQjw</a></td>
+	</tr>
+	<tr>
+		<td class="slide">4</td>
+		<td class="slide">OK啦</td>
+		<td class="slide">3</td>
+		<td class="slide">台語</td>
+		<td class="slide"><a href="http://www.youtube.com/watch?v=_FV1NDdHHEo">http://www.youtube.com/watch?v=_FV1NDdHHEo</a></td>
+	</tr>
+	<tr>
+		<td class="slide">5</td>
+		<td class="slide">愛情限時批</td>
+		<td class="slide">2</td>
+		<td class="slide">台語</td>
+		<td class="slide"><a href="http://www.youtube.com/watch?v=b5Qrin1tRDk">http://www.youtube.com/watch?v=b5Qrin1tRDk</a></td>
+	</tr>
+	<tr>
+		<td class="slide">6</td>
+		<td class="slide">夢醒時分</td>
+		<td class="slide">2</td>
+		<td class="slide">華語</td>
+		<td class="slide"><a href="http://www.youtube.com/watch?v=m9Y5z5sYm3s">http://www.youtube.com/watch?v=m9Y5z5sYm3s</a></td>
+	</tr>
+	<tr>
+		<td class="slide">7</td>
+		<td class="slide">夢醒時分</td>
+		<td class="slide">1</td>
+		<td class="slide">華語</td>
+		<td class="slide"><a href="http://www.youtube.com/watch?v=JbvnzMZnEfc">http://www.youtube.com/watch?v=JbvnzMZnEfc</a></td>
+	</tr>
+	<tr>
+		<td class="slide">8</td>
+		<td class="slide">甩蔥歌</td>
+		<td class="slide">4</td>
+		<td class="slide">日語</td>
+		<td class="slide"><a href="http://www.youtube.com/watch?v=QwZ_VKBTjWo">http://www.youtube.com/watch?v=QwZ_VKBTjWo</a></td>
+	</tr>
+	<tr>
+		<td class="slide">9</td>
+		<td class="slide">千本櫻</td>
+		<td class="slide">4</td>
+		<td class="slide">日語</td>
+		<td class="slide"><a href="http://www.youtube.com/watch?v=UcwcedDh8vc">http://www.youtube.com/watch?v=K7E3Aw4brMM</a></td>
+	</tr>
+</table>
 
-<p>
-我們先介紹最基本的 SQL 指令: SELECT。它的基本語法是：
-<pre class="brush: sql">SELECT 欄位名稱 from 表格名稱</pre><br />
-從 songrank 資料表裡面，選出某兩個欄位的資料：
-<pre class="brush: sql">SELECT thisRank, songName from songrank</pre><br />
-如果正確執行，則應該看到一個表格，包含 thisRank 和 songName 這兩個欄位。
-如果想挑出所有欄位，則使用以下即可
-<pre class="brush: sql">SELECT * from songrank</pre><br />
-若要選出前五筆，可使用：
-<pre class="brush: sql">SELECT * FROM songrank limit 5</pre><br />
-如果想要知道有哪些不一樣資料，但是次數不重要時，可以使用「DISTINCT」。
-例如，有哪些不同的歌曲語言：
-<pre class="brush: sql">SELECT DISTINCT(songLang) FROM song</pre><br />
-加上條件，可選出特定歌手的資料(也可以利用「AND」和「OR」來綜合許多條件)：
-<pre class="brush: sql">SELECT * FROM songrank WHERE singername='林俊傑'</pre><br />
-選出排名進步的歌手資料：
-<pre class="brush: sql">SELECT * FROM songrank WHERE thisrank &lt; prevrank</pre><br />
-「IN」和「BETWEEN」可以簡化條件式的寫法。
-以下範例的第一二行效果相同，第三四行效果也相同：
-<pre class="brush: sql">SELECT * FROM songrank WHERE thisrank &gt; 10 AND thisrank &lt; 50
-SELECT * FROM songrank WHERE thisrank BETWEEN 10 AND 50
-SELECT * FROM songrank WHERE singername='林俊傑' OR  singername='丁噹'
-SELECT * FROM songrank WHERE singername IN ('林俊傑','丁噹')</pre><br />
-「LIKE」也可以用於描述條件，這個指令常常跟萬用字元一起搭配。
-SQL 語句當中包含兩個萬用字元：
+<p>由於尚未介紹到 PHP 與 MySQL 的連接，所以我們先透過 phpmyadmin 來執行 SQL 指令。下載資料表並載入後，點選「SQL」即可開始測試以下的指令效果。</p>
+
+<p>我們先介紹最基本的 SQL 指令: SELECT。它的基本語法是：</p>
+<pre class="brush: sql">SELECT 欄位名稱 from 表格名稱</pre><br>
+
+<p>從 songrank 資料表裡面，選出某兩個欄位的資料：</p>
+<pre class="brush: sql">SELECT this_rank, song_name from songrank</pre><br>
+
+<p>如果正確執行，則應該看到一個表格，包含 this_rank 和 song_name 這兩個欄位。如果想挑出所有欄位，則使用以下即可</p>
+<pre class="brush: sql">SELECT * from songrank</pre><br>
+
+<p>若只要選出五筆，可使用：</p>
+<pre class="brush: sql">SELECT * FROM songrank limit 5</pre><br>
+
+<p>如果想要知道有哪些不一樣資料，但是次數不重要時，可以使用「DISTINCT」。例如，有哪些不同的歌曲語言：</p>
+<pre class="brush: sql">SELECT DISTINCT(language) FROM song</pre><br>
+
+<p>加上條件，可選出特定歌手的資料(也可以利用「AND」和「OR」來綜合許多條件)：</p>
+<pre class="brush: sql">SELECT * FROM songrank WHERE singer_name='林俊傑'</pre><br>
+
+<p>選出排名進步的歌手資料：</p>
+<pre class="brush: sql">SELECT * FROM songrank WHERE this_rank &lt; prev_rank</pre><br>
+
+<p>「IN」和「BETWEEN」可以簡化條件式的寫法。以下範例的第一二行效果相同，第三四行效果也相同：</p>
+<pre class="brush: sql">SELECT * FROM songrank WHERE this_rank &gt;= 11 AND this_rank &lt;= 46
+SELECT * FROM songrank WHERE this_rank BETWEEN 11 AND 46
+SELECT * FROM songrank WHERE singer_name = '林俊傑' OR  singer_name = '丁噹'
+SELECT * FROM songrank WHERE singer_name IN ('林俊傑','丁噹')</pre><br>
+
+<p>「LIKE」也可以用於描述條件，這個指令常常跟萬用字元一起搭配。SQL 語句當中包含兩個萬用字元：</p>
 <ul>
 	<li>%: 百分比，代表任意數目的字元</li>
 	<li>_: 底線，代表任意一個字元</li>
-</ul><br/>
-例如，要選出所有藝名是三個字的歌手資料，可以用三個底線：
-<pre class="brush: sql">SELECT * FROM songrank WHERE singername LIKE '___'
-</pre><br />
-如果希望選出的資料依照某種規則排序，則可使用「ORDER BY」。
-排序的順序，預設是遞增排序「ASC」，你也可以使用「DESC」來進行遞減排序：
-<pre class="brush: sql">SELECT * FROM songrank ORDER BY singername
-SELECT * FROM songrank ORDER BY singername ASC
-SELECT * FROM songrank ORDER BY singername DESC</pre><br />
-其中請留意，如果「ORDER BY」和「WHERE」同時出現時，
-「WHERE」必須放在前面(第二行的指令會產生語法錯誤)：
-<pre class="brush: sql">SELECT * FROM songrank WHERE thisrank &lt; 50 ORDER BY singername
-SELECT * FROM songrank ORDER BY singername WHERE thisrank &lt; 50</pre><br />
-如果你的資料是數字，則可以透過 SQL 當中的一些函式進行簡單的運算
-(雖然這些運算在本範例中，可能剛好不太有意義)。
-另外，透過「AS」，可以幫表格或選出來的欄位取一個比較好懂的名稱(請留意欄位名稱的變化！)：
-<pre class="brush: sql">SELECT AVG(thisrank) AS '平均', MAX(thisrank) AS '最大值', MIN(thisrank), SUM(thisrank), COUNT(thisrank) FROM songrank</pre><br />
-選出每位歌手的入榜次數(「GROUP BY」的作用是把相同的資料聚在一起)：
-<pre class="brush: sql">SELECT singerName, count(singername) as inListNum FROM songrank GROUP BY singername</pre><br />
-</p>
+</ul>
 
-<p>
-如果要新增一筆或數筆資料，則可使用「INSERT」：
-<pre class="brush: sql">INSERT INTO songrank (thisRank,singerName) VALUES (123,'這是測試'), (456,'也是測試')</pre><br />
-使用「UPDATE」更新資料：
-<pre class="brush: sql">UPDATE songrank SET thisRank='789', songName='不知道' WHERE ssn=10</pre><br />
-使用「DELETE」刪除資料：
-<pre class="brush: sql">DELETE FROM songrank WHERE thisRank&gt;100</pre><br />
-更新或刪除資料時請記得指定正確的條件，否則會不小心把整個資料庫改掉一大半或全部！
-</p>
+<p>例如，要選出所有藝名是三個字的歌手資料，可以用三個底線：</p>
+<pre class="brush: sql">SELECT * FROM songrank WHERE singer_name LIKE '___'
+</pre><br>
 
-<p>
-我們繼續回到 SELECT 指令的其他範例。
-例如，選出伍佰唱過的台語歌的方法如下，請留意本範例需要使用到兩張資料表：
-<pre class="brush: sql">SELECT songName FROM song, singer
-WHERE song.songLang='台語'
-AND singer.singerId=song.singerId
-AND singer.singerName='伍佰'</pre><br />
-唱過華語歌的歌手及其歌曲：
-<pre class="brush: sql">SELECT singerName, songName FROM singer, song
-WHERE songLang='華語'
-AND singer.singerId=song.singerId</pre><br />
-計算日語歌曲的總數：
-<pre class="brush: sql">SELECT COUNT(songLang) FROM song WHERE songLang='日語'</pre><br />
-五月天唱過的華語歌的總數：
-<pre class="brush: sql">SELECT COUNT(songLang) FROM song, singer
-WHERE songLang='華語'
-AND song.singerId=singer.singerId
-AND singerName='五月天'</pre><br />
-我們可以在 SQL 指令中放入另一個 SQL 指令，此種作法稱為子查詢。
-例如歌曲包含幾種語言：
-<pre class="brush: sql">SELECT COUNT(*) FROM (SELECT DISTINCT(songLang) FROM song) AS OAO</pre><br />
-歌曲包含哪幾種語言與其歌曲數目：
-<pre class="brush: sql">SELECT songLang,COUNT(songLang) FROM song GROUP BY songLang</pre><br />
-每個歌手唱過的歌曲數：
-<pre class="brush: sql">SELECT singername, COUNT(song.singerid) FROM singer, song 
-WHERE singer.singerid=song.singerid GROUP BY singer.singerid</pre><br />
-你可能會發現，歌曲數目為 0 的鏡音並未被列出，這是因為兩張表格的 singerid 取的是交集。
-若要將鏡音也列在查詢結果當中，則可使用「LEFT JOIN」，代表取左邊表格的所有資料。
-<pre class="brush: sql">SELECT singername, COUNT(song.singerid) FROM singer LEFT JOIN song ON 
-singer.singerid=song.singerid GROUP BY singer.singerid</pre><br />
-</p>
+<p>如果希望選出的資料依照某種規則排序，則可使用「ORDER BY」。排序的順序，預設是遞增排序「ASC」，你也可以使用「DESC」來進行遞減排序：</p>
+<pre class="brush: sql">SELECT * FROM songrank ORDER BY singer_name
+SELECT * FROM songrank ORDER BY singer_name ASC
+SELECT * FROM songrank ORDER BY singer_name DESC</pre><br>
 
-<p>
-「UNION」可以將兩個 SQL 指令的結果合併起來，唯一的限制是欄位的資料種類要相同：
-<pre class="brush: sql">SELECT ssn, singername FROM songrank
+<p>其中請留意，如果「ORDER BY」和「WHERE」同時出現時，「WHERE」必須放在前面(第二行的指令會產生語法錯誤)：</p>
+<pre class="brush: sql">SELECT * FROM songrank WHERE this_rank &lt; 50 ORDER BY singer_name
+SELECT * FROM songrank ORDER BY singer_name WHERE this_rank &lt; 50</pre><br>
+
+<p>如果你的資料是數字，則可以透過 SQL 當中的一些函式進行簡單的運算(雖然這些運算在本範例中，可能剛好不太有意義)。另外，透過「AS」，可以幫表格或選出來的欄位取一個比較好懂的名稱(請留意欄位名稱的變化)：</p>
+<pre class="brush: sql">SELECT AVG(this_rank) AS '平均', MAX(this_rank) AS '最大值', MIN(this_rank), SUM(this_rank), COUNT(this_rank) FROM songrank</pre><br>
+
+<p>計算日語歌曲的總數：</p>
+<pre class="brush: sql">SELECT COUNT(language) FROM song WHERE language = '日語'</pre><br>
+
+<p>選出每位歌手的入榜次數(「GROUP BY」的作用是把相同的資料聚在一起)：</p>
+<pre class="brush: sql">SELECT singer_name, count(singer_name) as inListNum FROM songrank GROUP BY singer_name</pre><br>
+
+<p>歌曲包含哪幾種語言與其歌曲數目：</p>
+<pre class="brush: sql">SELECT language, COUNT(language) FROM song GROUP BY language</pre><br>
+
+<p>我們可以在 SQL 指令中放入另一個 SQL 指令，此種作法稱為子查詢。例如歌曲包含幾種語言：</p>
+<pre class="brush: sql">SELECT COUNT(*) FROM (SELECT DISTINCT(language) FROM song) AS OAO</pre><br>
+
+<p>當然，若以上面的範例來說，你也可以直接寫成如下：</p>
+<pre class="brush: sql">SELECT COUNT(DISTINCT language) FROM song</pre><br>
+
+<p>「UNION」可以將兩個 SQL 指令的結果合併起來，唯一的限制是欄位的資料種類要相同：</p>
+<pre class="brush: sql">SELECT id, singer_name FROM songrank
 UNION
-SELECT singerId, youtube FROM song</pre><br />
-</p>
+SELECT singer_id, youtube FROM song</pre><br>
 
-<p>
-但是「UNION」會剔除重複資料，而「UNION ALL」則否。
-若要測試，可以觀察以下兩組指令的差異：
+<p>但是「UNION」會剔除重複資料，而「UNION ALL」則否。若要測試，可以觀察以下兩組指令的差異：</p>
 <pre class="brush: sql">SELECT * FROM songrank UNION SELECT * FROM songrank
-SELECT * FROM songrank UNION ALL SELECT * FROM songrank</pre><br />
-</p>
+SELECT * FROM songrank UNION ALL SELECT * FROM songrank</pre><br>
+
+<p>如果要新增一筆或數筆資料，則可使用「INSERT」：</p>
+<pre class="brush: sql">INSERT INTO songrank (this_rank, singer_name) VALUES (123, '這是測試'), (456, '也是測試')</pre><br>
+
+<p>使用「UPDATE」更新資料：</p>
+<pre class="brush: sql">UPDATE songrank SET this_rank = '789', song_name = '不知道' WHERE id = 9</pre><br>
+
+<p>使用「DELETE」刪除資料：</p>
+<pre class="brush: sql">DELETE FROM songrank WHERE this_rank &gt; 100</pre><br>
+
+<p>更新或刪除資料時請記得指定正確的條件，否則會不小心把整個資料庫改掉一大半或全部！</p>
+
+<p>我們繼續回到 SELECT 指令的其他範例。接下來的部份範例需要用到兩張資料表，我們會利用「JOIN」來連接兩張資料表(也可以連接多張，但本篇未展示)。其基本用法是「SELECT 欄位名 from 表格_A ... JOIN 表格_B on 條件 ...」，若條件未指定，則所有組合都會被列出。而根據要取的是 A, B 兩張表格的不同資料集合，還會有「LEFT JOIN」、「INNER JOIN」變化。</p>
+
+<p>例如，選出伍佰唱過的台語歌的方法如下：</p>
+<pre class="brush: sql">
+SELECT singer.name, song.name FROM song
+INNER JOIN singer on singer.id = song.singer_id
+WHERE song.language = '台語'
+AND singer.name = '伍佰'</pre><br>
+
+<p>唱過華語歌的歌手及其歌曲：</p>
+<pre class="brush: sql">
+SELECT singer.name, song.name FROM singer
+INNER JOIN song on singer.id = song.singer_id
+WHERE language = '華語'</pre><br>
+
+<p>你可能注意到了上面兩個範例的表格順序不太一樣。事實上，由於 INNER JOIN 取的是交集，所以<strike>表格序順不影執響行</strike>順序並不會影響結果；而且除非你操作的資料非常大量，使用到了較特殊的分散式資料庫，也不會影響效能。</p>
+
+<p>我們繼續看其他範例，例如每個歌手唱過的歌曲數：</p>
+<pre class="brush: sql">
+SELECT singer.name, COUNT(song.singer_id) FROM singer
+INNER JOIN song on singer.id = song.singer_id
+GROUP BY song.singer_id</pre><br>
+
+<p>每個歌手唱過各種語言的歌曲數。此範例需要把 song.language 也加入 GROUP BY 的項目中，才會把不同語言區分開來：</p>
+<pre class="brush: sql">
+SELECT singer.name, song.language, COUNT(song.singer_id) FROM singer
+INNER JOIN song on singer.id = song.singer_id
+GROUP BY song.language, song.singer_id</pre><br>
+
+<p>你可能會發現，在前面兩個範例中，歌曲數目為 0 的鏡音並未被列出，這是因為兩張表格的 singer_id 取的是交集。若要將鏡音也列在查詢結果當中，則可使用「LEFT JOIN」，代表取左邊表格的所有資料。這時候，表格的順序就會很重要。</p>
+<pre class="brush: sql">
+SELECT singer.name, song.language, COUNT(song.singer_id) FROM singer
+LEFT JOIN song ON singer.id = song.singer_id
+GROUP BY song.language, song.singer_id</pre><br>
 
 </blockquote>
 

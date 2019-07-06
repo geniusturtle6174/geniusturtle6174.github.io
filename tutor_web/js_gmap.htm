@@ -12,24 +12,20 @@
 	<script type="text/javascript">
 		SyntaxHighlighter.all();
 	</script>
-	﻿</head>
+	</head>
 
 <body bgcolor="#ccccff">
 
 <blockquote>
 
-<p>
-本篇將向各位介紹 Google Maps JavaScript API 第 3 版，
-以下內容皆由
-<a href="https://developers.google.com/maps/documentation/javascript/tutorial?hl=zh-tw">Google 開發者文件</a>
-以及往年投影片(<a href="gmap_2012.pdf">2012</a>, <a href="gmap_2013.pdf">2013</a>) (by Ronald Hsu)修改而來。
-</p>
+<script>showWarning("本篇自 2015 年起，不再更新技術內容");</script>
 
-<p>
-以下是一個基礎範例：
+<p>本篇將向各位介紹 Google Maps JavaScript API 第 3 版，以下內容皆由 <a href="https://developers.google.com/maps/documentation/javascript/tutorial?hl=zh-tw">Google 開發者文件</a>以及往年投影片(<a href="gmap_2012.pdf">2012</a>, <a href="gmap_2013.pdf">2013</a>) (by Ronald Hsu)修改而來。</p>
+
+<p>以下是一個基礎範例：</p>
 <pre class="brush: htmljs">﻿&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;	&lt;style type=&quot;text/css&quot;&gt;		/* 清除預設樣式，使地圖佔滿畫面 */		html{height:100%}		body{height:100%;margin:0;padding:0}		#map_canvas{height:100%}	&lt;/style&gt;		&lt;!--載入 API--&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;http://maps.googleapis.com/maps/api/js?sensor=false&quot;&gt;&lt;/script&gt;		&lt;script type=&quot;text/javascript&quot;&gt;		function initialize() {			var mapOptions = {				center: new google.maps.LatLng(24.8, 120.97),				zoom: 10,				mapTypeId: google.maps.MapTypeId.ROADMAP			};			var map = new google.maps.Map(document.getElementById(&quot;map_canvas&quot;), mapOptions);		}	&lt;/script&gt;&lt;/head&gt;&lt;body onload=&quot;initialize()&quot;&gt;&lt;div id=&quot;map_canvas&quot; style=&quot;width:100%; height:100%&quot;&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-其中在載入 API 時的「sensor=false」，代表瀏覽器沒有使用 GPS 等感應器來探測使用者的位置。
-而用到的地圖選項參數意義則如下：<br/><br/>
+
+<p>其中在載入 API 時的「sensor=false」，代表瀏覽器沒有使用 GPS 等感應器來探測使用者的位置。而用到的地圖選項參數意義則如下：</p>
 <ul>
 	<li>「center: new google.maps.LatLng(24.8, 120.97)」：指定經緯度，此例為新竹之經緯度</li>
 	<li>「zoom: 8」：縮放等級，數字愈大愈細緻，0是地球圖</li>
@@ -41,44 +37,26 @@
 		<li>TERRAIN: 實際起伏的地圖方塊，以呈現海拔高度和水域圖徵 (山嶽、河流等)</li>
 	</ul>
 </ul>
-</p>
 
-<p>
-如果要透過 Google，依據 IP 幫你自動取得地理位置，
-在比較早期的版本，是使用 google.loader.ClientLocation 來進行：
+<p>如果要透過 Google，依據 IP 幫你自動取得地理位置，在比較早期的版本，是使用 google.loader.ClientLocation 來進行：</p>
 <pre class="brush: htmljs">﻿&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;http://www.google.com/jsapi&quot;&gt;&lt;/script&gt;		&lt;script type=&quot;text/javascript&quot;&gt;		google.load(&quot;maps&quot;, &quot;3&quot;,  {callback: initialize, other_params:&quot;sensor=false&quot;});				function initialize() {			var zoom = 10;			var latlng = new google.maps.LatLng(23.5, 120.0);						if (google.loader.ClientLocation) {				latlng = new google.maps.LatLng(google.loader.ClientLocation.latitude,												google.loader.ClientLocation.longitude);			}					var mapOptions = {				center: latlng,				zoom: zoom,				mapTypeId: google.maps.MapTypeId.ROADMAP			};			var map = new google.maps.Map(document.getElementById(&quot;map_canvas&quot;), mapOptions);		}	&lt;/script&gt;&lt;/head&gt;&lt;body&gt;&lt;div id=&quot;map_canvas&quot; style=&quot;width:800px;height:500px&quot;&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-</p>
 
-<p>
-而在 HTML5 當中，則新增了定位功能，主要是使用 geolocation.getCurrentPosition，如下：
+<p>而在 HTML5 當中，則新增了定位功能，主要是使用 geolocation.getCurrentPosition，如下：</p>
 <pre class="brush: htmljs">﻿&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;http://maps.googleapis.com/maps/api/js?sensor=false&quot;&gt;&lt;/script&gt;		&lt;script type=&quot;text/javascript&quot;&gt;		navigator.geolocation.getCurrentPosition(initialize);				function initialize(position) {			var zoom = 10;			 latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);					var mapOptions = {				center: latlng,				zoom: zoom,				mapTypeId: google.maps.MapTypeId.ROADMAP			};			var map = new google.maps.Map(document.getElementById(&quot;map_canvas&quot;), mapOptions);		}	&lt;/script&gt;&lt;/head&gt;&lt;body&gt;&lt;div id=&quot;map_canvas&quot; style=&quot;width:800px;height:500px&quot;&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-</p>
 
-<p>
-藉由「google.maps.Marker」物件，可以在圖上進行標記：
+<p>藉由「google.maps.Marker」物件，可以在圖上進行標記。範例中，一開始已存在一個 marker，按鈕後，再將其他 markers 加到地圖上：</p>
 <pre class="brush: htmljs">﻿&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;	&lt;meta name=&quot;viewport&quot; content=&quot;initial-scale=1.0, user-scalable=no&quot; /&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;http://maps.googleapis.com/maps/api/js?sensor=false&quot;&gt;&lt;/script&gt;		&lt;script type=&quot;text/javascript&quot;&gt;		var neighborhoods = [			new google.maps.LatLng(24.983, 121.3), // lamigo			new google.maps.LatLng(23+8/60, 120+17/60), // lion			new google.maps.LatLng(22+38/60, 120+17/60), // rhino		];				var markers = [];		var iterator = 0;		var map;	  		function initialize() {			var mapOptions = {				center: new google.maps.LatLng(24.8, 120.97),				zoom: 7,				mapTypeId: google.maps.MapTypeId.ROADMAP			};						map = new google.maps.Map(document.getElementById(&quot;map_canvas&quot;), mapOptions);						var marker = new google.maps.Marker({ /* 一開始就有的 marker */				position: new google.maps.LatLng(25.05, 121.5),				map: map,				title: '天龍國!!'			});		}				function dropdrop(){			for(var i=0;i&lt;neighborhoods.length;i++){				setTimeout(&quot;addMarker();&quot;, i*200);			}		}				function addMarker(){			markers.push(				new google.maps.Marker({					position: neighborhoods[iterator],					map: map, /* 丟到哪張地圖上 */					draggable: false, /* 可否拖放 */					animation: google.maps.Animation.DROP, /* 動畫設定 */					icon: '../pics/elephant.png', /* 可以自訂 marker 圖案 */					title: '南部!!'				})			);			iterator++;		}	&lt;/script&gt;&lt;/head&gt;&lt;body onload=&quot;initialize()&quot;&gt;&lt;div id=&quot;map_canvas&quot; style=&quot;width:800px; height:600px&quot;&gt;&lt;/div&gt;&lt;input type=&quot;button&quot; value=&quot;新增markers&quot; onclick=&quot;dropdrop()&quot;&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-範例中，一開始已存在一個 marker，按鈕後，再將其他 markers 加到地圖上。
-</p>
 
-<p>
-藉由「google.maps.event.addListener」方法，可以監聽在圖上發生的事件。
-此範例中，如果你在地圖上按滑鼠左鍵，則會將 marker 定位在按下左鍵的位置：
+<p>藉由「google.maps.event.addListener」方法，可以監聽在圖上發生的事件。此範例中，如果你在地圖上按滑鼠左鍵，則會將 marker 定位在按下左鍵的位置：</p>
 <pre class="brush: htmljs">﻿&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;	&lt;meta name=&quot;viewport&quot; content=&quot;initial-scale=1.0, user-scalable=no&quot; /&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;http://maps.googleapis.com/maps/api/js?sensor=false&quot;&gt;&lt;/script&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;http://www.google.com/jsapi&quot;&gt;&lt;/script&gt;		&lt;script type=&quot;text/javascript&quot;&gt;				function initialize() {			var zoom = 10;			var latlng = new google.maps.LatLng(23.5, 120.0);			var markers = [];						if (google.loader.ClientLocation) {				latlng = new google.maps.LatLng(google.loader.ClientLocation.latitude,												google.loader.ClientLocation.longitude);			}					var mapOptions = {				center: latlng,				zoom: zoom,				mapTypeId: google.maps.MapTypeId.ROADMAP			};			var map = new google.maps.Map(document.getElementById(&quot;map_canvas&quot;), mapOptions);						/* 在地圖綁上 onclick 事件，藉以處理 marker 的動作 */			google.maps.event.addListener(				map,				'click',				function(e) {					userMarker.setPosition(e.latLng);					/** // 如果要每點一下就有一個 marker，則使用此段					markers.push(						new google.maps.Marker({							position: e.latLng,							map: map,							draggable: false,							animation: google.maps.Animation.DROP,							icon: '../pics/elephant.png'						})					);					**/				}			);			var userMarker = new google.maps.Marker({				map: map,				//position: latlng, // 如果需要一開始就有marker，可以打開此行				icon: &quot;../pics/elephant.png&quot;			});		} /* end function */	&lt;/script&gt;&lt;/head&gt;&lt;body onload=&quot;initialize()&quot;&gt;&lt;div id=&quot;map_canvas&quot; style=&quot;width:800px; height:600px&quot;&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-</p>
 
-<p>
-GeoCoder 可用來搜尋地址，定位出座標：
+<p>GeoCoder 可用來搜尋地址，定位出座標：</p>
 <pre class="brush: htmljs">﻿&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;	&lt;meta name=&quot;viewport&quot; content=&quot;initial-scale=1.0, user-scalable=no&quot; /&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;http://maps.googleapis.com/maps/api/js?sensor=false&quot;&gt;&lt;/script&gt;		&lt;script type=&quot;text/javascript&quot;&gt;		var geocoder, map, zoom = 15;				function initialize() {			geocoder = new google.maps.Geocoder();			var latlng = new google.maps.LatLng(23.5, 120.5);			var markers = [];					var mapOptions = {				center: latlng,				zoom: zoom,				mapTypeId: google.maps.MapTypeId.ROADMAP			};			map = new google.maps.Map(document.getElementById(&quot;map_canvas&quot;), mapOptions);		}				function codeAddress(){			var address = document.getElementById('address').value;			geocoder.geocode(				{'address': address} ,				function(results, status){ /* 查詢完成時執行的函式 */					if(status == google.maps.GeocoderStatus.OK) {						map.setCenter(results[0].geometry.location);						map.setZoom(zoom);						var marker = new google.maps.Marker({							map: map,							position: results[0].geometry.location						});					}					else {						alert('Geocode was not successful for the following reason: ' + status);					}				}			);		}	&lt;/script&gt;&lt;/head&gt;&lt;body onload=&quot;initialize()&quot;&gt;&lt;input id=&quot;address&quot; type=&quot;textbox&quot; value=&quot;新竹市光復路二段101號 &quot;&gt;&lt;input type=&quot;button&quot; value=&quot;Geocode&quot; onclick=&quot;codeAddress()&quot;&gt;&lt;div id=&quot;map_canvas&quot; style=&quot;width:800px; height:600px&quot;&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-</p>
 
-<p>
-Route 可以用來規畫行程。此範例中，點第一下和第二下各會新增一個 marker；
-之後，你可以拖動 marker，來產生與改變行程規畫：
+<p>Route 可以用來規畫行程。此範例中，點第一下和第二下各會新增一個 marker；之後，你可以拖動 marker，來產生與改變行程規畫：</p>
 <pre class="brush: htmljs">﻿&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;	&lt;meta name=&quot;viewport&quot; content=&quot;initial-scale=1.0, user-scalable=no&quot; /&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;http://maps.googleapis.com/maps/api/js?sensor=false&quot;&gt;&lt;/script&gt;	&lt;script type=&quot;text/javascript&quot;&gt;		var map;		var zoom = 15;		var markers = [];		var directionDisplay;		var directionsService = new google.maps.DirectionsService()				function initialize() {			directionsDisplay = new google.maps.DirectionsRenderer();			var latlng = new google.maps.LatLng(23.5, 120.5);					var mapOptions = {				center: latlng,				zoom: zoom,				mapTypeId: google.maps.MapTypeId.ROADMAP			};			map = new google.maps.Map(document.getElementById(&quot;map_canvas&quot;), mapOptions);			directionsDisplay.setMap(map);						google.maps.event.addListener(map, 'click',				function(e) {					/* 如果還沒加滿兩個 markers */					if(markers.length&lt;2){						/* 加上新 marker */						markers.push(							new google.maps.Marker({								position: e.latLng,								map: map,								draggable: true							})						);						/* 綁上 dragend 事件，拖放結束時重新計算路徑 */						google.maps.event.addListener(markers[markers.length-1], 'dragend',							function(e){								calcRoute();							}						);					}				}			);		}				function calcRoute(){			/* 設定規劃路線的參數 */			var request = {				origin: markers[0].getPosition(),				destination: markers[1].getPosition(),				travelMode: google.maps.DirectionsTravelMode.DRIVING			};			directionsService.route(request,				function(response, status) {					if (status == google.maps.DirectionsStatus.OK) {						directionsDisplay.setDirections(response);					}				}			);		}	&lt;/script&gt;&lt;/head&gt;&lt;body onload=&quot;initialize()&quot;&gt;&lt;div id=&quot;map_canvas&quot; style=&quot;width:800px; height:600px&quot;&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-</p>
 
-<p>
-其餘的 API 範例，可以參考以下連結，此處不再贅述。
+<p>其餘的 API 範例，可以參考以下連結，此處不再贅述。</p>
 <ul>
 	<li><a href="https://developers.google.com/maps/documentation/javascript/directions">Direction / Route</a></li>
 	<li><a href="https://developers.google.com/maps/documentation/javascript/events">Map Event</a></li>
@@ -89,11 +67,11 @@ Route 可以用來規畫行程。此範例中，點第一下和第二下各會�
 	<li><a href="https://developers.google.com/maps/documentation/javascript/places">Places Library</a> (For suppling more details about a location)</li>
 	<li><a href="https://developers.google.com/maps/documentation/javascript/overlays#drawing_tools">Drawing Tools</a></li>
 	<li><a href="https://developers.google.com/maps/documentation/javascript/">Reference from offical documentation.</a></li>
-</ul><br/>
-另外若有興趣，也可以參考研究網路上的知名範例，
-例如：<a href="http://dio.idv.tw/">迪歐版::實價登錄地圖</a>，以及
-<a href="http://uniform.wingzero.tw/">制服地圖</a>等等。
-</p>
+</ul>
 
-</blockquote>
+<p>另外若有興趣，也可以參考研究網路上的知名範例，例如：<a href="http://dio.idv.tw/">迪歐版::實價登錄地圖</a>，以及
+<a href="http://uniform.wingzero.tw/">制服地圖</a>等等。</p>
+
+</blockquote>
+
 </body></html>

@@ -13,59 +13,59 @@
 	<script type="text/javascript">
 		SyntaxHighlighter.all();
 	</script>
-	﻿</head>
+	</head>
 
 <body bgcolor="#ccccff">
 
 <blockquote>
 
 <p>
-Session 與 cookie 非常類似，但最主要的差別在於 session 是儲存在伺服器端。
-若要在某個 php 程式當中使用 session，首先必須呼叫「session_start」，
-此函數必須在網頁輸出任何東西之前呼叫，否則會產生錯誤。
-之後，我們可以使用「$_SESSION["名稱"]」的方式去設定與讀取內容。
-而若要刪除 session，則可使用「unset」函式刪除指定名稱的 session，
-或者用「session_destroy」刪除所有的 session。
-以下是一系列的範例，各位可以在建立、讀取、毀滅之間互相點選看看。
+Session 與 cookie 非常類似，但最主要的差別在於 session 是儲存在伺服器端。若要在某個 php 程式當中使用 session，首先必須呼叫「session_start」，此函數必須在網頁輸出任何東西之前呼叫，否則會產生錯誤。之後，我們可以使用「$_SESSION["名稱"]」的方式去設定與讀取內容。而若要刪除 session，則可使用「unset」函式刪除指定名稱的 session，或者用「session_destroy」刪除所有的 session。以下是一系列的範例，各位可以在建立、讀取、毀滅之間互相點選看看。
 </p>
+
+<p>創建 session：</p>
+<pre class="brush: htmljsphp">&lt;?phpsession_start();$_SESSION[&quot;abc&quot;] = &quot;def&quot;;$_SESSION[&quot;xyz&quot;] = 123;?&gt;Create</pre>
+
+<p>讀取 session：</p>
+<pre class="brush: htmljsphp">&lt;?phpsession_start();echo '$_SESSION[&quot;abc&quot;] is '.$_SESSION[&quot;abc&quot;].'&lt;br&gt;';echo '$_SESSION[&quot;xyz&quot;] is '.$_SESSION[&quot;xyz&quot;];?&gt;</pre>
+
+<p>用 unset 毀掉 session：</p>
+<pre class="brush: htmljsphp">&lt;?phpsession_start();unset($_SESSION[&quot;abc&quot;]);?&gt;Unset</pre>
+
+<p>用 destory 毀掉 session：</p>
+<pre class="brush: htmljsphp">&lt;?phpsession_start();session_destroy();?&gt;Destory</pre>
 
 <p>
-創建 session：
-<pre class="brush: htmljsphp">&lt;?phpsession_start();$_SESSION[&quot;abc&quot;] = &quot;def&quot;;$_SESSION[&quot;xyz&quot;] = 123;?&gt;</pre>
-讀取 session：
-<pre class="brush: htmljsphp">&lt;?phpsession_start();echo $_SESSION[&quot;abc&quot;];echo $_SESSION[&quot;xyz&quot;];?&gt;</pre>
-用 unset 毀掉 session：
-<pre class="brush: htmljsphp">&lt;?phpsession_start();unset($_SESSION[&quot;abc&quot;]);?&gt;</pre>
-用 destory 毀掉 session：
-<pre class="brush: htmljsphp">&lt;?phpsession_start();session_destroy();?&gt;</pre>
+Session 會透過 cookie 來分辨是哪一個用戶。當點進"創建 session"的範例後，打開瀏覽器的開發者工具，可以看到一個名為「PHPSESSID」的 cookie，如果先把這個 cookie 刪掉，再點選"讀取 session"，你會發現看不到東西。而 session 本身在伺服器端，是以文件的方式儲存，檔名是「sess_」加上前述的「PHPSESSID」。關於存放的地點，以 Win 7 為例，若使用 AppServ 預設會儲存在「C:\Users\你的帳號\AppData\Local\Temp」底下，XAMPP 則預設儲存在「C:\xampp\tmp」。它是一個純文字檔，各位可以試著打開看看內容。
 </p>
 
-<p>
-Session 會透過 cookie 來分辨是哪一個用戶。當點進"創建 session"的範例後，
-打開瀏覽器的開發者工具，可以看到一個名為「PHPSESSID」的 cookie，
-如果先把這個 cookie 刪掉，再點選"讀取 session"，你會發現看不到東西。
-而 session 本身在伺服器端，是以文件的方式儲存，檔名是「sess_」加上前述的「PHPSESSID」。
-關於存放的地點，以 Win 7 為例，
-若使用 AppServ 預設會儲存在「C:\Users\你的帳號\AppData\Local\Temp」底下，
-XAMPP 則預設儲存在「C:\xampp\tmp」。
-它是一個純文字檔，各位可以試著打開看看內容。
-</p>
+<p>運用 session，即可以做出登入/登出的功能。以下範例的帳號是"test1"到"test5"，密碼都是"12345"，整張資料表的結構如下，也可以在<a href="examples/user.sql">這裡</a>下載：</p>
+<ul>
+	<li>id: 使用者編號，primary key + auto increment</li>
+	<li>account: 帳號，VARCHAR 32</li>
+	<li>pwd: 密碼，VARCHAR 32, md5 hashed</li>
+	<li>nickname: 暱稱, utf8_general_ci</li>
+</ul>
 
-<p>
-運用 session，即可以做出登入/登出的功能。
-以下範例的帳號是"test1"到"test5"，密碼都是"12345"，
-整張資料表可以在<a href="examples/user.sql">這裡</a>下載。
-登入頁面，就是在通過驗證後，設定 session 變數，然後轉到登入成功的頁面：
-<pre class="brush: htmljsphp">&lt;?phpsession_start();include(&quot;mysqlInc.php&quot;);?&gt;&lt;?phpif(isset($_SESSION['id']) &amp;&amp; $_SESSION['id']!=null){ // 如果登入過，則直接轉到登入後頁面	echo '&lt;meta http-equiv=REFRESH CONTENT=0;url=php_index.php&gt;';}else if(isset($_POST['account'])&amp;&amp;isset($_POST['password'])){	$acc = $_POST['account'];	$pwd = $_POST['password'];	$acc = preg_replace(&quot;/[^A-Za-z0-9]/&quot;,&quot;&quot;,$acc);	$pwd = preg_replace(&quot;/[^A-Za-z0-9]/&quot;,&quot;&quot;,$pwd);	if($acc!=NULL &amp;&amp; $pwd!=NULL){		$sql = &quot;SELECT id, pwd, nickName FROM user where id = '$acc'&quot;;		$result = mysql_query($sql);		$row = mysql_fetch_array($result);		// 比對密碼		if($row['pwd']==md5($pwd)){			$_SESSION['id'] = $row['id'];			$_SESSION['pwd'] = $row['pwd'];			$_SESSION['nickName'] = $row['nickName'];			echo '&lt;meta http-equiv=REFRESH CONTENT=0;url=php_index.php&gt;';		}	}}?&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form action=&quot;php_login.php&quot; method=&quot;post&quot;&gt;	帳號：&lt;input type=&quot;text&quot; name=&quot;account&quot;&gt;&lt;br/&gt;	密碼：&lt;input type=&quot;text&quot; name=&quot;password&quot;&gt;&lt;br/&gt;	&lt;input type=&quot;submit&quot;&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-這是登入成功後的頁面的範例，
-所有需要登入才能看的頁面，都必須詳加保護，
-以免被直接輸入網址連入而產生問題：
-<pre class="brush: htmljsphp">&lt;?phpsession_start();include(&quot;mysqlInc.php&quot;);?&gt;&lt;?phpif($_SESSION['id']==null){	echo '&lt;meta http-equiv=REFRESH CONTENT=0;url=php_login.php&gt;';}?&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?phpecho &quot;Hi, &quot;.$_SESSION['id'].&quot;(&quot;.$_SESSION['nickName'].&quot;)&quot;;?&gt;&lt;a href=&quot;php_logout.php&quot;&gt;登出&lt;/a&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-登出時，毀掉 session 即可：
-<pre class="brush: htmljsphp">&lt;?phpsession_start();session_destroy();echo '&lt;meta http-equiv=REFRESH CONTENT=0;url=php_login.php&gt;';?&gt;</pre>
-登入之後，就可以透過網頁跟使用者進行更多的互動。
-例如更改資料，只要將表單送過來的資料，利用 SQL 的「UPDATE」指令進行更新即可達成。
-</p>
+<p>登入頁面，就是在通過驗證後，設定 session 變數，然後轉到登入成功的頁面：</p>
+<pre class="brush: htmljsphp">&lt;?phpsession_start();include(&quot;pdoInc.php&quot;);?&gt;&lt;?phpif(isset($_SESSION['account']) &amp;&amp; $_SESSION['account'] != null){ // 如果登入過，則直接轉到登入後頁面	echo '&lt;meta http-equiv=REFRESH CONTENT=0;url=php_sess_index.php&gt;';}else if(isset($_POST['account']) &amp;&amp; isset($_POST['password'])){	$acc = preg_replace(&quot;/[^A-Za-z0-9]/&quot;, &quot;&quot;, $_POST['account']);	$pwd = preg_replace(&quot;/[^A-Za-z0-9]/&quot;, &quot;&quot;, $_POST['password']);	if($acc != NULL &amp;&amp; $pwd != NULL){		$sth = $dbh-&gt;prepare('SELECT account, pwd, nickname FROM user where account = ?');		$sth-&gt;execute(array($acc));		$row = $sth-&gt;fetch(PDO::FETCH_ASSOC);		// 比對密碼		if($row['pwd'] == md5($pwd)){			$_SESSION['account'] = $row['account'];			$_SESSION['nickname'] = $row['nickname'];			echo '&lt;meta http-equiv=REFRESH CONTENT=0;url=php_sess_index.php&gt;';		}	}}?&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form action=&quot;php_sess_login.php&quot; method=&quot;post&quot;&gt;	帳號：&lt;input type=&quot;text&quot; name=&quot;account&quot;&gt;&lt;br/&gt;	密碼：&lt;input type=&quot;text&quot; name=&quot;password&quot;&gt;&lt;br/&gt;	&lt;input type=&quot;submit&quot;&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 
-</blockquote>
+<p>這是登入成功後的頁面的範例，我們假設排行榜是需要登入才能看的資訊。所有需要登入才能看的頁面，都必須詳加保護，以免被直接輸入網址連入而產生問題：</p>
+<pre class="brush: htmljsphp">&lt;?phpsession_start();include(&quot;pdoInc.php&quot;);?&gt;&lt;?phpif(!isset($_SESSION['account'])){	echo '&lt;meta http-equiv=REFRESH CONTENT=0;url=php_sess_login.php&gt;';}?&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?phpecho &quot;Hi, &quot;.$_SESSION['account'].&quot; (&quot;.$_SESSION['nickname'].&quot;)&quot;;?&gt;&lt;table border=&quot;1&quot;&gt;	&lt;tr&gt;		&lt;th&gt;資料序號&lt;/th&gt;		&lt;th&gt;當日排名&lt;/th&gt;		&lt;th&gt;前日排名&lt;/th&gt;		&lt;th&gt;歌曲名稱&lt;/th&gt;		&lt;th&gt;演 唱 者&lt;/th&gt;	&lt;/tr&gt;	&lt;?php		$sql = &quot;SELECT * from songrank&quot;;		$sth = $dbh-&gt;query($sql);		while($row = $sth-&gt;fetch(PDO::FETCH_ASSOC)){			echo &quot;&lt;tr&gt;&lt;td&gt;&quot;.$row['id'].&quot;&lt;/td&gt;&quot;;			echo &quot;&lt;td&gt;&quot;.$row['this_rank'].&quot;&lt;/td&gt;&quot;;			echo &quot;&lt;td&gt;&quot;.$row['prev_rank'].&quot;&lt;/td&gt;&quot;;			echo &quot;&lt;td&gt;&quot;.$row['song_name'].&quot;&lt;/td&gt;&quot;;			echo &quot;&lt;td&gt;&quot;.$row['singer_name'].&quot;&lt;/td&gt;&lt;tr&gt;&quot;;		}	?&gt;&lt;/table&gt;&lt;a href=&quot;php_sess_logout.php&quot;&gt;登出&lt;/a&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+
+<p><b>事實上，上述範例的保護還不夠詳實，各位知道為什麼，以及可以如何修改嗎？</b></p>
+
+<p>登出時，毀掉 session 即可：</p>
+<pre class="brush: htmljsphp">&lt;?phpsession_start();session_destroy();echo '&lt;meta http-equiv=REFRESH CONTENT=0;url=php_sess_login.php&gt;';?&gt;</pre>
+
+<p>登入之後，就可以透過網頁跟使用者進行更多的互動。例如更改資料，只要將表單送過來的資料，利用 SQL 的「UPDATE」指令進行更新即可達成，如下(若要自行測試，請先用前面的登入範例登入完成後，再來操作此範例)：</p>
+<pre class="brush: htmljsphp">&lt;?phpsession_start();include(&quot;../examples/pdoInc.php&quot;);if(!isset($_SESSION['account'])){	die('&lt;meta http-equiv=REFRESH CONTENT=0;url=../examples/php_sess_login.php&gt;');}$resultStr = '';if(isset($_POST['nickname']) &amp;&amp; isset($_POST['password'])){	$sth = $dbh-&gt;prepare('SELECT account FROM user WHERE account = ? and pwd = md5(?)');	$sth-&gt;execute(array($_SESSION['account'], $_POST['password']));	if($sth-&gt;rowCount() == 1){		if($_POST['newpwd1'] != '' &amp;&amp; $_POST['newpwd2'] != ''){			if($_POST['newpwd1'] == $_POST['newpwd2']){				$sth2 =  $dbh-&gt;prepare('UPDATE user SET nickname = ?, pwd = md5(?) WHERE account = ?');				$sth2-&gt;execute(array($_POST['nickname'], $_POST['newpwd1'], $_SESSION['account']));				$resultStr = '修改暱稱或密碼成功';				$_SESSION['nickname'] = $_POST['nickname'];			}			else {				$resultStr = '兩次新密碼填寫不同';			}		}		else {			$sth2 =  $dbh-&gt;prepare('UPDATE user SET nickname = ? WHERE account = ?');			$sth2-&gt;execute(array($_POST['nickname'], $_SESSION['account']));			$_SESSION['nickname'] = $_POST['nickname'];			$resultStr = '修改暱稱成功';		}	}	else {		$resultStr = '密碼填寫錯誤';	}}?&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php echo $resultStr;?&gt;&lt;form action=&quot;&lt;?php echo basename($_SERVER['PHP_SELF']);?&gt;&quot; method=&quot;POST&quot;&gt;	帳號：&lt;?php echo $_SESSION['account'];?&gt;&lt;br/&gt;	暱稱：&lt;input name=&quot;nickname&quot; value=&quot;&lt;?php echo $_SESSION['nickname']?&gt;&quot;&gt;&lt;br/&gt;	密碼：&lt;input name=&quot;password&quot; placeholder=&quot;必填&quot;&gt;&lt;br/&gt;	修改密碼：&lt;input name=&quot;newpwd1&quot; placeholder=&quot;僅修改密碼時需填&quot;&gt;&lt;br/&gt;	確認密碼：&lt;input name=&quot;newpwd2&quot; placeholder=&quot;僅修改密碼時需填&quot;&gt;&lt;br/&gt;	&lt;input type=&quot;submit&quot;&gt;&lt;/form&gt;&lt;a href=&quot;php_sess_logout.php&quot;&gt;登出&lt;/a&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+
+<p>而例如刪除資料，則是正確的指定 DELETE 的條件即可。另外，若是希望只有特定權限的人才能刪除資料，也需要搭配適當的權限控管。此範例是從 PDO 篇的討論版，搭配前述的登入登出修改而來；範例中假設 test1 這個使用者是管理員，有權限可以刪除主題：</p>
+<pre class="brush: htmljsphp">﻿&lt;?phpsession_start();include(&quot;../examples/pdoInc.php&quot;);if(isset($_GET['id']) &amp;&amp; isset($_POST['nickname']) &amp;&amp; isset($_POST['title']) &amp;&amp; isset($_POST['content'])){	$sth = $dbh-&gt;prepare('SELECT id FROM dz_board WHERE id = ?');	$sth-&gt;execute(array((int)$_GET['id']));	if($sth-&gt;rowCount() == 1){		$sth2 = $dbh-&gt;prepare(			'INSERT INTO dz_thread (board_id, nickname, title, content, ip) VALUES (?, ?, ?, ?, ?)'		);		$sth2-&gt;execute(array(			(int)$_GET['id'],			$_POST['nickname'],			$_POST['title'],			$_POST['content'],			$_SERVER['REMOTE_ADDR']		));		echo 			'&lt;meta http-equiv=REFRESH CONTENT=0;url='.			basename($_SERVER['PHP_SELF']).'?id='.(int)$_GET['id'].'&gt;';	}}if(isset($_GET['del']) &amp;&amp; $_SESSION['account'] == 'test1'){	$sth = $dbh-&gt;prepare('DELETE FROM dz_thread WHERE id = ? or root_thread_id = ?');	$sth-&gt;execute(array((int)$_GET['del'], (int)$_GET['del']));	echo 		'&lt;meta http-equiv=REFRESH CONTENT=0;url='.		basename($_SERVER['PHP_SELF']).'?id='.(int)$_GET['id'].'&gt;';}?&gt;&lt;html&gt;&lt;head&gt;&lt;style&gt;textarea{vertical-align:top}&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form action=&quot;&lt;?php echo basename($_SERVER['PHP_SELF']).'?id='.(int)$_GET['id'];?&gt;&quot; method=&quot;post&quot;&gt;發表主題：&lt;br/&gt;暱稱：&lt;input name=&quot;nickname&quot;&gt;&lt;br/&gt;標題：&lt;input name=&quot;title&quot;&gt;&lt;br/&gt;內容：&lt;textarea name=&quot;content&quot;&gt;&lt;/textarea&gt;&lt;br/&gt;&lt;input type=&quot;submit&quot;&gt;&lt;/form&gt;&lt;hr&gt;&lt;?php	function showThread($row){		echo 			'&lt;a href=&quot;php_dz_viewThread.php?id='.$row['id'].'&quot;&gt;'.			htmlspecialchars($row['title']).'&lt;/a&gt; by '.			htmlspecialchars($row['nickname']).			' from '.$row['ip'];		if($_SESSION['account'] == 'test1'){			echo				'&lt;a href=&quot;'.				basename($_SERVER['PHP_SELF']).'?id='.(int)$_GET['id'].'&amp;del='.$row['id'].				'&quot;&gt;刪除&lt;/a&gt;';		}		echo '&lt;br&gt;';	}	$sth = $dbh-&gt;prepare('SELECT id FROM dz_board WHERE id = ?');	$sth-&gt;execute(array((int)$_GET['id']));	if($sth-&gt;rowCount() == 1){		$sth2 = $dbh-&gt;prepare('SELECT * from dz_thread WHERE board_id = ? ORDER BY id');		$sth2-&gt;execute(array((int)$_GET['id']));		while($row = $sth2-&gt;fetch(PDO::FETCH_ASSOC)){			showThread($row);		}	}	else {		echo '看板不存在';	}?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+
+<p>在上述範例中為了簡便，所以採取將帳號寫死在程式碼當中的方式。實務上，可以在 user 資料表當中新增一個權限欄位，並在登入時將其值一起塞入 session，或者每次操作前都重新查詢料庫確認權限，才是比較乾淨的做法。</p>
+
+</blockquote>
+
 </body></html>

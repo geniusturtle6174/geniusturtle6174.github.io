@@ -13,52 +13,42 @@
 	<script type="text/javascript">
 		SyntaxHighlighter.all();
 	</script>
-	﻿</head>
+	</head>
 
 <body bgcolor="#ccccff">
 
 <blockquote>
 
 <p>
-傳統上，伺服器每處理一個請求，都需要重新載入網頁才能顯示結果，
-由於即使是一小部分的改變也必須重新載入整個網頁，因此加重了伺服器與頻寬的負擔，
-而透過"非同步傳輸"，即可解決這類問題。
-我們可以透過隱藏式的「iframe」或者 Ajax 來達成"非同步傳輸"的功能，
-不過本篇將專注在 Ajax 的介紹。
+傳統上，伺服器每處理一個請求，都需要重新載入網頁才能顯示結果，由於即使是一小部分的改變也必須重新載入整個網頁，因此加重了伺服器與頻寬的負擔，而透過"非同步傳輸"，即可解決這類問題。我們可以透過隱藏式的「iframe」或者 Ajax 來達成"非同步傳輸"的功能，不過本篇將專注在 Ajax 的介紹。
 </p>
 
 <p>
-其實 Ajax (Asynchronous JavaScript and XML)不是單一技術的名稱，而且出現的相當早。
-大約在 1998 年左右，微軟的一個小組就做出了允許客戶端指令碼(例如 JavaScript)發送出 http 請求的元件。
-而 Ajax 這個名詞，直到 2005 年才被創造出來。其使用方式主要包含以下步驟：
+其實 Ajax (Asynchronous JavaScript and XML)不是單一技術的名稱，而且出現的相當早。大約在 1998 年左右，微軟的一個小組就做出了允許客戶端指令碼(例如 JavaScript)發送出 http 請求的元件。而 Ajax 這個名詞，直到 2005 年才被創造出來。其使用方式主要包含以下步驟：</p>
 <ol>
 	<li>用戶端設定相關物件，對伺服器發出要求</li>
 	<li>伺服端程式處理要求</li>
 	<li>用戶端接收與顯示結果</li>
 </ol>
-</p>
 
-<p>
-我們直接來看一個完整的範例，這個範例會顯示伺服器的時間。
-<pre class="brush: htmljs">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;p id=&quot;showTimeHere&quot;&gt;&lt;/p&gt;&lt;script&gt;var xhr;// 設定物件if(window.ActiveXObject){	xhr = new ActiveXObject(&quot;Microsoft.XMLHTTP&quot;);}else if(window.XMLHttpRequest){	xhr = new XMLHttpRequest();}// 設定傳輸方法與連結位置//xhr.open(&quot;POST&quot;, &quot;ajax_time.php&quot;);// 送出請求//xhr.send();// 每隔一段時間送出setInterval(&quot;xhr.open(\&quot;POST\&quot;, \&quot;ajax_time.php\&quot;);xhr.send();&quot;, 1000);// 追蹤處理過程xhr.onreadystatechange = function(){	if(xhr.readyState==4){		if(xhr.status&gt;=200 &amp;&amp; xhr.status&lt;300){			document.getElementById(&quot;showTimeHere&quot;).innerHTML = xhr.responseText;		}		else {			document.getElementById(&quot;showTimeHere&quot;).innerHTML = &quot;GG&quot;;		}		}}&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-php 部分的程式碼則非常簡短：
+<p>我們直接來看一個完整的範例，這個範例會顯示伺服器的時間。</p>
+<pre class="brush: htmljs">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;p id=&quot;showTimeHere&quot;&gt;&lt;/p&gt;&lt;script&gt;var xhr;// 設定物件if(window.ActiveXObject){	xhr = new ActiveXObject(&quot;Microsoft.XMLHTTP&quot;);}else if(window.XMLHttpRequest){	xhr = new XMLHttpRequest();}// 設定傳輸方法與連結位置//xhr.open(&quot;POST&quot;, &quot;ajax_time.php&quot;);// 送出請求//xhr.send();// 每隔一段時間送出setInterval(&quot;xhr.open(\&quot;POST\&quot;, \&quot;ajax_time.php\&quot;);xhr.send();&quot;, 1000);// 追蹤處理過程xhr.onreadystatechange = function(){	if(xhr.readyState == 4){		if(xhr.status &gt;= 200 &amp;&amp; xhr.status &lt; 300){			document.getElementById(&quot;showTimeHere&quot;).innerHTML = xhr.responseText;		}		else {			document.getElementById(&quot;showTimeHere&quot;).innerHTML = &quot;GG&quot;;		}	}}&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+
+<p>php 部分的程式碼則非常簡短：</p>
 <pre class="brush: htmljsphp">&lt;?phpdate_default_timezone_set('Asia/Taipei');echo date('Y-m-d H:i:s'); ?&gt;</pre>
-這個範例的說明如下。首先，我們經由以下的程式碼，來建立物件：
+
+<p>這個範例的說明如下。首先，我們經由以下的程式碼，來建立物件：</p>
 <pre class="brush: htmljs">if(window.ActiveXObject){
 	xhr = new ActiveXObject(&quot;Microsoft.XMLHTTP&quot;);
 }else if(window.XMLHttpRequest){
 	xhr = new XMLHttpRequest();
-}</pre><br />
-再來，必須設定資料傳送方式，以及送出請求。
-範例中使用「setInterval」，只是為了能每秒送出一次請求。
-另外，如果是使用較舊版的 IE，可能會發現只會顯示一次時間，
-而不是每秒變動，這是由於快取產生的問題。
+}</pre><br>
+
+<p>再來，必須設定資料傳送方式，以及送出請求。範例中使用「setInterval」，只是為了能每秒送出一次請求。另外，如果是使用較舊版的 IE，可能會發現只會顯示一次時間，而不是每秒變動，這是由於快取產生的問題。</p>
 <pre class="brush: htmljs">xhr.open(&quot;POST&quot;, &quot;ajax_time.php&quot;);
-xhr.send();</pre><br />
-最後，是接收與顯示結果的部分。
-其中，「readyState」代表目前的請求狀態，其值是 4 時為傳送完成。
-而「status」則為伺服器回傳的狀態，200~299都代表成功，
-其餘較常聽到的錯誤狀態碼則例如 404 是"Not Found"。
+xhr.send();</pre><br>
+
+<p>最後，是接收與顯示結果的部分。其中，「readyState」代表目前的請求狀態，其值是 4 時為傳送完成。而「status」則為伺服器回傳的狀態，200~299都代表成功，其餘較常聽到的錯誤狀態碼則例如 404 是"Not Found"。</p>
 <pre class="brush: htmljs">xhr.onreadystatechange = function(){
 	if(xhr.readyState==4){
 		if(xhr.status&gt;=200 &amp;&amp; xhr.status&lt;300){
@@ -67,86 +57,61 @@ xhr.send();</pre><br />
 		else {
 			document.getElementById(&quot;showTimeHere&quot;).innerHTML = &quot;GG&quot;;
 		}
-	
 	}
-}</pre><br />
-</p>
+}</pre><br>
 
-<p>
-透過 jQuery，可以讓我們更方便的使用 Ajax。上述範例的程式碼可以修改如下：
+<p>透過 jQuery，可以讓我們更方便的使用 Ajax。上述範例的程式碼可以修改如下：</p>
 <pre class="brush: htmljs">&lt;html&gt;&lt;head&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.9.1.min.js&quot;&gt;&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;p id=&quot;showTimeHere&quot;&gt;&lt;/p&gt;&lt;script&gt;setInterval(&quot;$(\&quot;#showTimeHere\&quot;).load(\&quot;ajax_time.php\&quot;);&quot;, 1000);&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-最主要的語法如下。
-「load」方法帶入的參數則是請求的 url，此方法會將取得之資料，設定給前面選出的元素。
-<pre class="brush: htmljs">$(&quot;#showTimeHere&quot;).load(&quot;ajax_time.php&quot;);</pre><br />
-</p>
 
-<p>
-「load」方法還有另外兩個參數，分別是：
+<p>最主要的語法如下，「load」方法帶入的參數則是請求的 url，此方法會將取得之資料，設定給前面選出的元素。</p>
+<pre class="brush: htmljs">$(&quot;#showTimeHere&quot;).load(&quot;ajax_time.php&quot;);</pre><br>
+
+<p>「load」方法還有另外兩個參數，分別是：</p>
 <ul>
 	<li>parameters: 帶到伺服器端查詢的參數。
 		如果省略此參數或使用字串形式，則使用 GET 方式送出；
 		如果使用物件或陣列，則是用 POST 的方式送出</li>
 	<li>callback: 一個函式，會在請求完成後被呼叫。</li>
-</ul><br/>
-以下這組範例示範的是 POST 的傳輸方式，各位可以切換註解，來嘗試 GET 的方式。
-客戶端程式碼如下：
-<pre class="brush: htmljs">&lt;html&gt;&lt;head&gt;	&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.9.1.min.js&quot;&gt;&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;function myCalc(){	$(&quot;#result&quot;).load(		&quot;ajax_ab_post.php&quot;,		{a:$(&quot;#a&quot;).val(), b:$(&quot;#b&quot;).val()},		//&quot;a=&quot;+$(&quot;#a&quot;).val()+&quot;&amp;b=&quot;+$(&quot;#b&quot;).val(),		function(){			alert(&quot;計算完成&quot;);		}	);}&lt;/script&gt;&lt;form&gt;	&lt;input type=&quot;text&quot; id=&quot;a&quot; value=&quot;1&quot;&gt; +	&lt;input type=&quot;text&quot; id=&quot;b&quot; value=&quot;2&quot;&gt;	&lt;input type=&quot;button&quot; value=&quot;=&quot; onclick=&quot;myCalc();&quot;&gt;	&lt;p id=&quot;result&quot;&gt;&lt;/p&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-伺服端程式碼如下：
-<pre class="brush: htmljsphp">&lt;?php$a = $_POST[&quot;a&quot;];$b = $_POST[&quot;b&quot;];//$a = $_GET[&quot;a&quot;];//$b = $_GET[&quot;b&quot;];echo $a+$b;?&gt;</pre>
-</p>
+</ul>
+
+<p>以下這組範例示範的是 POST 的傳輸方式，各位可以切換註解，來嘗試 GET 的方式。客戶端程式碼如下：</p>
+<pre class="brush: htmljs">&lt;html&gt;&lt;head&gt;	&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.9.1.min.js&quot;&gt;&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;function myCalc(){	$(&quot;#result&quot;).load(		&quot;ajax_ab_post.php&quot;,		{			a: $(&quot;#a&quot;).val(),			b: $(&quot;#b&quot;).val()		},		//&quot;a=&quot; + $(&quot;#a&quot;).val() + &quot;&amp;b=&quot; + $(&quot;#b&quot;).val(),		function(){			alert(&quot;計算完成&quot;);		}	);}&lt;/script&gt;&lt;form&gt;	&lt;input type=&quot;text&quot; id=&quot;a&quot; value=&quot;1&quot;&gt; +	&lt;input type=&quot;text&quot; id=&quot;b&quot; value=&quot;2&quot;&gt;	&lt;input type=&quot;button&quot; value=&quot;=&quot; onclick=&quot;myCalc();&quot;&gt;	&lt;p id=&quot;result&quot;&gt;&lt;/p&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+
+<p>伺服端程式碼如下：</p>
+<pre class="brush: htmljsphp">&lt;?php$a = (int)$_POST[&quot;a&quot;];$b = (int)$_POST[&quot;b&quot;];//$a = (int)$_GET[&quot;a&quot;];//$b = (int)$_GET[&quot;b&quot;];echo $a + $b;?&gt;</pre>
+
+<p>如果希望自行處理資料，而不只是單純的把結果塞到某個元素去的話，則可以使用「get」或「post」方法。這兩個方法除了傳輸方式以外，沒有什麼差別。另外，這兩個方法比「load」多了一個參數，用於指定回傳結果的解讀方式，此處暫時略過。以下這組範例仍然是 a + b 的計算，伺服端的 php 程式碼完全一樣，只在客戶端做了一點變更：</p>
+<pre class="brush: htmljs">&lt;html&gt;&lt;head&gt;	&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.9.1.min.js&quot;&gt;&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;function myCalc(){	$.post(		&quot;ajax_ab_post.php&quot;,		&quot;a=&quot; + $(&quot;#a&quot;).val() + &quot;&amp;b=&quot; + $(&quot;#b&quot;).val(),		function(responseStr){			alert(&quot;計算完成，結果是: &quot; + responseStr);		}	);}&lt;/script&gt;&lt;form&gt;	&lt;input type=&quot;text&quot; id=&quot;a&quot; value=&quot;1&quot;&gt; +	&lt;input type=&quot;text&quot; id=&quot;b&quot; value=&quot;2&quot;&gt;	&lt;input type=&quot;button&quot; value=&quot;=&quot; onclick=&quot;myCalc();&quot;&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+
+<p>以下是匿名聊天室的範例，這個聊天室每隔 0.7 秒會重新抓取最新的 500 筆訊息。設定完成的資料表請直接在<a href="examples/chat.sql">這裡</a>下載。客戶端的程式碼如下：</p>
+<pre class="brush: htmljs">&lt;html&gt;&lt;head&gt;	&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;	&lt;style&gt;		table,tr,td{border:1px dashed}		table{width:100%;height:100%}		#showMsgHere{width:100%;height:100%;font-size:20px;resize:none;}	&lt;/style&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.9.1.min.js&quot;&gt;&lt;/script&gt;	&lt;script&gt;	function sendMsg(){		$.post(			&quot;ajax_chatroom_insert.php&quot;,			&quot;nickname=&quot; + $(&quot;#nickname&quot;).val() + &quot;&amp;msg=&quot; + $(&quot;#msg&quot;).val()		);		console.log(&quot;nickname=&quot; + $(&quot;#nickname&quot;).val() + &quot;&amp;msg=&quot; + $(&quot;#msg&quot;).val());		$(&quot;#msg&quot;).val(&quot;&quot;);	}		function showMsg(){		$(&quot;#showMsgHere&quot;).load(			&quot;ajax_chatroom_disp.php&quot;, &quot;&quot;,			function(){}		);	}		$(function(){		// 定時抓取訊息		setInterval(&quot;showMsg();&quot;, 700);		// 按下 enter 後送出訊息		$(&quot;#msg&quot;).bind(&quot;keydown&quot;,			function(e){				if(e.which == 13){					sendMsg();				}			}		)	})	&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;Basic version&lt;table&gt;	&lt;tr height=&quot;90%&quot;&gt;&lt;td&gt;&lt;textarea id=&quot;showMsgHere&quot; disabled=&quot;disabled&quot;&gt;&lt;/textarea&gt;&lt;/td&gt;&lt;/tr&gt;	&lt;tr&gt;&lt;td&gt;		&lt;form&gt;			&lt;input type=&quot;text&quot; id=&quot;nickname&quot; placeholder=&quot;暱稱&quot; style=&quot;width:5em;height:2em&quot;&gt;			&lt;input type=&quot;text&quot; id=&quot;msg&quot; placeholder=&quot;訊息&quot; style=&quot;width:70em;height:2em&quot;&gt;			&lt;input type=&quot;button&quot; value=&quot;送出&quot; onclick=&quot;sendMsg();&quot;&gt;		&lt;/form&gt;	&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+
+<p>伺服端，接收資料部分：</p>
+<pre class="brush: htmljs">&lt;?phpinclude(&quot;pdoInc.php&quot;);function getIp(){	return $_SERVER['REMOTE_ADDR'];}if(isset($_POST[&quot;nickname&quot;]) &amp;&amp; isset($_POST[&quot;msg&quot;]) &amp;&amp; $_POST[&quot;nickname&quot;] != '' &amp;&amp; $_POST[&quot;msg&quot;] != ''){	$sth = $dbh-&gt;prepare('INSERT INTO chat (nickname, msg, ip) VALUES (?, ?, ?)');	$sth-&gt;execute(array($_POST[&quot;nickname&quot;], $_POST[&quot;msg&quot;], getIp()));}?&gt;</pre>
+
+<p>伺服端，顯示訊息部分：</p>
+<pre class="brush: htmljs">&lt;?phpinclude(&quot;pdoInc.php&quot;);$sth = $dbh-&gt;prepare(	'SELECT * FROM (SELECT * from chat ORDER BY time DESC LIMIT 500) AS OAO ORDER BY time');$sth-&gt;execute();while($row = $sth-&gt;fetch(PDO::FETCH_ASSOC)){	echo		htmlspecialchars($row[&quot;nickname&quot;]).		&quot;(&quot; . $row[&quot;time&quot;] . &quot;): &quot;.		htmlspecialchars($row[&quot;msg&quot;]) . &quot;\n&quot;;}?&gt;</pre>
 
 <p>
-如果希望自行處理資料，而不只是單純的把結果塞到某個元素去的話，則可以使用「get」或「post」方法。
-這兩個方法除了傳輸方式以外，沒有什麼差別。
-另外，這兩個方法比「load」多了一個參數，用於指定回傳結果的解讀方式，此處暫時略過。
-以下這組範例仍然是 a + b 的計算，伺服端的 php 程式碼完全一樣，只在客戶端做了一點變更：
-<pre class="brush: htmljs">&lt;html&gt;&lt;head&gt;	&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.9.1.min.js&quot;&gt;&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;function myCalc(){	$.post(		&quot;ajax_ab_post.php&quot;,		&quot;a=&quot;+$(&quot;#a&quot;).val()+&quot;&amp;b=&quot;+$(&quot;#b&quot;).val(),		function(responseStr){			alert(&quot;計算完成，結果是: &quot; + responseStr);		}	);}&lt;/script&gt;&lt;form&gt;	&lt;input type=&quot;text&quot; id=&quot;a&quot; value=&quot;1&quot;&gt; +	&lt;input type=&quot;text&quot; id=&quot;b&quot; value=&quot;2&quot;&gt;	&lt;input type=&quot;button&quot; value=&quot;=&quot; onclick=&quot;myCalc();&quot;&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+上面的程式，由於每次都會重新抓取 500 筆，因此我們可以再稍做一點修改，例如伺服器傳出訊息時加上時間戳記，讓客戶端下次要求資料時可以將戳記傳送回去，依此讓伺服器只撈新增的資料出來。為了達成這樣的效果，需要對客戶端程式碼和伺服端顯示訊息部分做一點修改。首先是客戶端部分，修改為只有第一次會抓取全部訊息，之後只會抓取新的並附加到顯示區；另外，原本的定時抓取(setInterval)，改為抓取成功後再預約下一次(setTimeout)：
 </p>
+<pre class="brush: htmljs">&lt;html&gt;&lt;head&gt;	&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;	&lt;style&gt;		table,tr,td{border:1px dashed}		table{width:100%;height:100%}		#showMsgHere{width:100%;height:100%;font-size:20px;resize:none;}	&lt;/style&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.11.0.min.js&quot;&gt;&lt;/script&gt;	&lt;script&gt;	function sendMsg(){		$.post(			&quot;ajax_chatroom_insert.php&quot;,			{				nickname: $(&quot;#nickname&quot;).val(),				msg: $(&quot;#msg&quot;).val()			}		);		$(&quot;#msg&quot;).val(&quot;&quot;);	}		function showMsg(t){		$.post(			&quot;ajax_chatroom_disp_v2.php&quot;,			{				'getNewMsgOnly': t			}		).done(function(data){			$(&quot;#showMsgHere&quot;).append(data);			setTimeout(&quot;showMsg(1);&quot;, 1000);		});	}		$(function(){		// 網頁載入，抓取全部訊息		showMsg(0);		// 按下 enter 後送出訊息		$(&quot;#msg&quot;).bind(&quot;keydown&quot;,			function(e){				if(e.which == 13){					sendMsg();				}			}		)	})	&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;Get-only-new-msg version&lt;table&gt;	&lt;tr height=&quot;90%&quot;&gt;&lt;td&gt;&lt;textarea id=&quot;showMsgHere&quot; disabled=&quot;disabled&quot;&gt;&lt;/textarea&gt;&lt;/td&gt;&lt;/tr&gt;	&lt;tr&gt;&lt;td&gt;		&lt;form&gt;			&lt;input type=&quot;text&quot; id=&quot;nickname&quot; placeholder=&quot;暱稱&quot; style=&quot;width:5em;height:2em&quot;&gt;			&lt;input type=&quot;text&quot; id=&quot;msg&quot; placeholder=&quot;訊息&quot; style=&quot;width:70em;height:2em&quot;&gt;			&lt;input type=&quot;button&quot; value=&quot;送出&quot; onclick=&quot;sendMsg();&quot;&gt;		&lt;/form&gt;	&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+
+<p>伺服端的顯示訊息部分，主要則是要加上時間做為 SELECT 時的條件：</p>
+<pre class="brush: htmljs">&lt;?phpsession_start();include(&quot;pdoInc.php&quot;);if(	isset($_POST['getNewMsgOnly']) &amp;&amp;	(int)$_POST['getNewMsgOnly'] == 0 ||	!isset($_SESSION['lastMsgTime'])){	$lastMsgTime = 0;}else {	$lastMsgTime = $_SESSION['lastMsgTime'];}$sth = $dbh-&gt;prepare(	'SELECT * FROM (SELECT * from chat WHERE time &gt; ? ORDER BY time DESC LIMIT 500) AS OAO ORDER BY time');$sth-&gt;execute(array($lastMsgTime));if($sth-&gt;rowCount() &gt; 0){	while($row = $sth-&gt;fetch(PDO::FETCH_ASSOC)){		echo htmlspecialchars($row[&quot;nickname&quot;]).&quot;(&quot;.$row[&quot;time&quot;].&quot;): &quot;.htmlspecialchars($row[&quot;msg&quot;]).&quot;\n&quot;;		$_SESSION['lastMsgTime'] = $row[&quot;time&quot;];	}}?&gt;</pre>
+
+<p>這組範例當然還有可以改進的地方，例如若以時間作為戳記，則在同一時段(此範例為同一秒)內的訊息都會被視為舊訊息。若要改進這一點，可以嘗試用 auto increament 的 ID 來當作戳記。</p>
 
 <p>
-以下是匿名聊天室的範例，這個聊天室每隔 0.7 秒會重新抓取最新的 500 筆訊息。
-設定完成的資料表請直接在<a href="examples/chat.sql">這裡</a>下載。
-客戶端的程式碼如下：
-<pre class="brush: htmljs">&lt;html&gt;&lt;head&gt;	&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;	&lt;style&gt;		table,tr,td{border:1px dashed}		table{width:100%;height:100%}		#showMsgHere{width:100%;height:100%;font-size:20px;resize:none;}	&lt;/style&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.9.1.min.js&quot;&gt;&lt;/script&gt;	&lt;script&gt;	function sendMsg(){		$.post(			&quot;ajax_chatroom_insert.php&quot;,			&quot;nickname=&quot;+$(&quot;#nickname&quot;).val()+&quot;&amp;msg=&quot;+$(&quot;#msg&quot;).val()		);		$(&quot;#msg&quot;).val(&quot;&quot;);	}		function showMsg(){		$(&quot;#showMsgHere&quot;).load(			&quot;ajax_chatroom_disp.php&quot;, &quot;&quot;,			function(){}		);	}		$(function(){		// 定時抓取訊息		setInterval(&quot;showMsg();&quot;, 700);		// 按下 enter 後送出訊息		$(&quot;#msg&quot;).bind(&quot;keydown&quot;,			function(e){				if(e.which==13){					sendMsg();				}			}		)	})	&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;table&gt;	&lt;tr height=&quot;90%&quot;&gt;&lt;td&gt;&lt;textarea id=&quot;showMsgHere&quot; disabled=&quot;disabled&quot;&gt;&lt;/textarea&gt;&lt;/td&gt;&lt;/tr&gt;	&lt;tr&gt;&lt;td&gt;		&lt;form&gt;			&lt;input type=&quot;text&quot; id=&quot;nickname&quot; placeholder=&quot;暱稱&quot; style=&quot;width:5em;height:2em&quot;&gt;			&lt;input type=&quot;text&quot; id=&quot;msg&quot; placeholder=&quot;訊息&quot; style=&quot;width:70em;height:2em&quot;&gt;			&lt;input type=&quot;button&quot; value=&quot;送出&quot; onclick=&quot;sendMsg();&quot;&gt;		&lt;/form&gt;	&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-伺服端，接收資料部分：
-<pre class="brush: htmljs">&lt;?phpinclude(&quot;mysqlInc.php&quot;);function getIp(){	return $_SERVER['REMOTE_ADDR'];}if(isset($_POST[&quot;nickname&quot;]) &amp;&amp; isset($_POST[&quot;msg&quot;]) &amp;&amp; $_POST[&quot;nickname&quot;]!='' &amp;&amp; $_POST[&quot;msg&quot;]!=''){	$nickname = mysql_real_escape_string($_POST[&quot;nickname&quot;]);	$msg = mysql_real_escape_string($_POST[&quot;msg&quot;]);	$ip = getIp();	$sql = &quot;INSERT INTO chat (nickname,msg,ip) VALUES ('$nickname','$msg','$ip')&quot;;	mysql_query($sql);}?&gt;</pre>
-伺服端，顯示訊息部分：
-<pre class="brush: htmljs">&lt;?phpinclude(&quot;mysqlInc.php&quot;);$sql = &quot;SELECT * FROM (SELECT * from chat ORDER BY time DESC LIMIT 500) AS OAO ORDER BY time&quot;;$result = mysql_query($sql);if(mysql_num_rows($result)&gt;0){	while($row = mysql_fetch_array($result)){		echo $row[&quot;nickname&quot;].&quot;(&quot;.$row[&quot;time&quot;].&quot;): &quot;.htmlspecialchars($row[&quot;msg&quot;]).&quot;\n&quot;;	}}?&gt;</pre>
+前述範例的做法，都是由客戶端不斷地定時向伺服器發出請求，並且每一次的請求都是完整的連線週期(結束後會斷開連線)。此種做法，稱之為"polling"(輪詢)。因此，為了減少每次連線都要傳送的，那些幾乎不會改變的標頭資料，而演化出了稱為"long polling"的方法。在此方法中，發出請求後，只在有資料或者 timeout 的時候會斷線。
 </p>
 
-<p>
-上面的程式，由於每次都會重新抓取 500 筆，因此我們可以再稍做一點修改，
-例如伺服器傳出訊息時加上時間戳記，讓客戶端下次要求資料時可以將戳記傳送回去，
-依此讓伺服器只撈新增的資料出來。為了達成這樣的效果，
-需要對客戶端程式碼和伺服端顯示訊息部分做一點修改。
-首先是客戶端部分，修改為只有第一次會抓取全部訊息，之後只會抓取新的並附加到顯示區；
-另外，原本的定時抓取(setInterval)，改為抓取成功後再預約下一次(setTimeout)：
-<pre class="brush: htmljs">&lt;html&gt;&lt;head&gt;	&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;	&lt;style&gt;		table,tr,td{border:1px dashed}		table{width:100%;height:100%}		#showMsgHere{width:100%;height:100%;font-size:20px;resize:none;}	&lt;/style&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.11.0.min.js&quot;&gt;&lt;/script&gt;	&lt;script&gt;	function sendMsg(){		$.post(			&quot;ajax_chatroom_insert.php&quot;,			{nickname:$(&quot;#nickname&quot;).val(), msg:$(&quot;#msg&quot;).val()}		);		$(&quot;#msg&quot;).val(&quot;&quot;);	}		function showMsg(t){		$.post(			&quot;ajax_chatroom_disp_v2.php&quot;,			{'lastMsgTime':t}		).done(function(data){			$(&quot;#showMsgHere&quot;).append(data);			setTimeout(&quot;showMsg(1);&quot;, 1000);		});	}		$(function(){		// 網頁載入，抓取全部訊息		showMsg(0);		//setInterval(&quot;showMsg(1);&quot;, 1000);		// 按下 enter 後送出訊息		$(&quot;#msg&quot;).bind(&quot;keydown&quot;,			function(e){				if(e.which==13){					sendMsg();				}			}		)	})	&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;table&gt;	&lt;tr height=&quot;90%&quot;&gt;&lt;td&gt;&lt;textarea id=&quot;showMsgHere&quot; disabled=&quot;disabled&quot;&gt;&lt;/textarea&gt;&lt;/td&gt;&lt;/tr&gt;	&lt;tr&gt;&lt;td&gt;		&lt;form&gt;			&lt;input type=&quot;text&quot; id=&quot;nickname&quot; placeholder=&quot;暱稱&quot; style=&quot;width:5em;height:2em&quot;&gt;			&lt;input type=&quot;text&quot; id=&quot;msg&quot; placeholder=&quot;訊息&quot; style=&quot;width:70em;height:2em&quot;&gt;			&lt;input type=&quot;button&quot; value=&quot;送出&quot; onclick=&quot;sendMsg();&quot;&gt;		&lt;/form&gt;	&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-伺服端的部分，主要則是要加上時間做為 SELECT 時的條件：
-<pre class="brush: htmljs">&lt;?phpsession_start();include(&quot;pdoInc.php&quot;);if( isset($_POST['lastMsgTime']) &amp;&amp;	&quot;&quot;!=$_POST['lastMsgTime'] &amp;&amp;	0==(int)$_POST['lastMsgTime'] ||	!isset($_SESSION['lastMsgTime'])){	$lastMsgTime = 0;}else {	$lastMsgTime = $_SESSION['lastMsgTime'];}$sth = $dbh-&gt;prepare(&quot;SELECT * FROM (SELECT * from chat WHERE time &gt; ? ORDER BY time DESC LIMIT 500) AS OAO ORDER BY time&quot;);$sth-&gt;execute(array($lastMsgTime));if($sth-&gt;rowCount()&gt;0){	while($row=$sth-&gt;fetch(PDO::FETCH_ASSOC)){		echo $row[&quot;nickname&quot;].&quot;(&quot;.$row[&quot;time&quot;].&quot;): &quot;.htmlspecialchars($row[&quot;msg&quot;]).&quot;\n&quot;;		$_SESSION['lastMsgTime'] = $row[&quot;time&quot;];	}}?&gt;</pre>
-這組範例當然還有可以改進的地方，例如若以時間作為戳記，
-則在同一時段(此範例為同一秒)內的訊息都會被視為舊訊息。
-若要改進這一點，可以嘗試用 auto increament 的 ID 來當作戳記。
-</p>
+<p>客戶端的程式碼只需要修改拿取訊息的 php 連結：</p>
+<pre class="brush: htmljs">&lt;html&gt;&lt;head&gt;	&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;	&lt;style&gt;		table,tr,td{border:1px dashed}		table{width:100%;height:100%}		#showMsgHere{width:100%;height:100%;font-size:20px;resize:none;}	&lt;/style&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.11.0.min.js&quot;&gt;&lt;/script&gt;	&lt;script&gt;	function sendMsg(){		$.post(			&quot;ajax_chatroom_insert.php&quot;,			{				nickname: $(&quot;#nickname&quot;).val(),				msg: $(&quot;#msg&quot;).val()			}		);		$(&quot;#msg&quot;).val(&quot;&quot;);	}		function showMsg(t){		$.post(			&quot;ajax_chatroom_disp_longpoll.php&quot;,			{				'getNewMsgOnly': t			}		).done(function(data){			$(&quot;#showMsgHere&quot;).append(data);			setTimeout(&quot;showMsg(1);&quot;, 1000);		});	}		$(function(){		// 網頁載入，抓取全部訊息		showMsg(0);		// 按下 enter 後送出訊息		$(&quot;#msg&quot;).bind(&quot;keydown&quot;,			function(e){				if(e.which == 13){					sendMsg();				}			}		)	})	&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;Longpoll version&lt;table&gt;	&lt;tr height=&quot;90%&quot;&gt;&lt;td&gt;&lt;textarea id=&quot;showMsgHere&quot; disabled=&quot;disabled&quot;&gt;&lt;/textarea&gt;&lt;/td&gt;&lt;/tr&gt;	&lt;tr&gt;&lt;td&gt;		&lt;form&gt;			&lt;input type=&quot;text&quot; id=&quot;nickname&quot; placeholder=&quot;暱稱&quot; style=&quot;width:5em;height:2em&quot;&gt;			&lt;input type=&quot;text&quot; id=&quot;msg&quot; placeholder=&quot;訊息&quot; style=&quot;width:70em;height:2em&quot;&gt;			&lt;input type=&quot;button&quot; value=&quot;送出&quot; onclick=&quot;sendMsg();&quot;&gt;		&lt;/form&gt;	&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 
-<p>
-前述範例的做法，都是由客戶端不斷地定時向伺服器發出請求，
-並且每一次的請求都是完整的連線週期(結束後會斷開連線)。此種做法，稱之為"polling"(輪詢)。
-因此，為了減少每次連線都要傳送的，那些幾乎不會改變的標頭資料，
-而演化出了稱為"long polling"的方法。
-在此方法中，發出請求後，只在有資料(或者 timeout)的時候會斷線。
-</p>
+<p>而伺服器端的程式碼，則要改成在迴圈內偵測是否有新訊息。另外，如果需要用到 SESSION 來記錄，則可以使用如此範例中的方法，將 SESSION 在不必要時關閉，以免其他頁面被"鎖住"。另外，此範例為了不與上一個範例衝突，故將 SESSION 名稱更換：</p>
+<pre class="brush: htmljs">&lt;?phpsession_start();include(&quot;pdoInc.php&quot;);if(	isset($_POST['getNewMsgOnly']) &amp;&amp;	(int)$_POST['getNewMsgOnly'] == 0 ||	!isset($_SESSION['lastMsgTime_longpoll'])){	$lastMsgTime = 0;}else {	$lastMsgTime = $_SESSION['lastMsgTime_longpoll'];}$sth = $dbh-&gt;prepare(	'SELECT * FROM (SELECT * from chat WHERE time &gt; ? ORDER BY time DESC LIMIT 500) AS OAO ORDER BY time');session_write_close();ini_set('session.use_cookies', false);session_cache_limiter(false);error_reporting(0);while(true){	session_start();	$sth-&gt;execute(array($lastMsgTime));	$flag = 0;	if($sth-&gt;rowCount() &gt; 0){		$flag = 1;		while($row = $sth-&gt;fetch(PDO::FETCH_ASSOC)){			echo				htmlspecialchars($row[&quot;nickname&quot;]).				&quot;(&quot; . $row[&quot;time&quot;] . &quot;): &quot;.				htmlspecialchars($row[&quot;msg&quot;]).&quot;\n&quot;;			$_SESSION['lastMsgTime_longpoll'] = $row[&quot;time&quot;];		}		$lastMsgTime = $_SESSION['lastMsgTime_longpoll'];	}	$sth-&gt;closeCursor();	session_write_close();	if(1 == $flag){		break;	}	sleep(1);}?&gt;</pre>
 
-<p>
-客戶端的程式碼不太需要變化：
-<pre class="brush: htmljs">&lt;html&gt;&lt;head&gt;	&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;	&lt;style&gt;		table,tr,td{border:1px dashed}		table{width:100%;height:100%}		#showMsgHere{width:100%;height:100%;font-size:20px;resize:none;}	&lt;/style&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.11.0.min.js&quot;&gt;&lt;/script&gt;	&lt;script&gt;	function sendMsg(){		$.post(			&quot;../examples/ajax_chatroom_insert.php&quot;,			{nickname:$(&quot;#nickname&quot;).val(), msg:$(&quot;#msg&quot;).val()}		);		$(&quot;#msg&quot;).val(&quot;&quot;);	}		function showMsg(t){		$.post(			&quot;ajax_chatroom_disp_longpoll.php&quot;,			{'lastMsgTime':t}		).done(function(data){			$(&quot;#showMsgHere&quot;).append(data);			setTimeout(&quot;showMsg(1);&quot;, 1000);		});	}		$(function(){		// 網頁載入，抓取全部訊息		showMsg(0);		//setInterval(&quot;showMsg(1);&quot;, 1000);		// 按下 enter 後送出訊息		$(&quot;#msg&quot;).bind(&quot;keydown&quot;,			function(e){				if(e.which==13){					sendMsg();				}			}		)	})	&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;table&gt;	&lt;tr height=&quot;90%&quot;&gt;&lt;td&gt;&lt;textarea id=&quot;showMsgHere&quot; disabled=&quot;disabled&quot;&gt;&lt;/textarea&gt;&lt;/td&gt;&lt;/tr&gt;	&lt;tr&gt;&lt;td&gt;		&lt;form&gt;			&lt;input type=&quot;text&quot; id=&quot;nickname&quot; placeholder=&quot;暱稱&quot; style=&quot;width:5em;height:2em&quot;&gt;			&lt;input type=&quot;text&quot; id=&quot;msg&quot; placeholder=&quot;訊息&quot; style=&quot;width:70em;height:2em&quot;&gt;			&lt;input type=&quot;button&quot; value=&quot;送出&quot; onclick=&quot;sendMsg();&quot;&gt;		&lt;/form&gt;	&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-而伺服器端的程式碼，則要改成在迴圈內偵測是否有新訊息。
-另外，如果需要用到 SESSION 來記錄，則可以使用如此範例中的方法，
-將 SESSION 在不必要時關閉，以免其他頁面被"鎖住"。
-另外，此範例為了不與上一個範例衝突，故將 SESSION 名稱更換：
-<pre class="brush: htmljs">&lt;?phpsession_start();include(&quot;../examples/pdoInc.php&quot;);if( isset($_POST['lastMsgTime']) &amp;&amp;	&quot;&quot;!=$_POST['lastMsgTime'] &amp;&amp;	0==(int)$_POST['lastMsgTime'] ||	!isset($_SESSION['lastMsgTime_longpoll'])){	$lastMsgTime = 0;}else {	$lastMsgTime = $_SESSION['lastMsgTime_longpoll'];}$sth = $dbh-&gt;prepare(&quot;SELECT * FROM (SELECT * from chat WHERE time &gt; ? ORDER BY time DESC LIMIT 500) AS OAO ORDER BY time&quot;);session_write_close();ini_set('session.use_cookies',false);session_cache_limiter(false);error_reporting(0);while(true){	session_start();	$sth-&gt;execute(array($lastMsgTime));	$flag = 0;	if($sth-&gt;rowCount()&gt;0){		$flag = 1;		while($row=$sth-&gt;fetch(PDO::FETCH_ASSOC)){			echo $row[&quot;nickname&quot;].&quot;(&quot;.$row[&quot;time&quot;].&quot;): &quot;.htmlspecialchars($row[&quot;msg&quot;]).&quot;\n&quot;;			$_SESSION['lastMsgTime_longpoll'] = $row[&quot;time&quot;];		}		$lastMsgTime = $_SESSION['lastMsgTime_longpoll'];	}	$sth-&gt;closeCursor();	session_write_close();	if(1==$flag){		break;	}	sleep(1);}?&gt;</pre>
+</blockquote>
 
-</p>
-
-</blockquote>
 </body></html>

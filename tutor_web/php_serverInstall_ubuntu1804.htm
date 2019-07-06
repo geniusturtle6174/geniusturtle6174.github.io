@@ -1,0 +1,95 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushSql.js"></script>
+	<script type="text/javascript" src="shBrushXml.js"></script>
+	<script type="text/javascript" src="shBrushMine.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	</head>
+
+<body bgcolor="#ccccff">
+<blockquote>
+
+<p>
+而如果要在 Linux 下架設網頁伺服器，則通常會將 Apache, PHP, MySQL (or ), phpMyAdmin 這四樣元件分開安裝。以下是以 Ubuntu Linux 為例，使用 apt-get 安裝相關套件以及細部設定的指令，你必須有 root 權限才能執行相關指令。以下是安裝部分之指令與說明，為了醒目，指令部分將以引號夾住：</p>
+<ul>
+	<li>安裝 Apache2: 「sudo apt-get install apache2」。安裝完後，你可以在瀏覽器輸入 http://loclahost 看到預設頁面。</li>
+	<li>安裝 MariaDB: 「sudo apt-get install mariadb-server mariadb-client」
+		<ul>
+			<li>安裝完後，請用「sudo systemctl status mysql」檢查服務是否啟動；若否，請用「sudo /etc/init.d/mysql start」啟動</li>
+			<li>接著，請輸入「sudo mysql_secure_installation」，進行如下的設定
+				<ul>
+					<li>Enter current password for root (enter for none): 問你目前的 root 密碼，現在沒有所以直接敲下 enter</li>
+					<li>Set root password? [Y/n]: 問你要不要改密碼，此處輸入 y，接著會請你輸入一次並確認一次</li>
+					<li>Remove anonymous users? [Y/n]: 問你是否移除訪客使用者，此處輸入 y 移除</li>
+					<li>Disallow root login remotely? [Y/n]: 問你是否只允許從本機登入，此處輸入 y</li>
+					<li>Remove test database and access to it? [Y/n]: 問你是否移除測試用的資料庫，此處輸入 y</li>
+					<li>Reload privilege tables now? [Y/n]: 問你是否重新載入相關資料表，讓設定立即生效，，此處輸入 y</li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+	<li>安裝 php: 「sudo apt install php php-mysql php-gd php-cli」</li>
+	<li>安裝 phpMyAdmin: 「sudo apt-get install phpmyadmin」
+		<ul>
+			<li>要你選擇用來執行 phpMyAdmin 的網頁伺服器時，請選 apache2：按下空白鍵確認"apache2"前方有星號後，再按 enter。</li>
+			<li>問你是否執行 dbconfig-common 的相關設定時，請選 yes，接著會要你輸入帳號密碼。</li>
+		</ul>
+	</li>
+</ul>
+
+<p>再來是設定部分：</p>
+<ul>
+	<li>設定 Apace2 相關
+		<ul>
+			<li>修改使用者家目錄下的網頁用資料夾名稱: 「sudo vim /etc/apache2/mods-available/userdir.conf」
+				<ul>
+					<li>該資料夾預設名稱是 public_html，你可以修改成喜好的名稱，例如 WWW</li>
+					<li>共兩處需修改</li>
+				</ul>
+			</li>
+			<li>讓一般使用者可以利用家目錄下的網頁資料夾: 「sudo a2enmod userdir」</li>
+			<li>設定完後重新啟動 Apache: 「sudo systemctl restart apache2」</li>
+			<li>若要於建立使用者時，自動增加網頁資料夾目錄: 「sudo mkdir /etc/skel/你要的名稱」
+				<ul>
+					<li>/etc/skel為新建使用者創造家目錄時之模版目錄</li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+
+	<li>設定 phpMyAdmin 相關
+		<ul>
+			<li>修改 phpMyAdmin 連結路徑:	「sudo vim /etc/apache2/conf-available/phpmyadmin.conf」 (Apache 2.4 版)
+				<ul>
+					<li>在最上面增加一行: Alias /yourNewPath /usr/share/phpmyadmin</li>
+					<li>修改完後可能需要重啟 Apache</li>
+				</ul>
+			</li>
+			<li>修改 root 登入問題：由於 root 已不允許從 web 登入，故需用「sudo mysql -u root -p」進入 MariaDB 指令介面後，執行如下操作
+				<pre class="brush: sql">CREATE USER '你想要的帳號'@'localhost' IDENTIFIED BY '你想要的密碼';
+GRANT ALL PRIVILEGES ON *.* TO '你剛才輸入的帳號'@'localhost' WITH GRANT OPTION;
+FLUSH PRIVILEGES;</pre><br>
+				<ul>
+					<li>修改完後，請執行「sudo rm ~/.mysql_history」刪除剛才的指令紀錄。</li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+</ul>
+
+<p>接下來，如果把 hello.php 範例放到你的家目錄下的 public_html (或你另外修改的)資料夾，
+則也可以經由 http://主機名稱/~使用者名稱/hello.php 看到結果。</p>
+<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?phpecho &quot;Hello World!!&quot;?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+
+</blockquote>
+</body></html>
