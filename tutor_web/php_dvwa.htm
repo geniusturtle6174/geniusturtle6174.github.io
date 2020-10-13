@@ -25,7 +25,7 @@ Damn Vulnerable Web App (DVWA) 是一個基於 PHP 和 MySQL 實作的 web 應�
 </p>
 
 <p>
-若要安裝 DVWA，請到 <a href="http://www.dvwa.co.uk/">http://www.dvwa.co.uk/</a>，下載後解壓縮，並放到網頁伺服器可讀取的目錄下。接著，我們要將 config 資料夾下的 config.inc.php.dist 複製為 config.inc.php，並修改其中的資料庫帳密；裡面預設使用 root，你也可以(或者必須，依系統而定)新增一個專門的使用者帳號來測試。上述設定完成後，請用瀏覽器連線到 setup.php 進行安裝前的設定的確認，若有出現紅色提示，代表你的伺服器設定可能無法測試某些安全問題，以下範例將假設 allow_url_fopen 和 allow_url_include 為 off。若設定上沒有問題，就可以按下"Create / Reset Database"，讓程式自動幫你設定好測試用的資料庫。
+若要安裝 DVWA，請到 <a href="http://www.dvwa.co.uk/">http://www.dvwa.co.uk/</a>，下載後解壓縮，並放到網頁伺服器可讀取的目錄下。接著，我們要將 config 資料夾下的 config.inc.php.dist 複製為 config.inc.php，並修改其中的資料庫帳密；裡面預設使用 root，你也可以(或者必須，依系統而定)新增一個專門的使用者帳號來測試。上述設定完成後，請用瀏覽器連線到 setup.php 進行安裝前的設定的確認，若有出現紅色提示，代表你的伺服器缺少某些東西，或者設定比較安全，從而可能無法測試某些安全問題(以下範例將假設 allow_url_fopen 和 allow_url_include 為 off)。若設定上沒有問題，就可以按下"Create / Reset Database"，讓程式自動幫你設定好測試用的資料庫。
 </p>
 
 <p>
@@ -121,7 +121,7 @@ $file = str_replace( array( &quot;../&quot;, &quot;..\&quot;&quot; ), &quot;&quo
 
 <hr>
 
-<p>File Upload 的原始碼在 vulnerabilities/upload/source，範例希望做的是上傳圖片檔，上傳後的儲存位置在 hackable/uploads。Low 層級沒有任何防禦，可以任意上傳 php 檔案，如果再搭配前面的 File Inclusion，則即使上傳後的位置不在網頁伺服器可讀取的範圍內，也可以經由 include 而被當作 php 執行。</p>
+<p>File Upload 的原始碼在 vulnerabilities/upload/source，範例中的功能是上傳圖片檔，上傳後的儲存位置在 hackable/uploads。Low 層級沒有任何防禦，可以任意上傳 php 檔案，如果再搭配前面的 File Inclusion，則即使上傳後的位置不在網頁伺服器可讀取的範圍內，也可以經由 include 而被當作 php 執行。</p>
 
 <p>Medium 層級則是使用 MIME type 來驗證，如下：</p>
 

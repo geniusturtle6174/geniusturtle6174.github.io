@@ -19,21 +19,21 @@
 <blockquote>
 
 <p>
-一般的 HTML 標籤，是為了呈現資訊，讓使用者瀏覽；但是透過表單，可以讓使用者與伺服器進行互動。由於本教材內容仍處於 HTML 的階段，所以這裡會先介紹表單的外觀。有關於如何傳送資料讓伺服器端的方法，主要是藉由相關的屬性，負責指定送出方法和送達對象等等，細節會在往後介紹。
+一般的 HTML 標籤，是為了呈現資訊，讓使用者瀏覽；但是透過表單，可以讓使用者與伺服器進行互動。由於本篇內容仍處於 HTML 的階段，所以這裡會先介紹表單的外觀。有關於如何傳送資料讓伺服器端的方法，主要是藉由相關的屬性，負責指定送出方法和送達對象等等，細節會在往後介紹。
 </p>
 
 <p>
 表單的輸入框和按鈕，主要透過 input 標籤的不同 type 來變化，例如 type 設為 reset 時，可將表單內容恢復為預設值；其 value 屬性，則用來指定輸入框的預設內容或按鈕的顯示文字；name 屬性則主要讓表單的接收方知道是哪個按鈕或輸入框的資料。另外，type 設為 image 時，則可用圖片製作送出按鈕(此處未展示)；而若利用 button 標籤，則可製作出任意的按鈕。以下是表單當中，關於輸入框和按鈕的範例：</p>
 <pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;title&gt;標題在這裡&lt;/title&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ffffcc&quot;&gt;&lt;form&gt;	姓名：&lt;input type=&quot;text&quot; name=&quot;a&quot; value=&quot;王小龜&quot; size=&quot;20&quot; maxlength=&quot;10&quot;&gt;&lt;br&gt;&lt;br&gt;	密碼：&lt;input type=&quot;password&quot; name=&quot;b&quot; size=&quot;20&quot; maxlength=&quot;10&quot;&gt;&lt;br&gt;&lt;br&gt;	內容：&lt;br&gt;&lt;textarea rows=&quot;10&quot; cols=&quot;20&quot;&gt;請在此輸入內容&lt;/textarea&gt;&lt;/br&gt;&lt;br&gt;	&lt;button type=&quot;button&quot; name=&quot;c&quot;&gt;&lt;img src=&quot;../pics/alan.jpg&quot; width=&quot;50&quot;&gt;&lt;br&gt;來戳我~&lt;/button&gt;	&lt;input type=&quot;button&quot; name=&quot;d&quot; value=&quot;這是一般按鈕&quot;&gt;&lt;br&gt;	&lt;input type=&quot;submit&quot; name=&quot;e&quot; value=&quot;這是送出按鈕&quot;&gt;	&lt;input type=&quot;reset&quot;  name=&quot;f&quot; value=&quot;這是清除按鈕&quot;&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-
+<br>
 <p>
-再來是關於選單的範例。其中，為了讓接收端知道是哪個項目被選取，所以請加上 value 屬性。label 籤則可讓使用者在點選到該文字而非選項鈕本身時，也可以進行選擇，不過要注意 id 必須正確對應，否則會產生錯亂的效果。另外，還可以透過 optgroup 標籤，將下拉式選單(select)的選項進行群組化；而若將下拉式選單加上 size 屬性，則可顯示成"列示方塊"。
+再來是關於選單的範例。其中，為了讓往後將表單傳送至伺服器時，讓伺服器端知道是哪個項目被選取，所以會需要 value 屬性。label 標籤則可讓使用者在點選到該文字而非選項鈕本身時，也可以進行選擇，不過要注意 id 必須正確對應，否則會產生錯亂的效果。另外，還可以透過 optgroup 標籤，將下拉式選單(select)的選項進行群組化；而若將下拉式選單加上 size 屬性，則可顯示成"列示方塊"。
 </p>
 <pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;title&gt;標題在這裡&lt;/title&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ffffcc&quot;&gt;&lt;form&gt;	你覺得如何：	&lt;input type=&quot;radio&quot; name=&quot;test&quot; value=&quot;選項a&quot; id=&quot;a&quot;&gt;&lt;label for=&quot;a&quot;&gt;這是選項a&lt;/label&gt;	&lt;input type=&quot;radio&quot; name=&quot;test&quot; value=&quot;選項b&quot; id=&quot;b&quot; checked&gt;&lt;label for=&quot;b&quot;&gt;這是選項b&lt;/label&gt;	&lt;br&gt;&lt;br&gt;		單選方塊是靠 name 屬性來分組：	&lt;input type=&quot;radio&quot; name=&quot;test2&quot; value=&quot;選項c&quot; id=&quot;c&quot;&gt;&lt;label for=&quot;c&quot;&gt;這是選項c&lt;/label&gt;	&lt;input type=&quot;radio&quot; name=&quot;test2&quot; value=&quot;選項d&quot; id=&quot;d&quot; checked&gt;&lt;label for=&quot;d&quot;&gt;這是選項d&lt;/label&gt;	&lt;br&gt;&lt;br&gt;		多選方塊：	&lt;input type=&quot;checkbox&quot; name=&quot;test3&quot; value=&quot;x&quot; id=&quot;x&quot; &gt;&lt;label for=&quot;x&quot;&gt;這是選項x&lt;/label&gt;	&lt;input type=&quot;checkbox&quot; name=&quot;test3&quot; value=&quot;y&quot; id=&quot;y&quot; checked&gt;&lt;label for=&quot;y&quot;&gt;這是選項y&lt;/label&gt;	&lt;input type=&quot;checkbox&quot; name=&quot;test3&quot; value=&quot;z&quot; id=&quot;z&quot; checked&gt;&lt;label for=&quot;z&quot;&gt;這是選項z&lt;/label&gt;	&lt;br&gt;&lt;br&gt;		下拉式選單：	&lt;select&gt;		&lt;option value=&quot;16&quot;&gt;16~20&lt;/option&gt;		&lt;option value=&quot;21&quot;&gt;21~25&lt;/option&gt;		&lt;option value=&quot;26&quot; selected&gt;26~30&lt;/option&gt;		&lt;option value=&quot;31&quot;&gt;31~35&lt;/option&gt;	&lt;/select&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-
+<br>
 <p>在 HTML 5 當中，新增了一些 type 的性質與屬性，以下介紹其中一些：</p>
 <pre class="brush: html">﻿&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;	&lt;title&gt;標題在這裡&lt;/title&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ffffcc&quot;&gt;&lt;form&gt;	請選擇數字：	&lt;input type=&quot;range&quot; min=&quot;0&quot; max=&quot;10&quot; step=&quot;0.5&quot; value=&quot;2.5&quot;&gt;	&lt;br&gt;&lt;br&gt;		請選擇顏色：	&lt;input type=&quot;color&quot;&gt;	&lt;br&gt;&lt;br&gt;		請選擇日期：	&lt;input type=&quot;date&quot; min=&quot;2013-02-19&quot; max=&quot;2013-06-18&quot; step=&quot;7&quot;&gt;	&lt;br&gt;&lt;br&gt;		進度條：	&lt;progress value=&quot;20&quot; max=&quot;100&quot;&gt;&lt;/progress&gt;	&lt;br&gt;&lt;br&gt;		e-mail：	&lt;input type=&quot;email&quot; required multiple&gt;	&lt;br&gt;&lt;br&gt;		近來可好？：	&lt;input type=&quot;text&quot; placeholder=&quot;近來可好？&quot;&gt;	&lt;br&gt;&lt;br&gt;		禁止自動完成：	&lt;input type=&quot;text&quot; autocomplete=&quot;off&quot;&gt;	&lt;br&gt;&lt;br&gt;		list 屬性與 datalist：	&lt;input type=&quot;text&quot; placeholder=&quot;近來可好？&quot; list=&quot;isGood&quot;&gt;	&lt;datalist id=&quot;isGood&quot;&gt;		&lt;option value=&quot;好&quot; label=&quot;:)&quot;&gt;		&lt;option value=&quot;普通&quot; label=&quot;:|&quot;&gt;		&lt;option value=&quot;不好&quot; label=&quot;:(&quot;&gt;	&lt;/datalist&gt;	&lt;br&gt;&lt;br&gt;		&lt;input type=&quot;submit&quot;&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-
+<br>
 </blockquote>
 
 </body>

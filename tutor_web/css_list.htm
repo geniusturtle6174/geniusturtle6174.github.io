@@ -21,10 +21,10 @@
 
 <p>使用「list-style-type」，可以將清單的編號方式做一些改變。以下介紹其中一些可用的type：</p>
 <pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;ul style=&quot;list-style-type:circle&quot;&gt;	&lt;li&gt;disc 是一般看到的預設值&lt;/li&gt;	&lt;li&gt;本範例是 circle&lt;/li&gt;	&lt;li&gt;還有 square 可以用&lt;/li&gt;&lt;/ul&gt;&lt;ol style=&quot;list-style-type:upper-roman&quot;&gt;	&lt;li&gt;一般的有序清單會用阿拉伯數字來編號&lt;/li&gt;	&lt;li&gt;本範例使用羅馬數字&lt;/li&gt;	&lt;li&gt;詳細的列表，請直接參考 &lt;a href=&quot;http://www.w3schools.com/cssref/pr_list-style-type.asp&quot;&gt;w3schools&lt;/a&gt;&lt;/li&gt;&lt;/ol&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-
+<br>
 <p>也可以用「list-style-image」，來將圖片設定為項目符號：</p>
 <pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;ul style=&quot;list-style-image:url(../pics/star.gif)&quot;&gt;	&lt;li&gt;這是測試&lt;/li&gt;	&lt;li&gt;這是測試&lt;/li&gt;	&lt;li&gt;這是測試&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-
+<br>
 <p>透過前面介紹的 display、hover、float 等選擇器和屬性的組合，還可以做出更有趣的效果，例如清大各系首頁的這個選單：</p>
 
 <center><img src="pics/cs_menu.png"></center>
@@ -33,18 +33,19 @@
 
 <p>首先，這是選單的基礎架構：</p>
 <pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;ul class=&quot;menu&quot;&gt;	&lt;li&gt;本系介紹		&lt;ul&gt;			&lt;li&gt;一二三四&lt;/li&gt;			&lt;li&gt;五六七八&lt;/li&gt;		&lt;/ul&gt;	&lt;/li&gt;	&lt;li&gt;系上成員		&lt;ul&gt;			&lt;li&gt;教授成員&lt;/li&gt;			&lt;li&gt;行政人員&lt;/li&gt;		&lt;/ul&gt;	&lt;/li&gt;	&lt;li&gt;研究領域		&lt;ul&gt;			&lt;li&gt;實驗室&lt;/li&gt;			&lt;li&gt;影音網&lt;/li&gt;		&lt;/ul&gt;	&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-
+<br>
 <p>滑鼠經過時，將下一層選單呈現：</p>
 <pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		.menu li ul {display: none}		.menu li:hover &gt; ul {display: block}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;ul class=&quot;menu&quot;&gt;	&lt;li&gt;本系介紹		&lt;ul&gt;			&lt;li&gt;一二三四&lt;/li&gt;			&lt;li&gt;五六七八&lt;/li&gt;		&lt;/ul&gt;	&lt;/li&gt;	&lt;li&gt;系上成員		&lt;ul&gt;			&lt;li&gt;教授成員&lt;/li&gt;			&lt;li&gt;行政人員&lt;/li&gt;		&lt;/ul&gt;	&lt;/li&gt;	&lt;li&gt;研究領域		&lt;ul&gt;			&lt;li&gt;實驗室&lt;/li&gt;			&lt;li&gt;影音網&lt;/li&gt;		&lt;/ul&gt;	&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-
-<p>接著，我們要修正下層選單展開時，上層選單會移動的問題。因此，可以把 li 的定位設定為 relative，並使其包住的下層 ul 在呈現時為 absolute，以讓第二層選單出現時，不會影響到第一層選單的動作(提示：各位可以嘗試看看，為什麼第一層用 relative 而不用 absolute)：</p>
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		.menu li {			position: relative;		}		.menu li ul {display: none}		.menu li:hover &gt; ul {			display:block;			position: absolute;		}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;ul class=&quot;menu&quot;&gt;	&lt;li&gt;本系介紹		&lt;ul&gt;			&lt;li&gt;一二三四&lt;/li&gt;			&lt;li&gt;五六七八&lt;/li&gt;		&lt;/ul&gt;	&lt;/li&gt;	&lt;li&gt;系上成員		&lt;ul&gt;			&lt;li&gt;教授成員&lt;/li&gt;			&lt;li&gt;行政人員&lt;/li&gt;		&lt;/ul&gt;	&lt;/li&gt;	&lt;li&gt;研究領域		&lt;ul&gt;			&lt;li&gt;實驗室&lt;/li&gt;			&lt;li&gt;影音網&lt;/li&gt;		&lt;/ul&gt;	&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-
+<br>
+<p>接著，我們要修正下層選單展開時，上層選單會移動的問題。因此，可以把 li 的定位設定為 relative，並使其包住的下層 ul 在顯示出來時設為 absolute，以讓第二層選單出現時，不會影響到第一層選單的動作(提示：各位可以嘗試看看，為什麼第一層用 relative 而不用 absolute)：</p>
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		.menu li {			position: relative; /* 這行也是新加的 */		}		.menu li ul {display: none}		.menu li:hover &gt; ul {			display:block;			position: absolute; /* 這行也是新加的 */		}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;ul class=&quot;menu&quot;&gt;	&lt;li&gt;本系介紹		&lt;ul&gt;			&lt;li&gt;一二三四&lt;/li&gt;			&lt;li&gt;五六七八&lt;/li&gt;		&lt;/ul&gt;	&lt;/li&gt;	&lt;li&gt;系上成員		&lt;ul&gt;			&lt;li&gt;教授成員&lt;/li&gt;			&lt;li&gt;行政人員&lt;/li&gt;		&lt;/ul&gt;	&lt;/li&gt;	&lt;li&gt;研究領域		&lt;ul&gt;			&lt;li&gt;實驗室&lt;/li&gt;			&lt;li&gt;影音網&lt;/li&gt;		&lt;/ul&gt;	&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
 <p>接著，把位置做一些調整，以及一些後續處理。並且，多階層的選單也可以依此類推(提示：為什麼要自行指定寬度和邊距？可以利用 Chrome 的開發者工具快速的觀察看看)：</p>
 <pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		.menu li {			position: relative;			width: 70px;			list-style:none;		}		.menu li ul {display: none}		.menu li:hover &gt; ul {			display:block;			position: absolute;			left: 100%;			top: 0;			width: 70px;			padding:0;		}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;ul class=&quot;menu&quot;&gt;	&lt;li&gt;本系介紹		&lt;ul&gt;			&lt;li&gt;一二三四&lt;/li&gt;			&lt;li&gt;五六七八&lt;/li&gt;		&lt;/ul&gt;	&lt;/li&gt;	&lt;li&gt;系上成員		&lt;ul&gt;			&lt;li&gt;教授成員				&lt;ul&gt;					&lt;li&gt;第一位&lt;/li&gt;					&lt;li&gt;第二位&lt;/li&gt;					&lt;li&gt;第三位&lt;/li&gt;				&lt;/ul&gt;			&lt;/li&gt;			&lt;li&gt;行政人員&lt;/li&gt;		&lt;/ul&gt;	&lt;/li&gt;	&lt;li&gt;研究領域		&lt;ul&gt;			&lt;li&gt;實驗室				&lt;ul&gt;					&lt;li&gt;第一間&lt;/li&gt;					&lt;li&gt;第二間&lt;/li&gt;					&lt;li&gt;第三間&lt;/li&gt;				&lt;/ul&gt;			&lt;/li&gt;			&lt;li&gt;影音網&lt;/li&gt;		&lt;/ul&gt;	&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-
-<p>如果希望第一層選單是橫的，則需要利用 float:left，並且記得將第二層選單設計為向下展開，應該就可以達成效果。</p>
-
+<br>
+<p>如果希望第一層選單是橫的，則需要利用 float:left，並且記得將第二層選單設計為向下展開，就可以達成效果：</p>
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		.menu li {			position: relative;			width: 70px;			list-style:none;			float: left; /* 這裡 */		}		.menu li ul {display: none}		.menu li:hover &gt; ul {			display:block;			position: absolute;			left: 100%;			top: 0;			width: 70px;			padding:0;		}		/* 多加這一段，只有三個地方跟前面不同 */		/* 而且要放在後面，不能放在前面(why) */		.menu &gt; li:hover &gt; ul {			display:block;			position: absolute;			top: 100%;			left: 0;			width: 70px;			padding:0;		}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;ul class=&quot;menu&quot;&gt;	&lt;li&gt;本系介紹		&lt;ul&gt;			&lt;li&gt;一二三四&lt;/li&gt;			&lt;li&gt;五六七八&lt;/li&gt;		&lt;/ul&gt;	&lt;/li&gt;	&lt;li&gt;系上成員		&lt;ul&gt;			&lt;li&gt;教授成員				&lt;ul&gt;					&lt;li&gt;第一位&lt;/li&gt;					&lt;li&gt;第二位&lt;/li&gt;					&lt;li&gt;第三位&lt;/li&gt;				&lt;/ul&gt;			&lt;/li&gt;			&lt;li&gt;行政人員&lt;/li&gt;		&lt;/ul&gt;	&lt;/li&gt;	&lt;li&gt;研究領域		&lt;ul&gt;			&lt;li&gt;實驗室				&lt;ul&gt;					&lt;li&gt;第一間&lt;/li&gt;					&lt;li&gt;第二間&lt;/li&gt;					&lt;li&gt;第三間&lt;/li&gt;				&lt;/ul&gt;			&lt;/li&gt;			&lt;li&gt;影音網&lt;/li&gt;		&lt;/ul&gt;	&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
 </blockquote>
 
 </body></html>

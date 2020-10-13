@@ -1,0 +1,42 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushMine.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>本篇將介紹如何透過 <a href="https://leafletjs.com/">Leaflet</a> 在網頁上呈現 <a href="https://www.openstreetmap.org/">OpenStreetMap</a> 的地圖，以下內容主要由 Leaflet 官方文件修改而來。</p>
+
+<p>首先是一個基礎範例，其中的 div 必須給予一個確實的高度：</p>
+<pre class="brush: htmljs">﻿&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;	&lt;!--載入 API--&gt;	&lt;link rel=&quot;stylesheet&quot; href=&quot;https://unpkg.com/leaflet@1.6.0/dist/leaflet.css&quot;&gt;	&lt;script src=&quot;https://unpkg.com/leaflet@1.6.0/dist/leaflet.js&quot;&gt;&lt;/script&gt;	&lt;script type=&quot;text/javascript&quot;&gt;		function initialize() {			var mymap = L.map('mapid').setView([24.99, 121.57], 15);			L.tileLayer(				'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',				{					minZoom: 8, 					maxZoom: 16				}			).addTo(mymap);		}	&lt;/script&gt;&lt;/head&gt;&lt;body onload=&quot;initialize()&quot;&gt;&lt;div id=&quot;mapid&quot; style=&quot;height:500px&quot;&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>如果要利用 IP 自動抓出概略的地理位置，可以使用 HTML5 的 「navigator.geolocation.getCurrentPosition」，就會將位置參數帶給 initialize 函式，如下：</p>
+<pre class="brush: htmljs">﻿&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;	&lt;!--載入 API--&gt;	&lt;link rel=&quot;stylesheet&quot; href=&quot;https://unpkg.com/leaflet@1.6.0/dist/leaflet.css&quot;&gt;	&lt;script src=&quot;https://unpkg.com/leaflet@1.6.0/dist/leaflet.js&quot;&gt;&lt;/script&gt;		&lt;script type=&quot;text/javascript&quot;&gt;		function initialize(position) {			var mymap = L.map('mapid').setView(				[position.coords.latitude, position.coords.longitude], 15			);			L.tileLayer(				'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',				{					minZoom: 8, 					maxZoom: 16				}			).addTo(mymap);		}	&lt;/script&gt;&lt;/head&gt;&lt;body onload=&quot;navigator.geolocation.getCurrentPosition(initialize)&quot;&gt;&lt;div id=&quot;mapid&quot; style=&quot;height:500px&quot;&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>藉由 marker，可以在圖上進行標記，甚至可以自訂標記的圖案。範例中，一開始已存在一個 marker，按鈕後，再將其他 markers 加到地圖上：</p>
+<pre class="brush: htmljs">﻿&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;	&lt;!--載入 API--&gt;	&lt;link rel=&quot;stylesheet&quot; href=&quot;https://unpkg.com/leaflet@1.6.0/dist/leaflet.css&quot;&gt;	&lt;script src=&quot;https://unpkg.com/leaflet@1.6.0/dist/leaflet.js&quot;&gt;&lt;/script&gt;		&lt;script type=&quot;text/javascript&quot;&gt;		var mymap;		var neighborhoods = [			[24.983, 121.3], // lamigo			[23+8/60, 120+17/60], // lion			[22+38/60, 120+17/60], // rhino		];		var myIcon = L.icon({			iconUrl: '../pics/elephant.png'		});		function initialize() {			mymap = L.map('mapid').setView([24.8, 120.97], 7);			L.tileLayer(				'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',				{					minZoom: 0, 					maxZoom: 16				}			).addTo(mymap);			var marker = L.marker(				[25.05, 121.5],				{					title: '天龍國!!'				}			).addTo(mymap);		}				function addMarkers(){			for(var i=0;i&lt;neighborhoods.length;i++){				var marker = L.marker(					neighborhoods[i],					{						icon: myIcon,						title: '南部!!',						draggable: false					}				).addTo(mymap);			}		}	&lt;/script&gt;&lt;/head&gt;&lt;body onload=&quot;initialize()&quot;&gt;&lt;div id=&quot;mapid&quot; style=&quot;height:500px&quot;&gt;&lt;/div&gt;&lt;input type=&quot;button&quot; value=&quot;新增 markers&quot; onclick=&quot;addMarkers()&quot;&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>我們也可以監聽在圖上發生的事件。此範例中，你每在地圖上按滑鼠左鍵，就會新增一個 marker 在按下左鍵的位置；如果你希望 marker 跟著滑鼠按的位置跑，可以改成宣告一個空的 marker 在全域，並在事件發生時對它呼叫 setLatLng 方法：</p>
+<pre class="brush: htmljs">﻿&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;	&lt;!--載入 API--&gt;	&lt;link rel=&quot;stylesheet&quot; href=&quot;https://unpkg.com/leaflet@1.6.0/dist/leaflet.css&quot;&gt;	&lt;script src=&quot;https://unpkg.com/leaflet@1.6.0/dist/leaflet.js&quot;&gt;&lt;/script&gt;		&lt;script type=&quot;text/javascript&quot;&gt;		var mymap;		function initialize() {			mymap = L.map('mapid').setView([24.8, 120.97], 9);			L.tileLayer(				'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',				{					minZoom: 0, 					maxZoom: 16				}			).addTo(mymap);			mymap.on('click', onMapClick);		}		function onMapClick(e) {			var marker = L.marker(e.latlng).addTo(mymap);		}	&lt;/script&gt;&lt;/head&gt;&lt;body onload=&quot;initialize()&quot;&gt;&lt;div id=&quot;mapid&quot; style=&quot;height:500px&quot;&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>由於 Leaftlet 是一個講究輕量化的工具，其它比較花俏的功能，例如 Geocoding (由地址搜尋位置)、Routing (行程規劃)等等，都放在外掛的功能。以下介紹也屬於其中的 marker cluster：</p>
+<pre class="brush: htmljs">﻿&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;	&lt;link rel=&quot;stylesheet&quot; href=&quot;https://unpkg.com/leaflet@1.6.0/dist/leaflet.css&quot;&gt;	&lt;script src=&quot;https://unpkg.com/leaflet@1.6.0/dist/leaflet.js&quot;&gt;&lt;/script&gt;	&lt;link rel=&quot;stylesheet&quot; href=&quot;https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css&quot;&gt;	&lt;link rel=&quot;stylesheet&quot; href=&quot;https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css&quot;&gt;	&lt;script src=&quot;https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js&quot;&gt;&lt;/script&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;gmap_ipeen_part.js&quot;&gt;&lt;/script&gt;		&lt;script type=&quot;text/javascript&quot;&gt;		var mymap;		var markers = L.markerClusterGroup();		function initialize() {			mymap = L.map('mapid').setView([24.8, 120.97], 9);			L.tileLayer(				'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',				{					minZoom: 0, 					maxZoom: 16				}			).addTo(mymap);			for(var idx in ipeen_hsinchu){				if(ipeen_hsinchu[idx]['lat']==undefined){					continue;				}				var marker = L.marker(					[ipeen_hsinchu[idx]['lat'], ipeen_hsinchu[idx]['lng']]				);				markers.addLayer(marker);			}			mymap.addLayer(markers);		}	&lt;/script&gt;&lt;/head&gt;&lt;body onload=&quot;initialize()&quot;&gt;&lt;div id=&quot;mapid&quot; style=&quot;height:500px&quot;&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>更細節的參數和其他的功能等等，可以參考官方網站，此處不再贅述。另外若有興趣參考地圖相關的應用，也可以看看網路上的知名範例，例如：<a href="http://uniform.wingzero.tw/">制服地圖</a>、<a href="http://www.oshimaland.co.jp/">大島てる</a>等等。</p>
+
+</blockquote>
+
+</body></html>

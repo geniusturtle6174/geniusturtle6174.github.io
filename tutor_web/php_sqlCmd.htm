@@ -235,6 +235,9 @@ SELECT * FROM songrank ORDER BY singer_name WHERE this_rank &lt; 50</pre><br>
 <p>當然，若以上面的範例來說，你也可以直接寫成如下：</p>
 <pre class="brush: sql">SELECT COUNT(DISTINCT language) FROM song</pre><br>
 
+<p>如果子查詢的欄位只有一個，則也可以作為 where 的條件：</p>
+<pre class="brush: sql">SELECT name, type from singer WHERE id in (SELECT singer_id from song WHERE language = '日語')</pre><br>
+
 <p>「UNION」可以將兩個 SQL 指令的結果合併起來，唯一的限制是欄位的資料種類要相同：</p>
 <pre class="brush: sql">SELECT id, singer_name FROM songrank
 UNION

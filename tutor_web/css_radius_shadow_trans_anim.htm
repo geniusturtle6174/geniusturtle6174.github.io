@@ -31,7 +31,7 @@
 
 <p>以下是一個同時把四邊都變成圓角的範例。其中，由於圓角不允許重疊，所以若將半徑設的太大，會被瀏覽器解析成圓形：</p>
 <pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		#test1{width:80%; height:300px; border: 10px solid;			   border-radius: 15px;}		#test2{width:100px; height:100px; border: 10px solid;			   border-radius: 123px;}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;div id=&quot;test1&quot;&gt;&lt;/div&gt;&lt;br/&gt;&lt;div id=&quot;test2&quot;&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-
+<br>
 <p>「box-shadow」屬性，可以設計出陰影，它包含了以下六個參數：</p>
 <ol>
 	<li>陰影類型：預設是外陰影效果，設定為「inset」則為內陰影</li>
@@ -41,12 +41,12 @@
 	<li>大小</li>
 	<li>顏色</li>
 </ol>
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		img{vertical-align:top}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;p&gt;實線陰影效果：&lt;img src=&quot;../pics/06.gif&quot; style=&quot;box-shadow: 5px 5px;&quot;&gt;&lt;/p&gt;&lt;p&gt;光暈陰影效果：&lt;img src=&quot;../pics/06.gif&quot; style=&quot;box-shadow: 5px 5px 10px;&quot;&gt;&lt;/p&gt;&lt;p&gt;陰影大小調整：&lt;img src=&quot;../pics/06.gif&quot; style=&quot;box-shadow: 5px 5px 10px 15px;&quot;&gt;&lt;/p&gt;&lt;p&gt;改變陰影顏色：&lt;img src=&quot;../pics/06.gif&quot; style=&quot;box-shadow: 5px 5px 10px #ff9999;&quot;&gt;&lt;/p&gt;&lt;p&gt;設置多組陰影(以逗點區隔，先寫的在最頂層)：&lt;img src=&quot;../pics/06.gif&quot;	 style=&quot;box-shadow: 0px 0px 5px  5px #ff9999,						0px 0px 5px 10px #99ff99,						0px 0px 5px 15px #9999ff;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		img{vertical-align:top}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;p&gt;實線陰影效果，水平垂直皆位移 5px：&lt;img src=&quot;../pics/06.gif&quot; style=&quot;box-shadow: 5px 5px;&quot;&gt;&lt;/p&gt;&lt;p&gt;光暈陰影效果，模糊半徑 10px：&lt;img src=&quot;../pics/06.gif&quot; style=&quot;box-shadow: 5px 5px 10px;&quot;&gt;&lt;/p&gt;&lt;p&gt;陰影大小調整為 15 px：&lt;img src=&quot;../pics/06.gif&quot; style=&quot;box-shadow: 5px 5px 10px 15px;&quot;&gt;&lt;/p&gt;&lt;p&gt;改變陰影顏色：&lt;img src=&quot;../pics/06.gif&quot; style=&quot;box-shadow: 5px 5px 10px #ff9999;&quot;&gt;&lt;/p&gt;&lt;p&gt;設置多組陰影(以逗點區隔，先寫的在最頂層)：&lt;img src=&quot;../pics/06.gif&quot;	 style=&quot;box-shadow: 0px 0px 5px  5px #ff9999,						0px 0px 5px 10px #99ff99,						0px 0px 5px 15px #9999ff;&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
 <p>
-CSS 在 2D 上的轉變，是透過「transform」屬性來進行。不過目前(2013/02)，各家瀏覽器仍是以特有屬性的方式來支援。於值的設定方面，是透過一些轉變函數來進行，例如旋轉、平移、縮放等等。請參考以下範例：</p>
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		img{vertical-align:top;border: 1px solid;}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;p&gt;原圖：&lt;img src=&quot;../pics/06.gif&quot;&gt;&lt;/p&gt;&lt;p&gt;translate (平移)：&lt;img src=&quot;../pics/06.gif&quot; style=&quot;	transform:translate(-25px,-25px);	-webkit-transform:translate(-25px,-25px);	-ms-transform:translate(-25px,-25px);	-o-transform:translate(-25px,-25px);	-moz-transform:translate(-25px,-25px);&quot;&gt;&lt;/p&gt;&lt;p&gt;rotate (旋轉)：&lt;img src=&quot;../pics/alan.jpg&quot; style=&quot;	transform:rotate(30deg);	-webkit-transform:rotate(30deg);&quot;&gt;&lt;/p&gt;&lt;p&gt;scale (縮放)：&lt;img src=&quot;../pics/06.gif&quot; style=&quot;	transform:scale(3,0.5);	-webkit-transform:scale(3,0.5);&quot;&gt;&lt;/p&gt;&lt;p&gt;skewX (扭曲X方向)：&lt;img src=&quot;../pics/alan.jpg&quot; style=&quot;	transform:skewX(30deg);	-webkit-transform:skewX(30deg);&quot;&gt;&lt;/p&gt;&lt;p&gt;skewY (扭曲Y方向)：&lt;img src=&quot;../pics/alan.jpg&quot; style=&quot;	transform:skewY(30deg);	-webkit-transform:skewY(30deg);&quot;&gt;&lt;/p&gt;&lt;p&gt;skew (兩個方向都扭曲)：&lt;img src=&quot;../pics/alan.jpg&quot; style=&quot;	transform:skew(30deg,20deg);	-webkit-transform:skew(30deg,20deg);&quot;&gt;&lt;/p&gt;&lt;p&gt;matrix (矩陣，結合以上轉變)：&lt;img src=&quot;../pics/alan.jpg&quot; style=&quot;	transform:matrix(0.5,0.866,-0.866,0.5,50,0);	-webkit-transform:matrix(0.5,0.866,-0.866,0.5,50,0);&quot;&gt;&lt;/p&gt;&lt;p&gt;也可以用原本的轉變函式結合而來：&lt;img src=&quot;../pics/alan.jpg&quot; style=&quot;	transform:translate(50px,0px) rotate(60deg);	-webkit-transform:translate(50px,0px) rotate(60deg);&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-
+CSS 在 2D 上的轉變，是透過「transform」屬性來進行。這個屬性在較早的年代(大約 2013 以前)，各家瀏覽器仍是以特有屬性的方式來支援，如以下"平移"的範例。而在值的設定方面，是透過一些轉變函數來進行，例如平移(translate)、旋轉(rotate)、縮放(scale)等等。詳細的效果請參考以下範例：</p>
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		img{vertical-align:top;border: 1px solid;}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;p&gt;原圖：&lt;img src=&quot;../pics/06.gif&quot;&gt;&lt;/p&gt;&lt;p&gt;translate (平移)：&lt;img src=&quot;../pics/06.gif&quot; style=&quot;	transform:translate(-25px,-25px);	-webkit-transform:translate(-25px,-25px);	-ms-transform:translate(-25px,-25px);	-o-transform:translate(-25px,-25px);	-moz-transform:translate(-25px,-25px);&quot;&gt;&lt;/p&gt;&lt;p&gt;rotate (旋轉)：&lt;img src=&quot;../pics/alan.jpg&quot; style=&quot;transform:rotate(30deg);&quot;&gt;&lt;/p&gt;&lt;p&gt;scale (縮放)：&lt;img src=&quot;../pics/06.gif&quot; style=&quot;transform:scale(3,0.5);&quot;&gt;&lt;/p&gt;&lt;p&gt;skewX (扭曲X方向)：&lt;img src=&quot;../pics/alan.jpg&quot; style=&quot;transform:skewX(30deg);&quot;&gt;&lt;/p&gt;&lt;p&gt;skewY (扭曲Y方向)：&lt;img src=&quot;../pics/alan.jpg&quot; style=&quot;transform:skewY(30deg);&quot;&gt;&lt;/p&gt;&lt;p&gt;skew (兩個方向都扭曲)：&lt;img src=&quot;../pics/alan.jpg&quot; style=&quot;transform:skew(30deg,20deg);&quot;&gt;&lt;/p&gt;&lt;p&gt;matrix (矩陣，結合以上轉變)：&lt;img src=&quot;../pics/alan.jpg&quot; style=&quot;transform:matrix(0.5,0.866,-0.866,0.5,50,0);&quot;&gt;&lt;/p&gt;&lt;p&gt;也可以用原本的轉變函式結合而來：&lt;img src=&quot;../pics/alan.jpg&quot; style=&quot;transform:translate(50px,0px) rotate(60deg);&quot;&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
 <p>轉變的原點，預設為物件的中心。若要改變，可透過「transform-origin」來進行，若有需要，請自行尋找細節。矩陣的六個值的對應則是如下：</p>
 <div>
 	<div style="float:left;padding-top:1.5em;"> 
@@ -81,15 +81,15 @@ CSS 在 2D 上的轉變，是透過「transform」屬性來進行。不過目前
 </ul>
 
 <p>例如以下範例，會轉換物件的背景色：</p>
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		div{width:80%; height:100px; background-color:#000;			-webkit-transition: background-color 1s linear;			-moz-transition: background-color 1s linear;			-o-transition: background-color 1s linear;}		div:hover{background-color:#fff;}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		div{width:80%; height:100px; background-color:#000;			transition: background-color 1s linear;}		div:hover{background-color:#fff;}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
 <p>改變大小，同時展示各種 transition-timing-function 的效果：</p>
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		div{width:100px; height:100px; background-color:#333;}		div:hover{width:600px;}		#d1{-webkit-transition: width 2s linear;}		#d2{-webkit-transition: width 2s ease;}		#d3{-webkit-transition: width 2s ease-in;}		#d4{-webkit-transition: width 2s ease-out;}		#d5{-webkit-transition: width 2s ease-in-out;}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;div id=&quot;d1&quot;&gt;&lt;/div&gt;&lt;div id=&quot;d2&quot;&gt;&lt;/div&gt;&lt;div id=&quot;d3&quot;&gt;&lt;/div&gt;&lt;div id=&quot;d4&quot;&gt;&lt;/div&gt;&lt;div id=&quot;d5&quot;&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		div{width:100px; height:100px; background-color:#333;}		div:hover{width:600px;}		#d1{transition: width 2s linear;}		#d2{transition: width 2s ease;}		#d3{transition: width 2s ease-in;}		#d4{transition: width 2s ease-out;}		#d5{transition: width 2s ease-in-out;}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;div id=&quot;d1&quot;&gt;&lt;/div&gt;&lt;div id=&quot;d2&quot;&gt;&lt;/div&gt;&lt;div id=&quot;d3&quot;&gt;&lt;/div&gt;&lt;div id=&quot;d4&quot;&gt;&lt;/div&gt;&lt;div id=&quot;d5&quot;&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
 <p>也可以用於改變縮放、空白等屬性，以製造出有趣的效果(如果再加上倒影等設計，就可以更像 Mac 了)：</p>
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		#bar{position:fixed; bottom:10px; width:100%; text-align:center}		img{margin: 0px;			-webkit-transition: 0.1s linear;			-webkit-transition-property: -webkit-transform margin;}		img:hover{			margin: 6px;			-webkit-transform: scale(1.5);		}			&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;div id=&quot;bar&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-
-<p>「animation」顧名思義，則是用來定義動畫。有下列參數可以調整：</p>
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		#bar{position:fixed; bottom:10px; width:100%; text-align:center}		img{margin: 0px;			transition: 0.1s linear;			transition-property: transform margin;}		img:hover{			margin: 6px;			transform: scale(1.5);		}			&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;div id=&quot;bar&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;	&lt;img src=&quot;../pics/pcman.png&quot;&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>若要定義更複雜的動作，就需要「animation」(動畫)。它有下列參數可以調整：</p>
 <ul>
 	<li>animation-name: 動畫名稱</li>
 	<li>animation-duration: 播放時間長度</li>
@@ -103,9 +103,9 @@ CSS 在 2D 上的轉變，是透過「transform」屬性來進行。不過目前
 <pre class="brush: css">@keyframes 動畫名稱{播放進度一{CSS設定} 播放進度二{CSS設定} ...}</pre><br>
 
 <p>透過物件的"賽跑"，來觀察不同 timing function 的效果：</p>
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		div{			width:20px; height:20px; background-color:#333; border-radius:100px;			position: relative;			-webkit-animation: goRun 2s infinite alternate;		}		#d1{-webkit-animation-timing-function: linear;}		#d2{-webkit-animation-timing-function: ease;}		#d3{-webkit-animation-timing-function: ease-in;}		#d4{-webkit-animation-timing-function: ease-out;}		#d5{-webkit-animation-timing-function: ease-in-out;}		@-webkit-keyframes goRun{			from{left: 0px;}			to{left: 500px;}		}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;div id=&quot;d1&quot;&gt;&lt;/div&gt;&lt;div id=&quot;d2&quot;&gt;&lt;/div&gt;&lt;div id=&quot;d3&quot;&gt;&lt;/div&gt;&lt;div id=&quot;d4&quot;&gt;&lt;/div&gt;&lt;div id=&quot;d5&quot;&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-
-<p>更可以組合ㄧ些屬性的變動，製造更複雜的效果：</p>
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		div{			width:20px; height:20px; background-color:#333; border-radius:100px;			position: relative;			animation: goRun 2s infinite alternate;		}		#d1{animation-timing-function: linear;}		#d2{animation-timing-function: ease;}		#d3{animation-timing-function: ease-in;}		#d4{animation-timing-function: ease-out;}		#d5{animation-timing-function: ease-in-out;}		@keyframes goRun{			from{left: 0px;}			to{left: 500px;}		}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;div id=&quot;d1&quot;&gt;&lt;/div&gt;&lt;div id=&quot;d2&quot;&gt;&lt;/div&gt;&lt;div id=&quot;d3&quot;&gt;&lt;/div&gt;&lt;div id=&quot;d4&quot;&gt;&lt;/div&gt;&lt;div id=&quot;d5&quot;&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>更可以組合一些屬性的變動，製造更複雜的效果：</p>
 <pre class="brush: html">&lt;style&gt;
 /* 黑色圓形的底 */
 .loading-spinner {
@@ -120,7 +120,7 @@ CSS 在 2D 上的轉變，是透過「transform」屬性來進行。不過目前
 }
 
 /* 用一個比較小的框，來輔助旋轉小球定位
- * 各位可以加個底色，觀察小球會跑到在哪裡，
+ * 各位可以加個底色，觀察小球會跑到哪裡，
  * 以及試試看拿掉的效果 */
 .main-loader {
 	position: relative;
@@ -135,7 +135,7 @@ CSS 在 2D 上的轉變，是透過「transform」屬性來進行。不過目前
 	width: 38px;
 	height: 38px;
 	opacity: 0;
-	-webkit-animation: orbit 5.5s infinite;
+	animation: orbit 5.5s infinite;
 }
 
 /* 方塊的左上角有小球 */
@@ -147,40 +147,40 @@ CSS 在 2D 上的轉變，是透過「transform」屬性來進行。不過目前
 }
 
 .main-loader #wBall_1 {
-	-webkit-animation-delay: 0s;
+	animation-delay: 0s;
 }
 
 .main-loader #wBall_2 {
-	-webkit-animation-delay: 0.24s;
+	animation-delay: 0.24s;
 }
 
 .main-loader #wBall_3 {
-	-webkit-animation-delay: 0.48s;
+	animation-delay: 0.48s;
 }
 
 .main-loader #wBall_4 {
-	-webkit-animation-delay: 0.72s;
+	animation-delay: 0.72s;
 }
 
 .main-loader #wBall_5 {
-	-webkit-animation-delay: 0.96s;
+	animation-delay: 0.96s;
 }
 
-@-webkit-keyframes orbit{ 
-	  0%{-webkit-transform:rotate(225deg); opacity:1;
-		 -webkit-animation-timing-function:ease-out;}
-	  7%{-webkit-transform:rotate(345deg);
-		 -webkit-animation-timing-function:linear;}
-	 30%{-webkit-transform:rotate(455deg);
-		 -webkit-animation-timing-function:ease-in-out;}
-	 39%{-webkit-transform:rotate(690deg);
-		 -webkit-animation-timing-function:linear; }
-	 70%{-webkit-transform:rotate(815deg); opacity:1;
-		 -webkit-animation-timing-function:ease-out;}
-	 75%{-webkit-transform:rotate(945deg);
-		 -webkit-animation-timing-function: ease-out;}
-	 76%{-webkit-transform:rotate(945deg); opacity:0;}
-	100%{-webkit-transform:rotate(945deg); opacity:0;} 
+@keyframes orbit{ 
+	  0%{transform:rotate(225deg); opacity:1;
+		 animation-timing-function:ease-out;}
+	  7%{transform:rotate(345deg);
+		 animation-timing-function:linear;}
+	 30%{transform:rotate(455deg);
+		 animation-timing-function:ease-in-out;}
+	 39%{transform:rotate(690deg);
+		 animation-timing-function:linear; }
+	 70%{transform:rotate(815deg); opacity:1;
+		 animation-timing-function:ease-out;}
+	 75%{transform:rotate(945deg);
+		 animation-timing-function: ease-out;}
+	 76%{transform:rotate(945deg); opacity:0;}
+	100%{transform:rotate(945deg); opacity:0;} 
 }
 &lt;/style&gt;
 
@@ -204,7 +204,7 @@ CSS 在 2D 上的轉變，是透過「transform」屬性來進行。不過目前
   &lt;/div&gt;
 &lt;/div&gt;
 </pre>
-
+<br>
 <p>透過這些效果，還可以製造出更加複雜的動畫。以下是一些網路上的範例或近端備份：</p>
 <ul>
 	<li>Doraemon:
@@ -238,7 +238,6 @@ CSS 在 2D 上的轉變，是透過「transform」屬性來進行。不過目前
 		animation-direction: normal;
 	}
 	@keyframes cheers{
-		/* 因為是 steps(1)，所以 keyframes 的時間不需要太整齊 */
 		0%{background-position: -6px -6px;}
 		7%{background-position: -82px -6px;}
 		13%{background-position: -158px -6px;}
@@ -260,7 +259,7 @@ CSS 在 2D 上的轉變，是透過「transform」屬性來進行。不過目前
 
 &lt;div&gt;&lt;/div&gt;
 </pre>
-
+<br>
 </blockquote>
 
 </body></html>

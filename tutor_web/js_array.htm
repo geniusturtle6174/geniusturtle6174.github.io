@@ -24,9 +24,9 @@
 Gol_D_Roger("4-1", "4-2"); // 顯示羅傑的書的章節對應
 </script>
 
-<p>JavaScript 的陣列，和 C 一樣是從 0 開始索引，但是元素可以比較動態的加入：</p>
-<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;myArr = new Array();myArr[0] = '...QQ';myArr[1] = 1234;myArr[2] = (1==4);for(i=0;i&lt;myArr.length;i++){	document.write(&quot;第 &quot; + i + &quot; 元素的型別：&quot; + typeof(myArr[i]) + &quot;&lt;br/&gt;&lt;br/&gt;&quot;);}// 上述宣告方法，等於// myArr = new Array('...QQ', 1234, (1==4));// 或者// myArr = ['...QQ', 1234, (1==4)];myArr2 = new Array(5);document.write(&quot;myArr2的長度：&quot; + myArr2.length + &quot;&lt;br/&gt;&lt;br/&gt;&quot;);document.write(&quot;myArr2[0]：&quot; + myArr2[0] + &quot;&lt;br/&gt;&lt;br/&gt;&quot;);&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-
+<p>JavaScript 的陣列，和 C 和 Python 等大多數語言一樣是從 0 開始索引，但是元素可以比較動態的加入：</p>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;// 大家可能已經在其他語言很熟悉的使用方式myArr = ['...QQ', 1234, (1==4)];for(i=0;i&lt;myArr.length;i++){	document.write(&quot;第 &quot; + i + &quot; 元素的內容與型別：&quot; + myArr[i] + ', ' + typeof(myArr[i]) + &quot;&lt;br&gt;&quot;);}document.write(&quot;&lt;hr&gt;&quot;)// 利用 Array 物件myArr = new Array('...QQ', 1234, (1==4));for(i=0;i&lt;myArr.length;i++){	document.write(&quot;第 &quot; + i + &quot; 元素的內容與型別：&quot; + myArr[i] + ', ' + typeof(myArr[i]) + &quot;&lt;br&gt;&quot;);}document.write(&quot;&lt;hr&gt;&quot;)// 動態加入myArr = new Array();myArr[0] = '...QQ';myArr[1] = 1234;myArr[2] = (1==4);for(i=0;i&lt;myArr.length;i++){	document.write(&quot;第 &quot; + i + &quot; 元素的內容與型別：&quot; + myArr[i] + ', ' + typeof(myArr[i]) + &quot;&lt;br&gt;&quot;);}document.write(&quot;&lt;hr&gt;&quot;)// 元素未定義myArr = new Array(5);document.write(&quot;myArr 的長度：&quot; + myArr.length + &quot;&lt;br&gt;&quot;);document.write(&quot;myArr[0]：&quot; + myArr[0]);&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
 <p>JavaScript 的 array 有下列方法：</p>
 <ul>
 	<li>concat: 將陣列連接起來</li>
@@ -42,12 +42,15 @@ Gol_D_Roger("4-1", "4-2"); // 顯示羅傑的書的章節對應
 	<li>unshift: 加一個新元素到陣列最前面，並傳回新陣列</li>
 </ul>
 
-<p>以下示範其中一些：</p>
-<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;br2 = &quot;&lt;br/&gt;&lt;br/&gt;&quot;;myArr = new Array();myArr[0] = '...QQ';myArr[1] = 1234;myArr[2] = (1==4); // falsedocument.write(&quot;join 的結果： &quot; + myArr.join() + br2);document.write(&quot;join 的結果(自訂分隔方式)： &quot; + myArr.join('~~') + br2);document.write(&quot;toString 的結果： &quot; + myArr.toString() + br2);document.write(&quot;反轉後的結果： &quot; + myArr.reverse().toString() + br2);document.write(&quot;反轉後會改變原陣列： &quot; + myArr.toString() + br2);myArr2 = [3,2,4,1,7,8,5,9,6,0];document.write(&quot;排序前： &quot; + myArr2.toString() + br2);myArr2.sort();document.write(&quot;排序後： &quot; + myArr2.toString() + br2);// JavaScript 是把元素視為字串進行排序myArr2 = [&quot;Apple&quot;, &quot;action&quot;, 1234 ,'%(#)%', '^________&lt;'];document.write(&quot;排序前： &quot; + myArr2.toString() + br2);myArr2.sort();document.write(&quot;排序後： &quot; + myArr2.toString() + br2);&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-
-<p>排序時，也可以定義自己的 comparison function：</p>
-<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;br2 = &quot;&lt;br/&gt;&lt;br/&gt;&quot;;function myCmp(a, b){	return (a.length-b.length);}myArr = [&quot;lion&quot;, &quot;monkey&quot;, &quot;brother&quot;, &quot;rhino&quot;];document.write(&quot;字典排序： &quot; + myArr.sort().toString() + br2);document.write(&quot;使用自定義比較，進行字串長度排序： &quot; + myArr.sort(myCmp).toString() + br2);&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-
+<p>其中的 join，在 JavaScript 當中是「陣列.join(字串)」，亦即 join 方法屬於陣列，但在有些語言例如 Python 當中，是「字串.join(陣列)」，亦即 join 是對於字串的操作。以下示範 join，toString，reverse，以及 sort：</p>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;myArr = new Array();myArr[0] = '...QQ';myArr[1] = 1234;myArr[2] = (1==4); // falsedocument.write(&quot;join 的結果： &quot; + myArr.join() + '&lt;br&gt;');document.write(&quot;join 的結果(自訂分隔方式)： &quot; + myArr.join('/') + '&lt;br&gt;');document.write(&quot;toString 的結果： &quot; + myArr.toString() + '&lt;br&gt;&lt;br&gt;');document.write(&quot;反轉後的結果： &quot; + myArr.reverse().toString() + '&lt;br&gt;');document.write(&quot;反轉後會改變原陣列： &quot; + myArr.toString() + '&lt;br&gt;&lt;br&gt;');myArr2 = [3, 2, 4, 1, 7, 8, 5, 9, 6, 0];document.write(&quot;排序前： &quot; + myArr2.toString() + '&lt;br&gt;');myArr2.sort();document.write(&quot;排序後： &quot; + myArr2.toString() + '&lt;br&gt;&lt;br&gt;');// JavaScript 是把元素視為字串進行排序myArr2 = [&quot;Apple&quot;, &quot;action&quot;, 1234 ,'%(#)%', '^________&lt;'];document.write(&quot;排序前： &quot; + myArr2.toString() + '&lt;br&gt;');myArr2.sort();document.write(&quot;排序後： &quot; + myArr2.toString());&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>但不論在 JavaScript 或是 Python 當中，join 都是把陣列接起來變成字串。與之相反的是 split，可以把字串切開變成陣列：</p>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;str = &quot;This is a pen.&quot;;console.log(str.split(' '));&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>排序時，也可以定義自己的 comparison function 來決定兩個元素的比較結果，其設計原則是當 a 應被視為小於 b 時(a 應排在 b 前面時)，回傳一個負整數； a 與 b 視為相等時回傳 0； a 視為大於 b 時(a 應排在 b 後面時)回傳一個正整數：</p>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;function myCmp(a, b){	return a.length - b.length;}myArr = [&quot;lion&quot;, &quot;monkey&quot;, &quot;brother&quot;, &quot;rhino&quot;];document.write(&quot;字典排序： &quot; + myArr.sort().toString() + &quot;&lt;br&gt;&lt;br&gt;&quot;);document.write(&quot;使用自定義比較，進行字串長度遞增排序： &quot; + myArr.sort(myCmp).toString() + &quot;&lt;br&gt;&lt;br&gt;&quot;);&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
 </blockquote>
 
 </body>

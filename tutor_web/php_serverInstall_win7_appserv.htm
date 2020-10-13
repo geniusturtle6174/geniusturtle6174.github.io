@@ -51,7 +51,7 @@ AppServ 是一個在 Windows 平台運行的 WAMP (Windows, Apache, MySQL, PHP)�
 
 <p>以下這個範例，會利用 php 印出「Hello World!!」，各位可以把下列程式碼複製下來，存檔命名為「hello.php」，放在「C:\AppServ\www」底下，此時，如果在網址列輸入「http://localhost/hello.php」，則可以看見與範例連結一樣的結果：</p>
 <pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?phpecho &quot;Hello World!!&quot;?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-
+<br>
 <p>AppServ 預設會將網頁放在「C:\AppServ\www」底下，如果需要放在不同的地方，則可以打開「C:\AppServ\Apache2.2\conf\httpd.conf」，在最後面加上以下的內容，並重新啟動 Apache (如果你的 UAC 沒有關閉，則需要用管理員權限重啟)。此時，如果把前述的「Hello World!!」範例，放到「D:\test」底下時，則在網址列輸入「http://localhost/myTestDir/hello.php」，也會看到同樣的結果。</p>
 <pre class="brush: html">Alias /myTestDir &quot;D:\test&quot;
 &lt;Directory &quot;D:\test&quot;&gt;

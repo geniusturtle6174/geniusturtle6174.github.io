@@ -36,36 +36,40 @@ Gol_D_Roger("6-2"); // 顯示羅傑的書的章節對應
 	<li>height: 高度</li>
 </ul>
 
-<p>以上的參數設定方式，除了「width」和「height」是以數字指定之外，其餘都是用「yes/no」或者「1/0」來指定是否呈現。另外，這些顯示效果根據瀏覽器的不同，可能也會有所不同，例如 Chorme 一定會顯示網址列。簡單的範例如下：</p>
-<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;w = screen.width / 2;h = screen.height / 2;function myOpen(){	window.open(		&quot;../index.htm&quot;, &quot;test&quot;,		&quot;toolbar=yes, location=no, scrollbars=no, width=&quot; + w + &quot;, height=&quot; + h	);}&lt;/script&gt;&lt;input type=&quot;button&quot; onClick=&quot;myOpen();&quot; value=&quot;按我開新視窗&quot;&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-
+<p>以上的參數設定方式，除了「width」和「height」是以數字指定之外，其餘都是用「yes/no」或者「1/0」來指定是否呈現。另外，這些顯示效果根據瀏覽器的不同，可能也會有所不同，例如 Chorme 一定會顯示網址列和捲軸。以下範例會開啟一個寬度和高度各是螢幕一半的視窗：</p>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;function myOpen(){	window.open(		&quot;../index.htm&quot;, &quot;test&quot;,		&quot;width=&quot; + screen.width / 2 + &quot;, height=&quot; + screen.height / 2	);}&lt;/script&gt;&lt;input type=&quot;button&quot; onClick=&quot;myOpen();&quot; value=&quot;按我開新視窗&quot;&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
 <p>利用「close」方法，可以關閉視窗，範例如下：</p>
 <pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;input type=&quot;button&quot; onClick=&quot;window.close();&quot; value=&quot;按我關閉視窗&quot;&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>在上述範例中，如果你先輸入了其他網站的網址，再連結到範例頁面，則會發現視窗無法關閉，這是基於安全性的考量，如果該視窗有瀏覽其他網頁的記錄(也就是你能按上一頁/下一頁的時候)，則可能會無法關閉視窗。</p>
 
-<p>在上述範例中，如果你先輸入了 Yahoo 的網址，再連結到範例頁面，則會發現視窗無法關閉，這是基於安全性的考量，如果該視窗有瀏覽其他網頁的記錄(也就是你能按上一頁/下一頁的時候)，則可能會無法關閉視窗。</p>
-
-<p>透過「opener」屬性，可以操作原來的視窗。我們先使用一個網頁做為母視窗，開啟子視窗：</p>
-<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;w = screen.width / 2;h = screen.height / 2;function myOpen(){	window.open(&quot;js_window_opener_menu.htm&quot;, &quot;test&quot;);}&lt;/script&gt;&lt;input type=&quot;button&quot; onClick=&quot;myOpen();&quot; value=&quot;按我開新視窗&quot;&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-
-<p>子視窗會開啟這個網頁，以控制母視窗：</p>
+<p>透過「opener」屬性，可以操作原來的視窗。我們先使用一個網頁做為母視窗，用來開啟子視窗：</p>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;function myOpen(){	window.open(&quot;js_window_opener_menu.htm&quot;, &quot;test&quot;);}&lt;/script&gt;&lt;input type=&quot;button&quot; onClick=&quot;myOpen();&quot; value=&quot;按我開新視窗&quot;&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>子視窗的內容如下，此例以「opener.location.href」控制母視窗所開啟的網址：</p>
 <pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;function mainCtrl(theUrl){	if(opener == null){		alert(&quot;母視窗已關閉或者不存在&quot;);	}	else {		opener.location.href = theUrl;	}}&lt;/script&gt;&lt;a href=&quot;javascript:mainCtrl('http://www.nthu.edu.tw')&quot;&gt;清大首頁&lt;/a&gt;&lt;br/&gt;&lt;a href=&quot;javascript:mainCtrl('http://www.nctu.edu.tw')&quot;&gt;交大首頁&lt;/a&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-
+<br>
 <p>上述範例中，也可以改為在偵測到母視窗關閉後，重新開啟一個視窗，並改為對新的視窗操作。另外，各位也可以試試看直接開啟子視窗的效果。</p>
 
-<p>「moveTo」、「moveBy」、「resizeTo」、「resizeBy」，可以移動視窗/改變視窗大小。但請留意，除了 IE 之外的瀏覽器，這些函式只能對「window.open」開啟的視窗操作，若有興趣可自行測試：</p>
+<p>若要改變已開啟視窗的位置或大小，可以使用「moveTo」、「moveBy」、「resizeTo」、「resizeBy」。但請留意，除了 IE 之外的瀏覽器，這些函式只能對「window.open」開啟的視窗操作，若有興趣可自行測試：</p>
 <pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;function winCtrl(funcName){	x = document.getElementById(&quot;X&quot;).value;	y = document.getElementById(&quot;Y&quot;).value;	eval(&quot;newWindow.&quot; + funcName + &quot;(&quot; + x + &quot;, &quot; + y + &quot;);&quot;);}&lt;/script&gt;&lt;form&gt;	&lt;input type=&quot;button&quot; value=&quot;先按我開新視窗&quot; onclick=&quot;newWindow = window.open('../index.htm','OAO','width=300,height=300');&quot;&gt;	X: &lt;input id=&quot;X&quot; type=&quot;number&quot; min=&quot;50&quot; max=&quot;1000&quot; value=&quot;50&quot;&gt;&lt;br/&gt;	Y: &lt;input id=&quot;Y&quot; type=&quot;number&quot; min=&quot;50&quot; max=&quot;1000&quot; value=&quot;50&quot;&gt;&lt;br/&gt;	&lt;input type=&quot;button&quot; value=&quot;moveTo&quot; onclick=&quot;winCtrl(this.value)&quot;&gt;	&lt;input type=&quot;button&quot; value=&quot;moveBy&quot; onclick=&quot;winCtrl(this.value)&quot;&gt;	&lt;input type=&quot;button&quot; value=&quot;resizeTo&quot; onclick=&quot;winCtrl(this.value)&quot;&gt;	&lt;input type=&quot;button&quot; value=&quot;resizeBy&quot; onclick=&quot;winCtrl(this.value)&quot;&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-
-<p>使用「scroll」、「scrollTo」、「scrollBy」，可以控制視窗的捲動：</p>
+<br>
+<p>若要控制視窗的捲動，可以使用「scroll」、「scrollTo」、「scrollBy」：</p>
 <pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;function winCtrl(funcName){	x = document.getElementById(&quot;X&quot;).value;	y = document.getElementById(&quot;Y&quot;).value;	eval(&quot;window.&quot; + funcName + &quot;(&quot; + x + &quot;, &quot; + y + &quot;);&quot;);}&lt;/script&gt;&lt;form style=&quot;position:fixed;top:10px;left:10px;&quot;&gt;	X: &lt;input id=&quot;X&quot; type=&quot;number&quot; min=&quot;0&quot; max=&quot;1000&quot; value=&quot;50&quot;&gt;&lt;br/&gt;	Y: &lt;input id=&quot;Y&quot; type=&quot;number&quot; min=&quot;0&quot; max=&quot;1000&quot; value=&quot;50&quot;&gt;&lt;br/&gt;	&lt;input type=&quot;button&quot; value=&quot;scroll&quot; onclick=&quot;winCtrl(this.value)&quot;&gt;	&lt;input type=&quot;button&quot; value=&quot;scrollTo&quot; onclick=&quot;winCtrl(this.value)&quot;&gt;	&lt;input type=&quot;button&quot; value=&quot;scrollBy&quot; onclick=&quot;winCtrl(this.value)&quot;&gt;&lt;/form&gt;&lt;div style=&quot;position:absolute;top:1500px;left:1500px;&quot;&gt;這是純粹把文件範圍撐大的 div&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-
-<p>
-我們可以透過「frameset」和「frame」標籤，來將網頁畫面切割(註：HTML5 已不支援這兩個標籤)。現在，也可以透過「iframe」標籤，來將其他網頁內嵌在自己的網頁之中。此時，如果你要從某個 frame/iframe 操作其他的 frame/iframe，則除了利用超連結的「target」屬性以外，還可以使用 JavaScript 來進行，如下：</p>
+<br>
+<p>「window.history」可以用來操作瀏覽記錄，除了基本的上一頁及下一頁以外，在 HTML5 中還加入了「pushState」等方法，可以用來加入和修改歷史記錄。如果搭配上樣式等等方面的改變，則可以達成類似臉書點擊照片或者低卡點擊文章時的效果：</p>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		#slideShow{			position: absolute; top: 0; left: 0;			width: 100%; height: 100%; background: rgba(0,0,0,0.5);			display: none;			z-index: 1;		}		#slideShowImg{			position: absolute; top: 100px; left: 350px;			z-index: 2;			display: none;		}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;	function showSlide(path){		document.getElementById(&quot;slideShowImg&quot;).src = path;		document.getElementById(&quot;slideShow&quot;).style.display = &quot;block&quot;;		document.getElementById(&quot;slideShowImg&quot;).style.display = &quot;block&quot;;		window.history.pushState(			{&quot;what_is_this&quot;: &quot;隨便放一些你自己認得出 state 的東西&quot;},			&quot;這裡是標題，但是多數瀏覽器仍未支援&quot;, path		);	}		function hideSlide(){		document.getElementById(&quot;slideShow&quot;).style.display = &quot;none&quot;;		document.getElementById(&quot;slideShowImg&quot;).style.display = &quot;none&quot;;		window.history.back();	}	window.onpopstate = function(){hideSlide();}&lt;/script&gt;&lt;img src=&quot;../pics/bg01.jpg&quot; width=&quot;300&quot; onClick=&quot;showSlide('../pics/bg01.jpg')&quot;&gt;&lt;div id=&quot;slideShow&quot; onClick=&quot;hideSlide()&quot;&gt;&lt;/div&gt;&lt;img id=&quot;slideShowImg&quot; src=&quot;&quot;&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>如果想要將網頁畫面進行切割，將其他網頁內嵌在自己的網頁之中，可以透過「iframe」標籤進行(古早時代是利用「frameset」和「frame」標籤，但 HTML5 已不支援這兩個標籤)。此時，如果你要從某個 iframe 操作其他的 iframe，則除了利用超連結的「target」屬性以外，還可以使用 JavaScript 來進行。下面這個範例，用兩個 iframe 各自嵌入不同的網頁，並且可利用左邊的網頁操控右邊的，如下：</p>
 <pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;table width=&quot;100%&quot; height=&quot;100%&quot; border=&quot;1&quot;&gt;	&lt;tr&gt;		&lt;td width=&quot;20%&quot;&gt;			&lt;iframe name=&quot;menu&quot; src=&quot;js_window_frame_menu.htm&quot; width=&quot;100%&quot; height=&quot;100%&quot;&gt;&lt;/iframe&gt;		&lt;/td&gt;		&lt;td width=&quot;80%&quot;&gt;			&lt;iframe name=&quot;right&quot; src=&quot;js_window_frame_right.htm&quot; width=&quot;100%&quot; height=&quot;100%&quot;&gt;&lt;/iframe&gt;		&lt;/td&gt;	&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-
-<p>上述範例，使用表格對兩個 iframe 進行排版，嵌入在左邊和右邊的網頁分別如下：</p>
-<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;a href=&quot;http://www.nthu.edu.tw&quot; target=&quot;right&quot;&gt;清大首頁&lt;/a&gt;&lt;br/&gt;&lt;a href=&quot;http://www.nctu.edu.tw&quot; target=&quot;right&quot;&gt;交大首頁&lt;/a&gt;&lt;br/&gt;&lt;input type=&quot;button&quot; value=&quot;原來那頁&quot; onclick=&quot;parent.right.location.href='js_window_frame_right.htm';&quot;&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>其中，被嵌入為左邊的網頁如下：</p>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;a href=&quot;http://www.nthu.edu.tw&quot; target=&quot;right&quot;&gt;清大首頁&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://www.nctu.edu.tw&quot; target=&quot;right&quot;&gt;交大首頁&lt;/a&gt;&lt;br&gt;&lt;input type=&quot;button&quot; value=&quot;原來那頁&quot; onclick=&quot;parent.right.location.href='js_window_frame_right.htm';&quot;&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>被嵌入為右邊的網頁則如下：</p>
 <pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;document.write(Math.random());&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-
+<br>
 </blockquote>
 
 </body></html>

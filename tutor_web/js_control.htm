@@ -25,17 +25,17 @@ Gol_D_Roger("2-1", "2-2"); // 顯示羅傑的書的章節對應
 </script>
 
 <p>JavaScript 的條件判斷語法與 C 很相似，故以下主要介紹少數「特異功能」。在 JavaScript 當中，只有數值 0, null 和空字串被視為 false，其餘皆為 true。</p>
-<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;br2 = &quot;&lt;br/&gt;&lt;br/&gt;&quot;;x = 0; document.write(x + &quot; 為 &quot; + ((x)?&quot;true&quot;:&quot;false&quot;) + br2);x = null; document.write(x + &quot; 為 &quot; + ((x)?&quot;true&quot;:&quot;false&quot;) + br2);x = &quot;&quot;; document.write(x + &quot; 為 &quot; + ((x)?&quot;true&quot;:&quot;false&quot;) + br2);x = []; document.write(x + &quot; 為 &quot; + ((x)?&quot;true&quot;:&quot;false&quot;) + br2);&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;br2 = &quot;&lt;br&gt;&lt;br&gt;&quot;;x = 0; document.write(&quot;「x = 0」，x 為 &quot; + ((x)?&quot;true&quot;:&quot;false&quot;) + br2);x = null; document.write(&quot;「x = null」，x 為 &quot; + ((x)?&quot;true&quot;:&quot;false&quot;) + br2);x = &quot;&quot;; document.write(&quot;「x = \&quot;\&quot;」，x 為 &quot; + ((x)?&quot;true&quot;:&quot;false&quot;) + br2);x = []; document.write(&quot;「x = []」，x 為 &quot; + ((x)?&quot;true&quot;:&quot;false&quot;) + br2);&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
 <p>字串可以用「==」直接比對，也可以套在 switch 當中：</p>
 <pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;week = &quot;三&quot;;switch(week){	case '一': console.log(week); break;	case '二': console.log(week); break;	case '三': console.log(week); break;	case '四': console.log(week); break;	case '五': console.log(week); break;	case '六': console.log(week); break;	case '日': console.log(week); break;}&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-
+<br>
 <p>JavaScript 有一種比較運算「===」，必須要連型別都完全一樣才算是相等：</p>
-<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;br2 = &quot;&lt;br/&gt;&lt;br/&gt;&quot;;document.write(&quot; true == 1 is: &quot; + (true==1) + br2 );document.write(&quot; true === 1 is: &quot; + (true===1) + br2 );document.write(&quot; \&quot;123\&quot; == 123 is: &quot; + (&quot;123&quot;==123) + br2 );document.write(&quot; \&quot;123\&quot; === 123 is: &quot; + (&quot;123&quot;===123) + br2 );&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-
-<p>for 和 while 的用法，也跟 C 相似，但是 JavaScript 提供一種 for-in 迴圈，可以用來列舉物件的性質：</p>
-<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;for(prop in document){	document.write(&quot;document.&quot; + prop + &quot; = &quot; + document[prop] + &quot;&lt;br/&gt;&lt;br/&gt;&quot;);}&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;br2 = &quot;&lt;br&gt;&lt;br&gt;&quot;;document.write(&quot; true == 1 is: &quot; + (true == 1) + br2 );document.write(&quot; true === 1 is: &quot; + (true === 1) + br2 );document.write(&quot; \&quot;123\&quot; == 123 is: &quot; + (&quot;123&quot; == 123) + br2 );document.write(&quot; \&quot;123\&quot; === 123 is: &quot; + (&quot;123&quot; === 123) + br2 );&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>for 和 while 的用法，也跟 C 相似，但是 JavaScript 提供一種 for-in 迴圈，用途之一是列舉物件的性質：</p>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;for(prop in document){	document.write(&quot;document.&quot; + prop + &quot; = &quot; + document[prop] + &quot;&lt;br&gt;&lt;br&gt;&quot;);}&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
 </blockquote>
 
 </body></html>

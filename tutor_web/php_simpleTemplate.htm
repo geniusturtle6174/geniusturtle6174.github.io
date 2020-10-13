@@ -23,13 +23,13 @@
 
 <p>最容易想到的做法之一，通常是是盡可能把所有容易分離的 php 部分丟進 include 或 require，此時主要介面部分的程式碼如下：</p>
 <pre class="brush: htmljsphp">﻿&lt;?phpinclude(&quot;php_template_01_back_01.php&quot;);?&gt;&lt;html&gt;&lt;head&gt;&lt;style&gt;textarea{vertical-align:top}&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form action=&quot;&lt;?php echo basename($_SERVER['PHP_SELF']);?&gt;&quot; method=&quot;post&quot;&gt;	綽號：&lt;input type=&quot;text&quot; name=&quot;nickName&quot;&gt;&lt;br&gt;	內容：&lt;textarea name=&quot;msgBody&quot;&gt;&lt;/textarea&gt;&lt;br&gt;	&lt;input type=&quot;submit&quot; value=&quot;送出&quot;&gt;&lt;/form&gt;&lt;hr&gt;&lt;?phpinclude(&quot;php_template_01_back_02.php&quot;);?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-
+<br>
 <p>其中，php_template_01_back_01.php 的內容如下：</p>
 <pre class="brush: htmljsphp">﻿&lt;?phpinclude(&quot;pdoInc.php&quot;);function getIp(){	return $_SERVER['REMOTE_ADDR'];}function showMsg($row){	$nn = htmlspecialchars($row['nickname']);	$msg = htmlspecialchars($row['content']);	$msg = str_replace(&quot;\n&quot;, &quot;&lt;br/&gt;&quot;, $msg);	echo &quot;&lt;table border=\&quot;1\&quot;&gt;&lt;tr&gt;&quot;;	echo &quot;&lt;td&gt;留言人: &quot;.$nn.&quot;&lt;/td&gt;&quot;;	echo &quot;&lt;td&gt;時間: &quot;.$row['time'].&quot;&lt;/td&gt;&quot;;	echo &quot;&lt;td&gt;位置: &quot;.$row['ip'].&quot;&lt;/td&gt;&lt;/tr&gt;&quot;;	echo &quot;&lt;tr&gt;&lt;td colspan=\&quot;3\&quot;&gt;留言內容:&lt;br/&gt;&quot;.$msg.&quot;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;br/&gt;&quot;;}// 如果有留言，則加入之if(isset($_POST['nickName']) &amp;&amp; isset($_POST['msgBody']) &amp;&amp; $_POST['nickName']!='' &amp;&amp; $_POST['msgBody']!=''){	$sth = $dbh-&gt;prepare('INSERT INTO msgboard (nickname, content, ip) VALUES (?, ?, ?)');	$sth-&gt;execute(array($_POST['nickName'], $_POST['msgBody'], getIp()));	echo '&lt;meta http-equiv=REFRESH CONTENT=0;url=php_mysqli_msgBoard.php&gt;';}?&gt;</pre>
-
+<br>
 <p>而 php_template_01_back_02.php 的內容如下：</p>
 <pre class="brush: htmljsphp">﻿&lt;?php	$sth = $dbh-&gt;query('SELECT * from msgboard ORDER BY id DESC');	while($row = $sth-&gt;fetch(PDO::FETCH_ASSOC)){		showMsg($row);	}?&gt;</pre>
-
+<br>
 <p>在這種方法中，仍然會有一些部份無法拆開，例如表單中的 action (如果你希望用程式自動取得自己檔名的時候)，以及 showMsg 當中的 HTML 排版。我們也可以只將跟顯示直接相關以外的部分拆開，此時的顯示部分如下：</p>
 <pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;style&gt;textarea{vertical-align:top}&lt;/style&gt;&lt;/head&gt;
 &lt;body bgcolor=&quot;#ccccff&quot;&gt;
@@ -66,7 +66,7 @@ while($row = $sth-&gt;fetch(PDO::FETCH_ASSOC)){
 
 &lt;/body&gt;&lt;/html&gt;
 </pre>
-
+<br>
 <p>後端存取資料等的部分如下。在此法中，顯示部分的表單送出時，是送給處理資料部分的 php 程式，並且不論是否需要處理都導向回來：</p>
 <pre class="brush: htmljsphp">﻿&lt;?php
 include(&quot;pdoInc.php&quot;);
@@ -84,7 +84,7 @@ if(isset($_POST['nickName']) &amp;&amp; isset($_POST['msgBody']) &amp;&amp; $_PO
 echo '&lt;meta http-equiv=REFRESH CONTENT=0;url=php_template_02_front.php&gt;';
 
 ?&gt;</pre>
-
+<br>
 <p>在這個方法中，仍然有(並且有不少的)排版相關的 php 程式碼被留下來。若要將排版做比較好的分離，就可以考慮模板化的方式。它的運作原則是，php 收到使用者請求後，會讀取模板並做適當取代後，再回傳給使用者，示意圖如下：</p>
 <center><img src="pics/php_template_struct.png"></center>
 
@@ -110,7 +110,7 @@ echo '&lt;meta http-equiv=REFRESH CONTENT=0;url=php_template_02_front.php&gt;';
 &lt;/body&gt;
 &lt;/html&gt;
 </pre>
-
+<br>
 <p>那些似乎要被代換的位置，就是會被 php 處理的位置。根據前面的圖片和說明，php 要負責的任務，就是讀取模板和塞資料，如下：</p>
 <pre class="brush: htmljsphp">﻿&lt;?php
 include(&quot;pdoInc.php&quot;);
@@ -139,7 +139,7 @@ else {
 }
 
 ?&gt;</pre>
-
+<br>
 <p>如果你喜歡的話，也可以包裝成物件，此時若有多個檔案都使用了模板化的設計，就不需要每次都重新撰寫開啟檔案、讀取檔案、...等固定的步驟。物件本身的撰寫範例如下：</p>
 <pre class="brush: htmljsphp">﻿&lt;?php
 
@@ -170,7 +170,7 @@ class template{
 }
 
 ?&gt;</pre>
-
+<br>
 <p>使用物件時的範例如下：</p>
 <pre class="brush: htmljsphp">﻿&lt;?php
 include(&quot;pdoInc.php&quot;);
@@ -196,7 +196,7 @@ else {
 echo $tpl-&gt;render();
 
 ?&gt;</pre>
-
+<br>
 <p>我們回到匿名留言板的範例。由於留言的筆數對模板來說是未知的，因此必須將其獨立開來(若是使用市面上的樣板引擎，就會在模板裡有迴圈等語法可以撰寫)，單一留言的模板如下：</p>
 <pre class="brush: htmljsphp">&lt;table border=&quot;1&quot;&gt;
 	&lt;tr&gt;
@@ -209,7 +209,7 @@ echo $tpl-&gt;render();
 	&lt;/tr&gt;
 &lt;/table&gt;
 &lt;br&gt;</pre>
-
+<br>
 <p>整體頁面的模板如下：</p>
 <pre class="brush: htmljsphp">&lt;html&gt;&lt;head&gt;&lt;style&gt;textarea{vertical-align:top}&lt;/style&gt;&lt;/head&gt;
 &lt;body bgcolor=&quot;#ccccff&quot;&gt;
@@ -226,7 +226,7 @@ echo $tpl-&gt;render();
 
 &lt;/body&gt;&lt;/html&gt;
 </pre>
-
+<br>
 <p>PHP 程式碼如下，我們需要先用迴圈處理個別留言的模板，才能套用到整體頁面的模板：</p>
 <pre class="brush: htmljsphp">&lt;?php
 include(&quot;pdoInc.php&quot;);
@@ -243,7 +243,7 @@ if(
 ){
 	$sth = $dbh-&gt;prepare('INSERT INTO msgboard (nickname, content, ip) VALUES (?, ?, ?)');
 	$sth-&gt;execute(array($_POST['nickName'], $_POST['msgBody'], getIp()));
-	echo '&lt;meta http-equiv=REFRESH CONTENT=0;url=php_mysqli_msgBoard.php&gt;';
+	echo '&lt;meta http-equiv=REFRESH CONTENT=0;url='.basename($_SERVER['PHP_SELF']).'&gt;';
 }
 
 $sth = $dbh-&gt;query('SELECT * from msgboard ORDER BY id DESC');
@@ -261,7 +261,7 @@ $tpl-&gt;set('php', basename($_SERVER['PHP_SELF']));
 $tpl-&gt;set('messages', join(&quot;\n&quot;, $msgs));
 echo $tpl-&gt;render();
 ?&gt;</pre>
-
+<br>
 </blockquote>
 
 </body></html>
