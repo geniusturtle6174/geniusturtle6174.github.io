@@ -21,13 +21,13 @@
 <blockquote>
 
 <script>
-Gol_D_Roger("9"); // 顯示羅傑的書的章節對應
+Gol_D_Roger(["9"]); // 顯示羅傑的書的章節對應
 </script>
 
-<p>一般來說，為了安全起見，JavaScript 不能對硬碟進行任何存取。但是透過 Cookie，可以在客戶端存取極少量的資料。例如，可以用來記錄使用者的瀏覽偏好等等。此時，所有的資料和相關的運算皆會在客戶端的電腦儲存/進行，不會對伺服器造成負擔。但是，當客戶端更換電腦/瀏覽器，或者關閉 Cookie 功能時，就會造成 Cookie 的資訊流失，或者無法使用。</p>
+<p>一般來說，為了安全起見，JavaScript 不能對硬碟進行任何存取。但是透過 Cookie，可以在客戶端存取極少量的資料，例如使用者的瀏覽偏好等等。此時，所有的資料和相關的運算皆可以在客戶端的電腦儲存/進行，以減少對伺服器造成的負擔。但是，當客戶端更換電腦/瀏覽器，或者關閉 Cookie 功能時，就會造成 Cookie 的資訊流失，或者無法使用。</p>
 
 <p>利用「navigator.cookieEnabled」，可以知道 Cookie 功能是否被關閉：</p>
-<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;	if(navigator.cookieEnabled){		document.write(&quot;此網頁的 cookie 是：&quot; + document.cookie);	}	else {		document.write(&quot;Cookie 設定被關閉或者不支援&quot;);	}&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;if(navigator.cookieEnabled){	document.write(&quot;此網頁的 cookie 是：&quot; + document.cookie);}else {	document.write(&quot;Cookie 設定被關閉或者不支援&quot;);}&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 <p>其中， Cookie 是一個字串，存放在「document.cookie」當中，格式如下：</p>
 <pre class="brush: html">name=value;expires=date;path=path;domain=domain;secure</pre><br>
@@ -42,7 +42,7 @@ Gol_D_Roger("9"); // 顯示羅傑的書的章節對應
 </ul>
 
 <p>以下範例展示如何寫入一些 Cookie：</p>
-<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;document.cookie = &quot;123=xyz&quot;;document.cookie = &quot;123=ggg&quot;;document.cookie = &quot;abc=def&quot;;document.write(&quot;此網頁的 Cookie 字串: &quot; + document.cookie);&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;document.cookie = &quot;123=xyz&quot;;document.cookie = &quot;123=ggg&quot;;document.cookie = &quot;abc=def&quot;;document.write(&quot;此網頁的 Cookie 字串: &quot; + document.cookie);&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 <p>由此範例中，可以看出一些事實：</p>
 <ul>
@@ -51,13 +51,12 @@ Gol_D_Roger("9"); // 顯示羅傑的書的章節對應
 </ul>
 
 <p>如果要指定失效日期，則可用以下的方式：</p>
-<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;now = new Date();expDate = new Date();expDate.setTime(now.getTime() + 1000*10); // 十秒document.cookie = &quot;test=123;expires=&quot; + expDate.toGMTString();document.write(&quot;此網頁的 Cookie 字串: &quot; + document.cookie);&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;now = new Date();expDate = new Date();expDate.setTime(now.getTime() + 1000*10); // 十秒document.cookie = &quot;test=123;expires=&quot; + expDate.toGMTString();document.write(&quot;此網頁的 Cookie 字串: &quot; + document.cookie);&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
-
 <p>在上述範例中，我們讓 Cookie 在十秒後消失。由於每次重新整理會指定新的時間，所以各位可以同時打開前一個範例，或者利用瀏覽器的開發者工具來輔助觀察。</p>
 
 <p>所以，如果要刪除 Cookie，只要將失效時間設定為比當下還早即可。以下範例，會展示 Cookie 的設定、移除與查詢：</p>
-<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;script&gt;		function setCookie(name, value){			document.cookie = name + &quot;=&quot; + value;		}				function delCookie(name){			now = new Date();			now.setTime(now.getTime() - 1);			document.cookie = name + &quot;=;expires=&quot; + now.toGMTString();		}				function getCookie(name, valForm){			cookieArr = document.cookie.split('; ');			for(i=0;i&lt;cookieArr.length;i++){				thisCookie = cookieArr[i].split('=');				thisName = thisCookie[0];				thisVal = thisCookie[1];				if(thisName == name){					valForm.value = thisVal;					return;				}			}			valForm.value = '';		}	&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form&gt;	Cookie Name: &lt;input type=&quot;text&quot; id=&quot;cookieName&quot;&gt;&lt;br&gt;	Cookie Value: &lt;input type=&quot;text&quot; id=&quot;cookieVal&quot;&gt;&lt;br&gt;	&lt;input type=&quot;button&quot; value=&quot;設定&quot;		   onClick=&quot;setCookie(this.form.cookieName.value, this.form.cookieVal.value);&quot;&gt;	&lt;input type=&quot;button&quot; value=&quot;刪除&quot;		   onClick=&quot;delCookie(this.form.cookieName.value)&quot;&gt;	&lt;input type=&quot;button&quot; value=&quot;查詢&quot;		   onClick=&quot;getCookie(this.form.cookieName.value, this.form.cookieVal)&quot;&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;function setCookie(name, value){	document.cookie = name + &quot;=&quot; + value;}function delCookie(name){	now = new Date();	now.setTime(now.getTime() - 1);	document.cookie = name + &quot;=;expires=&quot; + now.toGMTString();}function getCookie(name, valForm){	cookieArr = document.cookie.split('; ');	for( i=0; i&lt;cookieArr.length; i++ ){		thisCookie = cookieArr[i].split('=');		thisName = thisCookie[0];		thisVal = thisCookie[1];		if( thisName == name ){			valForm.value = thisVal;			return;		}	}	valForm.value = '';}&lt;/script&gt;&lt;form&gt;	Cookie Name: &lt;input type=&quot;text&quot; id=&quot;cookieName&quot;&gt;&lt;br&gt;	Cookie Value: &lt;input type=&quot;text&quot; id=&quot;cookieVal&quot;&gt;&lt;br&gt;	&lt;input type=&quot;button&quot; value=&quot;設定&quot;		   onClick=&quot;setCookie(this.form.cookieName.value, this.form.cookieVal.value);&quot;&gt;	&lt;input type=&quot;button&quot; value=&quot;刪除&quot;		   onClick=&quot;delCookie(this.form.cookieName.value)&quot;&gt;	&lt;input type=&quot;button&quot; value=&quot;查詢&quot;		   onClick=&quot;getCookie(this.form.cookieName.value, this.form.cookieVal)&quot;&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 </blockquote>
 

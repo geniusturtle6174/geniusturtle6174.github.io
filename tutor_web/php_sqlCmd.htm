@@ -19,7 +19,7 @@
 
 <blockquote>
 
-<p>於本篇中，將要介紹一些基本的 SQL 指令(若有興趣學習更進階的概念與用法，可以修習資料庫相關課程)。用於示範的資料表共有三張，可由<a href="examples/singer_song_songrank.sql">這裡</a>下載，內容如下：</p>
+<p>於本篇中，將要介紹一些基本的 SQL 指令(若有興趣學習更進階的概念與用法，可以修習資料庫相關課程)。用於示範的資料表共有三張，可以從<a href="examples/singer_song_songrank.sql">這裡</a>下載，也可以依據以下的欄位說明自行新增：</p>
 
 <p>songrank 資料表(實務上可能會將歌曲名稱與演唱者改以各自的 id 數字作為欄位資料，此處為便於範例閱讀，故採用文字)：</p>
 <table class="slide" align=center>
@@ -165,31 +165,28 @@
 		<td class="slide">千本櫻</td>
 		<td class="slide">4</td>
 		<td class="slide">日語</td>
-		<td class="slide"><a href="http://www.youtube.com/watch?v=UcwcedDh8vc">http://www.youtube.com/watch?v=K7E3Aw4brMM</a></td>
+		<td class="slide"><a href="http://www.youtube.com/watch?v=UcwcedDh8vc">http://www.youtube.com/watch?v=UcwcedDh8vc</a></td>
 	</tr>
 </table>
 
-<p>由於尚未介紹到 PHP 與 MySQL 的連接，所以我們先透過 phpmyadmin 來執行 SQL 指令。下載資料表並載入後，點選「SQL」即可開始測試以下的指令效果。</p>
+<p>由於尚未介紹到 PHP 與 MySQL 的連接，所以我們先透過 phpMyAdmin 來執行 SQL 指令。下載資料表並載入後，點選「SQL」即可開始測試以下的指令效果。</p>
 
-<p>我們先介紹最基本的 SQL 指令: SELECT。它的基本語法是：</p>
+<p>我們先介紹最基本的 SQL 指令: SELECT。它的基本語法如下，其中的欄位名稱若有多個時，可以用逗點分隔，若需要選出全部欄位，則可使用「*」符號：</p>
 <pre class="brush: sql">SELECT 欄位名稱 from 表格名稱</pre><br>
 
-<p>從 songrank 資料表裡面，選出某兩個欄位的資料：</p>
+<p>例如，想要從從 songrank 資料表當中，選出 this_rank 和 song_name 這兩個欄位的資料時，用法如下：</p>
 <pre class="brush: sql">SELECT this_rank, song_name from songrank</pre><br>
 
-<p>如果正確執行，則應該看到一個表格，包含 this_rank 和 song_name 這兩個欄位。如果想挑出所有欄位，則使用以下即可</p>
-<pre class="brush: sql">SELECT * from songrank</pre><br>
-
-<p>若只要選出五筆，可使用：</p>
+<p>若只要選出五筆，可使用「limit」語法。需要注意的是，輸出結果的順序原則上只保證數量，不保證是哪幾筆：</p>
 <pre class="brush: sql">SELECT * FROM songrank limit 5</pre><br>
 
-<p>如果想要知道有哪些不一樣資料，但是次數不重要時，可以使用「DISTINCT」。例如，有哪些不同的歌曲語言：</p>
+<p>如果想要知道有哪些不一樣的資料，但是次數不重要時，可以使用「DISTINCT」。例如，以下的 SQL 語句，可以選出有哪些不同的歌曲語言：</p>
 <pre class="brush: sql">SELECT DISTINCT(language) FROM song</pre><br>
 
-<p>加上條件，可選出特定歌手的資料(也可以利用「AND」和「OR」來綜合許多條件)：</p>
-<pre class="brush: sql">SELECT * FROM songrank WHERE singer_name='林俊傑'</pre><br>
+<p>選擇資料時，可以依據需求加上條件，當然還可以利用「AND」和「OR」來綜合許多條件：</p>
+<pre class="brush: sql">SELECT * FROM songrank WHERE singer_name = '林俊傑'</pre><br>
 
-<p>選出排名進步的歌手資料：</p>
+<p>加上條件時，也可以在不同欄位之間做比較，例如選出排名進步的歌手資料的方法如下：</p>
 <pre class="brush: sql">SELECT * FROM songrank WHERE this_rank &lt; prev_rank</pre><br>
 
 <p>「IN」和「BETWEEN」可以簡化條件式的寫法。以下範例的第一二行效果相同，第三四行效果也相同：</p>
@@ -213,29 +210,29 @@ SELECT * FROM songrank WHERE singer_name IN ('林俊傑','丁噹')</pre><br>
 SELECT * FROM songrank ORDER BY singer_name ASC
 SELECT * FROM songrank ORDER BY singer_name DESC</pre><br>
 
-<p>其中請留意，如果「ORDER BY」和「WHERE」同時出現時，「WHERE」必須放在前面(第二行的指令會產生語法錯誤)：</p>
+<p>其中請留意，如果「ORDER BY」和「WHERE」同時出現時，「WHERE」必須放在前面。下面範例的第一行是正確的用法，而第二行的指令會產生語法錯誤：</p>
 <pre class="brush: sql">SELECT * FROM songrank WHERE this_rank &lt; 50 ORDER BY singer_name
 SELECT * FROM songrank ORDER BY singer_name WHERE this_rank &lt; 50</pre><br>
 
-<p>如果你的資料是數字，則可以透過 SQL 當中的一些函式進行簡單的運算(雖然這些運算在本範例中，可能剛好不太有意義)。另外，透過「AS」，可以幫表格或選出來的欄位取一個比較好懂的名稱(請留意欄位名稱的變化)：</p>
+<p>如果你的資料是數字，則可以透過 SQL 當中的一些函式進行簡單的運算(雖然這些運算在本範例中，剛好不太有意義)。另外，透過「AS」，可以幫表格或選出來的欄位取一個比較好懂的名稱(請留意欄位名稱的變化)：</p>
 <pre class="brush: sql">SELECT AVG(this_rank) AS '平均', MAX(this_rank) AS '最大值', MIN(this_rank), SUM(this_rank), COUNT(this_rank) FROM songrank</pre><br>
 
-<p>計算日語歌曲的總數：</p>
+<p>「COUNT」加上「WHERE」條件，就可以計算符合特定條件的資料數量，例如想要計算日語歌曲的總數時，可以使用如下：</p>
 <pre class="brush: sql">SELECT COUNT(language) FROM song WHERE language = '日語'</pre><br>
 
-<p>選出每位歌手的入榜次數(「GROUP BY」的作用是把相同的資料聚在一起)：</p>
-<pre class="brush: sql">SELECT singer_name, count(singer_name) as inListNum FROM songrank GROUP BY singer_name</pre><br>
-
-<p>歌曲包含哪幾種語言與其歌曲數目：</p>
+<p>如果要列出不同資料的數量，則需要先用「GROUP BY」把他們聚集在一起，再來計算數量，例如歌曲包含哪幾種語言與其歌曲數目：</p>
 <pre class="brush: sql">SELECT language, COUNT(language) FROM song GROUP BY language</pre><br>
 
+<p>又或者選出每位歌手的入榜次數：</p>
+<pre class="brush: sql">SELECT singer_name, count(singer_name) FROM songrank GROUP BY singer_name</pre><br>
+
 <p>我們可以在 SQL 指令中放入另一個 SQL 指令，此種作法稱為子查詢。例如歌曲包含幾種語言：</p>
-<pre class="brush: sql">SELECT COUNT(*) FROM (SELECT DISTINCT(language) FROM song) AS OAO</pre><br>
+<pre class="brush: sql">SELECT COUNT(*) FROM (SELECT DISTINCT(language) FROM song) AS dstn_lang</pre><br>
 
 <p>當然，若以上面的範例來說，你也可以直接寫成如下：</p>
 <pre class="brush: sql">SELECT COUNT(DISTINCT language) FROM song</pre><br>
 
-<p>如果子查詢的欄位只有一個，則也可以作為 where 的條件：</p>
+<p>如果子查詢的欄位只有一個，則也可以作為 where 的條件，例如以下範例可選出唱過日語歌的歌手名稱及類型：</p>
 <pre class="brush: sql">SELECT name, type from singer WHERE id in (SELECT singer_id from song WHERE language = '日語')</pre><br>
 
 <p>「UNION」可以將兩個 SQL 指令的結果合併起來，唯一的限制是欄位的資料種類要相同：</p>
@@ -250,24 +247,24 @@ SELECT * FROM songrank UNION ALL SELECT * FROM songrank</pre><br>
 <p>如果要新增一筆或數筆資料，則可使用「INSERT」：</p>
 <pre class="brush: sql">INSERT INTO songrank (this_rank, singer_name) VALUES (123, '這是測試'), (456, '也是測試')</pre><br>
 
-<p>使用「UPDATE」更新資料：</p>
+<p>若需要更新資料，可以使用「UPDATE」：</p>
 <pre class="brush: sql">UPDATE songrank SET this_rank = '789', song_name = '不知道' WHERE id = 9</pre><br>
 
-<p>使用「DELETE」刪除資料：</p>
+<p>若需要刪除資料，可以使用「DELETE」：</p>
 <pre class="brush: sql">DELETE FROM songrank WHERE this_rank &gt; 100</pre><br>
 
 <p>更新或刪除資料時請記得指定正確的條件，否則會不小心把整個資料庫改掉一大半或全部！</p>
 
-<p>我們繼續回到 SELECT 指令的其他範例。接下來的部份範例需要用到兩張資料表，我們會利用「JOIN」來連接兩張資料表(也可以連接多張，但本篇未展示)。其基本用法是「SELECT 欄位名 from 表格_A ... JOIN 表格_B on 條件 ...」，若條件未指定，則所有組合都會被列出。而根據要取的是 A, B 兩張表格的不同資料集合，還會有「LEFT JOIN」、「INNER JOIN」變化。</p>
+<p>我們繼續回到 SELECT 指令的其他範例。接下來的部份範例需要用到兩張資料表，我們會利用「JOIN」來連接兩張資料表(也可以連接多張，但本篇未展示)。其基本用法是「SELECT 欄位名 from 表格_A ... JOIN 表格_B on 條件 ...」，若條件未指定，則所有組合都會被列出。而根據要取的是 A, B 兩張表格的不同資料集合，還會有「LEFT JOIN」、「INNER JOIN」等變化。</p>
 
-<p>例如，選出伍佰唱過的台語歌的方法如下：</p>
+<p>例如，若需要選出伍佰唱過的台語歌，則會需要顯示 song 資料表的 name 欄位，並用其 singer_id 欄位跟 singer 資料表做對照：</p>
 <pre class="brush: sql">
-SELECT singer.name, song.name FROM song
+SELECT song.name FROM song
 INNER JOIN singer on singer.id = song.singer_id
 WHERE song.language = '台語'
 AND singer.name = '伍佰'</pre><br>
 
-<p>唱過華語歌的歌手及其歌曲：</p>
+<p>又如唱過華語歌的歌手及其歌曲：</p>
 <pre class="brush: sql">
 SELECT singer.name, song.name FROM singer
 INNER JOIN song on singer.id = song.singer_id
@@ -275,23 +272,30 @@ WHERE language = '華語'</pre><br>
 
 <p>你可能注意到了上面兩個範例的表格順序不太一樣。事實上，由於 INNER JOIN 取的是交集，所以<strike>表格序順不影執響行</strike>順序並不會影響結果；而且除非你操作的資料非常大量，使用到了較特殊的分散式資料庫，也不會影響效能。</p>
 
-<p>我們繼續看其他範例，例如每個歌手唱過的歌曲數：</p>
+<p>我們繼續看其他範例，例如每個歌手唱過的歌曲數，需要對照 singer 和 song 這兩張資料表，並且計算 singer.name 的數量：</p>
 <pre class="brush: sql">
-SELECT singer.name, COUNT(song.singer_id) FROM singer
+SELECT singer.name, COUNT(singer.name) FROM singer
 INNER JOIN song on singer.id = song.singer_id
-GROUP BY song.singer_id</pre><br>
+GROUP BY singer.name</pre><br>
 
-<p>每個歌手唱過各種語言的歌曲數。此範例需要把 song.language 也加入 GROUP BY 的項目中，才會把不同語言區分開來：</p>
+<p>而若是需要選出每個歌手唱過各種語言的歌曲數，則需要把 song.language 也加入 GROUP BY 的項目中，才能把不同語言區分開來：</p>
 <pre class="brush: sql">
-SELECT singer.name, song.language, COUNT(song.singer_id) FROM singer
+SELECT singer.name, song.language, COUNT(singer.name) FROM singer
 INNER JOIN song on singer.id = song.singer_id
-GROUP BY song.language, song.singer_id</pre><br>
+GROUP BY singer.name, song.language</pre><br>
 
 <p>你可能會發現，在前面兩個範例中，歌曲數目為 0 的鏡音並未被列出，這是因為兩張表格的 singer_id 取的是交集。若要將鏡音也列在查詢結果當中，則可使用「LEFT JOIN」，代表取左邊表格的所有資料。這時候，表格的順序就會很重要。</p>
 <pre class="brush: sql">
-SELECT singer.name, song.language, COUNT(song.singer_id) FROM singer
+SELECT singer.name, song.language, COUNT(singer.name) FROM singer
 LEFT JOIN song ON singer.id = song.singer_id
-GROUP BY song.language, song.singer_id</pre><br>
+GROUP BY singer.name, song.language</pre><br>
+
+<p>比較新版的資料庫軟體，可能會支援「WITH...AS」語法，它的概念相當於子查詢，但是當整體 SQL 語句比較複雜時，使用「WITH...AS」的可讀性比較高，並且因為其查詢結果會變成一個暫時的表格，因此對效能也有幫助。我們同樣以"歌曲包含幾種語言"示範如下，各位可以跟前面的另外兩種方法比較看看</p>
+<pre class="brush: sql">
+WITH
+	dstn_lang AS (SELECT DISTINCT(language) as langs FROM song)
+SELECT COUNT(dstn_lang.langs) FROM dstn_lang</pre><br>
+
 
 </blockquote>
 

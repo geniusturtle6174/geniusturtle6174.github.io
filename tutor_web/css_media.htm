@@ -24,14 +24,14 @@
 </p>
 
 <p>一個簡單的範例如下，這個網頁的背景色會隨視窗寬度改變(@media 通常被用於在不同螢幕大小之間變換排版，不過改變顏色的範例比較簡潔)，寬度在 500px 以下時背景色為 #fcc (粉紅)，其餘狀況時為 #ccf (粉藍)：</p>
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		body{background: #ccf}		@media (max-width: 500px){			body{background: #fcc}		}	&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		body {			background: #ccf		}		@media (max-width: 500px) {			body{				background: #fcc			}		}	&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 <p>
 在上面的範例中，我們可以看到 @media 的使用其實非常簡單，基本上就是指定某種設備屬性，在特定值範圍下使用不同樣式。而其中的"max-width: 500px"則代表瀏覽器寬度在最大 500px 的範圍內時，要改變的樣式。
 </p>
 
 <p>也可以設定稍微複雜的條件和多種規則。例如以下範例，在視窗寬度是 600 px 到 700 px 之間時，背景色是 #fcc (粉紅)；寬度是 800 px 以上時則是 #cfc (粉綠)；其餘情況則是 #ccf (粉藍)：</p>
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		body{background: #ccf}		@media (min-width: 600px) and (max-width: 700px){			body{background: #fcc}		}		@media (min-width: 800px){			body{background: #cfc}		}	&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		body {			background: #ccf		}		@media (min-width: 600px) and (max-width: 700px) {			body {				background: #fcc			}		}		@media (min-width: 800px) {			body {				background: #cfc			}		}	&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 <p>關於可偵測的設備屬性還有很多，以下舉出其中一些：</p>
 <ul>
@@ -42,19 +42,19 @@
 </ul>
 
 <p>例如，若要在寬是高的兩倍以內時，顯示粉紅色，否則為藍色，可以這樣做：</p>
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		body{background: #ccf;}		@media (max-aspect-ratio: 2/1){			body{background: #fcc}		}	&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		body {			background: #ccf;		}		@media (max-aspect-ratio: 2/1) {			body {				background: #fcc			}		}	&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 <p>視窗為橫向時顯示粉紅色，否則為藍色：</p>
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		body{background: #ccf;}		@media (orientation: landscape){			body{background: #fcc}		}	&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		body {			background: #ccf;		}		@media (orientation: landscape) {			body {				background: #fcc			}		}	&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
-<p>我們接著來看一些比較實用的狀況，例如改變 width 屬性的值，來讓物件在視窗較窄時變成直排：</p>
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		.a{ background-color: #fcc; float: left; width: 33%; height: 300px;}		.b{ background-color: #cfc; float: left; width: 33%; height: 300px;}		.c{ background-color: #ccf; float: left; width: 33%; height: 300px;}		@media (max-width: 700px) {			.a, .b, .c {width: 100%;}		}	&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class=&quot;a&quot;&gt;&lt;/div&gt;&lt;div class=&quot;b&quot;&gt;&lt;/div&gt;&lt;div class=&quot;c&quot;&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<p>我們接著來看一些比較實用的狀況，例如改變 width 屬性的值，來讓物件在視窗較窄時變成直排。例如以下範例，當視窗夠寬時，三個 div 會呈現各佔 33% 的橫排，但當視窗寬度縮小至 700 px 以內時，會變成直排：</p>
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		div {			float: left;			width: 33%;			height: 300px;		}		.a{			background-color: #fcc;		}		.b {			background-color: #cfc;		}		.c {			background-color: #ccf;		}		@media (max-width: 700px) {			.a, .b, .c {				width: 100%;			}		}	&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class=&quot;a&quot;&gt;&lt;/div&gt;&lt;div class=&quot;b&quot;&gt;&lt;/div&gt;&lt;div class=&quot;c&quot;&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
-<p>甚至是更多元的版面設計：</p>
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		div {			box-sizing: border-box;		}		.header {			background-color:#eee;			text-align:center;			padding: 15px;		}		.menu {			float:left;			width: 20%;		}		.menu a{			background-color:#eee;			padding: 3px;			margin: 3px;			display:block;			text-align:center;		}		.main {			float: left;			width: 60%;			padding: 15px;		}		.right {			float: left;			width: 20%;			text-align:center;			background-color:#eee;			padding: 10px;			margin-top: 3px;		}		@media (max-width: 700px){			.menu, .main, .right {				width: 100%;			}		}	&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class=&quot;header&quot;&gt;&lt;h1&gt;早安，當我們在睡覺的時候，美國人正在努力工作&lt;/h1&gt;&lt;/div&gt;&lt;div class=&quot;menu&quot;&gt;	&lt;a href=&quot;#&quot;&gt;Paper 01&lt;/a&gt;	&lt;a href=&quot;#&quot;&gt;Paper 02&lt;/a&gt;	&lt;a href=&quot;#&quot;&gt;Paper 03&lt;/a&gt;	&lt;a href=&quot;#&quot;&gt;Paper 04&lt;/a&gt;	&lt;a href=&quot;#&quot;&gt;Paper 05&lt;/a&gt;	&lt;a href=&quot;#&quot;&gt;Paper 06&lt;/a&gt;&lt;/div&gt;&lt;div class=&quot;main&quot;&gt;商女不知亡國恨，一天到晚寫論文。舉頭望明月，低頭寫論文。洛陽親友如相問，就說我在寫論文。少壯不努力，老大寫論文。垂死病中驚坐起，今天還沒寫論文。人生自古誰無死，來生繼續寫論文。眾裡尋他千百度，驀然回首，那人正在寫論文。昔人已乘黃鶴去，此地剩我寫論文。勸君莫打枝頭鳥，子在巢中寫論文。身無彩鳳雙飛翼，心有靈犀寫論文。故人具雞黍，邀我寫論文。不識廬山真面目，只緣我在寫論文。採得百花成蜜後，為誰辛苦寫論文。孤舟蓑笠翁，獨自寫論文。姑蘇城外寒山寺，夜半鐘聲寫論文。楊家有女初長成，養在深閨寫論文。&lt;/div&gt;&lt;div class=&quot;right&quot;&gt;我想到一篇絕妙的論文，但是這裡空間太小了我寫不下&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<p>更多元的版面設計的方式，也是依此類推，例如以下的三欄式轉直向：</p>
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		div {			box-sizing: border-box;		}		.header {			background-color: #eee;			text-align: center;			padding: 15px;		}		.menu {			float: left;			width: 20%;		}		.menu a{			background-color: #eee;			padding: 3px;			margin: 3px;			display: block;			text-align: center;		}		.main {			float: left;			width: 60%;			padding: 15px;		}		.right {			float: left;			width: 20%;			text-align: center;			background-color: #eee;			padding: 10px;			margin-top: 3px;		}		@media (max-width: 700px) {			.menu, .main, .right {				width: 100%;			}		}	&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;div class=&quot;header&quot;&gt;&lt;h1&gt;早安，當我們在睡覺的時候，美國人正在努力工作&lt;/h1&gt;&lt;/div&gt;&lt;div class=&quot;menu&quot;&gt;	&lt;a href=&quot;#&quot;&gt;Paper 01&lt;/a&gt;	&lt;a href=&quot;#&quot;&gt;Paper 02&lt;/a&gt;	&lt;a href=&quot;#&quot;&gt;Paper 03&lt;/a&gt;	&lt;a href=&quot;#&quot;&gt;Paper 04&lt;/a&gt;	&lt;a href=&quot;#&quot;&gt;Paper 05&lt;/a&gt;	&lt;a href=&quot;#&quot;&gt;Paper 06&lt;/a&gt;&lt;/div&gt;&lt;div class=&quot;main&quot;&gt;商女不知亡國恨，一天到晚寫論文。舉頭望明月，低頭寫論文。洛陽親友如相問，就說我在寫論文。少壯不努力，老大寫論文。垂死病中驚坐起，今天還沒寫論文。人生自古誰無死，來生繼續寫論文。眾裡尋他千百度，驀然回首，那人正在寫論文。昔人已乘黃鶴去，此地剩我寫論文。勸君莫打枝頭鳥，子在巢中寫論文。身無彩鳳雙飛翼，心有靈犀寫論文。故人具雞黍，邀我寫論文。不識廬山真面目，只緣我在寫論文。採得百花成蜜後，為誰辛苦寫論文。孤舟蓑笠翁，獨自寫論文。姑蘇城外寒山寺，夜半鐘聲寫論文。楊家有女初長成，養在深閨寫論文。&lt;/div&gt;&lt;div class=&quot;right&quot;&gt;我想到一篇絕妙的論文，但是這裡空間太小了我寫不下&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 <p>除了視窗比例以外，你可能也會想要在暗色主題(dark mode)當中，讓網頁呈現不同的顏色，這時就可以透過「prefers-color-scheme」來取得。需要留意的是，至目前(2020/01)為止，各家瀏覽器的最新版當中，IE 和 Edge 仍未支援此功能。</p>
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		body {			background-color: #ccc;			color: #333;		}		@media (prefers-color-scheme: dark){			body {				background-color: #333;				color: #ccc;			}		}	&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;這是一些普通的文字&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		body {			background-color: #ccc;			color: #333;		}		@media (prefers-color-scheme: dark) {			body {				background-color: #333;				color: #ccc;			}		}	&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;這是一些普通的文字&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 <p>事實上，透過 media query，來針對不同的視窗大小等瀏覽環境，改變成適合的呈現方式，就是"響應式網頁設計(Responsive Web Design, RWD)"要做的事情。若對 RWD 的其他相關標籤和屬性有興趣，請直接參考 <a href="https://www.w3schools.com/html/html_responsive.asp">W3 Schools</a> 的內容。</p>
 

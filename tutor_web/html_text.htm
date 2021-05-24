@@ -28,20 +28,20 @@
 <pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;title&gt;標題在這裡&lt;/title&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ffffcc&quot;&gt;&lt;p&gt;段落預設是靠左&lt;/p&gt;&lt;p align=&quot;left&quot;&gt;當然也可以自己加上靠左的屬性靠左&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;置中的段落&lt;/p&gt;&lt;p align=&quot;right&quot;&gt;靠右的段落&lt;/p&gt;第一行&lt;br&gt;第二行沒加 br 標籤就不會換到第三行&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 <p>
-font 標籤可以指定文字的大小、字型、顏色，其中字型部分，必須要在瀏覽者的電腦裡面也有該字型的狀況下，才會有效。另外， font 標籤在 HTML 5 以後，被建議以 CSS 的設定替代(關於什麼是 CSS，請見下一單元)。
+font 標籤可以指定文字的大小、字型、顏色，其中的字型部分，必須要在瀏覽者的電腦裡面也有該字型的狀況下，才會有效。另外， font 標籤在 HTML 5 以後，被建議以 CSS 的設定替代(關於什麼是 CSS，請見下一單元)。
 </p>
 <pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;title&gt;標題在這裡&lt;/title&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ffffcc&quot;&gt;&lt;font size=&quot;1&quot;&gt;大小最小是 1&lt;/font&gt;&lt;br&gt;&lt;font size=&quot;7&quot;&gt;大小最大是 7&lt;/font&gt;&lt;br&gt;&lt;font size=&quot;123456&quot; color=&quot;#ff0000&quot;&gt;再加上去也不會有用的&lt;/font&gt;&lt;br&gt;&lt;font size=&quot;7&quot; face=&quot;標楷體&quot; color=&quot;green&quot;&gt;這是標楷體&lt;/font&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 <p>如果要有<b>粗體(bold)</b>和<i>斜體(italic)</i>的效果，可以使用 b 和 i 標籤：</p>
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;title&gt;標題在這裡&lt;/title&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ffffcc&quot;&gt;這是一般體 &lt;br/&gt;&lt;b&gt;這是粗體&lt;/b&gt;&lt;br&gt;&lt;i&gt;這是斜體&lt;/i&gt;&lt;br&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;title&gt;標題在這裡&lt;/title&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ffffcc&quot;&gt;這是一般體&lt;br&gt;&lt;b&gt;這是粗體&lt;/b&gt;&lt;br&gt;&lt;i&gt;這是斜體&lt;/i&gt;&lt;br&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
-<p>善用「face="symbol"」，以及上標(sup)和下標(sub)的標籤，可以產生一些簡單的數學式：</p>
+<p>font 標籤的「face="symbol"」屬性值，會把一般的英文字母顯示成希臘字母，若與上標(sup)和下標(sub)這兩個標籤搭配，就可以產生一些簡單的數學式：</p>
 <pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;title&gt;標題在這裡&lt;/title&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ffffcc&quot;&gt;&lt;font face=&quot;symbol&quot;&gt;ABCDEFGHIJKLMNOPQRSTUVWXYZ&lt;/font&gt;&lt;br&gt;&lt;font face=&quot;symbol&quot;&gt;abcdefghijklmnopqrstuvwxyz&lt;/font&gt;&lt;br&gt;y = ax&lt;sup&gt;2&lt;/sup&gt; + bx + c&lt;sub&gt;1&lt;/sub&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
-<p>pre 標籤則可讓文字的排版以原貌呈現：</p>
+<p>經由第一個範例，你知道了換行要靠 br 標籤。但若透過 pre 標籤，則可讓文字的排版以原貌呈現：</p>
 <pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;title&gt;標題在這裡&lt;/title&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ffffcc&quot;&gt;&lt;pre&gt;第一行第二行第三行&lt;/pre&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
-<p>如果要顯示特殊文字，例如做為標籤的小於(&lt;)和大於(&gt;)，則可利用「&amp;OO」的形式來顯示。以下是一些範例，其他更詳細的列表，可以參考 <a href="http://www.w3schools.com/html/html_entities.asp">w3schools</a>。</p>
+<p>如果要顯示特殊文字，例如做為標籤的小於(&lt;)和大於(&gt;)，則可利用「&amp;OO」的形式來顯示，其中的「OO」可以是符號名稱，也可以是字元編號。以下是一些範例，其他更詳細的列表，可以參考 <a href="http://www.w3schools.com/html/html_entities.asp">w3schools</a>。</p>
 <pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;title&gt;標題在這裡&lt;/title&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ffffcc&quot;&gt;&lt;pre&gt;&amp;gt;&amp;lt;&amp;amp;&amp;quot;除了名稱以外，也可以用編號表示：&amp;#38;&amp;#62;&amp;#60;&amp;#48;&amp;#65;&amp;#97;&lt;/pre&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 </blockquote>

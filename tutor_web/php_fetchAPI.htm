@@ -20,16 +20,16 @@
 <blockquote>
 
 <p>
-Fetch API 跟 Ajax 當中的 XMLHttpRequest 非常相似，但是它提供了更方便的功能和使用方式；唯獨可能需要注意的是，目前(2020/04)為止，仍有大部分的功能屬於實驗性質，並且 <a href="https://www.youtube.com/watch?v=HQl2i73klpI&t=50">IE 不能動</a>。
+Fetch API 跟 Ajax 當中的 XMLHttpRequest 非常相似，但是它提供了更方便的功能和使用方式；唯獨可能需要注意的是，目前(2020/04)為止，仍有大部分的功能屬於實驗性質，並且 <a href="https://youtu.be/Lya-9_rwI5U?t=34">IE 不能動</a>。
 </p>
 
-<p>我們直接來看一個完整的範例，這個範例會顯示伺服器的時間：</p>
-<pre class="brush: htmljs">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;p id=&quot;showTimeHere&quot;&gt;&lt;/p&gt;&lt;script&gt;function update() {	fetch('ajax_time.php').then(		response =&gt; response.text()	).then(		result =&gt; {			document.getElementById('showTimeHere').innerHTML = result;			setTimeout(update, 1000);		}	).catch(		err =&gt; setTimeout(update, 1000)	);}update();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-<br>
-<p>php 部分的程式碼則與 Ajax 所需的相同，沒有變化：</p>
+<p>我們還是先來看一個顯示伺服器時間的範例。PHP 部分的程式碼與 Ajax 所需的相同，沒有變化：</p>
 <pre class="brush: htmljsphp">&lt;?phpdate_default_timezone_set('Asia/Taipei');echo date('Y-m-d H:i:s'); ?&gt;</pre>
 <br>
-<p>很顯然的，最核心的部分就是要如何來使用 fetch。當 fetch 只代入一個網址作為參數的時候，就會去抓取該網址的內容，如果成功的話就會回傳一個 Promise 的物件(關於此物件的詳細操作，此處暫不介紹)，讓你可以用"then"進行後續的操作。因此，這樣的基本的用法大致如下，其中，在處理物件或錯誤狀況的時候，必須用函式的方式來進行，你可以自由的選用一般函式，或者箭頭函式。</p>
+<p>客戶端的部份，則是換成 fetch API 相關的語法：</p>
+<pre class="brush: htmljs">&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;p id=&quot;showTimeHere&quot;&gt;&lt;/p&gt;&lt;script&gt;function update() {	fetch('ajax_time.php').then(		response =&gt; response.text()	).then(		result =&gt; {			document.getElementById('showTimeHere').innerHTML = result;			setTimeout(update, 1000);		}	).catch(		err =&gt; setTimeout(update, 1000)	);}update();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>很顯然的，最核心的部分就是要如何來使用 fetch。當 fetch 只代入一個網址作為參數的時候，就會去抓取該網址的內容，如果成功的話就會回傳一個 Promise 的物件(關於此物件的詳細操作，此處暫不介紹)，讓你可以用"then"進行後續的操作。因此，這樣的基本的用法大致如下，其中，在處理物件或錯誤狀況的時候，必須用函式的方式來進行。</p>
 <pre class="brush: htmljs">
 fetch(網址).then(
 	處理回傳物件，一般來說是以 text() 或 json() 轉成可用資訊
@@ -40,11 +40,11 @@ fetch(網址).then(
 )
 </pre><br>
 
-<p>Fetch 的預設方法是 GET，如果你想使用 POST 方法送出資料，就需要多填一些參數。我們用以下這組數字相加的範例，來看看 POST 的傳輸方式；若要嘗試 GET 的方式，需要將參數直接帶在網址上，以及切換伺服端的程式碼註解。客戶端程式碼如下：</p>
-<pre class="brush: htmljs">&lt;html&gt;&lt;head&gt;	&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.9.1.min.js&quot;&gt;&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;function myCalc(){	data = new FormData();	data.append('a', $(&quot;#a&quot;).val());	data.append('b', $(&quot;#b&quot;).val());	fetch(&quot;ajax_ab_post.php&quot;, {		method: &quot;POST&quot;,		body: data	}).then(		response =&gt; {return response.text();}	).then(		result =&gt; {document.getElementById('result').innerHTML = result;}	).catch(		err =&gt; {document.getElementById('result').innerHTML = 'GG';}	)}&lt;/script&gt;&lt;form&gt;	&lt;input type=&quot;text&quot; id=&quot;a&quot; value=&quot;1&quot;&gt; +	&lt;input type=&quot;text&quot; id=&quot;b&quot; value=&quot;2&quot;&gt;	&lt;input type=&quot;button&quot; value=&quot;=&quot; onclick=&quot;myCalc();&quot;&gt;	&lt;p id=&quot;result&quot;&gt;&lt;/p&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<p>Fetch 的預設方法是 GET，需要傳輸參數時可以將參數直接帶在網址上，如果你想使用 POST 方法送出資料，就需要填在 fetch 的第二個參數。我們用以下這組數字相加的範例，來看看 POST 的傳輸方式。伺服端的程式碼依然跟 Ajax 所需的相同：</p>
+<pre class="brush: htmljsphp">&lt;?php$a = (int)$_POST[&quot;a&quot;];$b = (int)$_POST[&quot;b&quot;];echo $a + $b;?&gt;</pre>
 <br>
-<p>伺服端程式碼如下，由於我們在伺服器端依然使用「$_POST」或者「$_GET」來接收，因此客戶端會使用「FormData」或者直接帶在網址上的方式來傳參數。如果各位上網搜尋其他範例，也可以看到前端用 JSON.stringify 傳遞的方式，此時的後端可能就需要用 JSON 相關的方法去解析字串再來做處理。：</p>
-<pre class="brush: htmljsphp">&lt;?php$a = (int)$_POST[&quot;a&quot;];$b = (int)$_POST[&quot;b&quot;];// $a = (int)$_GET[&quot;a&quot;];// $b = (int)$_GET[&quot;b&quot;];echo $a + $b;?&gt;</pre>
+<p>由於我們在伺服器端依然使用「$_POST」來接收，因此客戶端需要使用「FormData」的方式來傳遞參數，如下：</p>
+<pre class="brush: htmljs">&lt;html&gt;&lt;head&gt;	&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot; /&gt;	&lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.9.1.min.js&quot;&gt;&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;function myCalc(){	data = new FormData();	data.append('a', $(&quot;#a&quot;).val());	data.append('b', $(&quot;#b&quot;).val());	fetch(&quot;ajax_ab_post.php&quot;, {		method: &quot;POST&quot;,		body: data	}).then(		response =&gt; {			return response.text();		}	).then(		result =&gt; {			document.getElementById('result').innerHTML = result;		}	).catch(		err =&gt; {			document.getElementById('result').innerHTML = 'Error!';		}	)}&lt;/script&gt;&lt;form&gt;	&lt;input type=&quot;text&quot; id=&quot;a&quot; value=&quot;1&quot;&gt; +	&lt;input type=&quot;text&quot; id=&quot;b&quot; value=&quot;2&quot;&gt;	&lt;input type=&quot;button&quot; value=&quot;=&quot; onclick=&quot;myCalc();&quot;&gt;	&lt;p id=&quot;result&quot;&gt;&lt;/p&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 </blockquote>
 

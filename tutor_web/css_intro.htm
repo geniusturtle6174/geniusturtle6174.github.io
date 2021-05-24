@@ -20,10 +20,17 @@
 <blockquote>
 
 <p>CSS 是 Cascading Style Sheet (層疊樣式表)的縮寫，它可以用來讓網頁增加更多表現，使網頁原始碼更簡潔、易於維護。CSS 的基本語法如下：</p>
-<pre class="brush: css">選擇器{性質一:值;性質二:值;...}</pre><br>
+<pre class="brush: css">選擇器 {
+	性質一: 值;
+	性質二: 值;
+	...
+}</pre><br>
 
 <p>選擇器代表的是這個樣式要適用的對象，後面用大括號包住你要設定的屬性和值。例如以下範例，可代表將超連結的底線設為沒有，顏色設為藍色：</p>
-<pre class="brush: css">a{text-decoration:none; color:blue}</pre><br>
+<pre class="brush: css">a {
+	text-decoration: none;
+	color: blue
+}</pre><br>
 
 <p>要在網頁中加入 CSS 設定，有以下幾種方式。</p>
 
@@ -31,7 +38,10 @@
 <pre class="brush: html">&lt;head&gt;
 	......
 	&lt;style type=&quot;text/css&quot;&gt;
-		a{text-decoration:none; color:blue}
+		a {
+			text-decoration: none;
+			color: blue
+		}
 	&lt;/style&gt;
 	......
 &lt;/head&gt;</pre><br>
@@ -44,10 +54,13 @@
 &lt;/head&gt;</pre><br>
 
 <p>其中，myCss.css 這個檔案的內容如下：</p>
-<pre class="brush: css">a{text-decoration:none; color:blue}</pre><br>
+<pre class="brush: css">a {
+	text-decoration: none;
+	color: blue
+}</pre><br>
 
 <p>方法三：在標籤中使用 style 屬性。此方法的樣式，只對被使用 style 屬性的標籤有效。</p>
-<pre class="brush: html">&lt;a href=&quot;abc.htm&quot; style=&quot;text-decoration:none;color:blue&quot;&gt;</pre><br>
+<pre class="brush: html">&lt;a href=&quot;abc.htm&quot; style=&quot;text-decoration: none; color: blue&quot;&gt;</pre><br>
 
 <p>
 一般來說，為了讓設計易於維護，採取方法二的外部呼叫，讓內容和樣式分離，是比較好的做法。但本篇以下部分，為了範例的呈現方便，主要將以方法一和三做示範。

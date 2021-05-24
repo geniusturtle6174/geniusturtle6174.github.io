@@ -24,7 +24,7 @@
 
 <p>
 首先是邊框的簡單用法(表格的原始碼比較長，為了教材頁面的縮短，故使用段落進行示範)，「1px」是指邊框的粗細，「solid」是指邊框的樣式。「margin:20px」意即指定段落離上下左右邊界的距離皆為 20px (當然，如果內容不夠多，或者視窗縮得不夠小，則下邊界的效果可能不明顯)。</p>
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		p{border:1px solid; margin:20px;}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;p&gt;這是一個加了框的段落&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		p {			border: 1px solid;			margin: 20px;		}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;p&gt;這是一個加了框的段落&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 <p>
 如果要分別指定上下左右的值，則可分別以「margin-top」、「margin-bottom」、「margin-left」、「margin-right」來指定。你也透過給予 margin 屬性不同數目的值，來分別指定：
@@ -37,10 +37,10 @@
 </ul>
 
 <p>以下示範四個值的指定效果：</p>
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		p{border:1px solid;margin:20px 100px 1000px 300px;}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;p&gt;這是一個加了框的段落&lt;/p&gt;這裡是段落之外&lt;/body&gt;&lt;/html&gt;</pre>
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		p {			border: 1px solid;			margin: 20px 100px 1000px 300px;		}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;p&gt;這是一個加了框的段落&lt;/p&gt;這裡是段落之外&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 <p>段落、表格等內容與其邊框的距離，稱為 padding (邊距)。指定的語法與 margin 非常類似，這裡直接示範四個值的效果：</p>
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		p{border:1px solid;padding:20px 40px 80px 160px;}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;p&gt;夫難平者，事也。昔先帝敗軍於楚，當此時，曹操拊手，謂天下已定。──然後先帝東連吳、越，西取巴、蜀，舉兵北征，夏侯授首：此操之失計，而漢事將成也。──然後吳更違盟，關羽毀敗，秭歸蹉跌，曹丕稱帝：凡事如是，難可逆見。臣鞠躬盡瘁，死而後已；至於成敗利鈍，非臣之明所能逆睹也。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		p {			border: 1px solid;			padding: 20px 40px 80px 160px;		}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;p&gt;夫難平者，事也。昔先帝敗軍於楚，當此時，曹操拊手，謂天下已定。──然後先帝東連吳、越，西取巴、蜀，舉兵北征，夏侯授首：此操之失計，而漢事將成也。──然後吳更違盟，關羽毀敗，秭歸蹉跌，曹丕稱帝：凡事如是，難可逆見。臣鞠躬盡瘁，死而後已；至於成敗利鈍，非臣之明所能逆睹也。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 <p>Border, margin 及 padding 等屬性，是會改變物件寬高的。如果你不希望計算寬高時造成麻煩，可以將 box-sizing 設為 border-box；此時，只要你的 border, margin 及 padding 等屬性設定不是太誇張，物件的寬高就會是原本設定的寬高：</p>
 <pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		div{			border: 5px solid;			width: 400px;			margin: 2px;		}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;div&gt;Pneumonoultramicroscopicsilicovolcanoconiosis&lt;/div&gt;&lt;div style=&quot;padding: 5px&quot;&gt;Pneumonoultramicroscopicsilicovolcanoconiosis&lt;/div&gt;&lt;div style=&quot;padding: 5px;box-sizing: border-box&quot;&gt;Pneumonoultramicroscopicsilicovolcanoconiosis&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
@@ -51,10 +51,10 @@
 <p>
 上下左右的框線粗細，可以分別用「border-top-width」、「border-bottom-width」、「border-left-width」、「border-right-width」來指定，也可以用「border-width」給上不同數目的值來指定：
 </p>
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		p{border:solid; border-width:20px 40px 80px 160px;}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;p&gt;這是一個加了框而且四邊粗細不同的段落&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		p {			border: solid;			border-width: 20px 40px 80px 160px;		}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;p&gt;這是一個加了框而且四邊粗細不同的段落&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 <p>框線顏色，則可用「border-***-color」或「border-color」來指定：</p>
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		p{border:solid; border-width:20px;		  border-color: #f33 #3f3 #33f}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;p&gt;這是一個加了不同顏色的框的段落&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		p {			border: solid;			border-width: 20px;			border-color: #f33 #3f3 #33f		}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;p&gt;這是一個加了不同顏色的框的段落&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 <p>框線形式，則是用「border-***-style」或「border-style」來指定，有以下幾種樣式可以使用。其中，預設值為 none，代表沒有邊框。</p>
 <ul>
@@ -71,42 +71,38 @@
 </ul>
 
 <p>以下示範其中幾個：</p>
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		p{border:#f70 10px;}	&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;p style=&quot;border-style:double&quot;&gt;double&lt;/p&gt;&lt;p style=&quot;border-style:dashed&quot;&gt;dashed&lt;/p&gt;&lt;p style=&quot;border-style:dotted&quot;&gt;dotted&lt;/p&gt;&lt;p style=&quot;border-style:groove&quot;&gt;groove&lt;/p&gt;&lt;p style=&quot;border-style:ridge&quot;&gt;ridge&lt;/p&gt;&lt;p style=&quot;border-style:inset&quot;&gt;inset&lt;/p&gt;&lt;p style=&quot;border-style:outset&quot;&gt;outset&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		p {			border: #f70 10px;		}	&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;p style=&quot;border-style: double&quot;&gt;double&lt;/p&gt;&lt;p style=&quot;border-style: dashed&quot;&gt;dashed&lt;/p&gt;&lt;p style=&quot;border-style: dotted&quot;&gt;dotted&lt;/p&gt;&lt;p style=&quot;border-style: groove&quot;&gt;groove&lt;/p&gt;&lt;p style=&quot;border-style: ridge&quot;&gt;ridge&lt;/p&gt;&lt;p style=&quot;border-style: inset&quot;&gt;inset&lt;/p&gt;&lt;p style=&quot;border-style: outset&quot;&gt;outset&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 <p>
 對於表格中每一儲存格的框線是否重疊，可以用「border-collapse」來設定，預設是分開(separate)的單線，但是也可以設定為重疊(collapse)。Border 的 none 和 hidden 在此處會展現差異：如果將框線設定為重疊，則 hidden 會最為優先，none 為最後；其餘樣式若粗細相同時，優先程度由高到低依次為 double, solid, dashed, dotted, ridge, outset, groove, inset。
 </p>
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		table {margin-bottom: 15px;} /* 讓三個表格之間不會黏在一起 */		table, td {border: 3px solid;}		table.test1, table.test2 {border-collapse:collapse}		table.test2 {border: 0px;} /* 把 table 本身的框線遮住，以便顯示 td 的框線 */		table.test2 td {border: 10px;}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;table&gt;	&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;預設是分開(separate)&lt;/td&gt;&lt;/tr&gt;	&lt;tr&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;2&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;table class=&quot;test1&quot;&gt;	&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;可以改成重疊(collapse)&lt;/td&gt;&lt;/tr&gt;	&lt;tr&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;2&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;table class=&quot;test2&quot;&gt;	&lt;tr&gt;&lt;td colspan=&quot;3&quot; style=&quot;border-style: solid;border-bottom-style: hidden&quot;&gt;		我們讓框線之間打一架看看，這一格的底下是 hidden	&lt;/td&gt;&lt;/tr&gt;	&lt;tr&gt;		&lt;td style=&quot;border-style: dashed&quot;&gt;這一格的四邊都是 double&lt;/td&gt;		&lt;td style=&quot;border-style: dotted&quot;&gt;這一格的四邊都是 dotted&lt;/td&gt;		&lt;td style=&quot;border-style: none&quot;&gt;這一格的四邊都是 none&lt;/td&gt;	&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		table { /* 讓三個表格之間不會黏在一起 */			margin-bottom: 15px;		}		table, td {			border: 3px solid;		}		table.test1, table.test2 {			border-collapse: collapse;		}		table.test2 { /* 把 test2 本身的框線遮住，以便顯示 td 的框線 */			border: 0px;		}		table.test2 td {			border: 10px;		}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;table&gt;	&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;預設是分開(separate)&lt;/td&gt;&lt;/tr&gt;	&lt;tr&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;2&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;table class=&quot;test1&quot;&gt;	&lt;tr&gt;&lt;td colspan=&quot;2&quot;&gt;可以改成重疊(collapse)&lt;/td&gt;&lt;/tr&gt;	&lt;tr&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;2&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;table class=&quot;test2&quot;&gt;	&lt;tr&gt;&lt;td colspan=&quot;3&quot; style=&quot;border-style: solid; border-bottom-style: hidden&quot;&gt;		我們讓框線之間打一架看看，這一格的底下是 hidden	&lt;/td&gt;&lt;/tr&gt;	&lt;tr&gt;		&lt;td style=&quot;border-style: dashed&quot;&gt;這一格的四邊都是 dashed&lt;/td&gt;		&lt;td style=&quot;border-style: dotted&quot;&gt;這一格的四邊都是 dotted&lt;/td&gt;		&lt;td style=&quot;border-style: none&quot;&gt;這一格的四邊都是 none&lt;/td&gt;	&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
-<p>
-在前面曾經出現過的「float」，可以設定文繞圖，然後可以使用「clear」解除文繞圖的設定。文繞圖可以設定在左邊或右邊，清除時也可以指定左邊或右邊，或者都清掉(both)。以下為範例：</p>
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;img src=&quot;../pics/backshadow1.jpg&quot; style=&quot;float:right&quot;&gt;&lt;p&gt;我與父親不相見已有二年餘了，我最不能忘記的是他的背影。那年冬天，祖母死了，父親的差使也交卸了，正是禍不單行的日子，我從北京到徐州，打算跟著父親奔喪回家。到徐州見著父親，看見滿院狼籍的東西，又想起祖母，不禁簌簌地流下眼淚。&lt;/p&gt;&lt;p&gt;父親說，“事已如此，不必難過，好在天無絕人之路！”&lt;/p&gt;&lt;p style=&quot;clear:right&quot;&gt;回家變賣典質，父親還了虧空；又借錢辦了喪事。這些日子，家中光景很是慘淡，一半為了喪事，一半為了父親賦閒。喪事完畢，父親要到南京謀事，我也要回到北京唸書，我們便同行。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<p>透過「position: absolute」，可以將元素"釘"在絕對的位置上：</p>
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		img {			position: absolute;			top:100px;			right:20px;		}		p {			position: absolute;			bottom:10px;			left:20px;		}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;img src=&quot;../pics/alan.jpg&quot;&gt;&lt;p&gt;這是一個被定位的段落&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
-<p>透過「position:absolute」，可以將元素"釘"在絕對的位置上：</p>
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		img{position:absolute; top:100px; right:20px;}		p{position:absolute; bottom:10px; left:20px;}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;img src=&quot;../pics/alan.jpg&quot;&gt;&lt;p&gt;這是一個被定位的段落&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-<br>
-<p>但如果被設定「position:absolute」的上層元素也有被定位(不一定要是absolute)，
+<p>但如果被設定「position: absolute」的上層元素也有被定位(不一定要是absolute)，
 則是相對於上一層元素來移動：</p>
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		#a{			width:100px;height:100px;background:#f00;			position: absolute;			top:100px;			left:100px;		}		#b{			width:100px;height:100px;background:#0f0;			position: absolute;			top:10px;			left:10px;		}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;div id=&quot;a&quot;&gt;	&lt;div id=&quot;b&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		div {			width: 100px;			height: 100px;			position: absolute;		}		#a {			background: #f00;			top: 100px;			left: 100px;		}		#b {			background: #0f0;			top: 10px;			left: 10px;		}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;div id=&quot;a&quot;&gt;	&lt;div id=&quot;b&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
-<p>透過「position:relative」，可以將元素從原來應該在的位置，進行相對的移動：</p>
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		p{position:relative;		  bottom:100px;		  left:70px;}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;img src=&quot;../pics/alan.jpg&quot;&gt;&lt;p&gt;這是一個被移動的段落&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<p>透過「position: relative」，可以將元素從原來應該在的位置，進行相對的移動：</p>
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		p {			position: relative;			bottom: 100px;			left: 70px;		}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;img src=&quot;../pics/alan.jpg&quot;&gt;&lt;p&gt;這是一個被移動的段落&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
-<p>「position:fixed」和「absolute」很類似，是將元素"釘"在視窗的某個位置上：</p>
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		div {			position: fixed;			bottom: 0px;			background: #ffcccc;			width:100%;}		/* 會了定位以後可以用 margin 把字撐開，不用寫一大堆 br */		p { margin-bottom: 200px; }	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;div&gt;這是一個被釘在底下的物件&lt;/div&gt;&lt;p&gt;這是一些字&lt;/p&gt;&lt;p&gt;這是一些字&lt;/p&gt;&lt;p&gt;這是一些字&lt;/p&gt;&lt;p&gt;這是一些字&lt;/p&gt;&lt;p&gt;這是一些字&lt;/p&gt;&lt;p&gt;這是一些字&lt;/p&gt;&lt;p&gt;這是一些字&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<p>「position: fixed」和「absolute」很類似，是將元素"釘"在視窗的某個位置上：</p>
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		div {			position: fixed;			bottom: 0px;			background: #fcc;			width: 100%;		}		/* 用 margin 把字撐開，就不用寫一大堆 br */		p {			margin-bottom: 200px;		}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;div&gt;這是一個被釘在底下的物件&lt;/div&gt;&lt;p&gt;這是一些字&lt;/p&gt;&lt;p&gt;這是一些字&lt;/p&gt;&lt;p&gt;這是一些字&lt;/p&gt;&lt;p&gt;這是一些字&lt;/p&gt;&lt;p&gt;這是一些字&lt;/p&gt;&lt;p&gt;這是一些字&lt;/p&gt;&lt;p&gt;這是一些字&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
-<p>「display:none」和「visibility:hidden」都可以讓元素消失；不過前者的效果是變成相當於該元素不存在的狀態；而後者是將元素隱形，但仍佔用空間：</p>
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;何謂四維？一曰禮，二曰義，三曰廉，&lt;span style=&quot;display:none&quot;&gt;四曰恥&lt;/span&gt;。&lt;br&gt;禮不踰節，義不自進，廉不蔽惡，&lt;span style=&quot;visibility:hidden&quot;&gt;恥不從枉&lt;/span&gt;。&lt;br&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-<br>
-<p>
-在 HTML 標籤中，你會發現有些元素之間會換行，有些則不會，這是因為它們的 display 屬性不同所致。「display:block」時代表該元素會獨佔新的一行，而「display:inline」則會跟在上一個元素後面。我們也可以用 CSS 強制改變其呈現效果：
-</p>
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		p.test{display:inline;}		b.test, i.test {display:block}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;p&gt;這是第一段&lt;/p&gt;&lt;p&gt;這是第二段&lt;/p&gt;&lt;i&gt;我是 inline 所以會跟後面連在一起不會斷行...OAO&lt;/i&gt;&lt;b&gt;我也是 inline 所以會跟前面連在一起不會斷行...QQ&lt;/b&gt;&lt;hr&gt;&lt;p class=&quot;test&quot;&gt;這是第一段&lt;/p&gt;&lt;p class=&quot;test&quot;&gt;這是第二段&lt;/p&gt;&lt;i class=&quot;test&quot;&gt;我被改成 block 了所以會跟前面拆開...OAO&lt;/i&gt;&lt;b class=&quot;test&quot;&gt;我也被改成 block 了所以會跟前面拆開...QQ&lt;/b&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<p>「display: none」和「visibility: hidden」都可以讓元素消失；不過前者的效果是變成相當於該元素不存在的狀態；而後者是將元素隱形，但仍佔用空間：</p>
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;何謂四維？一曰禮，二曰義，三曰廉，&lt;span style=&quot;display: none&quot;&gt;四曰恥&lt;/span&gt;。&lt;br&gt;禮不踰節，義不自進，廉不蔽惡，&lt;span style=&quot;visibility: hidden&quot;&gt;恥不從枉&lt;/span&gt;。&lt;br&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 <p>
-如果在上述範例中，你注意到了預設的 p 標籤會有空行，但是顯示方式被改成 block 的 i 標籤不會有空行，這是因為瀏覽器對於 p 標籤的預設樣式所導致。而當一個元素為「display:inline」時，元素本身(例如圖片、文字)的大小就是它的大小，所以有一些屬性會無法使用。以下透過對 block 和 inline 元素同時指派一些屬性，來說明其差異：
+在 HTML 標籤中，你會發現有些元素之間會換行，有些則不會，這是因為它們的 display 屬性不同所致。「display: block」時代表該元素會獨佔新的一行，而「display: inline」則會跟在上一個元素後面。我們也可以用 CSS 強制改變其呈現效果：
 </p>
-<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		p{	color: #f33;border: 5px solid #000;			width: 100px; height: 100px;			margin-top: 50px; margin-bottom: 50px;		}		i{	color: #f33;border: 5px solid #000;			width: 100px; height: 100px;			margin-top: 50px; margin-bottom: 50px;		}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;p&gt;這是加了框的段落，大小 100 * 100，離上下各 50&lt;/p&gt;&lt;i&gt;這是加了框的普通斜體字，大小 100 * 100 但是不起作用，離上下各 50 但是也不起作用&lt;/i&gt;外面加點字讓各位看看它真的是不起作用&lt;/body&gt;&lt;/html&gt;</pre>
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		p.test {			display: inline;		}		b.test, i.test {			display: block		}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;p&gt;這是第一段&lt;/p&gt;&lt;p&gt;這是第二段&lt;/p&gt;&lt;i&gt;我是 inline 所以會跟後面連在一起不會斷行&lt;/i&gt;&lt;b&gt;我也是 inline 所以會跟前面連在一起不會斷行&lt;/b&gt;&lt;hr&gt;&lt;p class=&quot;test&quot;&gt;這是第一段，我被改成 inline 了所以會跟後面連在一起&lt;/p&gt;&lt;p class=&quot;test&quot;&gt;這是第二段，我也被改成 inline 了所以會跟前面連在一起&lt;/p&gt;&lt;i class=&quot;test&quot;&gt;我被改成 block 了所以會跟前面拆開&lt;/i&gt;&lt;b class=&quot;test&quot;&gt;我也被改成 block 了所以會跟前面拆開&lt;/b&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>
+如果在上述範例中，你注意到了預設的 p 標籤會有空行，但是顯示方式被改成 block 的 i 標籤不會有空行，這是因為瀏覽器對於 p 標籤的預設樣式所導致。而當一個元素為「display: inline」時，元素本身(例如圖片、文字)的大小就是它的大小，所以有一些屬性會無法使用。以下透過對 block 和 inline 元素同時指派一些屬性，來說明其差異：
+</p>
+<pre class="brush: html">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		p, i {			color: #f66;			border: 5px solid #000;			width: 100px;			height: 100px;			margin-top: 50px;			margin-bottom: 50px;		}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;p&gt;這是加了框的段落，大小 100 * 100，離上下各 50&lt;/p&gt;&lt;i&gt;這是加了框的普通斜體字，大小 100 * 100 但是不起作用，離上下各 50 但是也不起作用&lt;/i&gt;外面加點字讓各位看看它真的是不起作用&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 <p>
 display 屬性的值，還可以設定成 inline-block 等值，若有興趣，可直接參考 <a href="http://www.w3schools.com/cssref/pr_class_display.asp">w3schools</a>。

@@ -2,12 +2,12 @@
 
 ## 課程目標
 
-了解 GPU 硬體架構，並學習 CUDA 程式設計
+了解 GPU 硬體架構，並學習 CUDA 程式設計及其平行演算法設計
 
 ## 預先要求
 
-* 修畢 C 語言相關課程
-* (非必要)修畢計算機結構與作業系統
+* 修畢：C 程式設計、資料結構
+* 修畢或正在修讀：計算機結構、作業系統、演算法
 
 ## 相關書目
 
@@ -16,16 +16,18 @@
 ## 課程進度
 
 * GPU 架構與 CUDA 程式設計簡介(3~4w)
-* 基礎最佳化技巧(3~4w)
-  * 記憶體存取模式
-  * 程式執行流程
-  * 效能評估
-* 進階最佳化技巧(3~4w)
-  * 資料傳輸模式
-  * 演算法設計
-  * (optional)多 GPU 程式設計
-* 其他加速方式(3w)
+  * 基本硬體架構：Processors and Memories
+  * 基本程式執行：Block、Thread、Warp
+  * 範例討論：向量相加、向量累加
+* 最佳化技巧(7~8w)
+  * 記憶體存取：Bank Conflict、Pinned Memory、Unified Virtual Addressing
+  * 流程控制：Synchronization、Atomics Operation
+  * 效能評估：CUDA Event、Occupancy
+  * 資料傳輸：Concurrency、Streaming
+  * 範例討論：矩陣轉置、矩陣相乘
+* 其他主題(3w)
   * CUDA in python
   * OpenCL
+  * (Optional)多 GPU 程式設計
 
-* 以上包含三至四次作業與一次期末專案，作業之優良作品與期末專案作品於課堂進行報告
+* 以上包含三至四次作業與一次期末專案

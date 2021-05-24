@@ -81,10 +81,10 @@ print(sorted(a, key=len)) # 以字串長度排序
 import functools
  
 def myCmp(x, y):
-    if(x%2==y%2):
+    if x % 2 == y % 2:
         return x - y
     else:
-        return x%2 - y%2
+        return x % 2 - y % 2
  
 a = [123, 456, 789, 10]
 print(sorted(a))

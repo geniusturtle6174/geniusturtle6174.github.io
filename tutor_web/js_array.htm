@@ -21,13 +21,20 @@
 <blockquote>
 
 <script>
-Gol_D_Roger("4-1", "4-2"); // 顯示羅傑的書的章節對應
+Gol_D_Roger(["4-1", "4-2"], true); // 顯示羅傑的書的章節對應
 </script>
 
-<p>JavaScript 的陣列，和 C 和 Python 等大多數語言一樣是從 0 開始索引，但是元素可以比較動態的加入：</p>
-<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;// 大家可能已經在其他語言很熟悉的使用方式myArr = ['...QQ', 1234, (1==4)];for(i=0;i&lt;myArr.length;i++){	document.write(&quot;第 &quot; + i + &quot; 元素的內容與型別：&quot; + myArr[i] + ', ' + typeof(myArr[i]) + &quot;&lt;br&gt;&quot;);}document.write(&quot;&lt;hr&gt;&quot;)// 利用 Array 物件myArr = new Array('...QQ', 1234, (1==4));for(i=0;i&lt;myArr.length;i++){	document.write(&quot;第 &quot; + i + &quot; 元素的內容與型別：&quot; + myArr[i] + ', ' + typeof(myArr[i]) + &quot;&lt;br&gt;&quot;);}document.write(&quot;&lt;hr&gt;&quot;)// 動態加入myArr = new Array();myArr[0] = '...QQ';myArr[1] = 1234;myArr[2] = (1==4);for(i=0;i&lt;myArr.length;i++){	document.write(&quot;第 &quot; + i + &quot; 元素的內容與型別：&quot; + myArr[i] + ', ' + typeof(myArr[i]) + &quot;&lt;br&gt;&quot;);}document.write(&quot;&lt;hr&gt;&quot;)// 元素未定義myArr = new Array(5);document.write(&quot;myArr 的長度：&quot; + myArr.length + &quot;&lt;br&gt;&quot;);document.write(&quot;myArr[0]：&quot; + myArr[0]);&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<p>
+JavaScript 的陣列，和 C 和 Python 等大多數語言一樣是從 0 開始索引；但跟某些語言(例如 C)比較不一樣的是，你可以將不同型別的資料，放在同一個陣列裡。以下用不同型別的資料，示範陣列的幾種建立方式：
+</p>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;// 大家可能已經在其他語言很熟悉的使用方式myArr = ['...QQ', 1234, (1==4)];for(i=0;i&lt;myArr.length;i++){	document.write(&quot;第 &quot; + i + &quot; 元素的內容與型別：&quot; + myArr[i] + ', ' + typeof(myArr[i]) + &quot;&lt;br&gt;&quot;);}document.write(&quot;&lt;hr&gt;&quot;)// 利用 Array 物件來建立陣列myArr = new Array('...QQ', 1234, (1==4));for(i=0;i&lt;myArr.length;i++){	document.write(&quot;第 &quot; + i + &quot; 元素的內容與型別：&quot; + myArr[i] + ', ' + typeof(myArr[i]) + &quot;&lt;br&gt;&quot;);}document.write(&quot;&lt;hr&gt;&quot;)// 建立一個空的陣列，再慢慢加入元素myArr = new Array(5);document.write(&quot;myArr 的長度：&quot; + myArr.length + &quot;&lt;br&gt;&quot;);document.write(&quot;myArr[0]：&quot; + myArr[0] + &quot;&lt;br&gt;&quot;);myArr[0] = 123;document.write(&quot;After myArr[0] = 123，myArr[0]：&quot; + myArr[0]);&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
-<p>JavaScript 的 array 有下列方法：</p>
+<p>
+使用 JavaScript 的陣列時，也可以很容易的將元素動態的加入：
+</p>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;// 動態加入myArr = new Array();myArr[0] = '...QQ';myArr[1] = 1234;myArr[2] = (1==4);for( i=0; i&lt;myArr.length; i++ ){	document.write(&quot;第 &quot; + i + &quot; 元素的內容與型別：&quot; + myArr[i] + ', ' + typeof(myArr[i]) + &quot;&lt;br&gt;&quot;);}document.write(&quot;&lt;hr&gt;&quot;)// 加入時不一定要從 0 開始，但未賦予內容時，會是 undefinedmyArr = new Array();myArr[2] = 123;myArr[4] = 456;myArr[6] = '789';for( i=0; i&lt;myArr.length; i++ ){	document.write(&quot;第 &quot; + i + &quot; 元素的內容與型別：&quot; + myArr[i] + ', ' + typeof(myArr[i]) + &quot;&lt;br&gt;&quot;);}&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>JavaScript 的 array 有許多方法，以下列出其中一些：</p>
 <ul>
 	<li>concat: 將陣列連接起來</li>
 	<li>join: 把陣列元素串成字串</li>
@@ -42,14 +49,35 @@ Gol_D_Roger("4-1", "4-2"); // 顯示羅傑的書的章節對應
 	<li>unshift: 加一個新元素到陣列最前面，並傳回新陣列</li>
 </ul>
 
-<p>其中的 join，在 JavaScript 當中是「陣列.join(字串)」，亦即 join 方法屬於陣列，但在有些語言例如 Python 當中，是「字串.join(陣列)」，亦即 join 是對於字串的操作。以下示範 join，toString，reverse，以及 sort：</p>
-<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;myArr = new Array();myArr[0] = '...QQ';myArr[1] = 1234;myArr[2] = (1==4); // falsedocument.write(&quot;join 的結果： &quot; + myArr.join() + '&lt;br&gt;');document.write(&quot;join 的結果(自訂分隔方式)： &quot; + myArr.join('/') + '&lt;br&gt;');document.write(&quot;toString 的結果： &quot; + myArr.toString() + '&lt;br&gt;&lt;br&gt;');document.write(&quot;反轉後的結果： &quot; + myArr.reverse().toString() + '&lt;br&gt;');document.write(&quot;反轉後會改變原陣列： &quot; + myArr.toString() + '&lt;br&gt;&lt;br&gt;');myArr2 = [3, 2, 4, 1, 7, 8, 5, 9, 6, 0];document.write(&quot;排序前： &quot; + myArr2.toString() + '&lt;br&gt;');myArr2.sort();document.write(&quot;排序後： &quot; + myArr2.toString() + '&lt;br&gt;&lt;br&gt;');// JavaScript 是把元素視為字串進行排序myArr2 = [&quot;Apple&quot;, &quot;action&quot;, 1234 ,'%(#)%', '^________&lt;'];document.write(&quot;排序前： &quot; + myArr2.toString() + '&lt;br&gt;');myArr2.sort();document.write(&quot;排序後： &quot; + myArr2.toString());&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<p>以下首先示範 concat, reverse, slice：</p>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;arr1 = [12, 34, 56, 78];arr2 = [90, 'ab', 'cd', 'ef'];document.write(&quot;arr1 的內容: &quot; + arr1 + '&lt;br&gt;');document.write(&quot;arr2 的內容: &quot; + arr2 + '&lt;br&gt;&lt;br&gt;');arr3 = arr1.concat(arr2)document.write(&quot;arr3 = arr1.concat(arr2), arr3: &quot; + arr3 + '&lt;br&gt;&lt;br&gt;');document.write(&quot;arr1.reverse(): &quot; + arr1.reverse() + '&lt;br&gt;');document.write(&quot;反轉後會改變原陣列: &quot; + arr1 + '&lt;br&gt;&lt;br&gt;');document.write(&quot;arr3.slice(2, 5): &quot; + arr3.slice(2, 5) + '&lt;br&gt;');&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
-<p>但不論在 JavaScript 或是 Python 當中，join 都是把陣列接起來變成字串。與之相反的是 split，可以把字串切開變成陣列：</p>
-<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;str = &quot;This is a pen.&quot;;console.log(str.split(' '));&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<p>pop, push, shift, unshift 的示範則為如下：</p>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;arr = [12, 34, 56, 78];document.write(&quot;arr 的內容: &quot; + arr + '&lt;br&gt;&lt;br&gt;');x = arr.pop()document.write(&quot;x = arr.pop()&lt;br&gt;&quot;);document.write(&quot;x: &quot; + x + '&lt;br&gt;');document.write(&quot;arr: &quot; + arr + '&lt;br&gt;&lt;br&gt;');arr.push(90)document.write(&quot;arr.push(90)&lt;br&gt;&quot;);document.write(&quot;arr: &quot; + arr + '&lt;br&gt;&lt;br&gt;');x = arr.shift()document.write(&quot;x = arr.shift()&lt;br&gt;&quot;);document.write(&quot;x: &quot; + x + '&lt;br&gt;');document.write(&quot;arr: &quot; + arr + '&lt;br&gt;&lt;br&gt;');arr.unshift('ab')document.write(&quot;arr.unshift('ab')&lt;br&gt;&quot;);document.write(&quot;arr: &quot; + arr + '&lt;br&gt;&lt;br&gt;');&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>join 是把陣列接起來變成字串，而 split，可以把字串切開變成陣列。需要留意的是，join 在 JavaScript 當中是「陣列.join(字串)」，亦即 join 方法屬於陣列，但在有些語言例如 Python 當中，是「字串.join(陣列)」，亦即 join 是對於字串的操作：</p>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;arr = ['I', 'have', 'an', 'apple'];document.write(&quot;arr 的內容: &quot; + arr + '&lt;br&gt;');document.write(&quot;arr.join(): &quot; + arr.join() + '&lt;br&gt;');document.write(&quot;自訂分隔方式，arr.join('/'): &quot; + arr.join('/') + '&lt;br&gt;&lt;br&gt;');str = &quot;This is a pen.&quot;;document.write(&quot;str 的內容: &quot; + str + '&lt;br&gt;');document.write(&quot;str.split(' '): &quot; + str.split(' ') + '&lt;br&gt;');&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>排序的基本用法如下。如果你覺得對排序結果不太能理解的話，那是因為 JavaScript 預設會把陣列的內容物當成字串來排序：</p>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;arr = [3, 2, 4, 1, 7, 8, 5, 9, 6, 0];document.write(&quot;排序前： &quot; + arr + '&lt;br&gt;');arr.sort();document.write(&quot;排序後： &quot; + arr + '&lt;br&gt;&lt;br&gt;');arr = [-3, -2, -1, 0, 1, 2, 3];document.write(&quot;排序前： &quot; + arr + '&lt;br&gt;');arr.sort();document.write(&quot;排序後： &quot; + arr + '&lt;br&gt;&lt;br&gt;');arr = [&quot;Apple&quot;, &quot;action&quot;, 1234 ,'%(#)%', '^________&lt;'];document.write(&quot;排序前： &quot; + arr + '&lt;br&gt;');arr.sort();document.write(&quot;排序後： &quot; + arr);&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 <p>排序時，也可以定義自己的 comparison function 來決定兩個元素的比較結果，其設計原則是當 a 應被視為小於 b 時(a 應排在 b 前面時)，回傳一個負整數； a 與 b 視為相等時回傳 0； a 視為大於 b 時(a 應排在 b 後面時)回傳一個正整數：</p>
-<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;function myCmp(a, b){	return a.length - b.length;}myArr = [&quot;lion&quot;, &quot;monkey&quot;, &quot;brother&quot;, &quot;rhino&quot;];document.write(&quot;字典排序： &quot; + myArr.sort().toString() + &quot;&lt;br&gt;&lt;br&gt;&quot;);document.write(&quot;使用自定義比較，進行字串長度遞增排序： &quot; + myArr.sort(myCmp).toString() + &quot;&lt;br&gt;&lt;br&gt;&quot;);&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;function myCmp(a, b){	return a.length - b.length;}arr = [&quot;lion&quot;, &quot;monkey&quot;, &quot;brother&quot;, &quot;rhino&quot;];document.write(&quot;排序前： &quot; + arr + '&lt;br&gt;');document.write(&quot;預設字典排序： &quot; + arr.sort() + &quot;&lt;br&gt;&quot;);document.write(&quot;使用自定義比較，進行字串長度遞增排序： &quot; + arr.sort(myCmp) + &quot;&lt;br&gt;&lt;br&gt;&quot;);arr = [-3, -2, -1, 0, 1, 2, 3];document.write(&quot;排序前： &quot; + arr + '&lt;br&gt;');arr.sort();document.write(&quot;排序後(預設字典排序)： &quot; + arr + '&lt;br&gt;');arr.sort((a,b)=&gt;a-b);document.write(&quot;排序後(自訂數字遞増排序)： &quot; + arr + '&lt;br&gt;');arr.sort((a,b)=&gt;b-a);document.write(&quot;排序後(自訂數字遞減排序)： &quot; + arr + '&lt;br&gt;');&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>在流程控制篇中，我們介紹了用 forEach 印出陣列裡的每個元素，但是 forEach 也可以做更進階的處理，並且也提供了第二個參數，可以讓你除了處理陣列的元素之外，也能處理 index：</p>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;// 之前的範例arr = [123, 456, 789, 'abc', 'def'];arr.forEach(item =&gt; document.write(item + '&lt;br&gt;'))document.write('&lt;br&gt;&lt;br&gt;')// 進行一點簡單操作，並放到另一個陣列arr2 = []arr.forEach(item =&gt; arr2.push(item+item))document.write('arr2 的內容: ' + arr2 + '&lt;br&gt;')document.write('&lt;br&gt;&lt;br&gt;')// 也可以處理 indexfunction process(item, idx){	document.write(idx + ': ' + item + '&lt;br&gt;')}arr.forEach(process)&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>map 也可以做到與上述範例類似的事情，而且語法又更簡短一些：</p>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;arr = [123, 456, 789, 'abc', 'def'];arr2 = arr.map(item =&gt; item + item)document.write('arr 的內容: ' + arr + '&lt;br&gt;')document.write('arr2 的內容: ' + arr2 + '&lt;br&gt;')&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>如果你需要在處理時附帶一些條件，則除了在 forEach 裡面加上 if 敘述以外，也可以使用 filter：</p>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;arr = [123, 456, 789, 'abc', 'def'];document.write('arr 的內容: ' + arr + '&lt;br&gt;')arr2 = [];arr.forEach(item =&gt; {	if( typeof(item) == 'number' ){		arr2.push(item);	}});document.write('arr2 的內容: ' + arr2 + '&lt;br&gt;')arr3 = arr.filter(item =&gt; typeof(item) == 'number')document.write('arr3 的內容: ' + arr3 + '&lt;br&gt;')&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>使用 some 和 every，分別可以檢查陣列裡面是不是有一些或者全部的元素都符合條件：</p>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;arr = [5, 6, 7, 8, 9];document.write('arr 的內容: ' + arr + '&lt;br&gt;')x = arr.some(item =&gt; item &gt; 7);document.write('x = arr.some(item =&gt; item &gt; 7)，x: ' + x + '&lt;br&gt;');x = arr.some(item =&gt; item &gt; 10);document.write('x = arr.some(item =&gt; item &gt; 10)，x: ' + x + '&lt;br&gt;');x = arr.every(item =&gt; item &gt; 3);document.write('x = arr.every(item =&gt; item &gt; 3)，x: ' + x + '&lt;br&gt;');x = arr.every(item =&gt; item &gt; 7);document.write('x = arr.every(item =&gt; item &gt; 7)，x: ' + x + '&lt;br&gt;');&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>如果你需要將陣列裡的元素，一個接一個的累加(或者其他需要累計的操作)起來，則除了自己撰寫迴圈以外，也可以使用 reduce：</p>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;arr = [3, 4, 5, 6, 7];document.write('arr 的內容: ' + arr + '&lt;br&gt;')sum = arr.reduce(	(acc, curr) =&gt; acc + curr)document.write('sum: ' + sum + '&lt;br&gt;')sum = arr.reduce(	(acc, curr) =&gt; acc + curr,	100)document.write('sum (starts from 100): ' + sum + '&lt;br&gt;')&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 </blockquote>
 

@@ -24,15 +24,20 @@ HTML 的 meta 標籤，可用於描述該網頁的 metadata。一般對 metadata
 
 <p>這個標籤的效果其實很常見，例如我們在 yahoo 想要轉貼一則新聞到 facebook 的時候，通常會看到如下的畫面：</p>
 <center><img src="pics/meta01.png"></center>
+
 <p>而你如果打開新聞頁面的原始碼，就會發現一些相似之處：</p>
 <center><img src="pics/meta02.png"></center>
-<p>這些就是網站利用 meta 標籤，將關鍵或摘要內容提示給社群網站或搜尋引擎讀取時使用的例子。</p>
+
+<p>這些就是網站利用 meta 標籤，將關鍵或摘要內容提示給社群網站或搜尋引擎讀取時使用的例子。至於屬性和值該如何使用，則須查詢相關社群網站的說明。</p>
 
 <p>meta 標籤還有其他比較基本的用途，例如若要將網頁每隔五分鐘(300 秒)就重新整理，則可將這一小段語法加到 head 的範圍當中：</p>
 <pre class="brush: html">&lt;meta http-equiv=&quot;refresh&quot; content=&quot;300&quot;&gt;</pre><br>
 
 <p>想要自動轉向到其他網頁，使用方式也非常類似：</p>
 <pre class="brush: html">&lt;meta http-equiv=&quot;refresh&quot; CONTENT=&quot;0;url=test.htm&quot;&gt;</pre><br>
+
+<p>如果你曾經試圖觀看網路名人道歉等影片，結果點開連結後發現是「●神端火鍋」的話，其實就是因為該縮網址網站(PicSee)允許自訂縮圖和標題等資訊，而將相關資訊放入 meta 標籤後，就因此造成了社群網站上顯示的預覽圖，與實際影片不符的效果。至於自動跳轉的部分，雖然可以經由 meta 標籤完成，但該網站剛好使用的不是 meta 標籤，而是 JavaScript 來達成效果。下圖為該網站某個縮網址連結頁面的原始碼截圖，該連結點選後會跳轉至「●神端火鍋」的影片，但 meta 標籤中是其他網路名人的相關訊息：</p>
+<center><img src="pics/meta03.png"></center>
 
 <p>
 meta 標籤的另外一個功能，就是指定網頁的編碼。如果你的網頁原始檔在編輯時使用的編碼，跟使用者瀏覽器的預設編碼或自動判定的結果不同時，就會看到亂碼。而解決這個問題的方法，就是透過 meta 標籤來明確地把網頁該使用的編碼告訴瀏覽器。相關語法如下，其中的"UTF-8"就是一種編碼，必須視檔案的實際編碼代換，例如以正體中文來說，"Big5"就是另一種常用的編碼。詳盡的列表可以參考 <a href="http://www.iana.org/assignments/character-sets/character-sets.xhtml">http://www.iana.org/assignments/character-sets/character-sets.xhtml</a>。
@@ -43,9 +48,16 @@ meta 標籤的另外一個功能，就是指定網頁的編碼。如果你的網
 <pre class="brush: html">&lt;meta charset=&quot;UTF-8&quot;&gt;</pre><br>
 
 <p>
-若是需要轉換檔案本身的編碼，就需要透過編輯器的幫忙。以 Notepad++ 為例，可以在"編碼"的選單中指定如下；如果使用較新版 Windows 中的記事本，也可以在存檔時指定。而若是使用 Linux，也可以利用"iconv"這個指令來幫你轉換編碼。
+若是需要轉換檔案本身的編碼，就需要透過編輯器的幫忙。以 Notepad++ 為例，可以在"編碼"的選單中指定如下：
 </p>
 <center><img src="pics/encode01.png"></center><br>
+
+<p>
+如果你使用的是 Sublime Text，則可以使用 File → Save with Encoding 來改變編碼。不過 Sublime Text 預設不支援 Big5，因此使用到的機會可能不大，反而可能需要透過其他編輯器轉換後，再用 Sublime Text 開啟。
+</p>
+<center><img src="pics/encode02.png"></center><br>
+
+<p>而若是使用 Linux，也可以利用"iconv"這個指令來幫你轉換編碼。</p>
 
 </blockquote>
 

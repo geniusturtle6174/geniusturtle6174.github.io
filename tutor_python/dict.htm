@@ -19,7 +19,11 @@
 
 <p>使用日常生活中的字典時，你會有一個要查詢的字詞，然後翻找到解釋。而在 Python 的字典中，我們把要查詢的字詞稱為 key，翻找到的解釋稱為 value。字典的基本使用方法如下：</p>
 <pre class="brush: py">
-d = {123: 456, 'OAO': 'QQ', 'easy': 'hahaha'}
+d = {
+	123: 456,
+	'OAO': 'QQ',
+	'easy': 'hahaha'
+}
 
 print(d[123])
 print(d['OAO'])
@@ -45,7 +49,11 @@ print(len(d)) # 字詞的個數
 
 <p>若要在程式中判斷字典裡是否有該字詞，可以用 in 來進行。如果是在 Python 2 當中，還有 has_key() 可以使用，不過在 Python 3 沒有此方法。</p>
 <pre class="brush: py">
-d = {123: 456, 'OAO': 'QQ', 'easy': 'hahaha'}
+d = {
+	123: 456,
+	'OAO': 'QQ',
+	'easy': 'hahaha'
+}
 
 print(123 in d)
 print('XD' in d)

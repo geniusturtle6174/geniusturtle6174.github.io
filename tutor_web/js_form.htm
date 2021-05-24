@@ -21,45 +21,46 @@
 <blockquote>
 
 <script>
-Gol_D_Roger("1-4", "7"); // 顯示羅傑的書的章節對應
+Gol_D_Roger(["1-4", "7"]); // 顯示羅傑的書的章節對應
 </script>
 
 <p>我們在 JavaScript 的簡介中，提到了如何利用「value」屬性取得/設定文字輸入框的值。而如果要知道或設定選取方塊是否被選取，則可使用「checked」屬性：</p>
-<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;script&gt;		function sendState(src, dst){			dst.checked = src.checked;		}	&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form&gt;	&lt;input type=&quot;checkbox&quot; id=&quot;a&quot; checked&gt;	&lt;input type=&quot;button&quot; value=&quot;按我向右傳送選取狀態&quot; onClick=&quot;sendState(this.form.a, this.form.b)&quot;&gt;	&lt;input type=&quot;checkbox&quot; id=&quot;b&quot;&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;function sendState(src, dst){	dst.checked = src.checked;}&lt;/script&gt;&lt;form&gt;	&lt;input type=&quot;checkbox&quot; id=&quot;a&quot; checked&gt;	&lt;input type=&quot;button&quot; value=&quot;按我向右傳送選取狀態&quot; onClick=&quot;sendState(this.form.a, this.form.b)&quot;&gt;	&lt;input type=&quot;checkbox&quot; id=&quot;b&quot;&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 <p>如果要知道下拉式選單是哪一個被選取，則可使用如下：</p>
-<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		select{width:70px;font-size:40px;}	&lt;/style&gt;	&lt;script&gt;		function showSelect(sel){			console.log(sel.selectedIndex);			console.log(sel.options[sel.selectedIndex].text); // 如果沒有任何東西被選取，這一行會產生 error		}	&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form&gt;	&lt;select size=&quot;4&quot; name=&quot;alphaList&quot;&gt;		&lt;option&gt;a&lt;/option&gt;		&lt;option&gt;b&lt;/option&gt;		&lt;option&gt;c&lt;/option&gt;		&lt;option&gt;d&lt;/option&gt;		&lt;option&gt;e&lt;/option&gt;		&lt;option&gt;f&lt;/option&gt;	&lt;/select&gt;	&lt;br&gt;	&lt;input type=&quot;button&quot; value=&quot;按我&quot; onClick=&quot;showSelect(this.form.alphaList)&quot;&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		select {			width: 70px;			font-size: 40px;		}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;function showSelect(sel){	console.log(sel.selectedIndex);	console.log(sel.options[sel.selectedIndex].text); // 如果沒有任何東西被選取，這一行會產生 error}&lt;/script&gt;&lt;form&gt;	&lt;select size=&quot;4&quot; name=&quot;alphaList&quot;&gt;		&lt;option&gt;a&lt;/option&gt;		&lt;option&gt;b&lt;/option&gt;		&lt;option&gt;c&lt;/option&gt;		&lt;option&gt;d&lt;/option&gt;		&lt;option&gt;e&lt;/option&gt;		&lt;option&gt;f&lt;/option&gt;	&lt;/select&gt;	&lt;br&gt;	&lt;input type=&quot;button&quot; value=&quot;按我&quot; onClick=&quot;showSelect(this.form.alphaList)&quot;&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 <p>如果要取得多選式的選單的每一個被選取項目，則可用迴圈逐一探詢：</p>
-<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		select{width:70px;font-size:40px;}	&lt;/style&gt;	&lt;script&gt;		function showSelect(sel){			for(i=0;i&lt;sel.length;i++){				if(sel.options[i].selected==true){					console.log(sel.options[i].text);				}			}		}	&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form&gt;	&lt;select size=&quot;4&quot; name=&quot;alphaList&quot; multiple&gt;		&lt;option&gt;a&lt;/option&gt;		&lt;option&gt;b&lt;/option&gt;		&lt;option&gt;c&lt;/option&gt;		&lt;option&gt;d&lt;/option&gt;		&lt;option&gt;e&lt;/option&gt;		&lt;option&gt;f&lt;/option&gt;	&lt;/select&gt;	&lt;br&gt;	&lt;input type=&quot;button&quot; value=&quot;按我&quot; onClick=&quot;showSelect(this.form.alphaList)&quot;&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		select {			width: 70px;			font-size: 40px;		}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;function showSelect(sel){	for( i=0; i &lt; sel.length; i++ ){		if ( sel.options[i].selected == true ){			console.log(sel.options[i].text);		}	}}&lt;/script&gt;&lt;form&gt;	&lt;select size=&quot;4&quot; name=&quot;alphaList&quot; multiple&gt;		&lt;option&gt;a&lt;/option&gt;		&lt;option&gt;b&lt;/option&gt;		&lt;option&gt;c&lt;/option&gt;		&lt;option&gt;d&lt;/option&gt;		&lt;option&gt;e&lt;/option&gt;		&lt;option&gt;f&lt;/option&gt;	&lt;/select&gt;	&lt;br&gt;	&lt;input type=&quot;button&quot; value=&quot;按我&quot; onClick=&quot;showSelect(this.form.alphaList)&quot;&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
-<p>稍微整理一下前面示範的性質。假設某個下拉式選單的物件名稱為「theSelect」，則有如下性質：</p>
-<ul>
-	<li>theSelect.options: 一個陣列，代表所有選項</li>
-	<li>theSelect.options.length: 陣列長度，即選項個數</li>
-	<li>theSelect.options[i].text: 第 i 個選項的文字</li>
-	<li>theSelect.options[i].value: 第 i 個選項的值</li>
-	<li>theSelect.options.selectedIndex: 被選取的 index 值。
+<p>稍微整理一下前面示範的性質。假設某個下拉式選單的物件名稱為「sel」，則有如下性質：</p>
+<ul><!--https://stackoverflow.com/questions/19301712/select-length-vs-options-length-->
+	<li>sel.length: 選單中選項的數量</li>
+	<li>sel.options: 一個陣列，代表所有選項(實際上不是陣列，但是你可以當成陣列來操作)</li>
+	<li>sel.options.length: 陣列長度，即選項個數，與「sel.length」的值相同</li>
+	<li>sel.options.selectedIndex: 被選取的 index 值。
 		如果沒有選取任何選項，則為 -1；若是多選式選單，則會是頭一個被選取的 index 值</li>
-	<li>theSelect.options[i].selected: 第 i 個選項是否被選取</li>
+	<li>sel.options[i].text: 第 i 個選項的文字</li>
+	<li>sel.options[i].value: 第 i 個選項的值</li>
+	<li>sel.options[i].selected: 第 i 個選項是否被選取</li>
 </ul>
 
-<p>如果想要動態的新增/刪除選項，也可透過操作這一些性質來進行。要刪除選項，總共有兩種方法(我們一樣假設該選單的物件名稱為「theSelect」)：</p>
+<p>如果想要動態的新增/刪除選項，也可透過操作這一些性質來進行。要刪除選項，總共有兩種方法(我們一樣假設該選單的物件名稱為「sel」)：</p>
 <ul>
-	<li>theSelect.options[i] = null: 直接刪除第 i 個選項</li>
-	<li>theSelect.options[i].length = n: 設定選項個數，多的會被砍掉</li>
+	<li>sel.options[i] = null: 直接刪除第 i 個選項</li>
+	<li>sel.options[i].length = n: 設定選項個數，多的會被砍掉</li>
 </ul>
 
 <p>若要新增選項，則可直接使用如下：</p>
-<pre class="brush: htmljs">theSelect.options[i] = new Option(text, value)</pre><br>
+<pre class="brush: htmljs">sel.options[i] = new Option(text, value)</pre><br>
 
-<p>但須注意，如果 i 在 [0, theSelect.options.length) 之間，則會把原有選項覆蓋掉；若 i 洽等於 theSelect.options.length，則會新增選項(當 i 超過 theSelect.options.length 時的狀況，可自行嘗試看看)。範例展示如下：</p>
-<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		select{width:70px;font-size:40px;}	&lt;/style&gt;	&lt;script&gt;		function sendToOtherSide(src, dst){			src = document.getElementById(src);			dst = document.getElementById(dst);			if(src.options.selectedIndex!=-1){				var i = src.options.selectedIndex;				var text = src.options[i].text;				var value = src.options[i].value;				dst.options[dst.options.length] = new Option(text, value);				src.options[i] = null;			}		}	&lt;/script&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form&gt;	&lt;table&gt;&lt;tr&gt;		&lt;td&gt;			&lt;select size=&quot;4&quot; id=&quot;listA&quot; multiple&gt;				&lt;option&gt;a&lt;/option&gt;				&lt;option&gt;b&lt;/option&gt;				&lt;option&gt;c&lt;/option&gt;				&lt;option&gt;d&lt;/option&gt;				&lt;option&gt;e&lt;/option&gt;				&lt;option&gt;f&lt;/option&gt;			&lt;/select&gt;		&lt;/td&gt;		&lt;td&gt;			&lt;input type=&quot;button&quot; value=&quot;==&gt;&quot; onClick=&quot;sendToOtherSide('listA', 'listB')&quot;&gt;			&lt;br&gt;&lt;br&gt;			&lt;input type=&quot;button&quot; value=&quot;&lt;==&quot; onClick=&quot;sendToOtherSide('listB', 'listA')&quot;&gt;		&lt;/td&gt;		&lt;td&gt;			&lt;select size=&quot;4&quot; id=&quot;listB&quot; multiple&gt;&lt;/select&gt;		&lt;/td&gt;	&lt;/tr&gt;&lt;/table&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<p>但須注意，如果 i 在 [0, sel.options.length) 之間，則會把原有選項覆蓋掉；若 i 洽等於 sel.options.length，則會新增選項(當 i 超過 sel.options.length 時的狀況，可自行嘗試看看)。以下是一個利用新增及刪除選項的指令，達到選項在兩個選單之間互相傳遞的範例：</p>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		select {			width: 70px;			font-size: 40px;		}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;function sendToOtherSide(src, dst){	src = document.getElementById(src);	dst = document.getElementById(dst);	if ( src.options.selectedIndex != -1 ){		var i = src.options.selectedIndex;		var text = src.options[i].text;		var value = src.options[i].value;		dst.options[dst.options.length] = new Option(text, value);		src.options[i] = null;	}}&lt;/script&gt;&lt;form&gt;	&lt;table&gt;&lt;tr&gt;		&lt;td&gt;			&lt;select size=&quot;4&quot; id=&quot;listA&quot; multiple&gt;				&lt;option&gt;a&lt;/option&gt;				&lt;option&gt;b&lt;/option&gt;				&lt;option&gt;c&lt;/option&gt;				&lt;option&gt;d&lt;/option&gt;				&lt;option&gt;e&lt;/option&gt;				&lt;option&gt;f&lt;/option&gt;			&lt;/select&gt;		&lt;/td&gt;		&lt;td&gt;			&lt;input type=&quot;button&quot; value=&quot;==&gt;&quot; onClick=&quot;sendToOtherSide('listA', 'listB')&quot;&gt;			&lt;br&gt;&lt;br&gt;			&lt;input type=&quot;button&quot; value=&quot;&lt;==&quot; onClick=&quot;sendToOtherSide('listB', 'listA')&quot;&gt;		&lt;/td&gt;		&lt;td&gt;			&lt;select size=&quot;4&quot; id=&quot;listB&quot; multiple&gt;&lt;/select&gt;		&lt;/td&gt;	&lt;/tr&gt;&lt;/table&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 <p>上述範例中，把右邊的選項加回左邊時，會放在最後面，如果需要保留原來順序，也可以嘗試透過 value 屬性來記錄原本的位置，並在加入選項時，像搬動陣列一樣的操作。</p>
 
 <p>表單元件還有很多性質，我們以 textarea 示範如下：</p>
-<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		textarea{font-size:40px;}		table,tr,td{font-size:20px;border:1px solid}		tr:hover{background:#9f9}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form&gt;	&lt;textarea id=&quot;test&quot; cols=&quot;20&quot; rows=&quot;5&quot;&gt;這是測試&lt;/textarea&gt;	&lt;br&gt;&lt;/form&gt;&lt;hr&gt;&lt;script&gt;	document.write(&quot;&lt;table&gt;&lt;tr&gt;&lt;td&gt;屬性名稱&lt;/td&gt;&lt;td&gt;值&lt;/td&gt;&lt;/tr&gt;&quot;);	theArea = document.getElementById(&quot;test&quot;);	for(prop in theArea){		document.write(&quot;&lt;tr&gt;&lt;td&gt;&quot; + prop + &quot;&lt;/td&gt;&lt;td&gt;&quot; + theArea[prop] + &quot;&lt;/td&gt;&lt;/tr&gt;&quot;);	}	document.write(&quot;&lt;/table&gt;&quot;);&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;	&lt;style&gt;		textarea {			font-size: 40px;		}		table, tr, td {			font-size: 20px;			border: 1px solid;		}		tr:hover {			background: #9f9;		}	&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form&gt;	&lt;textarea id=&quot;test&quot; cols=&quot;20&quot; rows=&quot;5&quot;&gt;這是測試&lt;/textarea&gt;	&lt;br&gt;&lt;/form&gt;&lt;hr&gt;&lt;script&gt;	document.write(&quot;&lt;table&gt;&lt;tr&gt;&lt;td&gt;屬性名稱&lt;/td&gt;&lt;td&gt;值&lt;/td&gt;&lt;/tr&gt;&quot;);	obj = document.getElementById(&quot;test&quot;);	for(prop in obj){		document.write(&quot;&lt;tr&gt;&lt;td&gt;&quot; + prop + &quot;&lt;/td&gt;&lt;td&gt;&quot; + obj[prop] + &quot;&lt;/td&gt;&lt;/tr&gt;&quot;);	}	document.write(&quot;&lt;/table&gt;&quot;);&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 <p>我們將其中幾個性質說明如下：</p>
 <ul>

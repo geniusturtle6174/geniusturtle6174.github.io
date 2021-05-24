@@ -21,53 +21,77 @@
 
 <p>在以往的範例中，我們是將後端的 PHP 程式碼，與前端的 HTML, CSS 和 JavaScript 混在同一個檔案撰寫，當專案規模開始增加時，這樣的做法會不利於分工。因此，市面上有許多模板引擎(Smarty, Twig, ...)乃至於框架(CakePHP, CodeIgniter, Laravel, ...)，來幫你對程式架構做更好的安排。本篇將以匿名留言版為例，提供一個簡易的模板化做法，以做為各位開始使用市面相關工具前的參考。</p>
 
-<p>最容易想到的做法之一，通常是是盡可能把所有容易分離的 php 部分丟進 include 或 require，此時主要介面部分的程式碼如下：</p>
+<p>說到將前後端分離，最容易想到的做法之一，是是盡可能把所有容易分離的 php 部分丟進 include 或 require，此時主要介面部分的程式碼如下：</p>
 <pre class="brush: htmljsphp">﻿&lt;?phpinclude(&quot;php_template_01_back_01.php&quot;);?&gt;&lt;html&gt;&lt;head&gt;&lt;style&gt;textarea{vertical-align:top}&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form action=&quot;&lt;?php echo basename($_SERVER['PHP_SELF']);?&gt;&quot; method=&quot;post&quot;&gt;	綽號：&lt;input type=&quot;text&quot; name=&quot;nickName&quot;&gt;&lt;br&gt;	內容：&lt;textarea name=&quot;msgBody&quot;&gt;&lt;/textarea&gt;&lt;br&gt;	&lt;input type=&quot;submit&quot; value=&quot;送出&quot;&gt;&lt;/form&gt;&lt;hr&gt;&lt;?phpinclude(&quot;php_template_01_back_02.php&quot;);?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 <p>其中，php_template_01_back_01.php 的內容如下：</p>
-<pre class="brush: htmljsphp">﻿&lt;?phpinclude(&quot;pdoInc.php&quot;);function getIp(){	return $_SERVER['REMOTE_ADDR'];}function showMsg($row){	$nn = htmlspecialchars($row['nickname']);	$msg = htmlspecialchars($row['content']);	$msg = str_replace(&quot;\n&quot;, &quot;&lt;br/&gt;&quot;, $msg);	echo &quot;&lt;table border=\&quot;1\&quot;&gt;&lt;tr&gt;&quot;;	echo &quot;&lt;td&gt;留言人: &quot;.$nn.&quot;&lt;/td&gt;&quot;;	echo &quot;&lt;td&gt;時間: &quot;.$row['time'].&quot;&lt;/td&gt;&quot;;	echo &quot;&lt;td&gt;位置: &quot;.$row['ip'].&quot;&lt;/td&gt;&lt;/tr&gt;&quot;;	echo &quot;&lt;tr&gt;&lt;td colspan=\&quot;3\&quot;&gt;留言內容:&lt;br/&gt;&quot;.$msg.&quot;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;br/&gt;&quot;;}// 如果有留言，則加入之if(isset($_POST['nickName']) &amp;&amp; isset($_POST['msgBody']) &amp;&amp; $_POST['nickName']!='' &amp;&amp; $_POST['msgBody']!=''){	$sth = $dbh-&gt;prepare('INSERT INTO msgboard (nickname, content, ip) VALUES (?, ?, ?)');	$sth-&gt;execute(array($_POST['nickName'], $_POST['msgBody'], getIp()));	echo '&lt;meta http-equiv=REFRESH CONTENT=0;url=php_mysqli_msgBoard.php&gt;';}?&gt;</pre>
+<pre class="brush: htmljsphp">﻿&lt;?phpinclude(&quot;pdoInc.php&quot;);function getIp(){	return $_SERVER['REMOTE_ADDR'];}function showMsg($row){	$nn = htmlspecialchars($row['nickname']);	$msg = htmlspecialchars($row['content']);	$msg = str_replace(&quot;\n&quot;, &quot;&lt;br/&gt;&quot;, $msg);	echo &quot;&lt;table border=\&quot;1\&quot;&gt;&lt;tr&gt;&quot;;	echo &quot;&lt;td&gt;留言人: &quot;.$nn.&quot;&lt;/td&gt;&quot;;	echo &quot;&lt;td&gt;時間: &quot;.$row['time'].&quot;&lt;/td&gt;&quot;;	echo &quot;&lt;td&gt;位置: &quot;.$row['ip'].&quot;&lt;/td&gt;&lt;/tr&gt;&quot;;	echo &quot;&lt;tr&gt;&lt;td colspan=\&quot;3\&quot;&gt;留言內容:&lt;br/&gt;&quot;.$msg.&quot;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;br/&gt;&quot;;}// 如果有留言，則加入之if(isset($_POST['nickName']) &amp;&amp; isset($_POST['msgBody']) &amp;&amp; $_POST['nickName']!='' &amp;&amp; $_POST['msgBody']!=''){	$sth = $dbh-&gt;prepare('INSERT INTO msgboard (nickname, content, ip) VALUES (?, ?, ?)');	$sth-&gt;execute(array($_POST['nickName'], $_POST['msgBody'], getIp()));	echo '&lt;meta http-equiv=REFRESH CONTENT=0;url=php_template_01_front.php&gt;';}?&gt;</pre>
 <br>
 <p>而 php_template_01_back_02.php 的內容如下：</p>
 <pre class="brush: htmljsphp">﻿&lt;?php	$sth = $dbh-&gt;query('SELECT * from msgboard ORDER BY id DESC');	while($row = $sth-&gt;fetch(PDO::FETCH_ASSOC)){		showMsg($row);	}?&gt;</pre>
 <br>
-<p>在這種方法中，仍然會有一些部份無法拆開，例如表單中的 action (如果你希望用程式自動取得自己檔名的時候)，以及 showMsg 當中的 HTML 排版。我們也可以只將跟顯示直接相關以外的部分拆開，此時的顯示部分如下：</p>
-<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;style&gt;textarea{vertical-align:top}&lt;/style&gt;&lt;/head&gt;
+<p>AJAX 也是一種前後端分離的設計方式。我們已經看過它應用於聊天室中的範例，現在只是改成留言板。總之，顯示的部分如下：</p>
+<pre class="brush: htmljsphp">﻿&lt;html&gt;
+&lt;head&gt;
+	&lt;style&gt;
+		textarea {
+			vertical-align: top
+		}
+	&lt;/style&gt;
+	&lt;script type=&quot;text/javascript&quot; src=&quot;jquery-1.9.1.min.js&quot;&gt;&lt;/script&gt;
+	&lt;script&gt;
+	function sendMsg(){
+		$.post(
+			&quot;php_template_ajax_back.php&quot;,
+			{
+				nickname: $(&quot;#nickname&quot;).val(),
+				msg: $(&quot;#msg&quot;).val()
+			}
+		);
+		$(&quot;#msg&quot;).val(&quot;&quot;);
+		showMsg();
+	}
+	
+	function showMsg(){
+		$.get(
+			&quot;php_template_ajax_back.php&quot;,
+			{},
+			response =&gt; {
+				str = &quot;&quot;;
+				response.forEach(item =&gt; {
+					str += &quot;&lt;table border=\&quot;1\&quot;&gt;&lt;tr&gt;&quot;;
+					str += &quot;&lt;td&gt;留言人: &quot; + item['nickname'] + &quot;&lt;/td&gt;&quot;;
+					str += &quot;&lt;td&gt;時間: &quot; + item['time'] + &quot;&lt;/td&gt;&quot;;
+					str += &quot;&lt;td&gt;位置: &quot; + item['ip'] + &quot;&lt;/td&gt;&lt;/tr&gt;&quot;;
+					str += &quot;&lt;tr&gt;&lt;td colspan=\&quot;3\&quot;&gt;留言內容:&lt;br/&gt;&quot; + item['msg'] + &quot;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;br/&gt;&quot;;
+				});
+				$(&quot;#showMsgHere&quot;).html(str);
+			},
+			'json'
+		);
+	}
+	
+	$(function(){
+		showMsg();
+	})
+	&lt;/script&gt;
+&lt;/head&gt;
 &lt;body bgcolor=&quot;#ccccff&quot;&gt;
 
-&lt;form action=&quot;php_template_02_back.php&quot; method=&quot;post&quot;&gt;
-	綽號：&lt;input type=&quot;text&quot; name=&quot;nickName&quot;&gt;&lt;br&gt;
-	內容：&lt;textarea name=&quot;msgBody&quot;&gt;&lt;/textarea&gt;&lt;br&gt;
-	&lt;input type=&quot;submit&quot; value=&quot;送出&quot;&gt;
+&lt;form&gt;
+	綽號：&lt;input type=&quot;text&quot; id=&quot;nickname&quot;&gt;&lt;br&gt;
+	內容：&lt;textarea id=&quot;msg&quot;&gt;&lt;/textarea&gt;&lt;br&gt;
+	&lt;input type=&quot;button&quot; value=&quot;送出&quot; onclick=&quot;sendMsg();&quot;&gt;
 &lt;/form&gt;
 
 &lt;hr&gt;
 
-&lt;?php
-
-include(&quot;pdoInc.php&quot;);
-
-function showMsg($row){
-	$nn = htmlspecialchars($row['nickname']);
-	$msg = htmlspecialchars($row['content']);
-	$msg = str_replace(&quot;\n&quot;, &quot;&lt;br/&gt;&quot;, $msg);
-	echo &quot;&lt;table border=\&quot;1\&quot;&gt;&lt;tr&gt;&quot;;
-	echo &quot;&lt;td&gt;留言人: &quot;.$nn.&quot;&lt;/td&gt;&quot;;
-	echo &quot;&lt;td&gt;時間: &quot;.$row['time'].&quot;&lt;/td&gt;&quot;;
-	echo &quot;&lt;td&gt;位置: &quot;.$row['ip'].&quot;&lt;/td&gt;&lt;/tr&gt;&quot;;
-	echo &quot;&lt;tr&gt;&lt;td colspan=\&quot;3\&quot;&gt;留言內容:&lt;br/&gt;&quot;.$msg.&quot;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;br/&gt;&quot;;
-}
-
-$sth = $dbh-&gt;query('SELECT * from msgboard ORDER BY id DESC');
-while($row = $sth-&gt;fetch(PDO::FETCH_ASSOC)){
-	showMsg($row);
-}
-
-?&gt;
+&lt;div id=&quot;showMsgHere&quot;&gt;&lt;/div&gt;
 
 &lt;/body&gt;&lt;/html&gt;
 </pre>
 <br>
-<p>後端存取資料等的部分如下。在此法中，顯示部分的表單送出時，是送給處理資料部分的 php 程式，並且不論是否需要處理都導向回來：</p>
+<p>後端存取資料等的部分如下。此處把接收和發送寫在一起，你當然也可以像聊天室的範例一樣拆開來寫：</p>
 <pre class="brush: htmljsphp">﻿&lt;?php
 include(&quot;pdoInc.php&quot;);
 
@@ -76,19 +100,28 @@ function getIp(){
 }
 
 // 如果有留言，則加入之
-if(isset($_POST['nickName']) &amp;&amp; isset($_POST['msgBody']) &amp;&amp; $_POST['nickName']!='' &amp;&amp; $_POST['msgBody']!=''){
+if(isset($_POST['nickname']) &amp;&amp; isset($_POST['msg']) &amp;&amp; $_POST['nickname']!='' &amp;&amp; $_POST['msg']!=''){
 	$sth = $dbh-&gt;prepare('INSERT INTO msgboard (nickname, content, ip) VALUES (?, ?, ?)');
-	$sth-&gt;execute(array($_POST['nickName'], $_POST['msgBody'], getIp()));
+	$sth-&gt;execute(array($_POST['nickname'], $_POST['msg'], getIp()));
 }
 
-echo '&lt;meta http-equiv=REFRESH CONTENT=0;url=php_template_02_front.php&gt;';
-
+$resultArr = array();
+$sth = $dbh-&gt;query('SELECT * from msgboard ORDER BY id DESC');
+while($row = $sth-&gt;fetch(PDO::FETCH_ASSOC)){
+	$resultArr[] = array(
+		'nickname' =&gt; htmlspecialchars($row[&quot;nickname&quot;]),
+		'msg' =&gt; htmlspecialchars($row[&quot;content&quot;]),
+		'time' =&gt; $row[&quot;time&quot;],
+		'ip' =&gt; $row[&quot;ip&quot;]
+	);
+}
+echo json_encode($resultArr);
 ?&gt;</pre>
 <br>
-<p>在這個方法中，仍然有(並且有不少的)排版相關的 php 程式碼被留下來。若要將排版做比較好的分離，就可以考慮模板化的方式。它的運作原則是，php 收到使用者請求後，會讀取模板並做適當取代後，再回傳給使用者，示意圖如下：</p>
+<p>模板化設計是另一種將後端程式跟前端顯示拆開設計的方式。它的運作原則是，PHP 收到使用者請求後，會讀取模板並做適當取代，再回傳給使用者，示意圖如下：</p>
 <center><img src="pics/php_template_struct.png"></center>
 
-<p>我們先來看一個較簡單的顯示使用者資訊的範例，此處使用 session 篇提到的 user 資料表，頁面功能是輸入帳號顯示暱稱。模板的部分如下，跟 HTML 檔案長得非常相似，只是有些地方留下了似乎是要被代換的空白：</p>
+<p>我們先來看一個較簡單的顯示使用者資訊的範例，此處使用 session 篇提到的 user 資料表，頁面功能是輸入帳號顯示暱稱。模板的部分如下，跟 HTML 檔案長得非常相似，只是有些地方留下了看似是要被代換的空白：</p>
 <pre class="brush: htmljsphp">﻿&lt;!DOCTYPE html&gt;
 &lt;html&gt;
 &lt;head&gt;
@@ -111,7 +144,7 @@ echo '&lt;meta http-equiv=REFRESH CONTENT=0;url=php_template_02_front.php&gt;';
 &lt;/html&gt;
 </pre>
 <br>
-<p>那些似乎要被代換的位置，就是會被 php 處理的位置。根據前面的圖片和說明，php 要負責的任務，就是讀取模板和塞資料，如下：</p>
+<p>那些看似要被代換的位置，就是會被 PHP 程式處理的位置。根據前面的圖片和說明，PHP 要負責的任務，就是讀取模板和塞資料，如下：</p>
 <pre class="brush: htmljsphp">﻿&lt;?php
 include(&quot;pdoInc.php&quot;);
 

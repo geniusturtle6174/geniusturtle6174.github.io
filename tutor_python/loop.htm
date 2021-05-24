@@ -39,7 +39,7 @@ function toggle(){
 本篇將程式初學者所需的內容預設為隱藏，若需閱讀請點<a onclick="toggle()">這裡</a>切換
 </p>
 
-<p>程式中，經常需要重複的進行某些動作，這時候，就需要用到"迴圈"。其中一種方法是 for 迴圈，其基本的用法如下：
+<p>程式中，經常需要重複的進行某些動作，這時候，就需要用到"迴圈"。其中一種方法是 for 迴圈，其基本的用法如下：</p>
 <pre class="brush: python">
 for 變數 in 串列或其他任何一串東西:
 	程式敘述
@@ -66,7 +66,7 @@ for i in range(10, 1, -1):
 	print(i)
 </pre>
 
-<p>會跟著迴圈跳動的變數，若沒有其他特殊用途，則習慣上會命名為 i, j, k 等等。程式裡面的 print，會因會變數 i 的跳動，而印出不同的數字。</p>
+<!--p>會跟著迴圈跳動的變數，若沒有其他特殊用途，則習慣上會命名為 i, j, k 等等。程式裡面的 print，會因會變數 i 的跳動，而印出不同的數字。</p-->
 
 <div class="newbie">
 <p>我們將前面的範例稍微變更一點點，則可以從 1 加到 100：</p>
@@ -147,14 +147,18 @@ for i, x in enumerate(a, 10):
 
 <p>迴圈跟 dictionary 結合時，則有以下幾種用法：</p>
 <pre class="brush: python">
-d = {'AB': 'CDE', 'QQ': 'OAO', 123: 456}
+d = {
+	'AB': 'CDE',
+	'QQ': 'OAO',
+	123: 456
+}
 
 for k in d:
 	print(k, d[k])
 
 print('---------')
 
-for k, v in d.items(): # 在 Python 2 請改用 iteritems
+for k, v in d.items(): # 在 Python 2 是 iteritems
 	print(k, v)
 </pre>
 

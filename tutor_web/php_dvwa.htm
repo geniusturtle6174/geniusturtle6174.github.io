@@ -45,15 +45,15 @@ if( $result &amp;&amp; mysql_num_rows( $result ) == 1 ) {
 	// ...
 }</pre><br>
 
-<p>很明顯的，雖然密碼是加密過才送進去比對，但是 $user 可以被 SQL injection，各位可以用帳號為「admin' -- 」(請注意尾巴有空白)，搭配隨意密碼來測試。而 medium 和 high 層級，雖然依序加上了 mysqli_connect_error 和 stripslashes，但仍然可以透過暴力嘗試來登入。</p>
+<p>很明顯的，雖然密碼是加密過才送進去比對，但是 $user 可以被 SQL injection，各位可以用帳號為「admin' -- 」(請注意尾巴有空白)，搭配隨意密碼來測試。而 medium 和 high 層級，雖然依序加上了 mysqli_real_escape_string 和 stripslashes，以及在登入錯誤時會暫停數秒等機制，但仍然有辦法透過暴力嘗試來登入。</p>
 
-<p>Impossible 層級則是在資料庫中新增了 last_login 和 failed_login 欄位，來分別代表最後嘗試登入的時間和失敗次數，並用程式判斷是否應該鎖定帳號禁止登入，概念如下：</p>
+<p>Impossible 層級則是在資料庫中新增了 last_login 和 failed_login 欄位，來分別代表最後嘗試登入的時間和失敗次數，以藉此判斷是否應該鎖定帳號禁止登入，概念如下：</p>
 <pre class="brush: htmljsphp">
 $total_failed_login = 3;
 $lockout_time       = 15;
 $account_locked     = false;
 
-Check to see whether the user has been locked out: select failed_login, last_login from table
+Check whether the user has been locked out: select failed_login, last_login from table
 if( has_result &amp;&amp; num of failed_login &gt; $total_failed_login){
 	Calculate when the user would be allowed to login again
 	if(not allowed){
@@ -63,7 +63,7 @@ if( has_result &amp;&amp; num of failed_login &gt; $total_failed_login){
 
 Check whether username matches the password
 if( matched &amp;&amp; $account_locked == false ){
-	Set `failed_login` of table
+	Reset `failed_login` of table
 }
 else {
 	Random sleep
@@ -77,7 +77,7 @@ Update `last_login` of table
 <hr>
 
 <p>
-接著是"Command Injection"，原始碼在 vulnerabilities/exec/source。這裡的範例是輸入 IP，網頁會幫你顯示 ping 指令的結果。Low 層級當中對輸入沒有做任何過濾，因此你可以使用「127.0.0.1 &amp;&amp; dir D:\」之類的指令；medium 層級當中，將用以區隔指令的"&amp;&amp;"和";"(for Linux)過濾掉，但仍可以用「127.0.0.1 | dir D:\」來繞過；high 層級則是把指令中常見的幾個標點符號過濾掉，但很不幸的在過濾 pipe 時多了一個空白(如下)，因此仍能繞過。
+接著是"Command Injection"，原始碼在 vulnerabilities/exec/source。這裡的範例是輸入 IP，網頁會幫你顯示 ping 指令的結果。Low 層級當中對輸入沒有做任何過濾，因此你可以使用例如「127.0.0.1 &amp;&amp; dir D:\」之類的指令，來對該段程式碼進行設計外的操作；medium 層級當中，將用以區隔指令的"&amp;&amp;"和";"(for Linux)過濾掉，但仍可以用「127.0.0.1 | dir D:\」來繞過；high 層級則是把指令中常見的幾個標點符號過濾掉，但很不幸的在過濾 pipe 時多了一個空白(如下)，因此仍能繞過。
 </p>
 <pre class="brush: htmljsphp">
 // Set blacklist
@@ -102,7 +102,7 @@ $target = str_replace( array_keys( $substitutions ), $substitutions, $target );
 <hr>
 
 <p>
-CSRF 的全名是 Cross Site Request Forgery，跨站請求偽造，DVWA 使用的範例是變更密碼，參數使用 GET 傳遞，原始碼在 vulnerabilities/csrf/source。Low 層級沒有驗證包括舊密碼在內的任何內容，因此只要提供 http://localhost/DVWA/vulnerabilities/csrf/?password_new=123&password_conf=123&Change=Change# 這樣的一個連結，就可以任意地進行修改。Medium 和 high 層級則因為加入 HTTP_REFERER 甚至於隨機數值(CSRF token)來驗證，因此需要用修改 HTTP header 等技巧，甚至套用其他漏洞，才能從站外頁面攻擊(因為 php7 移除 HTTP_REFERER，因此可能無法測試)。Impossible 層級則是加入了舊密碼的驗證，因此除了暴力嘗試以外無法破解。
+CSRF 的全名是 Cross Site Request Forgery，中文名稱為跨站請求偽造。DVWA 使用的範例是變更密碼，參數使用 GET 傳遞，原始碼在 vulnerabilities/csrf/source。Low 層級沒有驗證包括舊密碼在內的任何內容，因此只要提供 http://localhost/DVWA/vulnerabilities/csrf/?password_new=123&password_conf=123&Change=Change# 這樣的一個連結，就可以任意地進行修改。Medium 和 high 層級則因為加入 HTTP_REFERER 甚至於隨機數值(CSRF token)來驗證，因此需要用修改 HTTP header 等技巧，甚至套用其他漏洞，才能從站外頁面攻擊(因為 php7 移除 HTTP_REFERER，因此可能無法測試)。Impossible 層級則是加入了舊密碼的驗證，因此除了暴力嘗試以外無法破解。
 </p>
 
 <hr>
@@ -182,13 +182,13 @@ if( (
 </ul>
 
 <p>
-至於 medium 層級，雖然進行了 mysql_real_escape_string，但是由於 SQL 語句卻移除了單引號，所以將前述部分語句範例進行簡單代換後，例如「1 or 1 = 1」，依然可以使用。High 層級需要配合其他漏洞改掉 $_SESSION 才能繞過，而 impossible 層級則是限制了輸入的使用者編號必須是數字。
+至於 medium 層級，雖然使用了 mysql_real_escape_string 以跳脫單引號等字元，但是由於 SQL 語句卻移除了單引號，所以將前述部分範例進行簡單代換後，例如「1 or 1 = 1」，依然可以使用。High 層級使用「$_SESSION['id']」來取值，但如果有其他漏洞能改掉 SESSION 則也會被攻擊，而 impossible 層級則是限制了輸入的使用者編號必須是數字。
 </p>
 
 <hr>
 
 <p>
-XSS 依據出現的地方分類，由於這幾個部分非常相似，故此處以 reflected 做示範，其範例是將輸入的文字印出，原始碼在 vulnerabilities/xss_r/source，測試此範例時，請留意較新版的 Chrome 預設會擋掉 XSS，因此可能需要用 Firefox 或 IE 來測試。Low 層級沒有任何防禦，因此可以輸入任意的 html 或 JavaScript 片段。Medium 層級用以下方法將「&lt;script&gt;」標籤刪除，但依然可以用「&lt;script &gt;」、「&lt;scri&lt;script&gt;pt&gt;」或者「&lt;ScrIpt&gt;」等方法來繞過。</p>
+XSS 依據出現的地方不同，分成 DOM、reflected，以及 stored 等三種；由於這幾個部分非常相似，故此處以 reflected 做示範，其範例是將輸入的文字印出，原始碼在 vulnerabilities/xss_r/source，測試此範例時，請留意較新版的 Chrome 預設會擋掉 XSS，因此可能需要用 Firefox 或 IE 來測試。Low 層級沒有任何防禦，因此可以輸入任意的 html 或 JavaScript 片段。Medium 層級用以下方法將「&lt;script&gt;」標籤刪除，但依然可以用「&lt;script &gt;」、「&lt;scri&lt;script&gt;pt&gt;」或者「&lt;ScrIpt&gt;」等方法來繞過。</p>
 <pre class="brush: htmljsphp">$name = str_replace('&lt;script&gt;', '', $_GET['name']);</pre><br>
 
 <p>High 層級當中雖然禁止了 script 標籤的各種大小寫，也不允許你在中間插入字串，但仍能用「&lt;img src=1 onerror=alert('xss')&gt;」等方法繞過。Impossible 層級則是使用 htmlspecialchars 來過濾使用者輸入內容。</p>

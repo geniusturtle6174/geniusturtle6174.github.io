@@ -22,7 +22,7 @@
 <script>showWarning("本篇適用於 PHP5 以前，PHP7 開始不提供「mysql_*」系列函式，本篇亦不再更新技術內容與提供範例之動態展示。");</script>
 
 <p>
-要讓 php 與 MySQL 結合，需要先使用「mysql_connect」與資料庫連線，再來，由於一個帳號下可能有很多個資料庫，所以還需要使用「mysql_select_db」來選擇資料庫(或者，把 SQL 指令中的「表格名稱」替換成「資料庫名稱.表格名稱」)。由於這些是經常要進行的操作，所以通常會獨立成一個檔案，然後含括進來。之後，可以透過「mysql_query」將 SQL 指令送進去查詢，然後用「mysql_fetch_array」逐一讀取結果。
+要讓 PHP 與 MySQL 結合，需要先使用「mysql_connect」與資料庫連線，再來，由於一個帳號下可能有很多個資料庫，所以還需要使用「mysql_select_db」來選擇資料庫(或者，把 SQL 指令中的「表格名稱」替換成「資料庫名稱.表格名稱」)。由於這些是經常要進行的操作，所以通常會獨立成一個檔案，然後含括進來。之後，可以透過「mysql_query」將 SQL 指令送進去查詢，然後用「mysql_fetch_array」逐一讀取結果。
 </p>
 
 <p>以下是一個簡單的範例，會將前面介紹的排行榜資料顯示出來(mysql_num_rows 可以取得資料的筆數，而 mysql_fetch_array 抓取出的結果，用 key 和 index 的方式都可以存取)：</p>
