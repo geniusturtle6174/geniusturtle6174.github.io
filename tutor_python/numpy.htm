@@ -79,7 +79,7 @@ print(np.hstack([a, b]))
 c = np.vstack([a, b]) if(a.size) else b
 </pre>
 
-<p>一些統計等運算，例如極值、排序、平均、共變異矩陣：</p>
+<p>一些統計等運算，例如極值、排序、平均：</p>
 <pre class="brush: py">
 import numpy as np
 
@@ -96,10 +96,6 @@ c = np.array([[4,2,5,3,1], [8,6,7,9,0]])
 print(np.mean(c)) # 所有元素平均
 print(np.mean(c, axis=0)) # 沿著 row index 的方向平均
 print(np.mean(c, axis=1)) # 沿著 column index 的方向平均
-
-d = np.array([[4,2,5,3,1], [8,6,7,9,0], [15,27,42,17,83]])
-print(np.cov(d)) # 每個 column 當作一個資料點，故總共 5 筆，每筆 3 維
-print(np.cov(d, rowvar=False)) # 每個 row 當作一個資料點，故總共 3 筆，每筆 5 維
 </pre>
 
 <p>關於上列的極值或排序，如果想要找出位置或順序再做進一步利用時，可以使用 argmax 或 argsort (僅以向量示範)：</p>
