@@ -1,0 +1,137 @@
+﻿<html>
+<head>
+	<title>線上教材：Python 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushPython.js"></script>
+	<script type="text/javascript" src="shBrushXml.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+Flask 是一個 Python 當中的 web 框架，你可以透過他來完成一些網站架設的工作。本篇將對 Flask 進行粗淺的介紹，在開始使用之前，你必須先以「pip install flask」指令來安裝它。
+</p>
+
+<p>首先來看基礎的"Hello World"範例。只要把此內容存檔並執行成功，就可以用 http://localhost:5000 看到內容：</p>
+<pre class="brush: py">
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route('/')
+def hello():
+	return 'Hello World!'
+
+if __name__ == '__main__':
+	app.run(debug=True)
+</pre>
+
+<p>在上述範例中：</p>
+<ul>
+	<li>「app = Flask(__name__)」代表初始化 Flask 物件，其中的「__name__」代表模組名稱，如果直接執行該 *.py 檔案，則其內容會是"__main__"。</li>
+	<li>「app.run」會實際執行此 web 應用，其中的 debug 參數，可以設定是否要用 debug 模式來執行。由於使用 debug 模式時，會提供比較多的錯誤訊息，因此不應使用在正式環境上。啟動的 port 預設是 5000，我們也可以用 port 參數去修改。</li>
+	<li>「@app.route」會創立一個可存取的連結，而當有人存取該連結時，它後面的 function 就會被執行，該 function 要負責回傳使用者應該看到的內容。範例中的單個斜線，代表網站的根目錄。</li>
+</ul>
+
+<p>前面說到，function 必須負責回傳使用者應該看到的內容，但若是把完整的 HTML 原始碼寫在 python 程式當中是非常不實際的，因此我們要改由模板的方式來顯示網頁應呈現的內容。以下範例假設在 ./templates 資料夾下，有一個 hello.htm 檔案(內容不限)，以作為首頁該顯示的內容：</p>
+<pre class="brush: py">
+from flask import Flask, render_template
+
+app = Flask(__name__)
+
+@app.route('/')
+def hello():
+	return render_template('hello.htm')
+
+if __name__ == '__main__':
+	app.run(debug=True)
+</pre>
+
+<p>上述範例中的 ./templates 資料夾，是 Flask 預設會存放模板的地方，如果你想要修改預設行為的話，可以在初始化 Flask 物件的時候，用 template_folder 參數指定，例如「app = Flask(__name__, template_folder="myTemplateFolder")」</p>
+
+<p>既然稱為模板，那麼挖洞填空的功能是必須的。Flask 預設的模板引擎是 Jinja，通常會在你安裝 Flask 的同時一併被安裝，如果需要手動安裝，則可以使用「pip install Jinja2」來進行。Jinja 有非常多強大的功能，本篇將進行一個基本的示範。</p>
+
+<p>假設你需要透過網頁，列出使用者的姓名以及修課資訊，則可以設計以下的模板，其中被大括號包住的部分，即代表會被填空的部分：</p>
+<pre class="brush: html">
+&lt;p&gt;Hello {{ name }}，這是你的修課成績清單&lt;/p&gt;
+&lt;ul&gt;
+{% for course in course_list %}
+	&lt;li&gt;{{ course.name }}: {{ course.grade }}
+{% endfor %}
+&lt;/ul&gt;
+</pre>
+
+<p>填空時，也只需要將參數一併傳入 render_template 即可：</p>
+<pre class="brush: py">
+from flask import Flask, render_template
+
+app = Flask(__name__)
+
+@app.route('/')
+def hello():
+	course_list = [
+		{
+			'name': 'Web programming',
+			'grade': 'A+',
+		},
+		{
+			'name': 'C programming',
+			'grade': 'A',
+		},
+		{
+			'name': 'General Physics',
+			'grade': 'D',
+		},
+	]
+	return render_template('hello.htm', name='小明', course_list=course_list)
+
+if __name__ == '__main__':
+	app.run(debug=True)
+</pre>
+
+<p>如果你需要在網頁當中連結 CSS、JavaScript，或圖片等檔案，則需要放在 ./static 資料夾，並在網頁當中以"static/filename"的方式來連結。如果你想要修改預設行為的話，可以在初始化 Flask 物件的時候，用 static_folder 參數指定，例如「app = Flask(__name__, static_folder="myStaticFolder")」</p>
+
+<p>若要透過 Flask 處理使用者由表單輸入的資料，則在 HTML 的部分沒有什麼變化。以下是一個兩整數相加的範例，使用者在表單填值後按下送出，Flask 會將其相加再回傳給使用者。模板的部分如下：</p>
+<pre class="brush: html">
+&lt;form action="add" method="post"&gt;
+	&lt;input name="a"&gt; + &lt;input name="b"&gt;
+	&lt;input type="submit"&gt;
+&lt;/form&gt;
+{{ result }}
+</pre>
+
+<p>由於模板部分的 action 是"add"，因此在 Python 當中，也要新增相關的函式來進行處理，完整的內容如下(請留意，範例中未考慮使用者未輸入資料，或者輸入非數字的狀況)：</p>
+<pre class="brush: py">
+from flask import Flask, render_template, request
+
+app = Flask(__name__)
+
+@app.route('/')
+def hello():
+	return render_template('hello.htm')
+
+
+@app.route('/add', methods=['POST'])
+def add():
+	if request.method == 'POST':
+		result = int(request.form['a']) + int(request.form['b'])
+	return render_template('hello.htm', result=result)
+
+
+if __name__ == '__main__':
+	app.run(debug=True)
+</pre>
+
+</blockquote>
+
+</body></html>
