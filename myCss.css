@@ -3,10 +3,18 @@ a:hover{text-decoration:none;color:red}
 img{border-radius:7px;}
 
 .myTitle{font-size:15pt}
-body{font-size:15pt;font-family:"標楷體","DFKai-sb"}
+body{font-size:13pt;}
 .small{font-size:1pt}
 
-table{border:0;width:95%; margin-bottom: 40px; margin-top: 0px;}
+table {
+	border: 0;
+	width: 95%;
+	margin-bottom: 40px;
+	margin-top: 0px;
+}
+td {
+	padding: 5px;
+}
 
 .developmentThLeft{border-color:black;border-right:ridge;border-bottom:ridge;background-color:#ccffcc;width:30%;}
 .developmentThRight{border-color:black;border-bottom:ridge;background-color:#ccffcc;}
