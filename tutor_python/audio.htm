@@ -1,0 +1,122 @@
+﻿<html>
+<head>
+	<title>線上教材：Python 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushPython.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>要用電腦處理音訊之前，要說明音訊在電腦中是如何表示和儲存。首先，在電腦當中，是無法表示真實世界的連續性質的；因此，我們需要對真實世界進行"採樣/取樣(sampling)"，採樣的愈密集，音訊的品質就會愈高，但是檔案也會愈大。各位常聽到的"CD 音質"的密集程度，是每秒鐘取了 44100 個點，我們稱為"取樣率(sampling rate) 44.1 kHz"；而在音訊分析時，16 kHz 也是一個常用的數字。而除了每秒鐘取幾個點之外，每個點要用多少容量來表示，也是一個重要因素。通常，用 16 個 bits 已經足夠於分析或一般的聆聽；如果是錄音室的專業需求，可能會需要 48 甚至 96 個 bits。直接使用採樣資料儲存的，是 wav 格式的檔案，而其他如 mp3 或 aac 等檔案格式，則各自有不同的壓縮儲存方式。
+</p>
+
+<p><a href="pics/hello.wav">這裡</a>是一個取樣率 16 kHz，每個取樣點用 16 bits 表示，長度約 1.1 秒的單聲道音檔，內容是 hello 這個英文單字。我們可以用以下的程式讀取該音檔，以及畫出其波形：</p>
+<pre class="brush: python">
+import matplotlib.pyplot as plt
+import numpy as np
+import scipy.io.wavfile
+
+fs, y = scipy.io.wavfile.read('hello.wav')
+print(fs, y.dtype, y.shape)
+print(np.min(y), np.max(y))
+
+t = np.arange(y.shape[0]) / fs
+plt.plot(t, y)
+plt.xlabel('Time (s)')
+plt.ylabel('Raw Val')
+plt.show()
+</pre>
+
+<p>上述程式的細節說明如下</p>
+<ul>
+    <li>matplotlib、numpy、scipy 是第三方函式庫，必須使用 pip 指令來安裝，使用何種版本在本篇中沒有差異，可以直接安裝最新版。</li>
+    <li>scipy.io.wavfile.read 是用來讀取 wav 檔案，其輸出依序是取樣率及音訊本身，而每個取樣點占用的容量會對應到不同的資料型態及數值範圍，例如每個點若是 16 bit，則會以 16 位元整數來表示，範圍是 -32768 到 32767。</li>
+    <li>如果知道取樣點的位置(陣列索引值)，需要將它換算成時間(秒)，則可以將位置除以取樣頻率。</li>
+    <li>scipy.io.wavfile.read 只是讀取音檔的眾多方法之一，如果你想要處理 mp3 等其他格式，或者進行比較進階的後續處理，可以使用其它函式庫，但音檔資訊輸出的順序及值的意義可能就會有所不同。</li>
+</ul>
+
+<p>我們也可以將音訊進行簡單的處理以後再存檔，例如將音檔進行反轉播放。此處使用的是<a href="pics/we_you.wav">另外一個音檔</a>，內容是 we 以及 you 這兩個英文單字。</p>
+<pre class="brush: python">
+import scipy.io.wavfile
+
+fs, y = scipy.io.wavfile.read('we_you.wav')
+y = y[::-1]
+scipy.io.wavfile.write('reversed.wav', fs, y)
+</pre>
+
+<p>你會發現在上述範例中，反轉過來的音檔聽起來跟原本的內容也很相似，不過這是極少數反轉後還有意義的範例，絕大多數情況會像<a href="https://www.youtube.com/watch?v=BVT-2USkhMk">這個影片</a>一樣，反轉的發音聽起來像是外星語言。</p>
+
+<p>
+如果你想要對音訊開始進行一點分析，則首先需要把音訊切成許多個小片段(音框，frame)，作為分析的最小單位。Frame 的大小是一個重要的分析參數；如果太小，則根本無法代表什麼內容(可以想像一下，只取一個點的狀況)；如果太大，則比這個"最小單位"還要細微的變化，就會被忽略掉。通常來說，對於人類的講話或唱歌的音訊，我們可以取 0.032 或 0.064 秒為一個 frame，如果取樣率是 16 kHz，則相當於 512 或 1024 個取樣點。
+</p>
+
+<p>音量是聲音的三要素之一，你可能還記得它的單位是分貝，但在電腦上分析時，我們也可以簡單粗暴地把 frame 當中所有取樣點的絕對值加起來，作為這個 frame 的音量。以下這個範例，會簡單粗暴的計算一個音檔各個位置的音量，並將音量曲線顯示成圖片：</p>
+<pre class="brush: python">
+import matplotlib.pyplot as plt
+import numpy as np
+import scipy.io.wavfile
+
+FRAME_SIZE = 512
+HOP_SIZE = 256
+fs, y = scipy.io.wavfile.read('pics/hello.wav')
+
+t_wav = np.arange(y.shape[0]) / fs
+y = y / 32768
+
+volumes = []
+t_frame = []
+for i in range(0, y.shape[0], HOP_SIZE):
+    if i + FRAME_SIZE > y.shape[0]:
+        break
+    frame = y[i:i+FRAME_SIZE]
+    volumes.append(np.sum(np.abs(frame)))
+    t_frame.append(i/fs)
+
+plt.subplot(2, 1, 1)
+plt.plot(t_wav, y)
+plt.xlabel('Time (s)')
+plt.ylabel('Raw Val')
+
+plt.subplot(2, 1, 2)
+plt.plot(t_frame, volumes)
+plt.xlabel('Time (s)')
+plt.ylabel('Volume')
+
+plt.show()
+</pre>
+
+<p>上述程式的細節說明如下</p>
+<ul>
+    <li>......</li>
+</ul>
+
+
+<p>產生特定頻率音檔</p>
+
+<p>DTMF (戰慄的樂譜)</p>
+
+<p>人耳對頻率敏感度</p>
+
+<p>目視音高追蹤</p>
+
+<p>自動音高追蹤</p>
+
+<p>音色，例如弦樂 vs 管樂</p>
+
+<p>
+得到 frame 之後，我們通常會利用"傅立葉轉換"<strike>這個困難的東西</strike>，把原本的訊號轉換成好多個正弦波相加(能使用幾個正弦波來表示，取決於 frame 有多長)；把所有 frames 都轉換完畢以後並畫成圖片，就是你在音樂軟體裡面常常看到的"頻譜圖"。這種表示方法的好處是，有一些物理性質例如泛音，會很容易呈現。
+</p>
+
+</blockquote>
+
+</body></html>

@@ -18,7 +18,7 @@
 <blockquote>
 
 <ul>
-	<li>(低)除法中，如果除數是二的次方數，可以轉換成 bitwise operqtion，例如：
+	<li>(低)除法中，如果除數是二的次方數，可以轉換成 bitwise operation，例如：
 		i/1024 轉成 i >> 10、i%64 轉成 i & 63。若在程式中寫的是常數，則編譯時會自動轉換。</li>
 	<li>開根號再倒數可使用 rsqrtf() (float)或 rsqrt() (double)</li>
 	<li>(中)如果速度比精確度重要，可使用 fast math library。以下範例為精確度的展示：
@@ -64,5 +64,6 @@ int main(int argc,char **argv)
 	<li>(高)減少 global memory 的使用，盡量用 shared memory</li>
 </ul>
 
-</blockquote>
+</blockquote>
+
 </body></html>
