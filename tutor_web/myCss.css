@@ -2,8 +2,8 @@ body{margin:20px 30px 20px 30px;}
 
 a{text-decoration:none;color:blue}
 a:hover{text-decoration:none;color:red}
-.myTitle{font-size:17pt;font-family:"¼Ð·¢Åé","DFKai-sb"}
-ol, ul{font-size:12pt;font-family:"·s²Ó©úÅé";margin-top:0;margin-bottom:0;}
+.myTitle{font-size:17pt;font-family:"æ¨™æ¥·é«”","DFKai-sb"}
+ol, ul{font-size:12pt;font-family:"æ–°ç´°æ˜Žé«”";margin-top:0;margin-bottom:0;}
 
 .small{font-size:1pt}
 
@@ -19,3 +19,5 @@ table.slide th{border:solid 1px;padding:4px;background-color:#ffff99;}
 table.slide tr{border:solid 1px;background-color:#eeffff;}
 table.slide .slideGpTop{border-top:solid 3px;background-color:#eeffff;}
 table.slide td{border:solid 1px;background-color:#eeffff;padding:4px;}
+
+.oldContent{display: none}
