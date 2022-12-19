@@ -30,21 +30,11 @@ Gol_D_Roger(["8"], true); // 顯示羅傑的書的章節對應
 <pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot; onLoad=&quot;alert('Hi~!')&quot; onBeforeUnload=&quot;return('bye~!')&quot;&gt;&lt;form&gt;	這是 a，onchange 會傳送內容到 c:	&lt;input type=&quot;text&quot; name=&quot;a&quot; onChange=&quot;this.form.c.value=this.form.a.value&quot; autocomplete=&quot;off&quot;&gt;&lt;br&gt;		這是 b，onkeydown 會傳送內容到 c:	&lt;input type=&quot;text&quot; name=&quot;b&quot; onKeyDown=&quot;this.form.c.value=this.form.b.value&quot; autocomplete=&quot;off&quot;&gt;&lt;br&gt;		這是 c，等著被 a 和 b 寫來寫去:	&lt;input type=&quot;text&quot; name=&quot;c&quot;&gt;&lt;br&gt;		這是 d，onfocus 和 onblur 時會打招呼:	&lt;input type=&quot;text&quot; name=&quot;d&quot; onFocus=&quot;this.value='Hi~'&quot; onBlur=&quot;this.value='Bye~'&quot;&gt;&lt;br&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 <p>將事件內容寫在標籤裡面的寫法，叫做"事件屬性"。雖然標準上來說必須是小寫(例如： onclick)，但大多數的瀏覽器在解讀時，會允許大寫(onClick)。不過若是寫在 JavaScript 當中時，就必須按照語言規定，全部是小寫，並且必須以函式的形式指派事件內容：</p>
-<pre class="brush: htmljs">&lt;script&gt;
-document.getElementById('a').onclick = function(){
-	console.log('Hi');
-}
-&lt;/script&gt;
-</pre><br>
-
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form&gt;	&lt;input type=&quot;button&quot; id=&quot;a&quot; value=&quot;來按我&quot;&gt;&lt;/form&gt;&lt;script&gt;document.getElementById('a').onclick = function(){    console.log('Hi');}&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
 <p>或者，用「addEventListener」來指派事件：</p>
-<pre class="brush: htmljs">&lt;script&gt;
-document.getElementById('a').addEventListener('click', function(){
-	console.log('Hi');
-})
-&lt;/script&gt;
-</pre><br>
-
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form&gt;	&lt;input type=&quot;button&quot; id=&quot;a&quot; value=&quot;來按我&quot;&gt;&lt;/form&gt;&lt;script&gt;document.getElementById('a').addEventListener('click', function(){    console.log('Hi');})&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
 <p>除此之外，還存在其他的注意事項。例如你會發現這個範例不能動，這是因為事件在 HTML 文件結構還沒載入完成時就被指定的緣故：</p>
 <pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;document.getElementById('a').onclick = function(){	console.log('Hi~~');}&lt;/script&gt;&lt;form&gt;	&lt;input type=&quot;button&quot; id=&quot;a&quot; value=&quot;按我&quot;&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>

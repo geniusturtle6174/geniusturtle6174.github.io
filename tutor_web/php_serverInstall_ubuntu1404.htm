@@ -17,7 +17,32 @@
 
 <body bgcolor="#ccccff">
 <blockquote>
+<script>
 
+var status = 0;
+function toggle(){
+	var oc = document.getElementsByClassName("oldContent");
+	if(status == 1){
+		status = 0;
+		for(var i = 0; i < oc.length; i++){
+			oc[i].style.display = 'none';
+		}
+	}
+	else {
+		if(confirm("這是早期較老舊的內容，你確定要閱讀嗎？")){
+			status = 1;
+			for(var i = 0; i < oc.length; i++){
+				oc[i].style.display = 'block';
+			}
+		}
+	}
+}
+
+showWarning("本篇是為較早期的系統所撰寫的內容，並已不再更新技術說明，除非有特殊需求，否則不必閱讀此篇。若有需求，請點<a onclick=\"toggle()\">這裡</a>切換顯示或隱藏內容");
+
+</script>
+
+<div class="oldContent">
 <p>
 如果要在 Linux 下架設網頁伺服器，則通常會將 Apache, PHP, MySQL, phpMyAdmin 這四樣元件分開安裝。以下是以 Ubuntu Linux 為例，使用 apt-get 安裝相關套件以及細部設定的指令，你必須有 root 權限才能執行相關指令。以下是安裝部分之指令與說明，為了醒目，指令部分將以引號夾住：</p>
 <ul>
@@ -64,6 +89,6 @@
 <p>接下來，如果把 hello.php 範例放到你的家目錄下的 public_html (或你另外修改的)資料夾，
 則也可以經由 http://主機名稱/~使用者名稱/hello.php 看到結果。</p>
 <pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?phpecho &quot;Hello World!!&quot;?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-<br>
+<br></div>
 </blockquote>
 </body></html>

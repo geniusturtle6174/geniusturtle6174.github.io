@@ -18,6 +18,32 @@
 <body bgcolor="#ccccff">
 <blockquote>
 
+<script>
+
+var status = 0;
+function toggle(){
+	var oc = document.getElementsByClassName("oldContent");
+	if(status == 1){
+		status = 0;
+		for(var i = 0; i < oc.length; i++){
+			oc[i].style.display = 'none';
+		}
+	}
+	else {
+		if(confirm("這是早期較老舊的內容，你確定要閱讀嗎？")){
+			status = 1;
+			for(var i = 0; i < oc.length; i++){
+				oc[i].style.display = 'block';
+			}
+		}
+	}
+}
+
+showWarning("本篇是為較早期的系統所撰寫的內容，並已不再更新技術說明，除非有特殊需求，否則不必閱讀此篇。若有需求，請點<a onclick=\"toggle()\">這裡</a>切換顯示或隱藏內容");
+
+</script>
+
+<div class="oldContent">
 <p>
 AppServ 是一個在 Windows 平台運行的 WAMP (Windows, Apache, MySQL, PHP)開源工具，起源於泰國[<a href="http://zh.wikipedia.org/wiki/AppServ">wiki</a>]。AppServ 包含了 Apache, PHP, MySQL, phpMyAdmin 等元件，讓任何人都可以輕鬆的架設自己的網站伺服器。
 </p>
@@ -33,7 +59,7 @@ AppServ 是一個在 Windows 平台運行的 WAMP (Windows, Apache, MySQL, PHP)�
 <p>選擇安裝位置。若要改變，可按 Browse 自行選擇，此處使用預設值，按 Next：</p>
 <center><img src="pics/appServ03.png" /></center>
 
-<p>選擇要安裝的元件。此處使用預設值(全部安裝)，按 Next：</p>
+<p>選擇要安裝的元件。此處使用預設值（全部安裝），按 Next：</p>
 <center><img src="pics/appServ04.png" /></center>
 
 <p>輸入伺服器名稱、管理者的 e-mail，以及連接的 port。伺服器名稱可以自己取一個你喜歡的；port 維持預設即可，但若你已經安裝過 IIS 等網頁伺服器，就必須更換。輸入完後按 Next：</p>
@@ -60,6 +86,6 @@ AppServ 是一個在 Windows 平台運行的 WAMP (Windows, Apache, MySQL, PHP)�
 	order allow,deny
 	Allow from all
 &lt;/Directory&gt;</pre><br>
-
+</div>
 </blockquote>
 </body></html>

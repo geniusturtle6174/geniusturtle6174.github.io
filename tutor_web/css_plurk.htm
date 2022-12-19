@@ -1,0 +1,58 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushXml.js"></script>
+	<script type="text/javascript" src="shBrushCss.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<script>showWarning("本篇最後更新於 2022 年 9 月，若噗浪之版面設計有所更新，相關內容可能會不適用");</script>
+
+<script>showWarning("關於噗浪平台的詳細介紹，請自行參考<a href=\"https://www.plurk.com/aboutUs\">官方介紹</a>或<a href=\"https://zh.wikipedia.org/zh-tw/%E5%99%97%E6%B5%AA\">維基百科</a>");</script>
+
+<p>
+噗浪（Plurk）是一個社群平台，其眾多特色之一，是你可以用 CSS 調整自己首頁的版面。基本上，你只要知道特定物件的 class 或 id 等資訊，就可以自己撰寫 CSS 語法去調整它。以下將用簡短的幾個範例作概念性的介紹，你也可以參考網路上其他更豐富的教學，或者直接套用網友製作的<a href="https://www.plurk.com/p/nt2tlu">語法產生器</a>。
+</p>
+
+<p>噗浪允許使用者修改顯示名稱的顏色，而且你修改的顏色在別人的河道上也會如實顯示，反之亦然，所以你若不想在自己的河道上看到花花綠綠的顏色，可以這樣用：</p>
+<pre class="brush: css">a.name {color: black !important;}</pre><br>
+
+<p>上述語法的選擇器會是「a.name」的原因是，顯示的名稱會是一個 class 為「name」的超連結。而上述語法的缺點是，會連自己修改過的顏色也覆蓋掉，因此你可以找到自己的 uid，並使用下列語法（下面範例的數字是我的某支帳號的 uid，請記得替換成你自己的）：</p>
+<pre class="brush: css">a.name:not([data-uid=&quot;3999234&quot;]) {color: black !important;}</pre><br>
+
+<p>如果覺得某一則噗太吵，那麼你可能會想按下消音。如果你還想進一步讓它顏色變透明一點，存在感低一點，等到要看了再明確顯示，則因為消音中的噗的 class 會多一個「muted」，所以我們可以這樣使用：</p>
+<pre class="brush: css">.muted {opacity: 0.2}
+.muted:hover {opacity: 1;}</pre><br>
+
+<p>
+噗浪有一個代表使用熱度的數值，叫做「karma」，華語的使用者通常也會稱為「卡馬」或者「卡瑪」。這個數值會顯示在河道下方的個人檔案中（有些網友製作的版型，會把整塊個人檔案換個位置），並且會根據數值不同而有不同的預設樣式。如果你希望改變它的顯示樣式，例如在破百之前就擁有酷炫(?)的陰影，則可以這樣設定：
+</p>
+<pre class="brush: css">#karma {color: green; text-shadow: 3px 3px 3px #99ff99;}</pre><br>
+
+<p>
+噗浪網頁版的使用者偶爾會感到困擾的原因之一，是「全部標記為已讀」的按鈕按下後，並不會像 app 版本一樣出現確認訊息，所以不時會有使用者說他不小心按到這顆按鈕，因此錯過了一大堆訊息等等。我們用如下的方法，就可以很簡便的將其隱藏：
+</p>
+<pre class="brush: css">#mark_all_link {display: none !important;}</pre><br>
+
+<p>
+如果你還是需要全部已讀的功能，只是不希望誤按的話，也可以使用兩次 transform，將其跟並列的「顯示所有訊息」調換位置（你可以只使用一次看看，就知道為什麼這裡會需要用兩次）：
+</p>
+<pre class="brush: css">#noti_re_actions {transform: scaleX(-1);}
+#noti_re_actions a {transform: scaleX(-1); margin-left: 3px; margin-right: 8px;}</pre><br>
+
+</blockquote>
+
+</body></html>

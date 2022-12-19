@@ -25,16 +25,16 @@ Damn Vulnerable Web App (DVWA) 是一個基於 PHP 和 MySQL 實作的 web 應�
 </p>
 
 <p>
-若要安裝 DVWA，請到 <a href="http://www.dvwa.co.uk/">http://www.dvwa.co.uk/</a>，下載後解壓縮，並放到網頁伺服器可讀取的目錄下。接著，我們要將 config 資料夾下的 config.inc.php.dist 複製為 config.inc.php，並修改其中的資料庫帳密；裡面預設使用 root，你也可以(或者必須，依系統而定)新增一個專門的使用者帳號來測試。上述設定完成後，請用瀏覽器連線到 setup.php 進行安裝前的設定的確認，若有出現紅色提示，代表你的伺服器缺少某些東西，或者設定比較安全，從而可能無法測試某些安全問題(以下範例將假設 allow_url_fopen 和 allow_url_include 為 off)。若設定上沒有問題，就可以按下"Create / Reset Database"，讓程式自動幫你設定好測試用的資料庫。
+若要安裝 DVWA，請到 <a href="http://www.dvwa.co.uk/">http://www.dvwa.co.uk/</a>，下載後解壓縮，並放到網頁伺服器可讀取的目錄下。接著，我們要將 config 資料夾下的 config.inc.php.dist 複製為 config.inc.php，並修改其中的資料庫帳密；裡面預設使用 root，你也可以（或者必須，依系統而定）新增一個專門的使用者帳號來測試。上述設定完成後，請用瀏覽器連線到 setup.php 進行安裝前的設定的確認，若有出現紅色提示，代表你的伺服器缺少某些東西，或者設定比較安全，從而可能無法測試某些安全問題（以下範例將假設 allow_url_fopen 和 allow_url_include 為 off）。若設定上沒有問題，就可以按下"Create / Reset Database"，讓程式自動幫你設定好測試用的資料庫。
 </p>
 
 <p>
-接著要連到 login 登入。DVWA 的文件(docs/DVWA_v1.3.pdf)中提到，預設帳密是 admin/password，當然因為資料庫在自己手上，所以也可以直接用 phpmyadmin 連進去看密碼。DVWA 將密碼用 md5 加密儲存，不過因為範例的密碼是很常見的密碼，因此也可以將密文放到網路上搜尋或者自己嘗試字典法暴力破解，例如 gordonb 的密碼是 abc123。登入後，在左下方的"DVWA Security"，可以讓你調整安全層級，這裡分成 low/medium/high 三種狀況讓你測試，並有 impossible 層級，來示範安全的作法(若你玩過較舊的版本，則舊版本的 high 就是現在的 impossible)。
+接著要連到 login 登入。DVWA 的文件(docs/DVWA_v1.3.pdf)中提到，預設帳密是 admin/password，當然因為資料庫在自己手上，所以也可以直接用 phpmyadmin 連進去看密碼。DVWA 將密碼用 md5 加密儲存，不過因為範例的密碼是很常見的密碼，因此也可以將密文放到網路上搜尋或者自己嘗試字典法暴力破解，例如 gordonb 的密碼是 abc123。登入後，在左下方的"DVWA Security"，可以讓你調整安全層級，這裡分成 low/medium/high 三種安全層級狀況讓你測試，並有 impossible 層級，來示範安全的作法（若你玩過較舊的版本，則舊版本的 high 就是現在的 impossible）。
 </p>
 
 <hr>
 
-<p>首先我們來看"Brute Force"，原始碼的路徑位於 vulnerabilities/brute/source。這裡的範例是輸入帳號密碼，若正確的話就會顯示歡迎訊息，否則顯示錯誤。在 low 層級當中，寫法是這樣的(稍微經過了一點簡化，移除跟破解較無關的部分)：</p>
+<p>首先我們來看"Brute Force"，原始碼的路徑位於 vulnerabilities/brute/source。這裡的範例是輸入帳號密碼，若正確的話就會顯示歡迎訊息，否則顯示錯誤。在 low 層級當中，寫法是這樣的（稍微經過了一點簡化，移除跟破解較無關的部分）：</p>
 <pre class="brush: htmljsphp">$user = $_GET['username'];	
 $pass = $_GET['password'];
 $pass = md5($pass);
@@ -45,7 +45,7 @@ if( $result &amp;&amp; mysql_num_rows( $result ) == 1 ) {
 	// ...
 }</pre><br>
 
-<p>很明顯的，雖然密碼是加密過才送進去比對，但是 $user 可以被 SQL injection，各位可以用帳號為「admin' -- 」(請注意尾巴有空白)，搭配隨意密碼來測試。而 medium 和 high 層級，雖然依序加上了 mysqli_real_escape_string 和 stripslashes，以及在登入錯誤時會暫停數秒等機制，但仍然有辦法透過暴力嘗試來登入。</p>
+<p>很明顯的，雖然密碼是加密過才送進去比對，但是 $user 可以被 SQL injection，各位可以用帳號為「admin' -- 」（請注意尾巴有空白），搭配隨意密碼來測試。而 medium 和 high 層級，雖然依序加上了 mysqli_real_escape_string 和 stripslashes，以及在登入錯誤時會暫停數秒等機制，但仍然有辦法透過暴力嘗試來登入。</p>
 
 <p>Impossible 層級則是在資料庫中新增了 last_login 和 failed_login 欄位，來分別代表最後嘗試登入的時間和失敗次數，以藉此判斷是否應該鎖定帳號禁止登入，概念如下：</p>
 <pre class="brush: htmljsphp">
@@ -77,7 +77,7 @@ Update `last_login` of table
 <hr>
 
 <p>
-接著是"Command Injection"，原始碼在 vulnerabilities/exec/source。這裡的範例是輸入 IP，網頁會幫你顯示 ping 指令的結果。Low 層級當中對輸入沒有做任何過濾，因此你可以使用例如「127.0.0.1 &amp;&amp; dir D:\」之類的指令，來對該段程式碼進行設計外的操作；medium 層級當中，將用以區隔指令的"&amp;&amp;"和";"(for Linux)過濾掉，但仍可以用「127.0.0.1 | dir D:\」來繞過；high 層級則是把指令中常見的幾個標點符號過濾掉，但很不幸的在過濾 pipe 時多了一個空白(如下)，因此仍能繞過。
+接著是"Command Injection"，原始碼在 vulnerabilities/exec/source。這裡的範例是輸入 IP，網頁會幫你顯示 ping 指令的結果。Low 層級當中對輸入沒有做任何過濾，因此你可以使用例如「127.0.0.1 &amp;&amp; dir D:\」之類的指令，來對該段程式碼進行設計外的操作；medium 層級當中，將用以區隔指令的"&amp;&amp;"和";"(for Linux)過濾掉，但仍可以用「127.0.0.1 | dir D:\」來繞過；high 層級則是把指令中常見的幾個標點符號過濾掉，但很不幸的在過濾 pipe 時多了一個空白（如下），因此仍能繞過。
 </p>
 <pre class="brush: htmljsphp">
 // Set blacklist
@@ -102,7 +102,7 @@ $target = str_replace( array_keys( $substitutions ), $substitutions, $target );
 <hr>
 
 <p>
-CSRF 的全名是 Cross Site Request Forgery，中文名稱為跨站請求偽造。DVWA 使用的範例是變更密碼，參數使用 GET 傳遞，原始碼在 vulnerabilities/csrf/source。Low 層級沒有驗證包括舊密碼在內的任何內容，因此只要提供 http://localhost/DVWA/vulnerabilities/csrf/?password_new=123&password_conf=123&Change=Change# 這樣的一個連結，就可以任意地進行修改。Medium 和 high 層級則因為加入 HTTP_REFERER 甚至於隨機數值(CSRF token)來驗證，因此需要用修改 HTTP header 等技巧，甚至套用其他漏洞，才能從站外頁面攻擊(因為 php7 移除 HTTP_REFERER，因此可能無法測試)。Impossible 層級則是加入了舊密碼的驗證，因此除了暴力嘗試以外無法破解。
+CSRF 的全名是 Cross Site Request Forgery，中文名稱為跨站請求偽造。DVWA 使用的範例是變更密碼，參數使用 GET 傳遞，原始碼在 vulnerabilities/csrf/source。Low 層級沒有驗證包括舊密碼在內的任何內容，因此只要提供 http://localhost/DVWA/vulnerabilities/csrf/?password_new=123&password_conf=123&Change=Change# 這樣的一個連結，就可以任意地進行修改。Medium 和 high 層級則因為加入 HTTP_REFERER 甚至於隨機數值(CSRF token)來驗證，因此需要用修改 HTTP header 等技巧，甚至套用其他漏洞，才能從站外頁面攻擊（因為 php7 移除 HTTP_REFERER，因此可能無法測試）。Impossible 層級則是加入了舊密碼的驗證，因此除了暴力嘗試以外無法破解。
 </p>
 
 <hr>
@@ -150,7 +150,7 @@ response = requests.post(
 print(response.content)
 </pre><br>
 
-<p>High 層級使用附檔名加上了 getimagesize 來檢驗(如下)，但是我們可以把惡意程式碼藏在圖片的 EXIF 欄位當中上傳，如果配合較低等級的 File Inclusion 漏洞，就有辦法把它當作 php 來執行。你可以在上傳一張圖片後，將安全層級切換為 Low (Medium 也可以，但是需要另外繞過)，以 http://localhost/dvwa/vulnerabilities/fi/?page=../../hackable/uploads/[剛才上傳的檔名] 這個連結來測試。</p>
+<p>High 層級使用附檔名加上了 getimagesize 來檢驗（如下），但是我們可以把惡意程式碼藏在圖片的 EXIF 欄位當中上傳，如果配合較低等級的 File Inclusion 漏洞，就有辦法把它當作 php 來執行。你可以在上傳一張圖片後，將安全層級切換為 Low （Medium 也可以，但是需要另外繞過），以 http://localhost/dvwa/vulnerabilities/fi/?page=../../hackable/uploads/[剛才上傳的檔名] 這個連結來測試。</p>
 <pre class="brush: htmljsphp">
 // File information
 $uploaded_name = $_FILES[ 'uploaded' ][ 'name' ];

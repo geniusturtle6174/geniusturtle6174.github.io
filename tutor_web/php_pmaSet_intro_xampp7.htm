@@ -1,15 +1,15 @@
 ﻿<html>
 <head>
 	<title>線上教材：WEB 程式設計</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel=stylesheet type="text/css" href="myCss.css">
 	<base target="_blank">
 	<script type="text/javascript" src="myJs.js"></script>
 	<script type="text/javascript" src="shCore.js"></script>
 	<script type="text/javascript" src="shBrushSql.js"></script>
 	<script type="text/javascript" src="shBrushMine.js"></script>
-	<link href="shCore.css" rel="stylesheet" type="text/css" />
-	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<link href="shCore.css" rel="stylesheet" type="text/css">
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css">
 	<script type="text/javascript">
 		SyntaxHighlighter.all();
 	</script>
@@ -21,25 +21,27 @@
 
 <p>於本篇中，我們將利用 phpMyAdmin 來對 MySQL 資料庫進行一些操作。由於 XAMPP 7.x 附帶的版本，root 帳號不需密碼即可登入，所以連線到 http://localhost/phpmyadmin 即可直接進入畫面。若有設定密碼的需求，請參考網路上的其他教學。</p>
 
-<p>首先，由於安全性等問題，你可能不希望大家的 PHP 程式都用相同的帳號(未新增任何帳號前就是 root)來連線，因此以下示範新創一個使用者。請點選「使用者帳號」→「新增使用者帳號」來進行，應該會出現如下的畫面：</p>
-<center><img src="pics/pma_xampp7_01.png" /></center>
+<p>首先，由於安全性等問題，你可能不希望大家的 PHP 程式都用相同的帳號（未新增任何帳號前就是 root）來連線，因此以下示範新創一個使用者。請點選「使用者帳號」→「新增使用者帳號」來進行，應該會出現如下的畫面：</p>
+<center><img src="pics/pma_xampp7_01.png"></center>
 
 <p>其中，關於登入資訊的設定，我們必須：</p>
 <ul>
-	<li>取一個自己的使用者名稱(不分大小寫，建議使用全小寫)</li>
-	<li>主機請改成"本地"，代表 PHP 程式要跟資料庫在同一台電腦才可以連線</li>
+	<li>取一個自己的使用者名稱，不必區分大小寫，但建議使用全小寫</li>
+	<li>主機請改成「本地」，代表 PHP 程式要跟資料庫在同一台電腦才可以連線</li>
 	<li>進行設定密碼與確認密碼</li>
 </ul>
 
-<p>"使用者帳號的資料庫"則代表是否要建立與此帳號相關的資料庫 (Database)，此處提供兩個可複選的選項依序如下，一般狀況下僅勾選第一項即可：</p>
+<p>「使用者帳號的資料庫」則代表是否要建立與此帳號相關的資料庫(database)，此處提供兩個可複選的選項依序如下，一般狀況下僅勾選第一項即可：</p>
 <ul>
 	<li>建立與使用者同名的資料庫並授予所有權限</li>
 	<li>給以 帳號_ 開頭的資料庫 (username\_%) 授予所有權限</li>
 </ul>
 
-<p>"整體權限"的部分，代表對於其他資料庫的操作權限。如果這個帳號只是給網頁程式使用，則建議全部都不要勾選。</p>
+<p>「全域權限」代表將被建立的帳號，對於其他資料庫的操作權限。如果這個帳號是專門只給網頁程式使用，則建議全部都不要勾選。</p>
 
-<p>接下來，請從左邊選單點進剛剛建立的資料庫，在裡面建立資料表 (Table)。資料庫裡面會包含一或多張資料表，每張資料表則由一或多筆記錄所組成。例如，我們可以建立以下的資料表(部份資料取自 KKBOX 某天之排行榜)：</p>
+<p>之後按下「執行」，你就成功建立了一組新的資料庫使用者帳密。</p>
+
+<p>接下來，我們就可以從左邊選單點進剛剛建立的資料庫，在裡面建立資料表(table)。這是因為一個資料庫裡面，會包含一或多張資料表，每張資料表則由一或多筆記錄所組成。例如，我們可以嘗試建立以下的資料表（部份資料取自 KKBOX 某天之排行榜，部分資料非真實資料）：</p>
 <table class="slide" align=center>
 	<tr>
 		<th class="slide">id<br>(資料序號)</th>
@@ -99,39 +101,38 @@
 	</tr>
 </table>
 
-<p>這個資料表包含五個欄位，七筆記錄。每個資料表可以選定一個欄位做為主索引(primary key)，主索引的欄位值不能重複。例如，若有一張資料表記錄了同學的學號姓名，則可以選定不會重複的學號做為主索引。</p>
+<p>上面的表格包含了五個欄位，以及七筆記錄，其中三個欄位是數字，另外兩個是文字。所以我們建立一個名為「songrank」的資料表，包含五個欄位。填寫完成後，請按下「執行」：</p>
+<center><img src="pics/pma_xampp7_02.png"></center>
 
-<p>上述範例的其中三個欄位是數字，另外兩個是文字。所以我們建立一個名為"songrank"的資料表，包含五個欄位：</p>
-<center><img src="pics/pma_xampp7_02.png" /></center>
+<p>欄位的名稱與屬性分別設定如下，設定完成後，請點選右下角（不在截圖範圍中）的「儲存」：</p>
+<center><img src="pics/pma_xampp7_03.png"></center>
 
-<p>欄位的名稱與屬性分別設定如下，設定完成後，請點選右下角(不在截圖範圍中)的"儲存"：</p>
-<center><img src="pics/pma_xampp7_03.png" /></center>
-
-<p>其中：</p>
+<p>上述截圖的說明如下：</p>
 <ul>
-	<li>欄位名稱的大小寫還是沒有區別</li>
+	<li>欄位名稱的大小寫還是沒有區別，但仍建議使用全部小寫的命名</li>
 	<li>型態的簡略說明如下
 		<ul>
-			<li>CHAR: 固定長度的字串，後方會用空格補齊，長度極限是 65534 bytes</li>
-			<li>VARCHAR: 可變長度的字串，長度極限是 65534 bytes</li>
-			<li>TINYINT (SMALLINT, MEDIUMINT, INT, BIGINT): 佔用 1 (2, 3, 4, 8) 個 bytes</li>
+			<li>CHAR: 固定長度的字串，需要在下一個「長度/值」欄位先訂好那個固定的長度。如果使用者輸入的資料沒這麼長，後方會用空格補齊。長度極限是 65534 bytes</li>
+			<li>VARCHAR: 可變長度的字串，需要在下一個「長度/值」欄位先訂好最大可允許的長度，長度極限是 65534 bytes</li>
+			<li>TINYINT (SMALLINT, MEDIUMINT, INT, BIGINT): 分別是佔用 1 (2, 3, 4, 8) 個 bytes 的整數</li>
 			<li>DATETIME: 以'0000-00-00 00:00:00'的格式，儲存年月日時分秒</li>
 		</ul>
 	</li>
-	<li>如果型態是 CHAR 或 VARCHAR 等等，則需選擇長度</li>
 	<li>如果需要，可選擇預設值，如果後續新增資料時沒有指定該欄位的值，就會以預設值填入。而依據系統設定的不同，也有可能在缺乏預設值的情況下，會無法新增資料。</li>
-	<li>如果資料會有英文或數字以外的內容，建議選擇編碼，此處示範 utf8_general_ci</li>
-	<li>如果是主索引(捲軸往右拉可以勾選)，則可以將欄位設定成自動遞增(A_I, auto increment)</li>
-	<li>發現漏填了不用太擔心，後續也可以修改資料表結構</li>
+	<li>如果資料會有英文或數字以外的內容，如中文、日文時，建議選擇編碼，此處示範選擇 utf8_general_ci，你也可以嘗試其他編碼</li>
+	<li>每個資料表可以選定一個欄位做為主索引(primary key)，主索引的欄位值不能重複，例如前述表格的歌曲 id 不會重複，則可以選定它做為主索引。如果希望在每次加入資料時自動增加主索引，則可以將該欄位設定成自動遞增(A_I, auto increment)</li>
+	<li>發現漏填或填錯了不用太擔心，後續也可以修改資料表結構</li>
 </ul>
 
-<p>現在，我們可以點選「新增」，加入資料表中的記錄，加入完成後，請點選最下面的「執行」。若是覺得一次新增兩列不夠，可以把畫面往下拉，找到"繼續新增"，並修改其值：</p>
-<center><img src="pics/pma_xampp7_04.png" /></center>
+<p>現在，我們可以點選「新增」，開始把紀錄加入到資料表當中。加入完成後，請點選最下面的「執行」。若是覺得一次新增兩列不夠，可以把畫面往下拉，找到「繼續新增」，並修改其值：</p>
+<center><img src="pics/pma_xampp7_04.png"></center>
 
-<p>加入完畢後，點選「瀏覽」即可看到新增的結果。如果你想要備份這張資料表，則可以點選「匯出」，並可依需求選擇自訂選項：</p>
-<center><img src="pics/pma_xampp7_05.png" /></center>
+<p>加入完畢後，點選「瀏覽」即可看到新增的結果：。如果你想要備份這張資料表，則可以點選「匯出」，並可依需求選擇自訂選項：</p>
+<center><img src="pics/pma_xampp7_05.png"></center>
 
-<p><a href="examples/songrank.sql">此處</a>提供了上述範例的備份，若有需要，可以在下載後到資料庫的頁面中匯入檔案。</p>
+<p>如果你想要備份這張資料表，則可以點選上面的「匯出」，並可依需求選擇自訂選項，例如你若希望日後匯入時，會把整張資料表重建，或者把資料覆蓋掉的話，則可以勾選「加入 DROP TABLE / TRIGGER 指令」，或者「資料表新增資料前，先清除舊資料」。</p>
+
+<p><a href="examples/songrank.sql">此處</a>提供了上述範例的匯出成果，若有需要，可以在下載後到資料庫的頁面中匯入檔案。</p>
 
 </blockquote>
 

@@ -18,8 +18,32 @@
 <body bgcolor="#ccccff">
 
 <blockquote>
+<script>
 
-<script>showWarning("本篇適用於 PHP5 以前，PHP7 開始不提供「mysql_*」系列函式，本篇亦不再更新技術內容與提供範例之動態展示。");</script>
+var status = 0;
+function toggle(){
+	var oc = document.getElementsByClassName("oldContent");
+	if(status == 1){
+		status = 0;
+		for(var i = 0; i < oc.length; i++){
+			oc[i].style.display = 'none';
+		}
+	}
+	else {
+		if(confirm("這是早期較老舊的內容，你確定要閱讀嗎？")){
+			status = 1;
+			for(var i = 0; i < oc.length; i++){
+				oc[i].style.display = 'block';
+			}
+		}
+	}
+}
+
+showWarning("本篇是為較早期的系統所撰寫的內容，僅適用於 PHP5 以前，PHP7 開始不提供「mysql_*」系列函式，本篇亦不再更新技術內容與提供範例之動態展示。除非有特殊需求，否則不必閱讀此篇。若有需求，請點<a onclick=\"toggle()\">這裡</a>切換顯示或隱藏內容");
+
+</script>
+
+<div class="oldContent">
 
 <p>
 要讓 PHP 與 MySQL 結合，需要先使用「mysql_connect」與資料庫連線，再來，由於一個帳號下可能有很多個資料庫，所以還需要使用「mysql_select_db」來選擇資料庫(或者，把 SQL 指令中的「表格名稱」替換成「資料庫名稱.表格名稱」)。由於這些是經常要進行的操作，所以通常會獨立成一個檔案，然後含括進來。之後，可以透過「mysql_query」將 SQL 指令送進去查詢，然後用「mysql_fetch_array」逐一讀取結果。
@@ -71,7 +95,7 @@
 
 <p>各位可以在<a href="examples/msgboard.sql">這裡</a>下載設定完成的資料表。留言板本身的範例如下：</p>
 <pre class="brush: htmljsphp">﻿&lt;?phpinclude(&quot;mysqlInc.php&quot;);function getIp(){	return $_SERVER['REMOTE_ADDR'];}function showMsg($row){	$nn = htmlspecialchars($row['nickName']);	$msg = htmlspecialchars($row['msgBody']);	$msg = str_replace(&quot;\n&quot;, &quot;&lt;br&gt;&quot;, $msg);	echo &quot;&lt;table border=\&quot;1\&quot;&gt;&lt;tr&gt;&quot;;	echo &quot;&lt;td&gt;留言人: &quot;.$nn.&quot;&lt;/td&gt;&quot;;	echo &quot;&lt;td&gt;時間: &quot;.$row['time'].&quot;&lt;/td&gt;&quot;;	echo &quot;&lt;td&gt;位置: &quot;.$row['ip'].&quot;&lt;/td&gt;&lt;/tr&gt;&quot;;	echo &quot;&lt;tr&gt;&lt;td colspan=\&quot;3\&quot;&gt;留言內容:&lt;br&gt;&quot;.$msg.&quot;&lt;/td&gt;&lt;/tr&gt;&quot;;	echo &quot;&lt;/table&gt;&lt;br&gt;&quot;;}// 檢查超時留言//$timeLimitInSec = 10*60; // 10 mins//date_default_timezone_set('Asia/Taipei'); // 設定時區//$delTimeStr = date('Y-m-d H:i:s', time()-$timeLimitInSec);//$sql = &quot;DELETE FROM msgboard WHERE time&lt;='$delTimeStr'&quot;;//mysql_query($sql);// 如果有留言，則加入之if(isset($_POST['nickName']) &amp;&amp; isset($_POST['msgBody']) &amp;&amp; $_POST['nickName'] &amp;&amp; $_POST['msgBody']){	$nn = mysql_real_escape_string($_POST['nickName']);	$msg = mysql_real_escape_string($_POST['msgBody']);	$ip = getIp();	$sql = &quot;INSERT INTO msgboard (nickName, time, ip, msgBody) VALUES ('$nn', CURRENT_TIMESTAMP, '$ip', '$msg')&quot;;	//mysql_query($sql);	echo '&lt;meta http-equiv=REFRESH CONTENT=0;url=php_msgBoard.php&gt;';}?&gt;&lt;html&gt;&lt;head&gt;&lt;style&gt;textarea{vertical-align:top}&lt;/style&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form action=&quot;php_mysql_msgBoard.php&quot; method=&quot;post&quot;&gt;	綽號：&lt;input type=&quot;text&quot; name=&quot;nickName&quot;&gt;&lt;br&gt;	內容：&lt;textarea name=&quot;msgBody&quot;&gt;&lt;/textarea&gt;&lt;br&gt;	&lt;input type=&quot;submit&quot; value=&quot;送出&quot;&gt;&lt;/form&gt;&lt;hr&gt;&lt;?php	$sql = 'SELECT * from msgboard ORDER BY time DESC';	$result = mysql_query($sql);	while($row = mysql_fetch_array($result)){		showMsg($row);	}?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-<br>
+<br></div>
 </blockquote>
 
 </body></html>

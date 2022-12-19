@@ -36,19 +36,19 @@ Session 與 cookie 非常類似，但最主要的差別在於 session 是儲存�
 <pre class="brush: htmljsphp">&lt;?phpsession_start();session_destroy();?&gt;Destory</pre>
 <br>
 <p>
-如果你點進"創建 session"的範例後，打開了瀏覽器的開發者工具，可以看到一個名為「PHPSESSID」的 cookie；如果先把這個 cookie 刪掉，再點選"讀取 session"，你會發現讀取失敗，這是因為 session 加上 cookie 的組合，會被用來分辨是哪一個用戶，而刪掉 cookie 之後，伺服器就無法認得你是誰了。Session 本身在伺服器端，則是以文件的方式儲存，檔名是「sess_」加上前述的「PHPSESSID」當中的值。關於存放的地點，以 Win 7 為例，若使用 AppServ 預設會儲存在「C:\Users\你的帳號\AppData\Local\Temp」底下，XAMPP 則預設儲存在「C:\xampp\tmp」。它是一個純文字檔，各位可以試著打開看看內容。
+如果你點進「創建 session」的範例後，打開了瀏覽器的開發者工具，可以看到一個名為「PHPSESSID」的 cookie；如果先把這個 cookie 刪掉，再點選「讀取 session」，你會發現讀取失敗，這是因為 session 加上 cookie 的組合，會被用來分辨是哪一個用戶，而刪掉 cookie 之後，伺服器就無法認得你是誰了。Session 本身在伺服器端，則預設是以文件的方式儲存，檔名會是「sess_」加上前述你在「PHPSESSID」那個 cookie 看到的值。關於存放的地點，以 Win 7 為例，若使用 AppServ 預設會儲存在「C:\Users\你的帳號\AppData\Local\Temp」底下，XAMPP 則預設儲存在「C:\xampp\tmp」。它是一個純文字檔，各位可以試著打開看看內容。
 </p>
 
-<p>因此，運用 session，即可以做出登入登出的功能。以下範例的帳號是"test1"到"test5"，密碼都是"12345"，整張資料表的參考結構如下，其中密碼的部分以 md5 加密。你可以自行設定資料表及新增資料，或者在<a href="examples/user.sql">這裡</a>下載：</p>
+<p>因此，運用 session，即可以做出登入登出的功能。以下範例的帳號是 test1 到 test5 ，密碼都是 12345，整張資料表的參考結構如下，其中密碼的部分以 md5 加密。你可以自行設定資料表及新增資料，或者在<a href="examples/user.sql">這裡</a>下載：</p>
 <ul>
-	<li>id: 使用者編號。類型 INT，primary key, auto increment</li>
+	<li>id: 使用者編號。類型 INT，primary key，auto increment</li>
 	<li>account: 帳號。類型 VARCHAR，長度 32</li>
-	<li>pwd: 密碼。類型 VARCHAR，長度 32, md5 hashed</li>
-	<li>nickname: 暱稱。類型 CARCHAR，長度 32, utf8_general_ci</li>
+	<li>pwd: 密碼。類型 VARCHAR，長度 32，md5 hashed</li>
+	<li>nickname: 暱稱。類型 CARCHAR，長度 32，utf8_general_ci，預設值空</li>
 	<li>is_admin: 是否為管理員。類型 TINYINT，預設值 0</li>
 </ul>
 
-<p>登入頁面，就是在通過驗證後，設定 session 變數，然後轉到登入成功的頁面：</p>
+<p>登入頁面，就是在通過驗證後，設定 session 變數，然後轉到登入成功的頁面。驗證的基本邏輯是帳號密碼都要符合，細節部分可以自行依需求設計：</p>
 <pre class="brush: htmljsphp">&lt;?phpsession_start();include(&quot;pdoInc.php&quot;);if(isset($_SESSION['account']) &amp;&amp; $_SESSION['account'] != null){ // 如果登入過，則直接轉到登入後頁面	echo '&lt;meta http-equiv=REFRESH CONTENT=0;url=php_sess_index.php&gt;';}else if(isset($_POST['account']) &amp;&amp; isset($_POST['password'])){	$acc = preg_replace(&quot;/[^A-Za-z0-9]/&quot;, &quot;&quot;, $_POST['account']);	$pwd = preg_replace(&quot;/[^A-Za-z0-9]/&quot;, &quot;&quot;, $_POST['password']);	if($acc != NULL &amp;&amp; $pwd != NULL){		$sth = $dbh-&gt;prepare('SELECT * FROM user where account = ?');		$sth-&gt;execute(array($acc));		$row = $sth-&gt;fetch(PDO::FETCH_ASSOC);		// 比對密碼		if($row['pwd'] == md5($pwd)){			$_SESSION['account'] = $row['account'];			$_SESSION['nickname'] = $row['nickname'];			$_SESSION['is_admin'] = $row['is_admin'];			echo '&lt;meta http-equiv=REFRESH CONTENT=0;url=php_sess_index.php&gt;';		}	}}?&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form action=&quot;php_sess_login.php&quot; method=&quot;post&quot;&gt;	帳號：&lt;input type=&quot;text&quot; name=&quot;account&quot;&gt;&lt;br&gt;	密碼：&lt;input type=&quot;text&quot; name=&quot;password&quot;&gt;&lt;br&gt;	&lt;input type=&quot;submit&quot;&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 <p>這是登入成功後的頁面的範例，我們假設排行榜是需要登入才能看的資訊。所有需要登入才能看的頁面，都必須詳加保護，以免被直接輸入網址連入而產生問題：</p>

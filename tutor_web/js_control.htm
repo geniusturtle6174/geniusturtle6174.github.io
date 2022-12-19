@@ -24,20 +24,29 @@
 Gol_D_Roger(["2-1", "2-2"]); // 顯示羅傑的書的章節對應
 </script>
 
-<p>JavaScript 的條件判斷語法與 C 很相似，故以下主要介紹少數「特異功能」。在 JavaScript 當中，只有數值 0, null 和空字串被視為 false，其餘皆為 true。</p>
-<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;br2 = &quot;&lt;br&gt;&lt;br&gt;&quot;;x = 0; document.write(&quot;「x = 0」，x 為 &quot; + ((x)?&quot;true&quot;:&quot;false&quot;) + br2);x = null; document.write(&quot;「x = null」，x 為 &quot; + ((x)?&quot;true&quot;:&quot;false&quot;) + br2);x = &quot;&quot;; document.write(&quot;「x = \&quot;\&quot;」，x 為 &quot; + ((x)?&quot;true&quot;:&quot;false&quot;) + br2);x = []; document.write(&quot;「x = []」，x 為 &quot; + ((x)?&quot;true&quot;:&quot;false&quot;) + br2);&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<p>JavaScript 的條件判斷語法與 C 很相似，基本範例如下：</p>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;x = prompt(&quot;請輸入分數&quot;);if(x &gt;= 60){	document.write(&quot;及格&quot;);}else {	document.write(&quot;被當&quot;);}&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>如果你之前只學過 Python 語言，則需要注意多個條件的寫法。在 JavaScript 裡面沒有「elif」可以使用，而是跟 C 一樣必須使用「else if」，如下：</p>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;x = prompt(&quot;請輸入分數&quot;);if(x &gt;= 90){	document.write(&quot;A+&quot;);}else if(x &gt;= 80){	document.write(&quot;A 或 A-&quot;);}else if(x &gt;= 70){	document.write(&quot;B+，B 或 B-&quot;);}else {	document.write(&quot;剩下的自己算&quot;);}&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>其他在 JavaScript 當中存在，但在其他語言裡面不一定有的「特異功能」，則簡單介紹如下面幾個範例。首先，在 JavaScript 當中，只有數值 0, null 和空字串被視為 false，其餘皆為 true。</p>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;br2 = &quot;&lt;br&gt;&lt;br&gt;&quot;;x = 0; document.write(&quot;「x = 0」，x 為 &quot; + ((x)?&quot;true&quot;:&quot;false&quot;) + br2);x = null; document.write(&quot;「x = null」，x 為 &quot; + ((x)?&quot;true&quot;:&quot;false&quot;) + br2);x = &quot;&quot;; document.write(&quot;「x = \&quot;\&quot;」，x 為 &quot; + ((x)?&quot;true&quot;:&quot;false&quot;) + br2);x = []; document.write(&quot;「x = []」，x 為 &quot; + ((x)?&quot;true&quot;:&quot;false&quot;) + br2);&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 <p>字串可以用「==」直接比對，也可以套在 switch 當中：</p>
-<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;week = &quot;三&quot;;switch(week){	case '一': console.log(week); break;	case '二': console.log(week); break;	case '三': console.log(week); break;	case '四': console.log(week); break;	case '五': console.log(week); break;	case '六': console.log(week); break;	case '日': console.log(week); break;}&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;week = &quot;三&quot;;switch(week){	case '一': console.log(week); break;	case '二': console.log(week); break;	case '三': console.log(week); break;	case '四': console.log(week); break;	case '五': console.log(week); break;	case '六': console.log(week); break;	case '日': console.log(week); break;}&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 <p>JavaScript 有一種比較運算「===」，必須要連型別都完全一樣才算是相等：</p>
-<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;br2 = &quot;&lt;br&gt;&lt;br&gt;&quot;;document.write(&quot; true == 1 is: &quot; + (true == 1) + br2 );document.write(&quot; true === 1 is: &quot; + (true === 1) + br2 );document.write(&quot; \&quot;123\&quot; == 123 is: &quot; + (&quot;123&quot; == 123) + br2 );document.write(&quot; \&quot;123\&quot; === 123 is: &quot; + (&quot;123&quot; === 123) + br2 );&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;br2 = &quot;&lt;br&gt;&lt;br&gt;&quot;;document.write(&quot; true == 1 is: &quot; + (true == 1) + br2 );document.write(&quot; true === 1 is: &quot; + (true === 1) + br2 );document.write(&quot; \&quot;123\&quot; == 123 is: &quot; + (&quot;123&quot; == 123) + br2 );document.write(&quot; \&quot;123\&quot; === 123 is: &quot; + (&quot;123&quot; === 123) + br2 );&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
-<p>for 和 while 的用法，也跟 C 相似，但是 JavaScript 提供一種 for-in 迴圈，用途之一是列舉物件的性質：</p>
-<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;for(prop in document){	document.write(&quot;document.&quot; + prop + &quot; = &quot; + document[prop] + &quot;&lt;br&gt;&lt;br&gt;&quot;);}&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<p>for 和 while 的用法，也跟 C 相似，基本範例如下：</p>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;document.write(&quot;For loop:&lt;br&gt;&quot;);for(i=1; i&lt;=10; i++){	document.write(i + &quot;&lt;br&gt;&quot;);}document.write(&quot;&lt;br&gt;&quot;);document.write(&quot;While loop:&lt;br&gt;&quot;);i = 1;while(i&lt;=10){	document.write(i + &quot;&lt;br&gt;&quot;);	i += 1;}&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>JavaScript 還提供一種 for-in 迴圈，跟 Python 的語法類似，只是需要多加一些大小括號，其用途之一是列舉物件的性質：</p>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;for(prop in document){	document.write(&quot;document.&quot; + prop + &quot; = &quot; + document[prop] + &quot;&lt;br&gt;&lt;br&gt;&quot;);}&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 <p>JavaScript 還提供另外一種 forEach 迴圈，可以讓你很方便的逐一操作陣列的元素如下。此處展示的是其中一個用法，在陣列的篇章中會有其他的範例。</p>
-<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;arr = [123, 456, 789, 'abc', 'def'];arr.forEach(item =&gt; document.write(item + '&lt;br&gt;&lt;br&gt;'))&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<pre class="brush: htmljs">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;script&gt;arr = [123, 456, 789, 'abc', 'def'];arr.forEach(item =&gt; document.write(item + '&lt;br&gt;&lt;br&gt;'));&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 </blockquote>
 

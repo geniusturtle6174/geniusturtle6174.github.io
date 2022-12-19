@@ -18,29 +18,54 @@
 <body bgcolor="#ccccff">
 
 <blockquote>
+<script>
 
+var status = 0;
+function toggle(){
+	var oc = document.getElementsByClassName("oldContent");
+	if(status == 1){
+		status = 0;
+		for(var i = 0; i < oc.length; i++){
+			oc[i].style.display = 'none';
+		}
+	}
+	else {
+		if(confirm("這是早期較老舊的內容，你確定要閱讀嗎？")){
+			status = 1;
+			for(var i = 0; i < oc.length; i++){
+				oc[i].style.display = 'block';
+			}
+		}
+	}
+}
+
+showWarning("本篇是為較早期的系統所撰寫的內容，並已不再更新技術說明，除非有特殊需求，否則不必閱讀此篇。若有需求，請點<a onclick=\"toggle()\">這裡</a>切換顯示或隱藏內容");
+
+</script>
+
+<div class="oldContent">
 <p>
-於本篇中，我們將利用 phpMyAdmin 來對 MySQL 資料庫進行一些操作。首先，連線到「http://localhost/phpmyadmin」，並用之前設定好的密碼登入(帳號是"root")。由於若將 PHP 程式用 root 帳號來連線，在碰到安全性上的問題時，後果會比較嚴重，所以我們要新創一個使用者。請點選「權限」→「新增使用者」來進行，應該會出現如下的畫面：
+於本篇中，我們將利用 phpMyAdmin 來對 MySQL 資料庫進行一些操作。首先，連線到「http://localhost/phpmyadmin」，並用「root」為帳號，配上之前設定好的密碼登入。但由於若將 PHP 程式用 root 帳號來連線，在碰到安全性上的問題時，後果會比較嚴重，所以我們要新創一個使用者。請點選「權限」→「新增使用者」來進行，應該會出現如下的畫面：
 </p>
 <center><img src="pics/pma_xampp5_01.png" /></center>
 
 <p>其中，關於登入資訊的部分，我們可以：</p>
 <ul>
-	<li>取一個自己的使用者名稱(不分大小寫，此處以"mytest"為例)</li>
-	<li>主機請改成"本地"，代表 PHP 程式要跟資料庫在同一台電腦才可以連線</li>
+	<li>取一個自己的使用者名稱，不必區分大小寫，但建議使用全小寫，此處以「mytest」為例</li>
+	<li>主機請改成「本地」，代表 PHP 程式要跟資料庫在同一台電腦才可以連線</li>
 	<li>進行設定密碼與確認密碼</li>
 </ul>
 
-<p>"Database for user"則代表是否要建立與此帳號相關的資料庫 (Database)，三個選項依序的意思如下(本篇以選項二進行示範)：</p>
+<p>"Database for user"則代表是否要建立與此帳號相關的資料庫(database)，三個選項依序的意思如下（本篇將以選項二進行示範）：</p>
 <ul>
 	<li>None: 不建立資料庫</li>
 	<li>Create database with same name and grant all privileges: 建立一個與使用者名稱相同的資料庫，並賦予所有權限</li>
 	<li>Grant all privileges on wildcard name (username\_%): 把現有的同名資料庫讓該使用者操作</li>
 </ul>
 
-<p>"整體權限"的部分，代表對於其他資料庫的操作權限。如果這個帳號只是給網頁程式使用，則建議全部都不要勾選。</p>
+<p>「整體權限」的部分，代表對於其他資料庫的操作權限。如果這個帳號只是給網頁程式使用，則建議全部都不要勾選。</p>
 
-<p>接下來，我們要建立資料表 (Table)。事實上，資料庫裡面會包含一或多張資料表，每張資料表則由一或多筆記錄所組成。例如，我們可以建立以下的資料表(部份資料取自 KKBOX 某天之排行榜)：</p>
+<p>接下來，我們要建立資料表(Table)。事實上，資料庫裡面會包含一或多張資料表，每張資料表則由一或多筆記錄所組成。例如，我們可以建立以下的資料表（部份資料取自 KKBOX 某天之排行榜）：</p>
 <table class="slide" align=center>
 	<tr>
 		<th class="slide">id<br>(資料序號)</th>
@@ -102,10 +127,10 @@
 
 <p>這個資料表包含五個欄位，七筆記錄。每個資料表可以選定一個欄位做為主索引(primary key)，主索引的欄位值不能重複。例如，若有一張資料表記錄了同學的學號姓名，則可以選定學號做為主索引。</p>
 
-<p>上述範例的其中三個欄位是數字，另外兩個是文字。所以我們建立一個名為"songrank"的資料表，包含五個欄位：</p>
+<p>上述範例的其中三個欄位是數字，另外兩個是文字。所以我們建立一個名為「songrank」的資料表，包含五個欄位：</p>
 <center><img src="pics/pma_xampp5_02.png" /></center>
 
-<p>欄位的名稱與屬性分別設定如下(欄位名稱請以上方表格為準，下同)：</p>
+<p>欄位的名稱與屬性分別設定如下（欄位名稱請以上方表格為準，下同）：</p>
 <center><img src="pics/pma_xampp5_03.png" /></center>
 
 <p>其中：</p>
@@ -119,14 +144,14 @@
 		<li>DATETIME: 以'0000-00-00 00:00:00'的格式儲存年月日時分秒</li>
 	</ul>
 	<li>如果型態是 CHAR 或 VARCHAR 之類，則需選擇長度</li>
-	<li>如果是主索引(捲軸往右拉可以勾選)，則可以將欄位設定成自動遞增</li>
+	<li>如果是主索引（捲軸往右拉可以勾選），則可以將欄位設定成自動遞增</li>
 </ul>
 
 <p>現在，我們可以點選「新增」，加入資料表中的記錄：</p>
 <center><img src="pics/pma_xampp5_04.png" /></center>
 
-<p>加入完畢後，點選「瀏覽」即可看到新增的結果。透過點選"輸出"，可以幫你把資料庫整個匯出備份，而"載入"則可載入之前存檔的資料庫，所以若是懶得輸入上述範例中的資料，也可以從<a href="examples/songrank.sql">這裡</a>下載，並點選「載入」來使用，帳號名稱不一樣也能載入。</p>
-
+<p>加入完畢後，點選「瀏覽」即可看到新增的結果。透過點選"輸出"，可以幫你把資料庫整個匯出備份，而「載入」則可載入之前存檔的資料庫，所以若是懶得輸入上述範例中的資料，也可以從<a href="examples/songrank.sql">這裡</a>下載，並點選「載入」來使用，帳號名稱不一樣也能載入。</p>
+</div>
 </blockquote>
 
 </body></html>

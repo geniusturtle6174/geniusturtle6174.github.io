@@ -19,18 +19,18 @@
 
 <blockquote>
 
-<p>PHP 的程式碼，是以「&lt;?php」和「?&gt;」包住的內容。你可以將他單獨撰寫成一個檔案，此時 PHP 計算完的內容，就會直接的送給瀏覽器去處理：</p>
+<p>PHP 的程式碼，是以「&lt;?php」和「?&gt;」包住的內容。你可以將他單獨撰寫成一個檔案，此時 PHP 執行完的內容，就會直接的送給瀏覽器去處理：</p>
 <pre class="brush: htmljsphp">﻿&lt;?phpecho &quot;Hello World!!&quot;?&gt;</pre>
 <br>
-<p>也可以跟 HTML 混合在一起撰寫，此時，沒有被「&lt;?php」和「?&gt;」包住的內容，會直接顯示出來：</p>
+<p>PHP 也可以跟 HTML 混合在一起撰寫，此時，沒有被「&lt;?php」和「?&gt;」包住的內容，會直接顯示出來：</p>
 <pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?phpecho &quot;Hello World!!&quot;?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
-<p>將 PHP 與 HTML/JavaScript 分開撰寫的好處是，資料存取和顯示的邏輯不會混在一起，可以很容易地將前後端分開維護。但以下為了範例的呈現方便，主要會以前後端撰寫在同一隻檔案的方式來說明。</p>
+<p>將 PHP 與 HTML/JavaScript 分開撰寫的好處是，資料存取和顯示的邏輯不會混在一起，可以很容易地將兩種程式分開維護。但以下為了範例的呈現方便，主要會以兩種程式撰寫在同一隻檔案的方式來說明。</p>
 
 <p>PHP 當中的變數，命名規則與 C/JavaScript 相同，但是前面必須加上「$」符號：</p>
 <pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php$a = 1;$b = 2;echo $a + $b;?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
-<p>與 JavaScript 的 src 相似，PHP 可以利用「include」或是「require」將外部檔案含括進來。兩者的差別在於在檔案找不到時，「include」只產生警告，會繼續執行；而「require」會產生錯誤，停止執行。另外，還有「include_once」與「require_once」可以使用，差別只在於加了「_once」，代表只會含括一次。例如，假設有一個檔案名為 php_basic_core.php，其內容如下：</p>
+<p>與 JavaScript 的 src 相似，PHP 可以利用「include」或是「require」將外部檔案含括進來。兩者的差別在於在檔案找不到時，「include」只產生警告，會繼續執行；而「require」會產生錯誤，停止執行。另外，還有「include_once」與「require_once」可以使用，差別只在於加了「_once」，代表只會含括一次。以下將示範「include」的用法，假設有一個檔案名為 php_basic_core.php，其內容如下：</p>
 <pre class="brush: htmljsphp">﻿&lt;?php$a = 1;$b = 2;?&gt;</pre>
 <br>
 <p>則其他的 PHP 檔案，可以用「include」來使用其內容：</p>
@@ -42,11 +42,11 @@
 <p>字串也可以使用單引號或雙引號，差別在於其中的變數是否會轉換後再輸出：</p>
 <pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php$x = 123;echo '單引號字串帶變數: $x.&lt;br&gt;';echo &quot;雙引號字串帶變數: $x.&lt;br&gt;&quot;;?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
-<p>陣列也跟 JavaScript 一樣，可以放入不同類型的資料，也可以動態新增。用迴圈處理資料時，除了一般的方法之外，還有「foreach」可以使用：</p>
-<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php$test = array(1, 2.3, &quot;4567&quot;);$test[3] = 'abc'; // 動態新增echo $test[0].&quot; &quot;.gettype($test[0]).&quot;&lt;br&gt;&quot;;echo $test[1].&quot; &quot;.gettype($test[1]).&quot;&lt;br&gt;&quot;;echo $test[2].&quot; &quot;.gettype($test[2]).&quot;&lt;br&gt;&quot;;echo $test[3].&quot; &quot;.gettype($test[3]).&quot;&lt;br&gt;&quot;;?&gt;&lt;hr&gt;&lt;?phpfor( $i = 0 ; $i &lt; count($test) ; $i++ ){	echo $i.&quot;-th element of \$test: &quot;.$test[$i].&quot;&lt;br&gt;&quot;;}echo '跑完迴圈後的 $i: '.$i;?&gt;&lt;hr&gt;&lt;?phpforeach( $test as $val ){	echo &quot;Element of \$test: &quot;.$val.&quot;&lt;br&gt;&quot;;}echo '跑完迴圈後的 $val: '.$val;?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<p>陣列也跟 JavaScript 一樣，可以放入不同類型的資料，也可以動態新增。用迴圈處理資料時，除了一般的 for 迴圈語法之外，還有「foreach」可以使用：</p>
+<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php$test = array(12, 3.45, &quot;6789&quot;);$test[3] = 'abc'; // 動態新增echo $test[0].&quot; &quot;.gettype($test[0]).&quot;&lt;br&gt;&quot;;echo $test[1].&quot; &quot;.gettype($test[1]).&quot;&lt;br&gt;&quot;;echo $test[2].&quot; &quot;.gettype($test[2]).&quot;&lt;br&gt;&quot;;echo $test[3].&quot; &quot;.gettype($test[3]).&quot;&lt;br&gt;&quot;;?&gt;&lt;hr&gt;&lt;?phpfor( $i = 0 ; $i &lt; count($test) ; $i++ ){	echo $i.&quot;-th element of \$test: &quot;.$test[$i].&quot;&lt;br&gt;&quot;;}echo '跑完迴圈後的 $i: '.$i;?&gt;&lt;hr&gt;&lt;?phpforeach( $test as $val ){	echo &quot;Element of \$test: &quot;.$val.&quot;&lt;br&gt;&quot;;}echo '跑完迴圈後的 $val: '.$val;?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 <p>當然也可以使用 key/value 的形式來指定資料：</p>
-<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php$abc = array(123 =&gt; 456, &quot;789&quot; =&gt; &quot;abc&quot;);$abc['OAO'] = &quot;QQ&quot;;echo $abc[123].&quot; &quot;.gettype($abc[123]).&quot;&lt;br&gt;&quot;;echo $abc['789'].&quot; &quot;.gettype($abc[&quot;789&quot;]).&quot;&lt;br&gt;&quot;;echo $abc[&quot;OAO&quot;].&quot; &quot;.gettype($abc['OAO']).&quot;&lt;br&gt;&quot;;?&gt;&lt;hr&gt;&lt;?phpforeach( $abc as $val ){	echo &quot;Element of \$abc: &quot;.$val.&quot;&lt;br&gt;&quot;;}?&gt;&lt;hr&gt;&lt;?phpforeach( $abc as $key =&gt; $val ){	echo &quot;Element of \$abc[&quot;.$key.&quot;]: &quot;.$val.&quot;&lt;br&gt;&quot;;}?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php$abc = array(123 =&gt; 456, &quot;abc&quot; =&gt; &quot;def&quot;);$abc['OAO'] = &quot;QQ&quot;;echo $abc[123].&quot; &quot;.gettype($abc[123]).&quot;&lt;br&gt;&quot;;echo $abc['abc'].&quot; &quot;.gettype($abc[&quot;abc&quot;]).&quot;&lt;br&gt;&quot;;echo $abc[&quot;OAO&quot;].&quot; &quot;.gettype($abc['OAO']).&quot;&lt;br&gt;&quot;;?&gt;&lt;hr&gt;&lt;?phpforeach( $abc as $val ){	echo &quot;Element of \$abc: &quot;.$val.&quot;&lt;br&gt;&quot;;}?&gt;&lt;hr&gt;&lt;?phpforeach( $abc as $key =&gt; $val ){	echo &quot;Element of \$abc[&quot;.$key.&quot;]: &quot;.$val.&quot;&lt;br&gt;&quot;;}?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 <p>PHP 在函式內部的變數，與 C 和 JavaScript 有點不一樣。預設情況下，函式內部都是 local 變數，如果要取用 global 變數，則需使用「$GLOBALS」或者「global」：</p>
 <pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php$x = 10;$y = 20;$z = 30;function test(){	$x = 40;	$GLOBALS['y'] = 50;	global $z;	$z = 60;	echo &quot;in test: &quot;.$x.&quot; &quot;.$GLOBALS['y'].&quot; &quot;.$z.&quot;&lt;br&gt;&quot;;}echo &quot;Before test: &quot;.$x.&quot; &quot;.$y.&quot; &quot;.$z.&quot;&lt;br&gt;&quot;;test();echo &quot;After test: &quot;.$x.&quot; &quot;.$y.&quot; &quot;.$z.&quot;&lt;br&gt;&quot;;?&gt;&lt;/body&gt;&lt;/html&gt;</pre>

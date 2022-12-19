@@ -20,7 +20,7 @@
 
 <blockquote>
 
-<p>XAMPP 是 AppServ 之外，另一個很流行的安裝版本。與 AppServ 相比，XAMPP 有多種系統(名稱中"X"的由來)的版本，包含了較新版的 PHP，以及支援以 perl 來當作伺服器端語言(所以名稱中有兩個"P")(雖然我們不會介紹到 perl)。關於 XAMPP 的取得，我們可以到它的網頁下載 <a href="https://www.apachefriends.org/">https://www.apachefriends.org/</a>，在首頁直接點選最新的穩定版本下載，本篇使用 7.3.1 版本為範例。</p>
+<p>XAMPP 是 AppServ 之外，另一個很流行的安裝版本。與 AppServ 相比，XAMPP 有多種系統（名稱中「X」的由來）的版本，包含了較新版的 PHP，以及支援以 perl 來當作伺服器端語言（所以名稱中有兩個「P」，雖然我們不會介紹到 perl）。關於 XAMPP 的取得，我們可以到它的網頁下載 <a href="https://www.apachefriends.org/">https://www.apachefriends.org/</a>，在首頁直接點選最新的穩定版本下載，本篇使用 7.3.1 版本為範例。</p>
 
 <p>此視窗是提示如果有防毒軟體正在作用中，可能會影響一些功能，不過一般來說問題不大，直接繼續安裝即可。</p>
 <center><img src="pics/xampp01_win10.png" width="520"/></center>
@@ -28,13 +28,13 @@
 <p>此視窗是告訴你如果"使用者帳戶控制"(UAC)正在作用中，也可能有些功能被影響，不過只要以後開啟主控台時使用管理員權限即可。</p>
 <center><img src="pics/xampp02_win10.png" width="520"/></center>
 
-<p>選擇安裝元件。此處使用預設值(全部安裝)，按 Next：</p>
+<p>選擇安裝元件。此處使用預設值（全部安裝），按 Next：</p>
 <center><img src="pics/xampp03_win10.png" width="520"/></center>
 
-<p>選擇要安裝的路徑。此處使用預設值(C:\xampp)，按 Next：</p>
+<p>選擇要安裝的路徑。此處使用預設值（C:\xampp），按 Next：</p>
 <center><img src="pics/xampp04_win10.png" width="520"/></center>
 
-<p>是否要瞭解附帶的其他框架，若不需要請將打勾取消(後面的示範為取消的畫面)：</p>
+<p>是否要瞭解附帶的其他框架，若不需要<b>請將打勾取消</b>，後面的示範為取消的畫面：</p>
 <center><img src="pics/xampp05_win10.png" width="520"/></center>
 
 <p>請按 Next，開始安裝：</p>
@@ -46,7 +46,7 @@
 <p>防火牆的相關設定，如果你在這台電腦上，只是裝來自己測試，沒有要公開架站，那麼都不勾選也可以：</p>
 <center><img src="pics/xampp08_win10.png" width="520"/></center>
 
-<p>安裝完成，畫面上的選項是問你要不要立刻啟動主控台。若暫時不想啟動，可以在稍後到「所有程式」→「XAMPP」→「XAMPP Control Panel」執行(可能必須使用管理員權限打開)。按 Finish：</p>
+<p>安裝完成，畫面上的選項是問你要不要立刻啟動主控台。若暫時不想啟動，可以在稍後到「所有程式」→「XAMPP」→「XAMPP Control Panel」執行（可能必須使用管理員權限打開）。按 Finish：</p>
 <center><img src="pics/xampp09_win10.png" width="520"/></center>
 
 <p>主控台畫面：</p>
@@ -56,7 +56,7 @@
 <pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?phpecho &quot;Hello World!!&quot;?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 <p>
-如上所述，XAMPP 預設會將網頁放在 C:\xampp\htdocs 底下，如果需要放在不同的地方，則可以點選主控台的 Config，或者自己打開 C:\xampp\apache\conf\httpd.conf，在最後面加上以下的內容(請留意，因為 XAMPP 附帶的 Apache 版本比較新，所以跟 AppServ 設定稍有差異)，並重新啟動 Apache。此時，如果把前述的範例，放到 D:\test 底下時，則在網址列輸入 http://localhost/myTestDir/hello.php，也會看到同樣的結果。
+如上所述，XAMPP 預設會將網頁放在 C:\xampp\htdocs 底下，如果需要放在不同的地方，則可以點選主控台的 Config，或者自己打開 C:\xampp\apache\conf\httpd.conf，在最後面加上以下的內容（請留意，因為 XAMPP 附帶的 Apache 版本比較新，所以跟 AppServ 設定稍有差異），並重新啟動 Apache。此時，如果把前述的範例，放到 D:\test 底下時，則在網址列輸入 http://localhost/myTestDir/hello.php，也會看到同樣的結果。
 </p>
 <pre class="brush: html">Alias /myTestDir &quot;D:\test&quot;
 &lt;Directory &quot;D:\test&quot;&gt;
