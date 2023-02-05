@@ -19,24 +19,23 @@
   * Wave, MIDI, MP3
   * Volume, Pitch, Harmonics
   * Fourier Transform, Mel Scale
-* 音樂搜尋(3w)
+* 音樂檢索(4w)
   * Query by Singing/Humming
   * Audio Fingerprint
-* 機器學習簡介(3w)
+* 機器學習簡介(4w)
   * K-Means Clustering
   * Classification and Regression
   * Neural Networks
-* 樂曲內容分析(4w)
-  * 結構分析
-  * 曲風分類
-  * 情緒辨識
-  * 自動標記
-* 樂曲訊號處理(2w)
+* 樂曲分析與處理(4w)
   * 人聲分離
+  * 結構分析
   * 節拍追蹤
+  * 內容分類
 * (Optional)其他主題(2w)
   * 歌詞對位
-  * 音樂生成與風格轉換
   * 推薦系統與使用者行為分析
 
+## 其他說明
+
+* 教學方式：原則為每週約兩小時教師講授 + 約一小時隨堂練習
 * 以上包含：五至七次作業、三至四次程式競賽、一次期末專案
