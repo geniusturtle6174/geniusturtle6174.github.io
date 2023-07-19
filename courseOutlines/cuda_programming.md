@@ -26,7 +26,7 @@
   * 資料傳輸：Concurrency、Streaming
   * 範例討論：矩陣轉置、矩陣相乘
 * 其他主題(3w)
-  * CUDA in python
+  * CUDA in Python
   * OpenCL
   * (Optional)多 GPU 程式設計
 
