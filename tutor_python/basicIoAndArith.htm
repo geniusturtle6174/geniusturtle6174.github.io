@@ -3,6 +3,9 @@
 	<title>線上教材：Python 程式設計</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<style>
+		.newbie{display: block;}
+	</style>
 	<base target="_blank">
 	<script type="text/javascript" src="shCore.js"></script>
 	<script type="text/javascript" src="shBrushPython.js"></script>
@@ -19,7 +22,7 @@
 
 <p>
 <script>
-var status = 0;
+var status = 1;
 function toggle(){
 	var newbie = document.getElementsByClassName("newbie");
 	if(status == 1){
@@ -36,20 +39,19 @@ function toggle(){
 	}
 }
 </script>
-本篇將程式初學者所需的內容預設為隱藏，若需閱讀請點<a onclick="toggle()">這裡</a>切換
+本篇將程式初學者所需的內容預設為顯示，若需切換請點<a onclick="toggle()">這裡</a>。
 </p>
-
 
 <p>在 Python 要印出固定的內容非常簡單，以下範例會在螢幕上印出"Hello World!!"：</p>
 <pre class="brush: py">
 print('Hello World!!') # 印出一些東西
 </pre>
 
-<p>要執行這段程式碼，你可以先在 cmd 當中先開啟 Python 後輸入程式碼，或者將其存成一個副檔名為 py 的純文字檔(如 hello.py)，然後在 cmd 當中，用"python hello.py"的方式執行。其中：</p>
+<p>要執行這段程式碼，你可以先在 cmd 當中先開啟 Python 後輸入程式碼，或者將這段程式碼存成一個副檔名為 py 的純文字檔（如 hello.py），然後在 cmd 當中，用「python hello.py」的方式執行。其中：</p>
 <ul>
 	<li>此處的括號代表呼叫語言提供的內建函式(function)，就像數學中 y = f(x) 的那個括號</li>
-	<li>井字號後面是程式碼的單行註解，可用解釋某一段程式碼的用途。註解是給人閱讀的，裡面的任何文字都不會被當作程式來執行。</li>
-	<li>單引號可以換成雙引號</li>
+	<li>井字號後面是程式碼的單行註解，可用解釋某一段程式碼的用途。註解是給人閱讀的，裡面的任何文字都不會被當作程式來執行</li>
+	<li>單引號可以換成雙引號，但是要維持成對，不能一單一雙</li>
 	<li>在 Python 當中，習慣上不會在每行程式的結尾加上分號，但是加了也不會有語法錯誤</li>
 </ul>
 
@@ -66,12 +68,21 @@ print('OAO')
 
 <p>第一行的 import，主要用於使用外掛功能。較細節的說明，之後會另外介紹</p>
 
+<p>Question：下列程式片段，有哪些語法錯誤？</p>
+<pre class="brush: py">
+Print "Hello World!!'
+</pre>
+
 <div class="newbie">
-<p>目前為止，已經能輸出大部分的固定內容，而程式中的資料若要能隨著狀況(例如使用者輸入或者運算結果)改變，則需要用變數來儲存。變數是記憶體裡面的一塊空間，可以用來存放資料，而變數命名時，必須遵循下列的命名規則：</p>
+<p>目前為止，已經能輸出大部分的固定內容，而程式中的資料，若要能隨著使用者輸入或者運算結果等狀況改變時，則需要用變數來儲存。變數是記憶體裡面的一塊空間，可以用來存放資料，而變數命名時，必須遵循下列的命名規則：</p>
 <ul>
 	<li>以底線或英文大小寫字母開頭</li>
 	<li>以底線、英文大小寫、數字組成</li>
-	<li>不可使用保留字(例如：if)與函式名稱(例如：print)</li>
+	<li>不可使用保留字（例如：if）與函式名稱（例如：print）
+		<ul>
+			<li>使用保留字通常會產生語法錯誤，使用函式名稱的效果請各位自行嘗試</li>
+		</ul>
+	</li>
 </ul>
 </div>
 
@@ -86,26 +97,28 @@ print('OAO')
 </div>
 
 <div class="newbie">
-<p>將資料塞進變數當中的方法，是使用「=」(指派運算子)，例如程式敘述「a=2」的結果，就是讓變數 a 的值為 2。以下範例會計算兩個整數相加的結果：</p>
+<p>將資料塞進變數當中的方法，是使用「=」(指派運算子)，例如程式敘述「a = 2」的結果，就是讓變數 a 的值為 2。以下範例會計算兩個整數相加的結果：</p>
 <pre class="brush: py">
 a = 1
 b = 2
 c = a + b
 print(c) # 因為是單純印出變數，所以不用加引號
 </pre>
+
+<p>在上述範例中，運算子左右不一定要加空白；但是為了方便閱讀程式，通常會如同範例顯示那樣的加上空白。</p>
 </div>
 
-<p>以下將基本的運算符號稍做整理：</p>
+<p>以下將基本的運算子稍做整理：</p>
 <ul>
 	<li>「+」、「-」、「*」、「/」或「//」：加減乘除</li>
 	<li>「**」：次方，底數在前指數在後</li>
-	<li>「%」：取餘數(模數運算, modulo)</li>
+	<li>「%」：取餘數（模數運算, modulo）</li>
 	<li>「()」：括號，必須成對</li>
 	<li>「=」：指派，將運算結果指定給某個變數</li>
 </ul>
 
 <div class="newbie">
-<p>運算符號之間，會遵守優先順序，例如先乘除後加減，以及括號先算等等。另外要注意的是，變數一旦被指派了新的值，則舊的值會永遠消失。例如先寫了「a = 1」的敘述，而後面又接著「a = 2」，則此時的變數 a 的值，會由 1 變成 2。以下展示幾個範例。</p>
+<p>運算子之間，會遵守優先順序，例如先乘除後加減，以及括號先算等等。另外要注意的是，變數一旦被指派了新的值，則舊的值會永遠消失。例如先寫了「a = 1」的敘述，而後面又接著「a = 2」，則此時的變數 a 的值，會由 1 變成 2。以下簡單展示幾個使用運算子的範例。</p>
 
 <p>三個整數取平均：</p>
 <pre class="brush: py">
@@ -129,6 +142,14 @@ print('Result:', e)
 </pre>
 </div>
 
+<p>書寫數學式時，我們習慣省略程號，但在 Python 中，仍然必須寫出乘號，否則會出現語法錯誤，如下：</p>
+<pre class="brush: py">
+a = 3
+b = 2
+print(2 * a)
+print(3b) # 這行會產生語法錯誤
+</pre>
+
 <div class="newbie">
 <p>Question: 兩行 print 分別會印出什麼？</p>
 <pre class="brush: py">
@@ -136,6 +157,7 @@ a = 1
 a = a + 1
 print(a)
 b = a + 1
+a = a + 1
 print(a, b)
 </pre>
 </div>
@@ -162,23 +184,49 @@ print(15 % -4)
 print(-15 % -4)
 </pre>
 
-<p>關於其他一些的 print 使用與其格式控制，範例如下。其中，三個單引號是多行字串，但也可以當作多行註解使用：</p>
+<p>關於其他一些的 print 使用與其格式控制，範例如下。其中，三個引號是多行字串，但也可以當作多行註解使用：</p>
 <pre class="brush: py">
 ''' 以下為了讓不同格式間的輸出效果更明顯，
-    因此在前後都加上其他不相干的符號 '''
+    因此在前後都加上底線來輔助顯示 '''
 print('__{:5d}__'.format(123))  # 靠右輸出 5 位整數，前方空白
 print('__{:05d}__'.format(123)) # 靠右輸出 5 位整數，前方補 0
 print('__{:10.2f}__'.format(12345.678))  # 靠右輸出浮點數，總共 10 位，小數點部分 2 位。輸出結果會被四捨五入
 </pre>
 
-<p>若要接收使用者輸入的變數，則可使用 input 函式(目前，我們只先介紹一次讀取一個數字的方法)。以下是兩個整數相加的範例，為了避免次一行程式被當成這一行的輸入，請存成 py 檔，或者逐行執行：</p>
+<p>若要接收使用者輸入的變數，則可使用 input 函式（目前，我們只先介紹一次讀取一個數字的方法）。以下是兩個整數相加的範例，為了避免次一行程式被當成這一行的輸入，請存成 py 檔，或者逐行執行：</p>
 <pre class="brush: py">
 a = input('Please enter 1st number: ')
 b = input('Please enter 2nd number: ')
 print(a + b)
 </pre>
 
-<p>你可能會發現結果跟預期的不太一樣，這是因為輸入的內容被當成一般文字，而加號為文字的連接。若要修正，可以將第三行改為「print int(a) + int(b)」，就會當成整數運算。如果希望進行小數的運算，可以把「int」改為「float」。另外，若使用 Python 2，則會自動判斷輸入的類型，但是像這樣明確地寫出要使用整數運算，仍會對釐清程式的運作細節有幫助。</p>
+<p>你可能會發現結果跟預期的不太一樣，這是因為輸入的內容被當成一般文字，而加號為文字的連接。若要修正，可以進行如下的幾種修改之一。</p>
+<pre class="brush: py">
+a = int(input('Please enter 1st number: '))
+b = int(input('Please enter 2nd number: '))
+print(a + b)
+
+a = input('Please enter 1st number: ')
+b = input('Please enter 2nd number: ')
+a = int(a)
+b = int(b)
+print(a + b)
+
+a = input('Please enter 1st number: ')
+b = input('Please enter 2nd number: ')
+print(int(a) + int(b))
+</pre>
+
+<p>Question: 下列修改方式是否可亦可達到進行整數相加的效果？為什麼？</p>
+<pre class="brush: py">
+a = input('Please enter 1st number: ')
+b = input('Please enter 2nd number: ')
+print(int(a + b))
+</pre>
+
+<p>如果希望輸入小數，並進行小數的運算，可以把「int」改為「float」。另外，若使用 Python 2，則會自動判斷輸入的類型；但是像這樣明確地寫出要使用整數運算，仍會對釐清程式的運作細節有幫助。</p>
+
+<p>Question: 如果你想進行小數運算，但是「剛好忘記」把 int 改成 float，會發生什麼事？為什麼？</p>
 
 </blockquote>
 

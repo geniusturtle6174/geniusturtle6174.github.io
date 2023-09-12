@@ -3,6 +3,9 @@
 	<title>線上教材：Python 程式設計</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<style>
+		.newbie{display: block;}
+	</style>
 	<base target="_blank">
 	<script type="text/javascript" src="shCore.js"></script>
 	<script type="text/javascript" src="shBrushPython.js"></script>
@@ -19,7 +22,7 @@
 
 <p>
 <script>
-var status = 0;
+var status = 1;
 function toggle(){
 	var newbie = document.getElementsByClassName("newbie");
 	if(status == 1){
@@ -36,7 +39,7 @@ function toggle(){
 	}
 }
 </script>
-本篇將程式初學者所需的內容預設為隱藏，若需閱讀請點<a onclick="toggle()">這裡</a>切換
+本篇將程式初學者所需的內容預設為顯示，若需切換請點<a onclick="toggle()">這裡</a>。
 </p>
 
 <p>程式可以如此靈活的原因之一，就是能依據不同的條件，來進行不同的工作。要進行判斷，可以使用 if...else 的語法，如下：</p>
@@ -47,7 +50,7 @@ else:
 	程式敘述二
 </pre>
 
-<p>當條件成立時，將執行敘述一，否則會執行敘述二。如果不需要敘述二，則可省略 else 以下的部分。在一行的開頭加入空白使程式往右靠稱為縮排，縮排在 Python 當中是必須的。Python 的習慣上是使用四個空白作為縮排，本範例亦如此使用(但因編輯器的緣故，如果你看的是網頁原始碼，則是使用 Tab 縮排)，Python 內建的 IDLE 環境也會使用空白縮排；你可以依照喜好選擇空白的數量或者改用 Tab，但請留意，這些方式應避免混用，否則可能導致程式無法執行或難以除錯。</p>
+<p>當條件成立時，將執行敘述一，否則會執行敘述二。如果不需要敘述二，則可省略 else 以下的部分。此外，在一行的開頭加入空白使程式往右靠，這種排版方式稱為縮排，縮排在 Python 當中是必須的。Python 的習慣上是使用四個空白作為縮排，本範例亦如此使用（但因編輯器的緣故，如果你看的是網頁原始碼，則是使用 Tab 縮排），Python 內建的 IDLE 環境也會使用空白縮排。如果沒有團隊合作，或者程式碼必須讓別人閱讀等特殊必要，你也可以依照喜好選擇空白的數量或者改用 Tab 來進行縮排，但請留意，這些方式應避免混用，否則可能導致程式無法執行或難以除錯（若有興趣知道混用的後果，請自行嘗試或上網查詢）。</p>
 
 <p>以成績及格與否的判斷做為一個簡單的範例，其邏輯上為「60分以上及格，否則被當」。寫成程式碼時的範例如下：</p>
 <pre class="brush: py">
@@ -60,7 +63,7 @@ else:
 
 <p>上例中的「>=」，稱之為條件運算子，可以用來判斷左邊的運算結果，是否大於等於右邊的運算結果。其餘的條件運算子有：</p>
 <ul>
-	<li>大於：「&gt;」，等於：「==」，小於：「&lt;」。需注意判斷是否等於的用法是兩個等號(一個等號是變數指派)</li>
+	<li>大於：「&gt;」，等於：「==」，小於：「&lt;」。需注意判斷是否等於的用法是兩個等號（一個等號是變數指派）</li>
 	<li>大於等於：「&gt;=」，小於等於：「&lt;=」</li>
 	<li>不等於：「!=」</li>
 	<li>且：「and」
@@ -128,7 +131,7 @@ else:
 </div>
 
 <div class="newbie">
-<p>"或"就像加法，"且"就像乘法，它們也遵守先乘除後加減的規則。我們把前面範例最後一段的括號拿掉看看：
+<p>「或」就像加法，「且」就像乘法，它們也遵守先乘除後加減的規則。我們把前面範例最後一段的括號拿掉看看，就會產生跟前面範例不同的結果：
 <pre class="brush: py">
 a = 15
 b = 20
@@ -170,7 +173,26 @@ print('Pass') if grade &gt;= 60 else print('GG')
 c = (a + b) if a &gt; b else (a - b)
 </pre>
 
-<p>進行程式設計時，可以依照自己的流程需求，使用合適的條件判斷方式。而如果所需要的邏輯較為複雜時，則可使用「elif」(為"else if"的意思)的敘述，例如<a href="http://zh.wikipedia.org/zh-tw/%E9%97%B0%E5%B9%B4">閏年</a>的判斷，
+<p>Question: 如何把前述範例的最後一行，還原成多行的形式？</p>
+
+<p>如果要進行多的關卡的條件判斷，可以使用「elif」，範例如下：</p>
+<pre class="brush: py">
+grade = int(input('Please enter grade: ')) # 接受使用者輸入一個整數
+if grade &gt;= 90:
+	print('A+')
+elif grade &gt;= 80:
+	print('A- or A')
+elif grade &gt;= 70:
+	print('B-, B or B+')
+elif grade &gt;= 60:
+	print('C-, C or C+')
+else:
+	print('GG')
+</pre>
+
+<p>Question: 在前述範例中，如果把幾個 elif 區塊的順序調換，會發生什麼事？為什麼？</p>
+
+<p>進行程式設計時，可以依照自己的流程需求，使用合適的條件判斷方式，例如<a href="http://zh.wikipedia.org/zh-tw/%E9%97%B0%E5%B9%B4">閏年</a>的判斷，
 其規則為逢 4 的倍數閏、100 的倍數不閏、400 的倍數閏，程式碼可以寫成以下的樣子：</p>
 <pre class="brush: py">
 year = 2018
@@ -186,7 +208,7 @@ else:
 </pre>
 
 <div class="newbie">
-<p>條件判斷也可以一層包一層(巢狀)，例如把第一個範例中，80 分以上的加一個特別鼓勵：</p>
+<p>條件判斷也可以一層包一層，稱為巢狀。例如把第一個範例中，80 分以上的加一個特別鼓勵：</p>
 <pre class="brush: py">
 grade = int(input('Please enter grade: ')) # 接受使用者輸入一個整數
 if grade &gt;= 60:
