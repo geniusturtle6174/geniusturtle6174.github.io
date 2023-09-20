@@ -17,13 +17,15 @@
 
 <blockquote>
 
-<p>每個 Python 的檔案都可以看作模組，import 以後就可以使用裡面的函式或變數。假設我們有一個 test.py，內容為以下：</p>
+<p>每個 Python 的檔案都可以看作模組，import 以後就可以使用裡面的函式或變數。假設我們有一個 my_mod.py，內容為以下：</p>
 <pre class="brush: py">
 def inc(x):
 	return x + 1
 
+
 def dec(x):
 	return x - 1
+
 
 a = 10
 b = 20
@@ -31,27 +33,60 @@ b = 20
 
 <p>則我們可以在同一目錄下的 Python 環境或檔案中這樣使用：</p>
 <pre class="brush: py">
-import test
+import my_mod
 
-print(test.a)
-print(test.b)
-print(test.inc(1))
-print(test.dec(100))
+print(my_mod.a)
+print(my_mod.b)
+print(my_mod.inc(1))
+print(my_mod.dec(100))
 </pre>
 
 <p>Import 的時候，利用 as 可以換個名稱：</p>
 <pre class="brush: py">
-import test as QQ
+import my_mod as mm
 
-print(QQ.a)
-print(QQ.inc(1))
+print(mm.a)
+print(mm.inc(1))
 </pre>
 
-<p>也可以只 import 一部分(這時候，在呼叫時就不需要再寫出原本的模組名稱"test")：</p>
+<p>也可以只 import 模組中的一部分內容。此時，你在呼叫時就不需要再寫出原本的模組名稱，但是會無法存取未在 import 之列的其他內容：</p>
 <pre class="brush: py">
-from test import inc
+from my_mod import inc
 
 print(inc(1))
+print(dec(100)) # 這行會產生錯誤
+</pre>
+
+<p>如果將 my_mod.py 的內容改為以下，則你會發現 import 以後，那行 print 也會被執行：</p>
+<pre class="brush: py">
+def inc(x):
+	return x + 1
+
+
+def dec(x):
+	return x - 1
+
+
+print('This is my_mod')
+</pre>
+
+<p>如果你真的希望在作為模組使用的程式檔案裡面寫 print 或者任何不被包在函式（或者物件，但不在本篇之列）內的運算，可以用「if __name__ == '__main__':」這段來包住它們，如下：</p>
+<pre class="brush: py">
+def inc(x):
+	return x + 1
+
+
+def dec(x):
+	return x - 1
+
+
+if __name__ == '__main__':
+	print('This is my_mod')
+</pre>
+
+<p>這是因為「__name__」變數在該 Python 程式碼作為一般檔案直接執行，和作為模組時的內容不一樣所致。你可以將 my_mod.py 修改為以下，然後分別直接執行 my_mod.py，以及在其他檔案 import 以後，再執行「print(my_mod.__name__)」：</p>
+<pre class="brush: py">
+print(__name__)
 </pre>
 
 </blockquote>
