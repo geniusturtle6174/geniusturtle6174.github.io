@@ -17,49 +17,59 @@
 
 <blockquote>
 
-<p>目前為止介紹的函式，都是 Python 事先提供的函式，但我們也可以自己撰寫函式。透過函式，可以將程式碼中常用的功能包裝起來，重複的呼叫與執行，使得功能更容易重複使用，程式碼更容易管理(當然，為了簡潔，以下範例可能簡單到不用函式必較方便)。下面的程式，會簡單的將變數值+1：</p>
+<p>目前為止介紹的函式，都是 Python 事先提供的函式，但我們也可以自己撰寫函式。透過函式，可以將程式碼中常用的功能包裝起來，重複的呼叫與執行，使得功能更容易重複使用，程式碼更容易管理（當然，為了簡潔，本篇章的範例可能簡單到不使用函式必較方便）。下面的程式，會簡單的將變數值 +1 之後再回傳：</p>
 <pre class="brush: py">
-def test(x):
+def my_add(x):
 	return x + 1
 
-a = int(input('Please enter a number: '))
-a = test(a)
+a = 3
+a = my_add(a)
 print("New a:", a)
 </pre>
 
-<p>第一行的 def 是"定義"的意思，代表要開始定義一個函式，在它後面有縮排進去的，都是函式內容。「test」是函數名稱，命名規則與變數相同。小括號內，則是函式的參數列表，可以有不只一個。在函式裡面，可以寫上任何需要的敘述，如果需要回傳值的話，記得使用「return」。呼叫函式的方法，如第 5 行所示，與呼叫 Python 提供的函式相同。</p>
+<p>第一行的 def 是「定義」的意思，代表要開始定義一個函式，在它後面有縮排進去的，都是函式內容。「test」是函數名稱，命名規則與變數相同。小括號內，則是函式的輸入參數列表，輸入參數可以有不只一個。在函式裡面，可以寫上任何需要的敘述，如果需要回傳運算結果的話，記得使用「return」。呼叫函式的方法，如第 5 行所示，與呼叫 Python 提供的函式相同。</p>
 
-<p>兩個參數的範例，這個函式要把兩個數字相加。需要傳入兩個以上的參數時，中間以逗點區隔：</p>
+<p>當你需要傳入兩個以上的參數時，中間以逗點區隔即可。以下的範例是把輸入的兩個數字相加：</p>
 <pre class="brush: py">
-def test(x, y):
+def my_add(x, y):
 	return x + y
 
-a = int(input('Please enter a number: '))
-b = int(input('Please enter a number: '))
-c = test(a, b)
+a = 3
+b = 5
+c = my_add(a, b)
 print(c)
 </pre>
 
 <p>當然，你需要再傳多一點參數也沒問題。以下範例，可用來計算三次多項式的值：</p>
 <pre class="brush: py">
-def cubicPolyval(a, b, c, d, x):
+def cubic_poly_val(a, b, c, d, x):
 	return a*x*x*x + b*x*x + c*x + d
 
-print("When x = 1.2, 2x^3 + 3x^2 + 2.5x + 1 is", cubicPolyval(2, 3, 2.5, 1, 1.2) )
+print("When x = 1.2, 2x^3 + 3x^2 + 2.5x + 1 is", cubic_poly_val(2, 3, 2.5, 1, 1.2) )
 </pre>
 
-<p>日常生活中，你到飲料店買飲料，如果不指定甜度冰塊，店家預設會給你正常份量。在程式中，我們也可以透過"預設參數"，讓函式有預設行為。以下範例也會把把兩個數字相加，但是只給一個數字的時候，會把那個數字 +1：</p>
+<p>當然，也可以回傳多個結果。以下範例，是如何回傳多個結果並使用之：</p>
 <pre class="brush: py">
-def test(x, y=1):
+def my_add(a):
+	return a+3, a+5
+
+a = 3
+b, c = my_add(3)
+print(b, c)
+</pre>
+
+<p>日常生活中，你到飲料店買飲料，如果不指定甜度冰塊，店家預設會給你正常份量。在程式中，我們也可以透過「預設參數」，來讓函式有預設行為。以下範例也會把把兩個數字相加，但是只給一個數字的時候，會把那個數字 +1：</p>
+<pre class="brush: py">
+def my_add(x, y=1):
 	return x + y
 
-a = int(input('Please enter a number: '))
-b = int(input('Please enter a number: '))
+a = 3
+b = 5
 
-c = test(a)
+c = my_add(a)
 print(c)
 
-c = test(a, b)
+c = my_add(a, b)
 print(c)
 </pre>
 
@@ -67,50 +77,50 @@ print(c)
 
 <p>函式當中的預設參數，在每次呼叫時都會重新給值：</p>
 <pre class="brush: py">
-def test(a=1):
-	print("Value of a when entering test", a)
+def my_add(a=1):
+	print("Value of a when entering my_add", a)
 	a = a + 1
-	print("Value of a when exiting test", a)
+	print("Value of a when exiting my_add", a)
 
-test()
-test()
-test()
+my_add()
+my_add()
+my_add()
 </pre>
 
 <p>在一個函式中定義的變數，並無法從其他地方被讀取，這個稱為變數的範圍(scope)。以下範例中，test 函式裡外的變數 a 並不會互相干擾：</p>
 <pre class="brush: py">
-def test(a):
+def my_add(a):
 	a = a + 1
-	print('a in test:', a)
+	print('a in my_add:', a)
 
 a = 3
 print('a outside:', a)
-test(a)
+my_add(a)
 print('a outside:', a)
 </pre>
 
-<p>如果想在函式當中取用外部的變數(全域變數)，可以使用"global"關鍵字：</p>
+<p>如果想在函式當中取用外部的變數（全域變數），可以使用 global 關鍵字：</p>
 <pre class="brush: py">
-def test(a):
+def my_add(a):
 	global b
 	a = a + 1
 	b = b + 1
-	print('a, b in test:', a, b)
+	print('a, b in my_add:', a, b)
 
 a = 3
 b = 4
-print('a, b outside test:', a, b)
-test(a)
-print('a, b outside test:', a, b)
+print('a, b outside:', a, b)
+my_add(a)
+print('a, b outside:', a, b)
 </pre>
 
 <p>在 Python 當中，函式是"第一類物件(First-Class Object)"，可以被指派給變數後呼叫：</p>
 <pre class="brush: py">
-def test(x):
+def my_add(x):
 	return x + 1
 
-a = int(input('Please enter a number: '))
-b = test
+a = 3
+b = my_add
 a = b(a)
 print("New a:", a)
 </pre>

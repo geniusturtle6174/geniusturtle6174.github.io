@@ -177,7 +177,8 @@ c = (a + b) if a &gt; b else (a - b)
 
 <p>如果要進行多的關卡的條件判斷，可以使用「elif」，範例如下：</p>
 <pre class="brush: py">
-grade = int(input('Please enter grade: ')) # 接受使用者輸入一個整數
+grade = 65
+
 if grade &gt;= 90:
 	print('A+')
 elif grade &gt;= 80:
@@ -210,7 +211,8 @@ else:
 <div class="newbie">
 <p>條件判斷也可以一層包一層，稱為巢狀。例如把第一個範例中，80 分以上的加一個特別鼓勵：</p>
 <pre class="brush: py">
-grade = int(input('Please enter grade: ')) # 接受使用者輸入一個整數
+grade = 65
+
 if grade &gt;= 60:
 	print('Pass')
 	if grade &gt;= 80:
