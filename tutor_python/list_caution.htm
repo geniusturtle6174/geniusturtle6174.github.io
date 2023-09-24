@@ -1,0 +1,73 @@
+﻿<html>
+<head>
+	<title>線上教材：Python 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushPython.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>本篇要介紹的，則是其他一些<b>一不小心，可能就會產生非預期結果</b>的範例。</p>
+
+<p>List 的指派，跟一般變數不太一樣，改了源頭，其他的會跟著改：</p>
+<pre class="brush: py">
+a = [12, 34, 56, 78, 90]
+b = a
+a [0] = 99
+print(a)
+print(b) # 跟著改變了
+</pre>
+
+<p>如果你希望跟一般變數的操作一樣，會有新的一份串列，可以這樣用：</p>
+<pre class="brush: py">
+a = [12, 34, 56, 78, 90]
+b = a[:]
+a[0] = 99
+print(a)
+print(b) # 不會受影響
+</pre>
+
+<p>但是前面說過，串列可以把不同類型的資料放在一起，甚至可以再放入串列。這時候又會出現一些問題，因為串列裡面又有串列，包了好多層；但是「[:]」這種語法，只能複製一層：</p>
+<pre class="brush: py">
+a = [[12, 34], 56, 78, 90]
+b = a[:]
+a[0][0] = 99
+print(a)
+print(b) # 又跟著改變了
+</pre>
+
+<p>如果真的要把每一層都複製，可以這樣使用：</p>
+<pre class="brush: py">
+import copy 
+a = [[12, 34], 56, 78, 90]
+b = copy.deepcopy(a)
+a[0][0] = 99
+print(a)
+print(b) # 總算不會受影響了
+</pre>
+
+<p>另外，你可能還記得，函式當中的預設參數，在每次呼叫時都會重新給值；但是若預設參數是串列時，附加的值會被保留：</p>
+<pre class="brush: py">
+def test(x, a=[]):
+	print("Content of a when entering test:", a)
+	a.append(x)
+	print("Content of a when exiting test:", a)
+
+test(12)
+test(34)
+test(56)
+</pre>
+
+</blockquote>
+
+</body></html>

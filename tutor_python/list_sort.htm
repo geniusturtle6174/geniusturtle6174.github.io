@@ -1,0 +1,85 @@
+﻿<html>
+<head>
+	<title>線上教材：Python 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushPython.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>基本的串列排序，是使用「sort」或者「sorted」：</p>
+<pre class="brush: py">
+a = [12, 34, 12345, 56, 78, 90, 123, 1234, 5678, 456, 789]
+
+a.sort()      # 排序，元素之間必須可以互相比較才能使用，會直接修改原本的串列
+print(a)
+
+b = sorted(a) # 也是排序，不過不是修改原本的串列，而是產生一個新的
+print(b)
+
+b = sorted(a, reverse=True) # 需要反向排序時，可以使用「reverse」參數
+print(b)
+</pre>
+
+<p>如果想要依據某個內建函式來排序，可以使用「key」參數帶入該函式，範例如下：</p>
+<pre class="brush: py">
+a = ['abe', 'fghij', 'jklm', 'mn']
+print(sorted(a))          # 預設是字典排序
+print(sorted(a, key=len)) # 改以字串長度排序
+
+a = [12, -34, 12345, -78, 90, -56]
+print(sorted(a))          # 預設是數字大小排序
+print(sorted(a, key=abs)) # 改以絕對值大小排序
+</pre>
+
+<p>如果想要使用自己定義的函式來排序，可以使用「key」參數帶入該函式，或者使用「lambda function」的語法，範例如下：</p>
+<pre class="brush: py">
+def my_func(num):
+	return num % 2
+
+
+a = [90, 12, 34, 12345, 123, 56]
+print(sorted(a, key=my_func))
+print(sorted(a, key=lambda x: x % 2))
+</pre>
+
+<p>在上述範例中，我們是把偶數(key=0)排前面，奇數(key=1)排後面，而遇到兩數的奇偶相同時，Python 會幫我們保有原來的順序，稱之為「stable sort」。而如果你希望有多個排序原則，例如先照奇偶再照大小時，就需要函式能回傳多個 keys，如下：</p>
+<pre class="brush: py">
+def my_func(num):
+	return num % 2, num
+
+
+a = [90, 12, 34, 12345, 123, 56]
+print(sorted(a, key=my_func))
+print(sorted(a, key=lambda x: (x % 2, x)))
+</pre>
+
+<p>如果你希望基於比較來排序，可以用「functools.cmp_to_key」，來幫你把比較的動作轉換成 key。以下範例會在兩數奇偶相同時將小的排前面，不同時將偶數排前面（也就是跟前一個範例相同，先照奇偶再照大小）：</p>
+<pre class="brush: py">
+import functools
+
+
+def myCmp(x, y):
+	if x % 2 == y % 2:
+		return x - y
+	else:
+		return x % 2 - y % 2
+
+
+a = [90, 12, 34, 12345, 123, 56]
+print(sorted(a, key=functools.cmp_to_key(myCmp)))
+</pre>
+
+</blockquote>
+
+</body></html>
