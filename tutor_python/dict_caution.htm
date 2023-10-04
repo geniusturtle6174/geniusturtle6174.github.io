@@ -1,0 +1,65 @@
+﻿<html>
+<head>
+	<title>線上教材：Python 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushPython.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>字典要拷貝時會發生的問題，跟 list 非常相似。如果只是單純使用等號來拷貝的話，那麼任何的 key-value 組合，都會跟著被修改：</p>
+<pre class="brush: py">
+d = {123: 456}
+e = d
+
+d[123] = 789 # 修改原字典中已存在的一組 key-val
+d['abd'] = 'def' # 在原字典中新增一組 key-val
+print(d)
+print(e)
+</pre>
+
+<p>字典本身有一個「copy」方法，可以幫你複製一個字典。單純使用 copy 的時候，在 value 是數字或字串等狀況下，不會有連帶修改的問題；但是在 value 是串列的時候，串列仍然會被連帶修改：</p>
+<pre class="brush: py">
+d = {123: 456}
+e = d.copy()
+
+d[123] = 789
+d['abd'] = 'def'
+print(d)
+print(e)
+
+f = {123: [456, 567]}
+g = f.copy()
+
+f[123].append(789)
+f['abd'] = 'def'
+print(f)
+print(g)
+</pre>
+
+<p>如果要連串列都能複製一份，則跟串列一樣，需要使用 deepcopy：</p>
+<pre class="brush: py">
+import copy
+
+f = {123: [456]}
+g = copy.deepcopy(f)
+
+f[123].append(789)
+f['abd'] = 'def'
+print(f)
+print(g)
+</pre>
+
+</blockquote>
+
+</body></html>

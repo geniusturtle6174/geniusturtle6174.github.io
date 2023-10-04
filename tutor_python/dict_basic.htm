@@ -1,0 +1,88 @@
+﻿<html>
+<head>
+	<title>線上教材：Python 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushPython.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>使用日常生活中的字典時，你會有一個要查詢的字詞，然後翻找到解釋。Python 當中的字典也跟生活中的字典非常相似，但我們會把要查詢的字詞稱為 key，翻找到的解釋稱為 value。Python 的字典的基本使用方法如下，大致上跟串列非常相似：</p>
+<pre class="brush: py">
+d = {
+	123: 456,
+	789: 'pqr',
+	'abc': 'def',
+	'xyz': 123,
+}
+
+print(d[123])
+print(d['abc'])
+print(len(d)) # 字詞的個數
+
+print(d['difficult']) # 這行會產生錯誤，因為字典當中沒有這個字
+</pre>
+
+<p>在前述範例中，如果你希望在字典當中查不到某個字詞（正式說法為「key 不存在」）時，不要直接噴出錯誤，而是回傳一個預設答案時，可以使用「get」來查字典，如下：</p>
+<pre class="brush: py">
+d = {
+	123: 456,
+	789: 'pqr',
+	'abc': 'def',
+	'xyz': 123,
+}
+
+print(d.get('give-up', 0))
+</pre>
+
+<p>需要新增或刪除一組字詞時的方法，也跟串列非常相似：</p>
+<pre class="brush: py">
+d = {
+	123: 456,
+	789: 'pqr',
+	'abc': 'def',
+	'xyz': 123,
+}
+
+# 新增一組 key-value 的組合
+d['this-is-new-key-1'] = 'this-is-new-val'
+print(d['this-is-new-key-1'])
+
+# 修改一組 key-value 的組合
+d[123] = 789
+print(d[123])
+
+# 刪除一組 key-value 的組合
+del d[123]
+print(d[123]) # 這行也會產生錯誤，因為字典當中現在沒有這個字
+
+del d[12345] # 刪除不存在的字，也會產生錯誤
+</pre>
+
+<p>若要在程式中判斷字典裡是否有該字詞，可以用 in 來進行。如果是在 Python 2 當中，還有 has_key() 可以使用，不過在 Python 3 沒有此方法。</p>
+<pre class="brush: py">
+d = {
+	123: 456,
+	789: 'pqr',
+	'abc': 'def',
+	'xyz': 123,
+}
+
+print(123 in d)
+print('pqr' in d)
+print('difficult' not in d) # 或 print(not 'difficult' in d)
+</pre>
+
+</blockquote>
+
+</body></html>

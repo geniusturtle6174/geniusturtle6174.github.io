@@ -1,0 +1,83 @@
+﻿<html>
+<head>
+	<title>線上教材：Python 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushPython.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>本篇將以終極密碼和勘跟定理兩個範例，來做為迴圈語法的應用展示。</p>
+
+<p>終極密碼的遊戲目標是，給定一個上下界，讓大家猜出該範圍內的數字。而在遊戲過程中，上下界會隨著大家猜想的數字變化，而愈來愈縮小範圍，直至有人猜中為止。以下是完整程式碼：</p>
+<pre class="brush: python">
+low = 1
+high = 100
+pwd = 35
+
+while True:
+	guess = int(input('Please enter a number within [{}, {}]:'.format(low, high)))
+
+	if guess == pwd:
+		print('You got it!')
+		break
+	elif guess &lt; pwd:
+		low = max(guess, low)
+	elif guess &gt; pwd:
+		high = min(guess, high)
+</pre>
+
+<p>在上述範例中：</p>
+<ul>
+	<li>密碼是事先寫死的。若你想要改用亂數產生，可以參考 random 模組。</li>
+	<li>「while True:」代表迴圈永遠會執行，因此你若希望在猜中後結束遊戲，需要用「break」跳出迴圈。</li>
+</ul>
+
+<p>
+高中學過的勘根定理，也可以用迴圈來實做。勘根定理告訴我們，如果函數 f 是連續的，且 f(a) * f(b) &le; 0，則 [a, b] 之間至少有一根。求根的步驟如下：</p>
+<ol>
+	<li>找一個區間 [a, b]，使 f(a) 和 f(b) 異號</li>
+	<li>求 a, b 中點 c，並求 f(c)</li>
+	<li>如果 f(a) 和 f(c) 同號，則取 c 為新左界，否則取 c 為新右界</li>
+	<li>重複 2 和 3，至夠精確為止</li>
+</ol><br>
+
+<p>以下範例，會展示如何找出 x<sup>5</sup> - x - 1 = 0 在 (-0.5, 1.5) 之間的某一根：</p>
+<pre class="brush: python">
+def f(x):
+	return x ** 5 - x - 1
+
+
+a = -0.5
+b = 1.5
+
+fa = f(a)
+fb = f(b)
+while True:
+	c = (a + b) / 2
+	fc = f(c)
+
+	if abs(fc) < 1e-5:
+		print(c, abs(fc))
+		break
+	elif fa * fc > 0:
+		a = c
+	else:
+		b = c
+</pre>
+
+<p>在上述範例中，數字已經過是先設計，保證該方程式在該範圍內恰有一根；你可以利用 Google 或其他方式自動畫圖觀察看看，或者用 matplotlib.pyplot 模組自己畫圖觀察看看。</p>
+
+</blockquote>
+
+</body></html>
