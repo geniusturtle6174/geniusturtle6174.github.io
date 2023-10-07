@@ -19,13 +19,13 @@
   * Wave, MIDI, MP3
   * Volume, Pitch, Harmonics
   * Fourier Transform, Mel Scale
-* 音樂檢索(4w)
-  * Query by Singing/Humming
-  * Audio Fingerprint
 * 機器學習簡介(4w)
   * K-Means Clustering
   * Classification and Regression
   * Neural Networks
+* 音樂檢索(4w)
+  * Query by Singing/Humming
+  * Audio Fingerprint
 * 樂曲分析與處理(4w)
   * 人聲分離
   * 結構分析

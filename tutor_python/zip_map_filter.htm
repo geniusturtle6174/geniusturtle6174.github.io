@@ -17,9 +17,79 @@
 
 <blockquote>
 
-<p>內容撰寫中：</p>
-<pre class="brush: python">
-print('Hello World!')
+<p>透過 zip，你可以把兩個或多個串列（或其他任何一串東西，下同），像是拉鍊一對一樣的組合起來，並逐對的用迴圈處理。一個基本的範例如下：</p>
+<pre class="brush: py">
+a = ['A', 'B', 'C', 'D']
+b = ['W', 'X', 'Y', 'Z']
+
+for m, n in zip(a, b):
+	print(m ,n)
+</pre>
+
+<p>如果兩個或多個串列的長度不一時，zip 只會幫你處理到最短的那個結束為止：</p>
+<pre class="brush: py">
+a = ['A', 'B', 'C', 'D', 'E', 'F']
+b = ['W', 'X', 'Y', 'Z']
+
+for m, n in zip(a, b):
+	print(m ,n)
+</pre>
+
+<p>如果你在進行處理的時候，除了原本值的資訊以外，也需要知道他們是第幾對的話，則當然可以跟 enumerate 一起使用。此時，在迴圈的變數位置處，需要把 zip 產生出的配對用括號括住：</p>
+<pre class="brush: py">
+a = ['A', 'B', 'C', 'D']
+b = ['W', 'X', 'Y', 'Z']
+
+for i, (m, n) in enumerate(zip(a, b)):
+	print(i, m ,n)
+</pre>
+
+<p>透過 map，可以很方便的幫你把串列的每個元素，都進行一樣的處理。以下範例，將比較原版迴圈、list comprehension，以及 map 等寫法：</p>
+<pre class="brush: py">
+a = ['12', '34', '56', '78', '90']
+
+b1 = []
+for v in a:
+	b1.append(int(v))
+print(b1)
+
+b2 = [int(v) for v in a]
+print(b2)
+
+b3 = list(map(int, a)) # 在 Python 2 當中，用 b = map(int, a) 就可以了，不需要再轉換成 list
+print(b3)
+</pre>
+
+<p>如果你需要用 map 執行自訂的操作，則跟排序一樣，可以帶入自定的 function，或者使用 lambda function：</p>
+<pre class="brush: py">
+a = ['12', '34', '56', '78', '90']
+
+
+def my_func(val):
+	return int(val) % 3
+
+
+b1 = list(map(my_func, a))
+print(b1)
+
+b2 = list(map(lambda x: int(x) % 3, a))
+print(b2)
+</pre>
+
+<p>透過 filter，則可以篩選出串列當中，符合特定條件的元素：</p>
+<pre class="brush: py">
+a = ['12', '34', '56', '78', '90']
+
+
+def my_func(val):
+	return int(val) % 3 == 0
+
+
+b1 = list(filter(my_func, a))
+print(b1)
+
+b2 = list(filter(lambda x: int(x) % 3 == 0, a))
+print(b2)
 </pre>
 
 </blockquote>
