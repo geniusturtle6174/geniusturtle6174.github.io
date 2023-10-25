@@ -58,101 +58,155 @@ print(np.linspace(0, 1, 11))
 <pre class="brush: py">
 import numpy as np
 
-a = np.array([[1,2,3], [4,5,6]])
+a = np.array([[1, 2, 3], [4, 5, 6]])
 
 print(a)
 print(a.shape)
 </pre>
 
-<p>Numpy 可以幫你創建各種具有某種規則的二維陣列，以下介紹零矩陣和單位矩陣：</p>
+<p>Numpy 可以幫你創建各種具有某種規則的一維或二維陣列，以下介紹零矩陣和單位矩陣；如果你把 zeros 換成 ones，則可以產生全一矩陣：</p>
 <pre class="brush: py">
 import numpy as np
 
 print(np.zeros(5))
-print(np.zeros((2,3)))
-print(np.zeros((5,1)))
+print(np.zeros((2, 3)))
+print(np.zeros((5, 1)))
 
 print(np.eye(5))
 print(np.eye(5, M=3))
 </pre>
-<!-- 
-<p>矩陣的合併：</p>
+
+<p>Question: 如何產生全部都是某個任意實數的矩陣？</p>
+
+<p>矩陣的合併則有各種「stack」系列的方法，或者「concatenate」可以使用。以下介紹其中兩種：</p>
 <pre class="brush: py">
 import numpy as np
 
-a = np.array([[1,2,3], [4,5,6]])
-b = np.array([[7,8,9], [0,0,0]])
+a = np.array([[1, 2, 3], [4, 5, 6]])
+b = np.array([[7, 8, 9], [0, 0, 0]])
+print(a)
+print(b)
+print('=====')
 print(np.vstack([a, b]))
 print(np.hstack([a, b]))
 </pre>
 
-<p>需要注意的是，如果其中一方是空矩陣的話，可能會產生問題，所以必須對其 size 屬性進行判斷，例如下列程式片段中，已知 a 有可能為空，則可以這樣處理：</p>
+<p>需要注意的是，如果其中一方是空矩陣的話，可能會產生問題，所以必須對其 size 屬性進行判斷，例如下列程式片段中，已知 a 有可能為空時，可能會出問題的寫法，以及適當的對應方法如下：</p>
 <pre class="brush: py">
-c = np.vstack([a, b]) if(a.size) else b
+a = np.array([])
+b1 = np.array([1, 2, 3])
+b2 = np.array([[1], [2], [3]])
+
+c = np.hstack([a, b1])  # 空的一維向量接非空的一維向量，可以執行
+c = np.vstack([b1, b1]) # 只是垂直疊兩個 b1，也可以執行
+c = np.vstack([a, b1])  # 這行會產生錯誤
+c = np.hstack([a, b2])  # 這行會產生錯誤
+
+c = np.vstack([a, b1]) if(a.size) else b1
+c = np.vstack([a, b2]) if(a.size) else b2
 </pre>
 
-<p>一些統計等運算，例如極值、排序、平均：</p>
+<p>利用 Numpy 進行取極值、排序、平均的方法如下：</p>
 <pre class="brush: py">
 import numpy as np
 
-a = np.array([[1,5,3], [4,2,6]])
+a = np.array([[1, 5, 3], [4, 2, 6]])
 print(np.max(a)) # 在所有元素裡面找
 print(np.max(a, axis=0)) # 沿著 row index 的方向找
 print(np.max(a, axis=1)) # 沿著 column index 的方向找
 
-b = np.array([[4,2,5,3,1], [8,6,7,9,0]])
-print(np.sort(b))         # 沿著 column index 的方向排序(預設)
+b = np.array([[4, 2, 5, 3, 1], [8, 6, 7, 9, 0]])
+print(np.sort(b))         # 預設沿著最後一個軸(axis=-1)的方向排序
 print(np.sort(b, axis=0)) # 沿著 row index 的方向排序
 
-c = np.array([[4,2,5,3,1], [8,6,7,9,0]])
+c = np.array([[4, 2, 5, 3, 1], [8, 6, 7, 9, 0]])
 print(np.mean(c)) # 所有元素平均
 print(np.mean(c, axis=0)) # 沿著 row index 的方向平均
 print(np.mean(c, axis=1)) # 沿著 column index 的方向平均
 </pre>
 
-<p>關於上列的極值或排序，如果想要找出位置或順序再做進一步利用時，可以使用 argmax 或 argsort (僅以向量示範)：</p>
+<p>你當然還可以進行更多比較複雜的統計運算，若有興趣請自行上網搜尋。而關於取極值或排序時，如果是需要找出位置或順序再做進一步利用時，可以使用 argmax 或 argsort（此處僅以向量示範）：</p>
 <pre class="brush: py">
 import numpy as np
 
-a = np.array([4,2,3,1,5])
+a = np.array([4, 2, 3, 1, 5])
 print(np.argmax(a))
 print(np.argsort(a))
 </pre>
 
-<p>邏輯運算與尋找(僅以向量示範)：</p>
+<p>邏輯運算與尋找特定值的方法如下，此處亦僅以向量示範：</p>
 <pre class="brush: py">
 import numpy as np
 
-a = np.array([4,3,1,6,9,2,5,0,8,7])
-print(a&gt;=5)
-print(np.where(a&gt;=5)[0])
+a = np.array([4, 3, 1, 6, 9, 2, 5, 0, 8, 7])
+print(a &gt;= 5)
+print(np.where(a &gt;= 5)[0])
 
-print(np.bitwise_or(a&gt;=7, a&lt;=3))
-print(np.where(np.bitwise_or(a&gt;=7, a&lt;=3))[0])
+print(np.logical_or(a &gt;= 7, a &lt;= 3))
+print(np.where(np.logical_or(a &gt;= 7, a &lt;= 3))[0])
 </pre>
 
-<p>轉置：</p>
+<p>矩陣的轉置，可以直接使用「.T」：</p>
 <pre class="brush: py">
 import numpy as np
 
-a = np.array([[1,5,3], [4,2,6]])
+a = np.array([[1, 5, 3], [4, 2, 6]])
+print(a)
+print(a.shape)
 print(a.T)
+print(a.T.shape)
 
 print('------------')
 
-b = np.array([[4],[2],[3]])
-print(b, b.shape)
-print(b.T, b.T.shape)
+b = np.array([[4], [2], [3]])
+print(b)
+print(b.shape)
+print(b.T)
+print(b.T.shape)
 
 print('------------')
 
-c = np.array([4,2,3,5,1])
-cLen = c.shape[0]
-print(c, c.shape)
-print(c.T, c.T.shape) # 一開始就是一維的不能轉
-print(c.reshape(cLen, -1), c.reshape(cLen, -1).shape) # 若需要轉，可以這樣用
+c = np.array([[4, 2, 3]])
+print(c)
+print(c.shape)
+print(c.T)
+print(c.T.shape)
 </pre>
 
+<p>但一維的向量若也需要轉置，則需要透過各種方法先變成二維。以下介紹將一維轉成二維的相關方法：</p>
+<pre class="brush: py">
+import numpy as np
+
+a = np.array([4, 2, 3, 5, 1])
+print(a)
+print(a.shape)
+
+print('------------')
+
+b = a[np.newaxis, :]
+print(b)
+print(b.shape)
+
+print('------------')
+
+c = a[:, np.newaxis]
+print(c)
+print(c.shape)
+
+print('------------')
+
+d = a.reshape(a.shape[0], 1)
+print(d)
+print(d.shape)
+
+print('------------')
+
+e = a.reshape(a.shape[0], 1)
+print(e)
+print(e.shape)
+</pre>
+
+<!-- 
 <p>矩陣相乘可以使用 matmul，若是元素對元素相乘，可以呼叫 multiply：</p>
 <pre class="brush: py">
 import numpy as np
@@ -204,8 +258,8 @@ print('------------------')
 x, resid, rank, s = np.linalg.lstsq(A.T, b.T)
 print(x)
 print(np.matmul(x, A))
-</pre> -->
-
+</pre>
+ -->
 </blockquote>
 
 </body></html>
