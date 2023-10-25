@@ -1,0 +1,84 @@
+﻿<html>
+<head>
+	<title>線上教材：Python 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushPython.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>JSON、YAML 以及 Pickle 是 Python 當中另外幾個經常使用的檔案格式，你可以簡單的將其理解為將字典甚至任何變數比較方便地存檔。以下將簡單介紹他們的使用方式。</p>
+
+<p>使用 JSON 時，必須先「import json」。要在字典跟 JSON 格式之間轉換時，可以使用「json.dumps」和「json.loads」：</p>
+<pre class="brush: python">
+import json
+
+d1 = {1: 2, '3': '45', 6: [7, 8, 9]}
+s1 = json.dumps(d1)
+print(s1)
+
+s2 = '{"1": 2, "34": "5", "67": [8, 9]}'
+d2 = json.loads(s2)
+print(d2)
+</pre>
+
+<p>在上述範例中，需要注意的是，JSON 為了跨平台等理由，所以 key 只能是字串。</p>
+
+<p>如果需要存檔，則是使用「json.dump」和「json.load」：</p>
+<pre class="brush: python">
+import json
+
+d1 = {1: 2, '3': '45', 6: [7, 8, 9]}
+with open('d1.json', 'w') as fout:
+	json.dump(d1, fout)
+
+with open('d1.json', 'r') as fin:
+	d2 = json.load(fin)
+print(d2)
+</pre>
+
+<p>YAML 是另外一種類似功能的格式。一般來說，JSON 會比較常用於普通性質的資料存取，但是 若要將具有「系統設定」性質的字典儲存成檔案，可能較常使用 YAML。首先你需要以「pip install pyyaml」來安裝，然後經由以下方式來使用：</p>
+<pre class="brush: python">
+import yaml
+
+d1 = {1: 2, '3': '45', 6: [7, 8, 9]}
+with open('d1.yaml', 'w') as fout:
+	yaml.dump(d1, fout)
+
+with open('d1.yaml', 'r') as fin:
+	d2 = yaml.load(fin, Loader=yaml.Loader)
+print(d2)
+</pre>
+
+<p>Pickle 模組則跟 JSON 一樣，也是 Python 内建的，你不需要自行安裝，可以直接 import 並使用。Pickle 可以儲存任何的變數，以下簡單的示範一些：</p>
+<pre class="brush: python">
+import pickle
+
+var = [
+	{1: 2, '3': '45', 6: [7, 8, 9]},
+	[1, 2, 3, 4, 5],
+	678,
+	'90',
+]
+
+with open('var.pkl', 'wb') as handle:
+	pickle.dump(var, handle)
+
+with open('var.pkl', 'rb') as handle:
+	var2 = pickle.load(handle)
+print(var2)
+</pre>
+
+</blockquote>
+
+</body></html>

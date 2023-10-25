@@ -62,15 +62,37 @@ print('\'ab345\'.islower():', 'ab345'.islower())  # 是否全為小寫
 print('\'123DE\'.isupper():', '123DE'.isupper())  # 是否全為大寫
 </pre>
 
+<p>如果你希望將字串當中的英文全部轉換為大寫或小寫的話，則可以直接使用「upper()」或者「lower()」：</p>
+<pre class="brush: py">
+s = 'He110 W0r1d'
+
+print(s.upper())
+print(s.lower())
+</pre>
+
+<p>如果字串當中的內容剛好都是數字，而你要轉換變數類型的話，可以使用「str()」或者「int()」、「float()」等方法：</p>
+<pre class="brush: py">
+s1 = '123'
+print(int(s))
+
+s2 = '456.78'
+print(float(s))
+
+n = 9.101112
+print(str(n))
+</pre>
+
 <p>要判斷字串是否為特定的字元或字串開頭的話，除了自己取值以外，也可以使用「startswith」以及「endswith」：</p>
 <pre class="brush: py">
 print('Hello World'.startswith('He'))
 print('Hello World'.endswith('ld'))
 </pre>
 
-<p>如果要搜尋子字串，有 find 和 rfind 可以使用；若是計算子字串的出現次數，則是使用 count：</p>
+<p>如果要搜尋子字串，則除了 in 以外，也有 find 和 rfind 可以使用，且後兩者除了告訴你是否存在以外，若存在的話還會告訴你位置；若是計算子字串的出現次數，則是使用 count：</p>
 <pre class="brush: py">
 s = 'I saw a saw saw a saw'
+
+print('saw' in s)
 print(s.find('saw'))
 print(s.rfind('saw'))
 print(s.count('saw'))

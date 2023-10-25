@@ -18,10 +18,10 @@
 <blockquote>
 
 <p>
-Numpy 是 Python 的一個函式庫，支援了非常多種的向量和矩陣等等的運算。要安裝 numpy，你必須先在 cmd 當中執行「pip install numpy」或「python -m pip install numpy」(根據系統的狀況，可能在指令細節還會有些許差異)；安裝完成後，在 Python 程式中 import，就可以使用。
+Numpy 是 Python 的一個函式庫，支援了非常多種的向量和矩陣等等的運算，本篇將對部分功能進行重點式的介紹。要安裝 numpy，你必須先在 cmd 當中執行「pip install numpy」或「python -m pip install numpy」（根據系統設定的不同，可能在指令細節上會有些許差異）；安裝完成後，在 Python 程式中 import，就可以使用。
 </p>
 
-<p>首先來看一些基本的數學運算。由於常見的部分在 Math 當中也有提供很多，故以下僅任意列出其中一些，作為語法的介紹：</p>
+<p>首先來看一些基本的數學運算。由於常見的部分在 math 當中也有提供很多，故以下僅任意列出其中一些，作為語法的介紹：</p>
 <pre class="brush: py">
 import numpy as np
 
@@ -41,29 +41,41 @@ print(b + c)
 print(b - c)
 print(b * c) # 元素對元素計算
 print(b / c) # 元素對元素計算
-print(b.shape)
+print(a.shape, b.shape, c.shape)
 </pre>
 
-<p>創建規則向量，可以用 arange (相當於 range 的 numpy 版本)，甚至也有 linspace 可用：</p>
+<p>創建規則向量，可以用 arange，相當於 range 的 numpy 版本；如果在你的程式中，知道點的個數比起知道幾點取一點來的方便的話，也可以使用 linspace：</p>
 <pre class="brush: py">
 import numpy as np
 
 print(np.arange(10))
-print(np.arange(1,10))
-print(np.arange(1,10,2))
+print(np.arange(1, 10))
+print(np.arange(1, 10, 2))
 print(np.linspace(0, 1, 11))
 </pre>
 
-<p>二維陣列，就是很多個一維陣列排在一起：</p>
+<p>矩陣，也就是二維陣列，因此也就是很多個一維陣列排在一起：</p>
 <pre class="brush: py">
 import numpy as np
 
-print(np.array([[1,2,3], [4,5,6]]))
-print(np.zeros(5))     # 也有 ones 可以用
-print(np.zeros((2,3)))
-print(np.zeros((5,1)))
+a = np.array([[1,2,3], [4,5,6]])
+
+print(a)
+print(a.shape)
 </pre>
 
+<p>Numpy 可以幫你創建各種具有某種規則的二維陣列，以下介紹零矩陣和單位矩陣：</p>
+<pre class="brush: py">
+import numpy as np
+
+print(np.zeros(5))
+print(np.zeros((2,3)))
+print(np.zeros((5,1)))
+
+print(np.eye(5))
+print(np.eye(5, M=3))
+</pre>
+<!-- 
 <p>矩陣的合併：</p>
 <pre class="brush: py">
 import numpy as np
@@ -192,7 +204,7 @@ print('------------------')
 x, resid, rank, s = np.linalg.lstsq(A.T, b.T)
 print(x)
 print(np.matmul(x, A))
-</pre>
+</pre> -->
 
 </blockquote>
 
