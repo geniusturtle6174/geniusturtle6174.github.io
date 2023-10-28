@@ -1,0 +1,267 @@
+﻿<html>
+<head>
+	<title>線上教材：Python 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushPython.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+動態規劃(Dynamic Programming)是一個基於填表的計算方法。Programming 是求取最佳解的意思，所以 Dynamic Programming 就是動態的求得目前的最佳解。如果你面對的問題，是可以透過把問題切割、合併來解決，而且切割出的小問題會重複時，就很適合利用動態規劃來解決。例如計算費氏數列的遞迴版本，在計算 fibo(5) 時，會呼叫 fibo(4) 和 fibo(3)，而因為 fibo(4) 會呼叫 fibo(3) 和 fibo(2)，所以 fibo(3) 就屬於會重複計算的狀況。其實，在更前面的迴圈篇章看過的費氏數列範例，其實已經是動態規劃的版本。底下將介紹其他幾個可以用動態規劃解決的問題。
+</p>
+
+<p>首先是「最長共同子序列(longest common subsequence)」問題。子序列的意思是，從原始的序列當中去掉任意個數的元素，則新的序列就是原始序列的子序列。而最長共同子序列，就是求取一個子序列，其能同時是兩個序列的子序列，並且長度要是最長的。你也可以把這個問題想成連連看，我們要把兩個字串中一樣的字母連起來，要盡可能的連出多一點線條，但是不能交叉；而我們的目標，就是在給定兩個序列的情況下，找出最多能連幾條線，以及若有需要時，要回答連線方式。如下圖：</p>
+
+<center><canvas id="canvas_lcs01" width="600" height="200"></canvas></center>
+<script>
+var canvas = document.getElementById("canvas_lcs01");
+var ctx = canvas.getContext("2d");
+
+h1 = 60;
+h2 = 130;
+ctx.font = '50px 標楷體';
+ctx.fillText("I V V S V S T N", 10, 50);
+ctx.fillText("I V I V V V S V A V T N", 10, 170);
+ctx.beginPath();
+ctx.moveTo(22, h1);
+ctx.lineTo(22, h2);
+ctx.moveTo(72, h1);
+ctx.lineTo(72, h2);
+ctx.moveTo(122, h1);
+ctx.lineTo(172, h2);
+ctx.moveTo(222, h1);
+ctx.lineTo(222, h2);
+ctx.moveTo(272, h1);
+ctx.lineTo(322, h2);
+ctx.moveTo(322, h1);
+ctx.lineTo(522, h2);
+ctx.moveTo(372, h1);
+ctx.lineTo(572, h2);
+ctx.stroke();
+</script>
+
+<p>那麼要如何求解呢？首先，假設我們已知兩個字串，例如 'abc' 和 'abcd' 的最佳連線方法，則當兩個字串個多加入一個字母時，有兩種情況。第一種情況是，如果新加進來的兩個字母是相同的，則很顯然地，若讓那兩個字母直接連線，一定會是最佳解（之一）：</p>
+
+<center><canvas id="canvas_lcs02" width="300" height="200"></canvas></center>
+<script>
+var canvas = document.getElementById("canvas_lcs02");
+var ctx = canvas.getContext("2d");
+
+ctx.font = '50px 標楷體';
+ctx.fillText("a b c     a", 10, 50);
+ctx.fillText("a b c d   a", 10, 170);
+ctx.beginPath();
+ctx.moveTo(5, 5);
+ctx.lineTo(200, 5);
+ctx.moveTo(200, 5);
+ctx.lineTo(200, 195);
+ctx.moveTo(200, 195);
+ctx.lineTo(5, 195);
+ctx.moveTo(5, 195);
+ctx.lineTo(5, 5);
+ctx.stroke();
+</script>
+
+<p>第二種情況則是，如果新加進來的兩個字母不一樣，則至少有一個字母不會被配對，相當於比較以下兩種情況誰比較好：</p>
+
+<center><canvas id="canvas_lcs03" width="680" height="200"></canvas></center>
+<script>
+var canvas = document.getElementById("canvas_lcs03");
+var ctx = canvas.getContext("2d");
+
+ctx.font = '50px 標楷體';
+ctx.fillText("a b c    a", 10, 50);
+ctx.fillText("a b c d  a", 10, 170);
+ctx.beginPath();
+ctx.moveTo(5, 5);
+ctx.lineTo(200, 5);
+ctx.moveTo(200, 5);
+ctx.lineTo(200, 100);
+ctx.moveTo(200, 100);
+ctx.lineTo(270, 100);
+ctx.moveTo(270, 100);
+ctx.lineTo(270, 195);
+ctx.moveTo(270, 195);
+ctx.lineTo(5, 195);
+ctx.moveTo(5, 195);
+ctx.lineTo(5, 5);
+ctx.stroke();
+
+ctx.font = '50px 標楷體';
+ctx.fillText("a b c    a", 400, 50);
+ctx.fillText("a b c d  a", 400, 170);
+ctx.beginPath();
+ctx.moveTo(395, 5);
+ctx.lineTo(670, 5);
+ctx.moveTo(670, 5);
+ctx.lineTo(670, 100);
+ctx.moveTo(670, 100);
+ctx.lineTo(600, 100);
+ctx.moveTo(600, 100);
+ctx.lineTo(600, 195);
+ctx.moveTo(600, 195);
+ctx.lineTo(395, 195);
+ctx.moveTo(395, 195);
+ctx.lineTo(395, 5);
+ctx.stroke();
+</script>
+
+<p>因此，若有一個表格 D，其中的 D<sub>i-1, j-1</sub> 代表字串 A 的前 i - 1 個字和字串 B 的前 j - 1 個字的最佳連線方式的話，則 D<sub>i, j</sub> 可以表示成下列三個式子當中的最大值：</p>
+<ul>
+	<li>D<sub>i-1, j-1</sub> + 1, if A<sub>i</sub> == B<sub>j</sub></li>
+	<li>D<sub>i-1, j</sub></li>
+	<li>D<sub>i, j-1</sub></li>
+</ul>
+
+<p>當然，如果其中一個字串，例如 A 只有一個字，則應該變成下列兩個式子的最大值（字串 B 只有一個字的情況請依此類推）：</p>
+<ul>
+	<li>1, if A<sub>i</sub> == B<sub>j</sub></li>
+	<li>D<sub>i, j-1</sub></li>
+</ul>
+
+<p>字串 A 和 B 都只有一個字時，則可以直接判斷他們是否相等，若是則為 D<sub>1, 1</sub> 為 1，否則為 0。</p>
+
+<p>整體的範例如下。其中，在實作上，我們通常還會把 index 0 的 row 和 column 「浪費」掉，來讓邊界狀況（任何一個字串只有一個字的）的程式寫法比較簡潔：</p>
+<pre class="brush: py">
+str_a = 'IVVSVSTN'
+str_b = 'IVIVVVSVAVTN'
+d = [[0 for _ in range(len(str_b)+1)] for _ in range(len(str_a)+1)]
+for i in range(1, len(str_a)+1):
+	for j in range(len(str_b)+1):
+		if str_a[i-1] == str_b[j-1]:
+			d[i][j] = d[i-1][j-1] + 1
+		else:
+			d[i][j] = max(d[i-1][j], d[i][j-1])
+print(d[-1][-1])
+</pre>
+
+<p>上述的範例只能求取最長共同序列的長度。如果你希望找出該序列的話，則除了求取最大值外，有需要把產生最大值的方向記錄下來，並在最後回溯回去：</p>
+<pre class="brush: py">
+str_a = 'IVVSVSTN'
+str_b = 'IVIVVVSVAVTN'
+d = [[0 for _ in range(len(str_b)+1)] for _ in range(len(str_a)+1)]
+path = [[0 for _ in range(len(str_b)+1)] for _ in range(len(str_a)+1)]
+for i in range(1, len(str_a)+1):
+	for j in range(len(str_b)+1):
+		if str_a[i-1] == str_b[j-1]:
+			d[i][j] = d[i-1][j-1] + 1
+			path[i][j] = 'upleft'
+		elif d[i-1][j] &gt;= d[i][j-1]:
+			d[i][j] = d[i-1][j]
+			path[i][j] = 'up'
+		else:
+			d[i][j] = d[i][j-1]
+			path[i][j] = 'left'
+print(d[-1][-1])
+
+i = len(str_a)
+j = len(str_b)
+seq = ''
+while path[i][j] != 0:
+	if path[i][j] == 'upleft':
+		seq = str_a[i-1] + seq
+		i -= 1
+		j -= 1
+	elif path[i][j] == 'up':
+		i -= 1
+	else:
+		j -= 1
+print(seq)
+</pre>
+
+<p>下一個要介紹的是 0-1 背包問題。這個問題是說，有一個尋寶人，發現了 n 個寶物，每個寶物 j 的價值是 P<sub>j</sub>，重量則是 W<sub>j</sub>，尋寶人希望在有承重限制 W 的背包裡，裝下價值總和最高的寶物。在這個問題裡，如果寶物可以分割，那很明顯就從單價最高的寶物先拿再說；
+但是 0-1 背包問題討論的，是寶物不可分割的狀況，所以情況會變得比較複雜。</p>
+
+<p>要解決這個問題，我們一樣來填一張表格，其中 D<sub>i, j</sub> 代表「在承重限制是 i 的狀況下，只考慮前 j 樣物品」的最佳解。而對每一樣物品來說，都分成要拿與不拿兩種狀況； 如果要拿，就是取得其價值，但是總承重量減少；如果不拿，則其已獲得的總價值跟剩餘的承重限制都不變。因此，若第 j 個物品：</p>
+<ul>
+	<li>不能拿（拿了會超重）：D<sub>i, j</sub> = D<sub>i, j-1</sub></li>
+	<li>可以拿：D<sub>i, j</sub>為下列兩者取最大值
+		<ul>
+			<li>D<sub>i, j-1</sub>，亦即就算可以拿但還是不拿</li>
+			<li>D<sub>i-W<sub>j</sub>, j-1</sub> + P<sub>j</sub>，亦即從拿取前已獲得的價值，加上現在物品的價值</li>
+		</ul>
+	</li>
+</ul>
+
+<p>以下以實際的數字來說明。假設我們共有五樣物品，背包限裝 15 單位重：</p>
+
+<center><table>
+<tr class="slide"><th class="slide">物品</th><th class="slide">價值</th><th class="slide">重量</th></tr>
+<tr class="slide"><td class="slide">A</td><td class="slide">4</td><td class="slide">12</td></tr>
+<tr class="slide"><td class="slide">B</td><td class="slide">2</td><td class="slide">2</td></tr>
+<tr class="slide"><td class="slide">C</td><td class="slide">2</td><td class="slide">1</td></tr>
+<tr class="slide"><td class="slide">D</td><td class="slide">1</td><td class="slide">1</td></tr>
+<tr class="slide"><td class="slide">E</td><td class="slide">10</td><td class="slide">4</td></tr>
+</table></center>
+
+<p>則我們可以開出一個 (15 + 1) x (5 + 1) 的表格，並撰寫如下程式，就可以獲得最佳解：</p>
+<pre class="brush: py">
+price = [4, 2, 2, 1, 10]
+weight = [12, 2, 1, 1, 4]
+w_limit = 15
+d = [[0 for _ in range(len(price)+1)] for _ in range(w_limit+1)]
+for i in range(1, w_limit+1):
+	for j in range(1, len(price)+1):
+		if i - weight[j-1] < 0:
+			d[i][j] = d[i][j-1]
+		else:
+			d[i][j] = max(d[i][j-1], d[i-weight[j-1]][j-1] + price[j-1])
+print(d[-1][-1])
+</pre>
+
+<p>
+再來要介紹的問題叫做「矩陣鏈乘積(Matrix Chain Multiplication)」。先想像一下有三個矩陣 A, B, C 要相乘，你要用 (AB)C 還是 A(BC)的順序來乘呢？假設它們的維度分別是 5-by-5, 5-by-3, 3-by-1，則 (AB)C 的順序，需要 5 * 5 * 3 + 5 * 3 * 1 = 90 次乘法運算；而 A(BC) 的順序，則只需要 5 * 3 * 1 + 5 * 5 * 1 = 40 次乘法運算。當矩陣的數量一多的時候，順序的差別就會更明顯，而要找出好的順序，就成了一個重要的問題。這次我們用由上往下的角度來思考：
+</p>
+
+<center><p>假設有 ABCDE 五個矩陣相乘，你的第一刀要切在哪裡？</p></center>
+
+<p>
+如果是 (A)(BCDE) 的切法，則你需要知道 BCDE 的最少乘法次數；如果是 (AB)(CDE) 的切法，則你分別需要知道 AB 的最少乘法次數，以及 CDE 的最少乘法次數；如果是 (ABC)(DE) 的切法，則你分別需要知道 ABC 的最少乘法次數，以及 DE 的最少乘法次數；...。其中，在決定 BCDE 的順序時，我們也可能需要嘗試 (BC)(DE) 的最少乘法次數，所以也會需要 DE 的最少乘法次數。因此，我們需要表格來記錄這些重複過的資訊。</p>
+
+<p>
+我們可以將 D<sub>i, j</sub> 定義為「從第 i 個矩陣乘到第 j 個矩陣要花的最小乘法數」。所以，以 5 個矩陣相乘的狀況來說，如果能填出 D<sub>0, 4</sub>，則就代表求得最後解答。
+</p>
+
+<p>
+我們先將表格初始化如下，其中對角線為 0 的原因是只有自己一個矩陣不用花費任何乘法，而下半部黑色代表這些值沒有意義，原因是不能倒著乘：
+</p>
+
+<center><img src="pics/mcm01.png"></center>
+
+<p>再來，對於每一格 table[i][j]，我們需要從下列數字當中找出最小值，其中第 i 個矩陣的維度是 p<sub>i</sub>-by-p<sub>i+1</sub>：</p>
+
+<ul>
+	<li>table[i][i] + table[i+1][j] + p<sub>i</sub> * p<sub>i+1</sub> * p<sub>j+1</sub></li>
+	<li>table[i][i+1] + table[i+2][j] + p<sub>i</sub> * p<sub>i+2</sub> * p<sub>j+1</sub></li>
+	<li>table[i][i+2] + table[i+3][j] + p<sub>i</sub> * p<sub>i+3</sub> * p<sub>j+1</sub></li>
+	<li>...</li>
+	<li>table[i][k-1] + table[k][j] + p<sub>i</sub> * p<sub>k</sub> * p<sub>j+1</sub></li>
+	<li>...</li>
+	<li>table[i][i+(j-1)] + table[j][j] + p<sub>i</sub> * p<sub>j</sub> * p<sub>j+1</sub></li>
+</ul>
+
+<p>
+其中，以 table[i][i+2] + table[i+3][j] + p<sub>i</sub> * p<sub>i+3</sub> * p<sub>j+1</sub>為例，意義是「把這一刀切在 i+2 的話，所花的乘法次數是從 i 乘到 i+2 已經用的，加上從 i+3 乘到 j 用的，再加上合併起來要用的（第 i 個矩陣乘到第 i+2 個矩陣，維度會是 i-by-(i+3)）」。你可以發現，上述那些算式的求最小值，就相當於每一刀都切看看，然後比較一下哪一個最小。
+</p>
+
+<p>所以，每填一格的時候，我們需要下列格子的資訊：</p>
+
+<center><img src="pics/mcm02.png"></center>
+
+<p>因此，填表的時候，以下兩種方向都是可以的：</p>
+<br/><center><img src="pics/mcm03.png"></center>
+
+</blockquote>
+
+</body></html>
