@@ -93,6 +93,8 @@ print(np.hstack([a, b]))
 
 <p>需要注意的是，如果其中一方是空矩陣的話，可能會產生問題，所以必須對其 size 屬性進行判斷，例如下列程式片段中，已知 a 有可能為空時，可能會出問題的寫法，以及適當的對應方法如下：</p>
 <pre class="brush: py">
+import numpy as np
+
 a = np.array([])
 b1 = np.array([1, 2, 3])
 b2 = np.array([[1], [2], [3]])
