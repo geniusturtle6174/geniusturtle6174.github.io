@@ -239,28 +239,34 @@ print(d[-1][-1])
 
 <center><img src="pics/mcm01.png"></center>
 
-<p>再來，對於每一格 table[i][j]，我們需要從下列數字當中找出最小值，其中第 i 個矩陣的維度是 p<sub>i</sub>-by-p<sub>i+1</sub>：</p>
+<p>再來，對於每一個 D<sub>i, j</sub>，我們需要從下列數字當中找出最小值，其中第 i 個矩陣的維度是 p<sub>i</sub>-by-p<sub>i+1</sub>：</p>
 
 <ul>
-	<li>table[i][i] + table[i+1][j] + p<sub>i</sub> * p<sub>i+1</sub> * p<sub>j+1</sub></li>
-	<li>table[i][i+1] + table[i+2][j] + p<sub>i</sub> * p<sub>i+2</sub> * p<sub>j+1</sub></li>
-	<li>table[i][i+2] + table[i+3][j] + p<sub>i</sub> * p<sub>i+3</sub> * p<sub>j+1</sub></li>
+	<li>D<sub>i, i</sub> + D<sub>i+1, j</sub> + p<sub>i</sub> * p<sub>i+1</sub> * p<sub>j+1</sub></li>
+	<li>D<sub>i, i+1</sub> + D<sub>i+2, j</sub> + p<sub>i</sub> * p<sub>i+2</sub> * p<sub>j+1</sub></li>
+	<li>D<sub>i, i+2</sub> + D<sub>i+3, j</sub> + p<sub>i</sub> * p<sub>i+3</sub> * p<sub>j+1</sub></li>
 	<li>...</li>
-	<li>table[i][k-1] + table[k][j] + p<sub>i</sub> * p<sub>k</sub> * p<sub>j+1</sub></li>
+	<li>D<sub>i, k-1</sub> + D<sub>k, j</sub> + p<sub>i</sub> * p<sub>k</sub> * p<sub>j+1</sub></li>
 	<li>...</li>
-	<li>table[i][i+(j-1)] + table[j][j] + p<sub>i</sub> * p<sub>j</sub> * p<sub>j+1</sub></li>
+	<li>D<sub>i, i+(j-1)</sub> + D<sub>j, j</sub> + p<sub>i</sub> * p<sub>j</sub> * p<sub>j+1</sub></li>
 </ul>
 
 <p>
-其中，以 table[i][i+2] + table[i+3][j] + p<sub>i</sub> * p<sub>i+3</sub> * p<sub>j+1</sub>為例，意義是「把這一刀切在 i+2 的話，所花的乘法次數是從 i 乘到 i+2 已經用的，加上從 i+3 乘到 j 用的，再加上合併起來要用的（第 i 個矩陣乘到第 i+2 個矩陣，維度會是 i-by-(i+3)）」。你可以發現，上述那些算式的求最小值，就相當於每一刀都切看看，然後比較一下哪一個最小。
+其中，以 D<sub>i, i+2</sub> + D<sub>i+3, j</sub> + p<sub>i</sub> * p<sub>i+3</sub> * p<sub>j+1</sub>為例，意義是「把這一刀切在 i+2 的話，所花的乘法次數是從 i 乘到 i+2 已經用的，加上從 i+3 乘到 j 用的，再加上合併起來要用的（第 i 個矩陣乘到第 i+2 個矩陣，維度會是 i-by-(i+3)）」。你可以發現，上述那些算式的求最小值，就相當於每一刀都切看看，然後比較一下哪一個最小。
 </p>
 
-<p>所以，每填一格的時候，我們需要下列格子的資訊：</p>
+<p>所以，以填寫 D<sub>i=0, j=3</sub> 為例，我們會需要求取下列三者的最小值：</p>
+<ul>
+	<li>D<sub>i=0, j=0</sub> + D<sub>i+1=1, j=3</sub> + p<sub>i=0</sub> * p<sub>i+1=1</sub> * p<sub>j+1=4</sub></li>
+	<li>D<sub>i=0, i+1=1</sub> + D<sub>i+2=2, j=3</sub> + p<sub>i=0</sub> * p<sub>i+2=2</sub> * p<sub>j+1=4</sub></li>
+	<li>D<sub>i=0, i+2=2</sub> + D<sub>i+3=3, j=3</sub> + p<sub>i=0</sub> * p<sub>i+3=3</sub> * p<sub>j+1=4</sub></li>
+</ul>
 
+<p>也就是分別為下圖的綠線、黃線、紅線：</p>
 <center><img src="pics/mcm02.png"></center>
 
-<p>因此，填表的時候，以下兩種方向都是可以的：</p>
-<br/><center><img src="pics/mcm03.png"></center>
+<p>因此，填表的時候，以下兩種方向，都可以保證你在填某一格的時候，所需的資訊都已具備（當然還有其他可行的方向，但圖上並未畫出）：</p>
+<center><img src="pics/mcm03.png"></center>
 
 </blockquote>
 
