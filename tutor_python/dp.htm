@@ -51,7 +51,7 @@ ctx.lineTo(572, h2);
 ctx.stroke();
 </script>
 
-<p>那麼要如何求解呢？首先，假設我們已知兩個字串，例如 'abc' 和 'abcd' 的最佳連線方法，則當兩個字串個多加入一個字母時，有兩種情況。第一種情況是，如果新加進來的兩個字母是相同的，則很顯然地，若讓那兩個字母直接連線，一定會是最佳解（之一）：</p>
+<p>那麼要如何求解呢？首先，假設我們已知兩個字串，例如 'abc' 和 'abcd' 的最佳連線方法，則當兩個字串各多加入一個字母時，有兩種情況。第一種情況是，如果新加進來的兩個字母是相同的，則很顯然地，若讓那兩個字母直接連線，一定會是最佳解（之一）：</p>
 
 <center><canvas id="canvas_lcs02" width="300" height="200"></canvas></center>
 <script>
@@ -81,7 +81,7 @@ var canvas = document.getElementById("canvas_lcs03");
 var ctx = canvas.getContext("2d");
 
 ctx.font = '50px 標楷體';
-ctx.fillText("a b c    a", 10, 50);
+ctx.fillText("a b c    d", 10, 50);
 ctx.fillText("a b c d  a", 10, 170);
 ctx.beginPath();
 ctx.moveTo(5, 5);
@@ -99,7 +99,7 @@ ctx.lineTo(5, 5);
 ctx.stroke();
 
 ctx.font = '50px 標楷體';
-ctx.fillText("a b c    a", 400, 50);
+ctx.fillText("a b c    d", 400, 50);
 ctx.fillText("a b c d  a", 400, 170);
 ctx.beginPath();
 ctx.moveTo(395, 5);
