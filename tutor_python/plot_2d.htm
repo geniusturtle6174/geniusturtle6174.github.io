@@ -1,0 +1,288 @@
+﻿<html>
+<head>
+	<title>線上教材：Python 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<base target="_blank">
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushPython.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>
+本篇將說明如何以 matplotlib 來進行基本的二維繪圖。要執行本篇的範例，請先用 pip 安裝 matplotlib。
+</p>
+
+<p>最基本的繪圖指令是 plt.plot() ，如果輸入有兩個向量時，會分別把第一個以及第二個向量當作 x 和 y 來畫圖；若只有一個向量時，則會以其為 y，而以 np.arange(0, 其長度) 為 x 來畫圖，如下：</p>
+<pre class="brush: py">
+import math
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(0, 2 * math.pi, 100)
+y = np.sin(x)
+
+plt.figure()
+plt.plot(x, y)
+
+plt.figure()
+plt.plot(y)
+
+plt.show()
+</pre>
+
+<p>在上述範例中，plt.figure() 是用於開啟一個新的繪圖視窗。事實上，當你呼叫 plt.plot() 或者其他繪圖函式時，若目前沒有繪圖視窗，則也會開啟一個新的，如果已經有繪圖視窗的話，則會畫在該視窗上；但是在此範例中，希望的是兩張圖片分開顯示，故為了範例的一致性，因此都加上了 plt.figure()；而要讓繪圖視窗真正的出現，必須使用 plt.show()。</p>
+
+<p>在同一張圖上連續呼叫 plot 分別畫出多條曲線時，系統會自動幫你更換顏色；如果需要標示清楚哪條曲線是哪個方程式，則可以在畫圖時使用 label 參數說明，並使用 plt.legend() 顯示圖示；如果需要對軸的意義進行說明，可以使用 plt.xlabel() 或者 plt.ylabel()：</p>
+<pre class="brush: py">
+import math
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(0, 2 * math.pi, 100)
+y1 = np.sin(x)
+y2 = np.cos(x)
+y3 = np.sin(x) + np.cos(x)
+
+plt.plot(x, y1, label='sin(x)')
+plt.plot(x, y2, label='cos(x)')
+plt.plot(x, y3, label='sin(x)+cos(x)')
+plt.legend()
+
+plt.xlabel('x')
+plt.ylabel('f(x)')
+
+plt.show()
+</pre>
+
+<p>如果要以不同的線標(marker)作圖，可以使用 plot 的第三個參數，以指定作圖格式：</p>
+<pre class="brush: py">
+import math
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(0, 2 * math.pi, 100)
+y1 = np.sin(x)
+y2 = np.cos(x)
+y3 = np.sin(x) + np.cos(x)
+
+plt.plot(x, y1, 'yo-', label='sin(x)')
+plt.plot(x, y2, 'k+-', label='cos(x)')
+plt.plot(x, y3, 'bx-', label='sin(x)+cos(x)')
+plt.legend()
+
+plt.xlabel('x')
+plt.ylabel('f(x)')
+
+plt.show()
+</pre>
+
+<p>在上述範例中，格式的指定方式是一個字串，並且你可以簡單的透過它同時指定<a href="https://matplotlib.org/stable/users/explain/colors/colors.html">顏色</a>、<a href="https://matplotlib.org/stable/api/markers_api.html">線標</a>，以及<a href="https://matplotlib.org/stable/gallery/lines_bars_and_markers/linestyles.html">線本身的樣式</a>。</p>
+
+<p>如果你的函式裡面用到了上下標的運算或表示方法時，可以直接使用 LATEX 語法來顯示出上下標（如果需要做比較複雜的顯示，可能在你的電腦裡，需要另外安裝有 LATEX）：</p>
+<pre class="brush: py">
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(-5, 5, 100)
+y1 = 2 ** np.sin(x)
+
+plt.plot(x, y1, label='$y_1=2^{sin(x)}$')
+plt.legend()
+
+plt.xlabel('x')
+plt.ylabel('f(x)')
+
+plt.show()
+</pre>
+
+<p>若要在同一個視窗上呈現多張子圖，可以使用 plt.subplot()。以下範例會畫出六個三角函數的圖形，而其中的 plt.axis 是用於控制圖軸範圍，以免 tan 等值域為正負無限大的函數的顯示困難：</p>
+<pre class="brush: py">
+import math
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(0, 2 * math.pi, 100)
+
+plt.subplot(2, 3, 1)
+plt.plot(x, np.sin(x))
+plt.title('y = sin(x)')
+plt.axis([0, 6.29, -3, 3])
+
+plt.subplot(2, 3, 2)
+plt.plot(x, np.cos(x))
+plt.title('y = cos(x)')
+plt.axis([0, 6.29, -3, 3])
+
+plt.subplot(2, 3, 3)
+plt.plot(x, np.tan(x))
+plt.title('y = tan(x)')
+plt.axis([0, 6.29, -3, 3])
+
+plt.subplot(2, 3, 4)
+plt.plot(x, 1/np.tan(x))
+plt.title('y = cot(x)')
+plt.axis([0, 6.29, -3, 3])
+
+plt.subplot(2, 3, 5)
+plt.plot(x, 1/np.cos(x))
+plt.title('y = sec(x)')
+plt.axis([0, 6.29, -3, 3])
+
+plt.subplot(2, 3, 6)
+plt.plot(x, 1/np.sin(x))
+plt.title('y = csc(x)')
+plt.axis([0, 6.29, -3, 3])
+
+plt.show()
+</pre>
+
+<p>若你希望子圖呈現時，不是單純的格網狀分割，則需要在呼叫 subplot 時，改變網格分割方式，以及子圖繪製的位置：</p>
+<pre class="brush: py">
+import math
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(0, 2 * math.pi, 100)
+
+plt.subplot(2, 2, 1)
+plt.plot(x, np.sin(x))
+plt.title('y = sin(x)')
+plt.axis([0, 6.29, -3, 3])
+
+plt.subplot(2, 2, 3)
+plt.plot(x, np.cos(x))
+plt.title('y = cos(x)')
+plt.axis([0, 6.29, -3, 3])
+
+plt.subplot(1, 2, 2)
+plt.plot(x, np.tan(x))
+plt.title('y = tan(x)')
+plt.axis([0, 6.29, -3, 3])
+
+plt.show()
+</pre>
+
+<p>要將圖軸以 log scale 顯示，可以使用 plt.xscale() 或 plt.yscale() 帶入 'log' 參數，以下範例展示 plt.yscale('log')：</p>
+<pre class="brush: py">
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.arange(0, 10)
+y = 2 ** x
+
+plt.subplot(1, 2, 1)
+plt.plot(x, y)
+
+plt.subplot(1, 2, 2)
+plt.plot(x, y)
+plt.yscale('log')
+
+plt.show()
+</pre>
+
+<p>前面介紹都是傳入向量的狀況，如果是傳入一個矩陣時，plot 會對該矩陣的每個 column 做圖；如果是兩個矩陣時，則會以對應的 column 做圖。你可以先猜猜看，以下範例會畫出什麼圖形：</p>
+<pre class="brush: py">
+import math
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(0, 2 * math.pi, 100)
+
+A = np.vstack([np.sin(x), 2 * np.sin(x), 3 * np.sin(x)]).T
+B = np.vstack([np.cos(x), 2 * np.cos(x), 3 * np.cos(x)]).T
+
+plt.plot(A, B)
+
+plt.show()
+</pre>
+
+<p>繪製長條圖時，可使用 plt.bar()；如果需要分組繪製長條圖，則要用迴圈依次繪製每組的第一筆、第二筆，直到最後一筆；繪製同時也需要進行平移，而不是都畫在中間：</p>
+<pre class="brush: py">
+import math
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+plt.figure()
+data = [774, 357, 300, 285]
+plt.bar([0, 1, 2, 3], data)
+plt.xlabel('Dorm')
+plt.ylabel('People Num')
+plt.xticks([0, 1, 2, 3], ('Shin','Shi','Ren','Yi'))
+
+plt.figure()
+data_inner = [15.8, 15.9, 15.6]
+data_outer = [20, 20.2, 20.3]
+labels = ['1st', '2nd', '3rd']
+x = np.array([0, 1])
+for i in range(3):
+	plt.bar(
+		x + (i - 1) * 0.2,
+		[data_inner[i], data_outer[i]],
+		width=0.2,
+		label=labels[i],
+	)
+plt.xticks([0, 1], ('Inner','Outer'))
+plt.ylabel('Length (cm)')
+plt.legend()
+
+plt.show()
+</pre>
+
+<p>繪製直方圖(histrogram)時，是使用 plt.hist。使用時，預設是切成 10 個 bin，你也可以指定 bin 的個數或者邊界：</p>
+<pre class="brush: py">
+import math
+
+import numpy as np
+import matplotlib.pyplot as plt
+from numpy.random import randn
+
+values = randn(10000)
+
+plt.figure()
+plt.hist(values)
+
+plt.figure()
+plt.hist(values, bins=50) # Number of bins
+
+plt.figure()
+plt.hist(values, bins=[-4, -3, -2, -1, 0, 1, 2, 3, 4]) # Bin edges
+
+plt.show()
+</pre>
+
+<p>繪製箱形圖時，是使用 plt.boxplot：</p>
+<pre class="brush: py">
+import math
+
+import numpy as np
+import matplotlib.pyplot as plt
+from numpy.random import randn
+
+values_1 = randn(100)
+values_2 = randn(500)
+values_3 = randn(1000)
+
+plt.boxplot([values_1, values_2, values_3])
+
+plt.show()
+</pre>
+
+</blockquote>
+
+</body></html>

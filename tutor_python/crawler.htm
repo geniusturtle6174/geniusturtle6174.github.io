@@ -18,7 +18,7 @@
 <blockquote>
 
 <p>
-本篇將以爬取 Ptt 資料為例，介紹如何用 Python 製作網路爬蟲。需要使用第三方套件時，將在第一次 import 時以註解方式提供安裝指令。另外，由於爬蟲的撰寫會跟網站設計高度相關，但本篇內容不可能隨時依據目標網站更動而修改，因此部分細節會有失效的可能。
+本篇將以爬取 Ptt 資料為例，介紹如何用 Python 製作網路爬蟲。需要使用第三方套件時，將在第一次 import 時以註解方式提供安裝指令。另外，由於爬蟲的撰寫會跟網站的設計細節高度相關，但本篇內容不可能隨時依據目標網站更動而修改，因此本篇的範例，都會有失效的可能。
 </p>
 
 <p>Ptt 網頁版的首頁連結是 <a href="https://www.ptt.cc/bbs/index.html">https://www.ptt.cc/bbs/index.html</a>，單一看板的連結則是 https://www.ptt.cc/bbs/看板名稱/index.html，例如 Python 板是 <a href="https://www.ptt.cc/bbs/Python/index.html">https://www.ptt.cc/bbs/Python/index.html</a>。如果你想要獲得 Python 板的內容，最簡單的方法就是用 Requests 函式庫的相關方法來進行操作：</p>
