@@ -1,0 +1,40 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushXml.js"></script>
+	<script type="text/javascript" src="shBrushMine.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<script>
+showWarning('本篇內容假設你知道如何在任一其他程式語言當中進行條件判斷。');
+</script>
+
+<p>PHP 的條件判斷，語法和 C 與 JavaScript 大致相同，除了變數名稱前面要加上錢字號以外；如果你先前只學過 Python 或者 BASIC 等語言，則請再記得加上一些必要的小括號以及大括號。下面是一個簡單的範例，請各位試著回答其輸出：</p>
+<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php$a = 1;$b = 2;$c = 2;if ($a == $b){	echo 'Cond 1 matched';}else if($b == $c){	echo 'Cond 2 matched';}else {	echo 'No Cond matched';}?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>「或」和「且」的判斷，也跟 C 與 JavaScript 大致相同；如果你先前只學過 Python，請記得以「&&」和「||」來代替 and 和 or。下面也是一個簡單的範例，請各位試著回答其輸出：</p>
+<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php$a = 2;$b = 3;if ( $a &gt; 0 &amp;&amp; $b &gt; 0 ){	echo 'Matched';}else{	echo 'NOT matched';}?&gt;&lt;br&gt;&lt;?php$a = 2;$b = -3;if ( $a &gt; 0 || $b &gt; 0 ){	echo 'Matched';}else{	echo 'NOT matched';}?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p><b>常見的錯誤用法</b>也和 C 與 JavaScript 大致相同，例如<b>不能使用一個等號來進行判斷</b>：</p>
+<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php$a = 0;if ( $a = 0 ){	echo 'Matched';}else {	echo 'NOT matched';}?&gt;&lt;br&gt;&lt;?phpif ( $a = 3 ){	echo 'Matched';}else {	echo 'NOT matched';}?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>PHP 和 JavaScript 一樣，也有三個等號的用法。兩個等號時會幫你自動轉型後再判斷，而三個等號時則不會幫你轉型，需要型別一樣才算是相等：</p>
+<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php$a = 2;$b = '2';if ( $a == $b ){	echo 'Matched';}else{	echo 'NOT matched';}?&gt;&lt;br&gt;&lt;?phpif ( $a === $b ){	echo 'Matched';}else{	echo 'NOT matched';}?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+</blockquote>
+
+</body></html>

@@ -1,0 +1,34 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushXml.js"></script>
+	<script type="text/javascript" src="shBrushMine.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<!-- <script>
+showWarning('本篇內容假設你使用過任一其他程式語言的陣列。');
+</script> -->
+
+<p>陣列也跟 JavaScript 一樣，可以放入不同類型的資料，也可以動態新增。用迴圈處理資料時，除了一般的 for 迴圈語法之外，還有「foreach」可以使用：</p>
+<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php$test = array(12, 3.45, &quot;6789&quot;);$test[3] = 'abc'; // 動態新增echo $test[0].&quot; &quot;.gettype($test[0]).&quot;&lt;br&gt;&quot;;echo $test[1].&quot; &quot;.gettype($test[1]).&quot;&lt;br&gt;&quot;;echo $test[2].&quot; &quot;.gettype($test[2]).&quot;&lt;br&gt;&quot;;echo $test[3].&quot; &quot;.gettype($test[3]).&quot;&lt;br&gt;&quot;;?&gt;&lt;hr&gt;&lt;?phpfor( $i = 0 ; $i &lt; count($test) ; $i++ ){	echo $i.&quot;-th element of \$test: &quot;.$test[$i].&quot;&lt;br&gt;&quot;;}echo '跑完迴圈後的 $i: '.$i;?&gt;&lt;hr&gt;&lt;?phpforeach( $test as $val ){	echo &quot;Element of \$test: &quot;.$val.&quot;&lt;br&gt;&quot;;}echo '跑完迴圈後的 $val: '.$val;?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>當然也可以使用 key/value 的形式來指定資料：</p>
+<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php$abc = array(123 =&gt; 456, &quot;abc&quot; =&gt; &quot;def&quot;);$abc['OAO'] = &quot;QQ&quot;;echo $abc[123].&quot; &quot;.gettype($abc[123]).&quot;&lt;br&gt;&quot;;echo $abc['abc'].&quot; &quot;.gettype($abc[&quot;abc&quot;]).&quot;&lt;br&gt;&quot;;echo $abc[&quot;OAO&quot;].&quot; &quot;.gettype($abc['OAO']).&quot;&lt;br&gt;&quot;;?&gt;&lt;hr&gt;&lt;?phpforeach( $abc as $val ){	echo &quot;Element of \$abc: &quot;.$val.&quot;&lt;br&gt;&quot;;}?&gt;&lt;hr&gt;&lt;?phpforeach( $abc as $key =&gt; $val ){	echo &quot;Element of \$abc[&quot;.$key.&quot;]: &quot;.$val.&quot;&lt;br&gt;&quot;;}?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+</blockquote>
+
+</body></html>

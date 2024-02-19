@@ -1,0 +1,57 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushXml.js"></script>
+	<script type="text/javascript" src="shBrushMine.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<script>
+showWarning('本篇內容假設你知道如何在任一其他程式語言當中，進行基本的數值類型的變數操作。');
+</script>
+
+<p>PHP 的程式碼，是以「&lt;?php」和「?&gt;」包住的內容。你可以將他單獨撰寫成一個純文字檔案，並將副檔名設定為「php」，此時 PHP 執行完的內容，就會送到前端給瀏覽器去處理。以下範例的程式碼內容，是以 echo 指令輸出 Hello World!! 字串：</p>
+<pre class="brush: htmljsphp">﻿&lt;?phpecho &quot;Hello World!!&quot;?&gt;</pre>
+<br>
+<p>PHP 也可以跟 HTML 混合在一起撰寫（副檔名仍要設定為「php」），此時，沒有被「&lt;?php」和「?&gt;」包住的內容，不會經過 PHP 的處理，而是等到有包住的部分都處理完畢以後，才一起送到前端：</p>
+<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?phpecho &quot;Hello World!!&quot;?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>事實上，PHP 和 HTML/JavaScript 是可以分開撰寫的。分開撰寫的好處是，資料存取和顯示的邏輯不會混在一起，可以很容易地將兩種程式分開維護。但本教材中為了範例的呈現方便，主要會以兩種程式撰寫在同一隻檔案的方式來示範。</p>
+
+<p>PHP 當中的變數，命名規則與 C/JavaScript 相同，但是前面必須加上「$」符號。另外，一般來說，PHP 的程式碼必須在每一行敘述結尾加上分號，只有少數狀況下（例如「&lt;?php」和「?&gt;」之間只有一行時）不需要。後續的範例，原則上會加上可加的分號：</p>
+<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php$a = 1;$b = 2;echo $a + $b;?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p><b>程式複習小測試</b>：請問以下程式碼的輸出結果（加入「&lt;br&gt;」的目的是讓顯示時會換行，與運算無關）？</p>
+<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php$a = 1;$b = 2;echo $a . '&lt;br&gt;';echo $b . '&lt;br&gt;';echo ($a + $b) . '&lt;br&gt;';$a = $a + $b;echo $a . '&lt;br&gt;';echo $b . '&lt;br&gt;';echo ($a + $b) . '&lt;br&gt;';?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>PHP 當中的字串，要使用單引號或雙引號括住都可以，差別在於其中的變數是否會轉換後再輸出：</p>
+<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php$x = 123;echo '單引號字串帶變數: $x&lt;br&gt;';echo &quot;雙引號字串帶變數: $x&lt;br&gt;&quot;;?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>PHP 的變數是會區分類型的，例如「$a = 123;」和「$a = '123';」這兩段程式，前者是數字而後者是字串。一般來說，若你在同一個運算式中用到了兩種變數類型，PHP 會自動幫你轉換型別，你也可以強制進行轉型。而若要知道變數類型，則可使用「gettype」：</p>
+<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;自動轉型：&lt;br&gt;&lt;?php$a = &quot;123&quot;;echo &quot;a = \&quot;123\&quot;, a: &quot; . $a . &quot;, type: &quot; . gettype($a) . &quot;&lt;br&gt;&quot;;$a += 456;echo &quot;a += 456, a: &quot; . $a . &quot;, type: &quot; . gettype($a) . &quot;&lt;br&gt;&quot;;$a += 78.9;echo &quot;a += 78.9, a: &quot; . $a . &quot;, type: &quot; . gettype($a) . &quot;&lt;br&gt;&quot;;// Will produce a Notice$a += &quot;10 xyz&quot;;echo &quot;a += \&quot;10 xyz\&quot;, a: &quot; . $a . &quot;, type: &quot; . gettype($a) . &quot;&lt;br&gt;&quot;;$a .= &quot;10 xyz&quot;;echo &quot;a .= \&quot;10 xyz\&quot;, a: &quot; . $a . &quot;, type: &quot; . gettype($a) . &quot;&lt;br&gt;&quot;;?&gt;&lt;hr&gt;強制轉型：&lt;br&gt;&lt;?php$b = &quot;123.456&quot;;echo &quot;b = \&quot;123.456\&quot;, b: &quot; . $b . &quot;, type: &quot; . gettype($b) . &quot;&lt;br&gt;&quot;;$b = (int)&quot;123.456&quot;;echo &quot;b = (int)\&quot;123.456\&quot;, b: &quot; . $b . &quot;, type: &quot; . gettype($b) . &quot;&lt;br&gt;&quot;;$b = (double)&quot;123.456&quot;;echo &quot;b = (double)\&quot;123.456\&quot;, b: &quot; . $b . &quot;, type: &quot; . gettype($b) . &quot;&lt;br&gt;&quot;;$b = (string)78.9;echo &quot;b = (string)78.9, b: &quot; . $b . &quot;, type: &quot; . gettype($b) . &quot;&lt;br&gt;&quot;;?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>與 JavaScript 的 src 相似，PHP 可以利用「include」或是「require」將外部檔案含括進來。兩者的差別在於在檔案找不到時，「include」只產生警告，會繼續執行；而「require」會產生錯誤，停止執行。另外，還有「include_once」與「require_once」可以使用，差別只在於加了「_once」，代表只會含括一次。以下將示範「include」的用法，假設有一個檔案名為 php_vars.php，其內容如下：</p>
+<pre class="brush: htmljsphp">﻿&lt;?php$a = 1;$b = 2;?&gt;</pre>
+<br>
+<p>則其他的 PHP 檔案，可以用「include」來使用其內容：</p>
+<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?phpinclude('php_vars.php');echo $a + $b;?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>PHP 在函式內部的變數，與 C 和 JavaScript 有點不一樣。預設情況下，函式內部都是 local 變數，如果要取用 global 變數，則需使用「$GLOBALS」或者「global」：</p>
+<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php$x = 10;$y = 20;$z = 30;function test(){	$x = 40;	$GLOBALS['y'] = 50;	global $z;	$z = 60;	echo &quot;in test: &quot;.$x.&quot; &quot;.$GLOBALS['y'].&quot; &quot;.$z.&quot;&lt;br&gt;&quot;;}echo &quot;Before test: &quot;.$x.&quot; &quot;.$y.&quot; &quot;.$z.&quot;&lt;br&gt;&quot;;test();echo &quot;After test: &quot;.$x.&quot; &quot;.$y.&quot; &quot;.$z.&quot;&lt;br&gt;&quot;;?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+</blockquote>
+
+</body></html>
