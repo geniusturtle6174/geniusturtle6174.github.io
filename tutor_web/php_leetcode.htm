@@ -1,0 +1,49 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushXml.js"></script>
+	<script type="text/javascript" src="shBrushMine.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>LeetCode 是一個可以讓你用各種程式語言，練習解答各種題目的地方，並且原則上是撰寫函式來解答，不需要像 UVa Online Judge 或 ZeroJudge 一樣自己讀取使用者的輸入。本篇將說明使用 PHP 語言解答題目時的相關原則。</p>
+
+<p>LeetCode 的架構規則，會有一個 Solution 物件，其中包含一個指定了名稱和參數的函式。以一個「把輸入數字加一」的範例題目來說，函式名稱可能會叫做「addOne」，輸入參數可能只有一個 $num。上述<b>這些內容，在你選定題目和語言時就會一併出現（除了「&lt;?php」和「?&gt;」以外），不必自己寫</b>，如下：</p>
+<pre class="brush: htmljsphp">&lt;?php
+class Solution {
+	function addOne($num){
+		
+	}
+}
+?&gt;</pre><br>
+
+<p>在上述架構中，你需要做的事情，通常都只會是撰寫 function 的內容，至於<b>「class Solution」和「function addOne($num)」都不應該去更改</b>。因此，你只需要在 function 當中，根據參數算好解答後再進行 return，如下：</p>
+<pre class="brush: htmljsphp">&lt;?php
+class Solution {
+	function addOne($num){
+		return $num + 1;
+	}
+}
+?&gt;</pre><br>
+
+<p>如果要對你寫好的程式做測試，首先必須使用「$S = new Solution();」建立一個物件，並在呼叫一般函式的方法前面加上「$S -&gt; 」來測試，如下：</p>
+<pre class="brush: htmljsphp">﻿&lt;?phpclass Solution {	function addOne($num){		return $num + 1;	}}$S = new Solution();echo $S -&gt; addOne(123);?&gt;</pre>
+<br>
+<p>撰寫及測試完成後，送出至 LeetCode 時，<b>僅</b>需要將「class Solution」的內容，亦即「class Solution」本身和大括號內的所有內容，複製到 LeetCode 視窗當中貼上並送出，即可獲得判定的結果。</p>
+
+</blockquote>
+
+</body></html>

@@ -23,8 +23,17 @@
 showWarning('本篇內容假設你知道如何在任一其他程式語言中撰寫迴圈。');
 </script>
 
-<p>內容撰寫中：</p>
-<pre class="brush: htmljsphp">﻿&lt;?phpecho &quot;Hello World!!&quot;?&gt;</pre>
+<p>PHP 的 for 迴圈語法，是用分號將變數初始值、迴圈繼續的條件，以及變數遞增值用分號區隔；要重複執行的部份，必須用大括號括住。請試著回答，下面範例會輸出什麼內容：</p>
+<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php$x = 5;for( $i = 1; $i &lt;= $x; $i = $i + 1){	echo &quot;$i&lt;br&gt;&quot;;}?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>PHP 的 while 迴圈，則跟大多數語言一樣，把允許繼續執行的條件，放在小括號中（如果你學過的是 Python，則請記得加上小括號） ；要重複執行的部份，則一樣必須用大括號括住。請試著回答，下面範例會輸出什麼內容：</p>
+<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php$x = 5;$i = 1;while( $i &lt;= $x ){	echo &quot;$i&lt;br&gt;&quot;;	$i = $i + 1;}?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>你當然也可以撰寫巢狀迴圈，也就是迴圈裡面包著另一個迴圈。但需要注意的是，內層迴圈用來跳動的變數，不能跟外層迴圈一樣，否則會產生錯誤：</p>
+<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;p&gt;正確的使用：&lt;br&gt;&lt;?phpfor( $i = 1; $i &lt;= 2; $i = $i + 1){	for( $j = 1; $j &lt;= 3; $j = $j + 1){		echo &quot;$i&lt;br&gt;&quot;;	}}?&gt;&lt;/p&gt;&lt;p&gt;錯誤的使用：&lt;br&gt;&lt;?phpfor( $i = 1; $i &lt;= 2; $i = $i + 1){	for( $i = 1; $i &lt;= 3; $i = $i + 1){		echo &quot;$i&lt;br&gt;&quot;;	}}?&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>如果要中途跳出迴圈，可以使用「break」；如果要直接繼續下一輪迴圈，可以使用「continue」：</p>
+<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;p&gt;break 的範例：&lt;br&gt;&lt;?phpfor( $i = 1; $i &lt;= 5; $i = $i + 1){	if ( $i == 3){		break;	}	echo &quot;$i&lt;br&gt;&quot;;}?&gt;&lt;/p&gt;&lt;p&gt;continue 的範例：&lt;br&gt;&lt;?phpfor( $i = 1; $i &lt;= 5; $i = $i + 1){	if ( $i == 3){		continue;	}	echo &quot;$i&lt;br&gt;&quot;;}?&gt;&lt;/p&gt;&lt;p&gt;巢狀迴圈的範例：&lt;br&gt;&lt;?phpfor( $i = 1; $i &lt;= 2; $i = $i + 1){	for( $j = 1; $j &lt;= 4; $j = $j + 1){		if ( $j == 3){			break;		}		echo &quot;$i, $j&lt;br&gt;&quot;;	}}?&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
 </blockquote>
 

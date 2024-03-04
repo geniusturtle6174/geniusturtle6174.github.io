@@ -1,0 +1,34 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushXml.js"></script>
+	<script type="text/javascript" src="shBrushMine.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<script>
+showWarning('本篇內容假設你知道如何在任一其他程式語言中撰寫函式。');
+</script>
+
+<p>PHP 的函式，是由「function」關鍵字開頭，後面再接著函式名稱和一對小括號；函式若有輸入參數的話，要將參數名稱放在小括號內；若要回覆運算結果的話，需要用「return」來回傳：</p>
+<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?phpfunction test($x){	return $x + 1;}echo test(1);?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>PHP 在函式內部的變數，與 C 和 JavaScript 有點不一樣。預設情況下，函式內部都是 local 變數，如果要取用 global 變數，則需使用「$GLOBALS」或者「global」：</p>
+<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php$x = 10;$y = 20;$z = 30;function test(){	$x = 40;	$GLOBALS['y'] = 50;	global $z;	$z = 60;	echo &quot;in test: &quot;.$x.&quot; &quot;.$GLOBALS['y'].&quot; &quot;.$z.&quot;&lt;br&gt;&quot;;}echo &quot;Before test: &quot;.$x.&quot; &quot;.$y.&quot; &quot;.$z.&quot;&lt;br&gt;&quot;;test();echo &quot;After test: &quot;.$x.&quot; &quot;.$y.&quot; &quot;.$z.&quot;&lt;br&gt;&quot;;?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+</blockquote>
+
+</body></html>

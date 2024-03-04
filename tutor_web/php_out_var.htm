@@ -49,9 +49,6 @@ showWarning('本篇內容假設你知道如何在任一其他程式語言當中�
 <p>則其他的 PHP 檔案，可以用「include」來使用其內容：</p>
 <pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?phpinclude('php_vars.php');echo $a + $b;?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
 <br>
-<p>PHP 在函式內部的變數，與 C 和 JavaScript 有點不一樣。預設情況下，函式內部都是 local 變數，如果要取用 global 變數，則需使用「$GLOBALS」或者「global」：</p>
-<pre class="brush: htmljsphp">﻿&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;?php$x = 10;$y = 20;$z = 30;function test(){	$x = 40;	$GLOBALS['y'] = 50;	global $z;	$z = 60;	echo &quot;in test: &quot;.$x.&quot; &quot;.$GLOBALS['y'].&quot; &quot;.$z.&quot;&lt;br&gt;&quot;;}echo &quot;Before test: &quot;.$x.&quot; &quot;.$y.&quot; &quot;.$z.&quot;&lt;br&gt;&quot;;test();echo &quot;After test: &quot;.$x.&quot; &quot;.$y.&quot; &quot;.$z.&quot;&lt;br&gt;&quot;;?&gt;&lt;/body&gt;&lt;/html&gt;</pre>
-<br>
 </blockquote>
 
 </body></html>
