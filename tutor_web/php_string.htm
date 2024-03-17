@@ -1,0 +1,54 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushXml.js"></script>
+	<script type="text/javascript" src="shBrushMine.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<script>
+showWarning('本篇內容假設你知道如何在任一其他程式語言中操作字串。');
+</script>
+
+<p>PHP 的字串，是用單引號或雙引號括住的內容，存取時基本上可以比照陣列來操作。基本的連接跟存取方式示範如下：</p>
+<pre class="brush: htmljsphp">﻿&lt;?php$s1 = 'Hello ';$s2 = 'World!!';echo $s1 . $s2 . '&lt;br&gt;';echo $s1[1] . '&lt;br&gt;';echo strlen($s2) . '&lt;br&gt;';?&gt;&lt;hr&gt;&lt;?php$s2 = 'Moto';echo $s2 . '&lt;br&gt;';$s2[0] = 'G';echo $s2 . '&lt;br&gt;';?&gt;</pre>
+<br>
+<p>字串的比較，基本上是依照字典的順序，排前面的比較小，但所有大寫比所有的小寫還小。事實上，單個字元在電腦當中的表示方法，也可以用數字的規則來解讀，例如 'A'、'a'、'0' 的表示法，分別和數字 65、97、48 相同，如果你需要互相轉換的話，可以使用「ord」以及「chr」：</p>
+<pre class="brush: htmljsphp">﻿&lt;?phpvar_dump('ABC' &lt; 'BBB');echo '&lt;br&gt;';var_dump('Dog' &lt; 'cat');echo '&lt;br&gt;';var_dump('OAO' == 'QQ');echo '&lt;br&gt;';echo ord('A') . '&lt;br&gt;';echo chr(97) . '&lt;br&gt;';?&gt;</pre>
+<br>
+<p>PHP 提供了一系列的 ctype_xxx 功能，來判斷字串是否符合 xxx 屬性，以下介紹是否全部為大寫或小寫的判斷：</p>
+<pre class="brush: htmljsphp">﻿&lt;?phpvar_dump(ctype_upper('OAO'));echo '&lt;br&gt;';var_dump(ctype_upper('Hello'));echo '&lt;br&gt;';var_dump(ctype_lower('test'));echo '&lt;br&gt;';var_dump(ctype_lower('hel1o'));echo '&lt;br&gt;';?&gt;</pre>
+<br>
+<p>如果你要做的不是大小寫的判斷而是轉換，則可以使用 strtoupper 以及 strtolower：</p>
+<pre class="brush: htmljsphp">﻿&lt;?phpecho strtoupper('aBc456').'&lt;br&gt;';echo strtolower('XyZ789').'&lt;br&gt;';?&gt;</pre>
+<br>
+<p>需要取出字串的不只一個字時，可以使用 substr：</p>
+<pre class="brush: htmljsphp">﻿&lt;?php$s = 'Hello World!!';echo substr($s, 2).'&lt;br&gt;';echo substr($s, 3, 4).'&lt;br&gt;';?&gt;</pre>
+<br>
+<p>將特定分隔方式的字串（例如網址或 csv 檔案）切開，可以使用 explode；將多個字串依照特定方式組合，可以使用 impolde：</p>
+<pre class="brush: htmljsphp">﻿&lt;?php$s1 = '127.0.0.1';var_dump(explode('.', $s1));echo '&lt;br&gt;';$a1 = array('www', 'abc', 'com', 'tw');echo implode('.', $a1);?&gt;</pre>
+<br>
+<p>如果你學過 Python 的話，上述範例相當於 Python 的 split 和 join，只是語法不同而已。</p>
+
+<p>需要把字串中的字換掉的時候，可以使用 str_replace。它的第一個參數是要被取代的目標，第二個參數是取代成什麼，第三個參數是要處理的整個字串。str_replace 有一些進階用法，以下介紹的是把字串當中的某一個字換成另一個字的狀況（相當於使用文書編輯器的取代功能）：</p>
+<pre class="brush: htmljsphp">﻿&lt;?php$s1 = 'I saw a saw saw a saw.';echo str_replace('saw', 'watched', $s1);?&gt;</pre>
+<br>
+<p>如果是想把字串頭尾的某個字或某些字去除掉，可以使用 trim；如果只想去頭（左）或尾（右）的話，可以使用 ltrim 或 rtrim：</p>
+<pre class="brush: htmljsphp">﻿&lt;?php$s1 = '...123..45..6.7.8...9.000.........';echo trim($s1, '.') . '&lt;br&gt;';echo ltrim($s1, '.') . '&lt;br&gt;';echo rtrim($s1, '.') . '&lt;br&gt;';?&gt;</pre>
+<br>
+</blockquote>
+
+</body></html>
