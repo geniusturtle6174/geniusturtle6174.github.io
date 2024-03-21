@@ -1,0 +1,67 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushSql.js"></script>
+	<script type="text/javascript" src="shBrushMine.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>接下來的部份範例需要用到兩張資料表，我們會利用「JOIN」來連接兩張資料表（也可以連接多張，但本篇未展示）。其基本用法是「SELECT 欄位名 from 表格_A ... JOIN 表格_B on 對照條件 ...」，代表要取 A 跟 B 的某種集合；其中，<b>若對照條件未指定，則所有組合都會被列出</b>。而根據要取的是 A, B 兩張表格的不同種類的集合，還會有「LEFT JOIN」、「RIGHT JOIN」等變化。</p>
+
+<p>例如，若需要選出伍佰唱過的台語歌，則會需要顯示 song 資料表的 name 欄位，並用 song 資料表的 singer_id 欄位，跟 singer 資料表的 id 做對照：</p>
+<pre class="brush: sql">
+SELECT song.name FROM song
+INNER JOIN singer on singer.id = song.singer_id
+WHERE song.language = '台語'
+AND singer.name = '伍佰'</pre><br>
+
+<p>其中，「INNER JOIN」代表取兩張資料表的交集，並且雖然將「INNER」省略也可以，但一般會建議完整地寫出來，會讓 SQL 語句在人眼看來比較明確。</p>
+
+<p>又如唱過華語歌的歌手及其歌曲：</p>
+<pre class="brush: sql">
+SELECT singer.name, song.name FROM singer
+INNER JOIN song on singer.id = song.singer_id
+WHERE language = '華語'</pre><br>
+
+<p>你可能注意到了上面兩個範例的表格順序不太一樣。事實上，由於 INNER JOIN 取的是交集，所以<strike>表格序順不影執響行</strike>順序並不會影響結果；而且除非你操作的資料非常大量，使用到了較特殊的分散式資料庫，也不會影響效能。</p>
+
+<p>我們繼續看其他範例，例如每個歌手唱過的歌曲數，除了需要對照 singer 和 song 這兩張資料表，也要計算 singer.name 的數量：</p>
+<pre class="brush: sql">
+SELECT singer.name, COUNT(singer.name) FROM singer
+INNER JOIN song on singer.id = song.singer_id
+GROUP BY singer.name</pre><br>
+
+<p>而若是需要選出每個歌手唱過各種語言的歌曲數，則需要把 song.language 也加入 GROUP BY 的項目中，才能把不同語言區分開來：</p>
+<pre class="brush: sql">
+SELECT singer.name, song.language, COUNT(singer.name) FROM singer
+INNER JOIN song on singer.id = song.singer_id
+GROUP BY singer.name, song.language</pre><br>
+
+<p>你可能會發現，在前面兩個範例中，歌曲數目為 0 的鏡音並未被列出，這是因為兩張表格的 singer_id 取的是交集。若要將鏡音也列在查詢結果當中，則可使用「LEFT JOIN」，代表取左邊表格的所有資料。這時候，表格的順序就會很重要。</p>
+<pre class="brush: sql">
+SELECT singer.name, song.language, COUNT(singer.name) FROM singer
+LEFT JOIN song ON singer.id = song.singer_id
+GROUP BY singer.name, song.language</pre><br>
+
+<p>比較新版的資料庫軟體，可能會支援「WITH...AS」語法，它的概念相當於子查詢，但是當整體 SQL 語句比較複雜時，使用「WITH...AS」的可讀性比較高，並且因為其查詢結果會變成一個暫時的表格，因此對效能也有幫助。我們同樣以「歌曲包含幾種語言」示範如下，各位可以跟前面的另外兩種方法比較看看</p>
+<pre class="brush: sql">
+WITH
+	dstn_lang AS (SELECT DISTINCT(language) as langs FROM song)
+SELECT COUNT(dstn_lang.langs) FROM dstn_lang</pre><br>
+
+</blockquote>
+
+</body></html>

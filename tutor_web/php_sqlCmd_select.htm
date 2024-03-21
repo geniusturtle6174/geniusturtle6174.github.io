@@ -1,0 +1,101 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushSql.js"></script>
+	<script type="text/javascript" src="shBrushMine.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>我們先介紹最基本的 SQL 指令: SELECT。它的基本語法如下，其中的欄位名稱若有多個時，可以用逗點分隔，若需要選出全部欄位，則可使用「*」符號：</p>
+<pre class="brush: sql">SELECT 欄位名稱 from 表格名稱</pre><br>
+
+<p>例如，想要從從 songrank 資料表當中，選出每首歌曲和它的當日排名時，可以使用以下的指令：</p>
+<pre class="brush: sql">SELECT song_name, this_rank from songrank</pre><br>
+
+<p>若只要選出五筆資料，可使用「limit」語法。需要注意的是，除非你使用了後續會介紹的排序語法，否則輸出結果的順序原則上只保證數量，不保證順序，亦即不保證是哪幾筆：</p>
+<pre class="brush: sql">SELECT * FROM songrank limit 5</pre><br>
+
+<p>如果想要知道有哪些不一樣的資料，但是次數不重要時，可以使用「DISTINCT」。例如，以下的 SQL 語句，可以選出有哪些不同的歌曲語言：</p>
+<pre class="brush: sql">SELECT DISTINCT(language) FROM song</pre><br>
+
+<p>選擇資料時，可以依據需求加上條件，當然還可以利用「AND」和「OR」來綜合許多條件。例如，以下的 SQL 語句，會選出林俊傑這位歌手的排行榜相關資料：</p>
+<pre class="brush: sql">SELECT * FROM songrank WHERE singer_name = '林俊傑'</pre><br>
+
+<p>加上條件時，也可以在不同欄位之間做比較，例如選出排名進步的歌手的排行榜資料的方法如下：</p>
+<pre class="brush: sql">SELECT * FROM songrank WHERE this_rank &lt; prev_rank</pre><br>
+
+<p>「IN」和「BETWEEN」可以簡化條件式的寫法。以下範例的第一二行效果相同，都是選出排名在 11 到 46 之間的排行榜資料；第三四行效果也相同，都是選出林俊傑或丁噹的排行榜資料：</p>
+<pre class="brush: sql">SELECT * FROM songrank WHERE this_rank &gt;= 11 AND this_rank &lt;= 46
+SELECT * FROM songrank WHERE this_rank BETWEEN 11 AND 46
+SELECT * FROM songrank WHERE singer_name = '林俊傑' OR singer_name = '丁噹'
+SELECT * FROM songrank WHERE singer_name IN ('林俊傑','丁噹')</pre><br>
+
+<p>「LIKE」也可以用於描述條件，這個指令常常跟萬用字元一起搭配。SQL 語句當中包含兩個萬用字元：</p>
+<ul>
+	<li>%: 百分比，代表任意數目的字元</li>
+	<li>_: 底線，代表任意一個字元</li>
+</ul>
+
+<p>例如，要選出所有藝名是三個字的歌手的排行榜資料，可以用三個底線：</p>
+<pre class="brush: sql">SELECT * FROM songrank WHERE singer_name LIKE '___'
+</pre><br>
+
+<p>或者，要選出所有林姓歌手的排行榜資料，可以使用以下的語法：</p>
+<pre class="brush: sql">SELECT * FROM songrank WHERE singer_name LIKE '林%'
+</pre><br>
+
+<p>如果希望選出的資料依照某種規則排序，則可使用「ORDER BY」。排序的順序，預設是遞增排序「ASC」，你也可以使用「DESC」來進行遞減排序。以下的三個範例，都會選出所有的排行榜資料，但排序的順序可能有所不同，各位可以觀察一下三個指令的排序效果：</p>
+<pre class="brush: sql">SELECT * FROM songrank ORDER BY singer_name
+SELECT * FROM songrank ORDER BY singer_name ASC
+SELECT * FROM songrank ORDER BY singer_name DESC</pre><br>
+
+<p>其中請留意，如果<b>「ORDER BY」和「WHERE」同時出現時，「WHERE」必須放在前面</b>。例如若要選出所有 50 名以內（含）的排行榜資料時，下面範例的第一行是正確的用法，而第二行的指令會產生語法錯誤：</p>
+<pre class="brush: sql">SELECT * FROM songrank WHERE this_rank &lt;= 50 ORDER BY singer_name
+SELECT * FROM songrank ORDER BY singer_name WHERE this_rank &lt;= 50</pre><br>
+
+<p>如果你的資料是數字，則可以透過 SQL 當中的一些函式進行簡單的運算。例如，以下的 SQL 語句會選出蕭敬騰的最大、最小，以及平均排名。另外，透過「AS」，可以幫表格或選出來的欄位取一個比較好懂的名稱，請留意有無「AS」時的欄位名稱的變化：</p>
+<pre class="brush: sql">SELECT MAX(this_rank), MIN(this_rank), AVG(this_rank) AS '平均' FROM songrank WHERE singer_name = '蕭敬騰'</pre><br>
+
+<p>「COUNT」加上「WHERE」條件，就可以計算符合特定條件的資料數量，例如想要計算日語歌曲的總數時，可以使用如下：</p>
+<pre class="brush: sql">SELECT COUNT(language) FROM song WHERE language = '日語'</pre><br>
+
+<p>如果要列出不同資料的數量，則需要先用「GROUP BY」把他們聚集在一起，再來計算數量，例如歌曲包含哪幾種語言與其歌曲數目：</p>
+<pre class="brush: sql">SELECT language, COUNT(language) FROM song GROUP BY language</pre><br>
+
+<p>又或者選出每位歌手的入榜次數：</p>
+<pre class="brush: sql">SELECT singer_name, count(singer_name) FROM songrank GROUP BY singer_name</pre><br>
+
+<p>我們可以在 SQL 指令中放入另一個 SQL 指令，此種作法稱為子查詢。例如歌曲包含幾種語言：</p>
+<pre class="brush: sql">SELECT COUNT(*) FROM (SELECT DISTINCT(language) FROM song) AS dstn_lang</pre><br>
+
+<p>當然，若以上面的範例來說，你也可以直接寫成如下：</p>
+<pre class="brush: sql">SELECT COUNT(DISTINCT language) FROM song</pre><br>
+
+<p>如果子查詢的欄位只有一個，則也可以作為 where 的條件，例如以下範例可選出唱過日語歌的歌手名稱及類型：</p>
+<pre class="brush: sql">SELECT name, type from singer WHERE id in (SELECT singer_id from song WHERE language = '日語')</pre><br>
+
+<p>「UNION」可以將兩個 SQL 指令的結果合併起來，唯一的限制是欄位的資料種類要相同：</p>
+<pre class="brush: sql">SELECT id, singer_name FROM songrank
+UNION
+SELECT singer_id, youtube FROM song</pre><br>
+
+<p>但是「UNION」會剔除重複資料，而「UNION ALL」則否。若要測試，可以觀察以下兩組指令的差異：</p>
+<pre class="brush: sql">SELECT * FROM songrank UNION SELECT * FROM songrank
+SELECT * FROM songrank UNION ALL SELECT * FROM songrank</pre><br>
+
+</blockquote>
+
+</body></html>

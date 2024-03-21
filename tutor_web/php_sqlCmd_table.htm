@@ -1,0 +1,176 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushSql.js"></script>
+	<script type="text/javascript" src="shBrushMine.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>於本篇中，將要介紹一些基本的 SQL 指令，若有興趣學習更進階的概念與用法，可以修習資料庫相關課程。用於示範的資料表共有三張，可以從<a href="examples/singer_song_songrank.sql">這裡</a>下載，也可以依據以下的欄位說明自行新增：</p>
+
+<p>songrank 資料表內容如下，此處使用的內容與「phpMyAdmin 設定簡介」相同（部份資料取自 KKBOX 某天之排行榜，部分資料非真實資料）。又，實務上基於效能等原因，可能會將歌曲名稱與演唱者以各自的 id 數字作為欄位資料。此處為便於範例閱讀，故採用文字：</p>
+<table class="slide" align=center>
+	<tr>
+		<th class="slide">id (資料序號)<br>(INT，PRIMARY，A_I)</th>
+		<th class="slide">this_rank (當日排名)<br>(INT)</th>
+		<th class="slide">prev_rank (前日排名)<br>(INT)</th>
+		<th class="slide">song_name (歌曲名稱)<br>(VARCAHR，32，utf8_general_ci)</th>
+		<th class="slide">singer_name (演唱者)<br>(VARCAHR，32，utf8_general_ci)</th>
+	</tr>
+	<tr><!--平-->
+		<td class="slide">1</td>
+		<td class="slide">1</td>
+		<td class="slide">1</td>
+		<td class="slide">修煉愛情</td>
+		<td class="slide">林俊傑</td>
+	</tr>
+	<tr><!--進-->
+		<td class="slide">2</td>
+		<td class="slide">11</td>
+		<td class="slide">12</td>
+		<td class="slide">存在的力量</td>
+		<td class="slide">朱俐靜</td>
+	</tr>
+	<tr><!--平-->
+		<td class="slide">3</td>
+		<td class="slide">17</td>
+		<td class="slide">17</td>
+		<td class="slide">Marry me</td>
+		<td class="slide">蕭敬騰</td>
+	</tr>
+	<tr><!--退-->
+		<td class="slide">4</td>
+		<td class="slide">46</td>
+		<td class="slide">42</td>
+		<td class="slide">好難得</td>
+		<td class="slide">丁噹</td>
+	</tr>
+	<tr><!--退，歌手重複-->
+		<td class="slide">5</td>
+		<td class="slide">60</td>
+		<td class="slide">57</td>
+		<td class="slide">我會在你身邊</td>
+		<td class="slide">朱俐靜</td>
+	</tr>
+	<tr><!--進，歌手重複-->
+		<td class="slide">6</td>
+		<td class="slide">63</td>
+		<td class="slide">64</td>
+		<td class="slide">飛機</td>
+		<td class="slide">林俊傑</td>
+	</tr>
+	<tr><!--進，歌手重複-->
+		<td class="slide">7</td>
+		<td class="slide">98</td>
+		<td class="slide">99</td>
+		<td class="slide">只能想念你</td>
+		<td class="slide">蕭敬騰</td>
+	</tr>
+</table>
+
+<p>singer 資料表內容如下：</p>
+<table class="slide" align=center>
+	<tr>
+		<th class="slide">id (歌手序號)<br>(INT，PRIMARY，A_I)</th>
+		<th class="slide">name (歌手名稱)<br>(VARCAHR，32，utf8_general_ci)</th>
+		<th class="slide">type (歌手類別)<br>(VARCAHR，32，utf8_general_ci)</th>
+	</tr>
+	<tr><td class="slide">1</td><td class="slide">梁靜茹</td><td class="slide">女歌手</td></tr>
+	<tr><td class="slide">2</td><td class="slide">伍佰</td><td class="slide">男歌手</td></tr>
+	<tr><td class="slide">3</td><td class="slide">五月天</td><td class="slide">團體</td></tr>
+	<tr><td class="slide">4</td><td class="slide">初音未來</td><td class="slide">軟體</td></tr>
+	<tr><td class="slide">5</td><td class="slide">鏡音鈴</td><td class="slide">軟體</td></tr>
+</table>
+
+<p>song 資料表內容如下：</p>
+<table class="slide" align=center>
+	<tr>
+		<th class="slide">id (歌曲序號)<br>(INT，PRIMARY，A_I)</th>
+		<th class="slide">name (歌曲名稱)<br>(VARCAHR，32，utf8_general_ci)</th>
+		<th class="slide">singer_id (歌手序號)<br>(INT)</th>
+		<th class="slide">language (歌曲語言)<br>(VARCAHR，32，utf8_general_ci)</th>
+		<th class="slide">youtube (水管連結)<br>(VARCAHR，256)</th>
+	</tr>
+	<tr>
+		<td class="slide">1</td>
+		<td class="slide">會呼吸的痛</td>
+		<td class="slide">1</td>
+		<td class="slide">華語</td>
+		<td class="slide"><a href="https://www.youtube.com/watch?v=-dry2N6RYM4">https://www.youtube.com/watch?v=-dry2N6RYM4</a></td>
+	</tr>
+	<tr>
+		<td class="slide">2</td>
+		<td class="slide">乾杯</td>
+		<td class="slide">3</td>
+		<td class="slide">華語</td>
+		<td class="slide"><a href="http://www.youtube.com/watch?v=qX2GsMj7154">http://www.youtube.com/watch?v=qX2GsMj7154</a></td>
+	</tr>
+	<tr>
+		<td class="slide">3</td>
+		<td class="slide">溫柔</td>
+		<td class="slide">3</td>
+		<td class="slide">華語</td>
+		<td class="slide"><a href="http://www.youtube.com/watch?v=nWb_X3ZJQjw">http://www.youtube.com/watch?v=nWb_X3ZJQjw</a></td>
+	</tr>
+	<tr>
+		<td class="slide">4</td>
+		<td class="slide">OK啦</td>
+		<td class="slide">3</td>
+		<td class="slide">台語</td>
+		<td class="slide"><a href="http://www.youtube.com/watch?v=_FV1NDdHHEo">http://www.youtube.com/watch?v=_FV1NDdHHEo</a></td>
+	</tr>
+	<tr>
+		<td class="slide">5</td>
+		<td class="slide">愛情限時批</td>
+		<td class="slide">2</td>
+		<td class="slide">台語</td>
+		<td class="slide"><a href="http://www.youtube.com/watch?v=b5Qrin1tRDk">http://www.youtube.com/watch?v=b5Qrin1tRDk</a></td>
+	</tr>
+	<tr>
+		<td class="slide">6</td>
+		<td class="slide">夢醒時分</td>
+		<td class="slide">2</td>
+		<td class="slide">華語</td>
+		<td class="slide"><a href="http://www.youtube.com/watch?v=m9Y5z5sYm3s">http://www.youtube.com/watch?v=m9Y5z5sYm3s</a></td>
+	</tr>
+	<tr>
+		<td class="slide">7</td>
+		<td class="slide">夢醒時分</td>
+		<td class="slide">1</td>
+		<td class="slide">華語</td>
+		<td class="slide"><a href="http://www.youtube.com/watch?v=JbvnzMZnEfc">http://www.youtube.com/watch?v=JbvnzMZnEfc</a></td>
+	</tr>
+	<tr>
+		<td class="slide">8</td>
+		<td class="slide">甩蔥歌</td>
+		<td class="slide">4</td>
+		<td class="slide">日語</td>
+		<td class="slide"><a href="http://www.youtube.com/watch?v=QwZ_VKBTjWo">http://www.youtube.com/watch?v=QwZ_VKBTjWo</a></td>
+	</tr>
+	<tr>
+		<td class="slide">9</td>
+		<td class="slide">千本櫻</td>
+		<td class="slide">4</td>
+		<td class="slide">日語</td>
+		<td class="slide"><a href="http://www.youtube.com/watch?v=UcwcedDh8vc">http://www.youtube.com/watch?v=UcwcedDh8vc</a></td>
+	</tr>
+</table>
+
+<p>由於尚未介紹到 PHP 與 MySQL 的連接，所以在後續的範例中，可以先透過 phpMyAdmin 來執行 SQL 指令。各位將表格在 phpMyAdmin 當中自行建立完成後，或者下載開頭提供的資料表匯出成果並載入後，點選「SQL」即可開始測試後續子篇章的指令效果。</p>
+
+</blockquote>
+
+</body></html>

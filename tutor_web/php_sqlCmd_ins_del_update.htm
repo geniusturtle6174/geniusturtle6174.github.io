@@ -1,0 +1,35 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushSql.js"></script>
+	<script type="text/javascript" src="shBrushMine.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<p>如果要新增一筆或數筆資料，則可使用「INSERT」：</p>
+<pre class="brush: sql">INSERT INTO songrank (this_rank, singer_name) VALUES (123, '這是測試'), (456, '也是測試')</pre><br>
+
+<p>若需要更新資料，可以使用「UPDATE」：</p>
+<pre class="brush: sql">UPDATE songrank SET this_rank = '789', song_name = '不知道' WHERE id = 9</pre><br>
+
+<p>若需要刪除資料，可以使用「DELETE」：</p>
+<pre class="brush: sql">DELETE FROM songrank WHERE this_rank &gt; 100</pre><br>
+
+<p>更新或刪除資料時請記得指定正確的條件，否則會不小心把整個資料庫改掉一大半或全部！</p>
+
+</blockquote>
+
+</body></html>
