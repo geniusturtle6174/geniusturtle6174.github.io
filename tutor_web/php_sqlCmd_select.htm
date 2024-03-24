@@ -19,7 +19,7 @@
 
 <blockquote>
 
-<p>我們先介紹最基本的 SQL 指令: SELECT。它的基本語法如下，其中的欄位名稱若有多個時，可以用逗點分隔，若需要選出全部欄位，則可使用「*」符號：</p>
+<p>我們先介紹最基本的 SQL 指令：SELECT。它的基本語法如下，其中的欄位名稱若有多個時，可以用逗點分隔，若需要選出全部欄位，則可使用「*」符號：</p>
 <pre class="brush: sql">SELECT 欄位名稱 from 表格名稱</pre><br>
 
 <p>例如，想要從從 songrank 資料表當中，選出每首歌曲和它的當日排名時，可以使用以下的指令：</p>
@@ -29,10 +29,14 @@
 <pre class="brush: sql">SELECT * FROM songrank limit 5</pre><br>
 
 <p>如果想要知道有哪些不一樣的資料，但是次數不重要時，可以使用「DISTINCT」。例如，以下的 SQL 語句，可以選出有哪些不同的歌曲語言：</p>
-<pre class="brush: sql">SELECT DISTINCT(language) FROM song</pre><br>
+<pre class="brush: sql">SELECT DISTINCT language FROM song</pre><br>
 
-<p>選擇資料時，可以依據需求加上條件，當然還可以利用「AND」和「OR」來綜合許多條件。例如，以下的 SQL 語句，會選出林俊傑這位歌手的排行榜相關資料：</p>
+<hr>
+
+<p>選擇資料時，可以利用「WHERE」依據需求加上條件來篩選，當然還可以利用「AND」和「OR」來綜合許多條件。例如，以下的 SQL 語句，會選出林俊傑這位歌手的排行榜相關資料：</p>
 <pre class="brush: sql">SELECT * FROM songrank WHERE singer_name = '林俊傑'</pre><br>
+
+<p>在上述範例中，需要留意的是，SQL 的判斷是否相等只需要一個等號，與程式語言不一樣。</p>
 
 <p>加上條件時，也可以在不同欄位之間做比較，例如選出排名進步的歌手的排行榜資料的方法如下：</p>
 <pre class="brush: sql">SELECT * FROM songrank WHERE this_rank &lt; prev_rank</pre><br>
@@ -57,14 +61,19 @@ SELECT * FROM songrank WHERE singer_name IN ('林俊傑','丁噹')</pre><br>
 <pre class="brush: sql">SELECT * FROM songrank WHERE singer_name LIKE '林%'
 </pre><br>
 
+<hr>
+
 <p>如果希望選出的資料依照某種規則排序，則可使用「ORDER BY」。排序的順序，預設是遞增排序「ASC」，你也可以使用「DESC」來進行遞減排序。以下的三個範例，都會選出所有的排行榜資料，但排序的順序可能有所不同，各位可以觀察一下三個指令的排序效果：</p>
 <pre class="brush: sql">SELECT * FROM songrank ORDER BY singer_name
 SELECT * FROM songrank ORDER BY singer_name ASC
 SELECT * FROM songrank ORDER BY singer_name DESC</pre><br>
 
-<p>其中請留意，如果<b>「ORDER BY」和「WHERE」同時出現時，「WHERE」必須放在前面</b>。例如若要選出所有 50 名以內（含）的排行榜資料時，下面範例的第一行是正確的用法，而第二行的指令會產生語法錯誤：</p>
+<p>但需要留意的是，如果同時需要做排序和條件篩選，即<b>「ORDER BY」和「WHERE」需要同時出現時，「WHERE」必須放在前面</b>。例如若要選出所有 50 名以內（含）的排行榜資料時，下面範例的第一行是正確的用法，而第二行的指令會產生語法錯誤：</p>
 <pre class="brush: sql">SELECT * FROM songrank WHERE this_rank &lt;= 50 ORDER BY singer_name
 SELECT * FROM songrank ORDER BY singer_name WHERE this_rank &lt;= 50</pre><br>
+
+<p>如果需要根據多個原則進行排序，則透過一個「ORDER BY」就可以一一指定，而且可以分別設定他們的排序方式。例如，選出所有歌曲，但是要先依照語言做遞減排序，再依照曲名作遞增排序的方式如下：</p>
+<pre class="brush: sql">SELECT * FROM song ORDER BY language DESC, name ASC</pre><br>
 
 <p>如果你的資料是數字，則可以透過 SQL 當中的一些函式進行簡單的運算。例如，以下的 SQL 語句會選出蕭敬騰的最大、最小，以及平均排名。另外，透過「AS」，可以幫表格或選出來的欄位取一個比較好懂的名稱，請留意有無「AS」時的欄位名稱的變化：</p>
 <pre class="brush: sql">SELECT MAX(this_rank), MIN(this_rank), AVG(this_rank) AS '平均' FROM songrank WHERE singer_name = '蕭敬騰'</pre><br>
@@ -72,20 +81,40 @@ SELECT * FROM songrank ORDER BY singer_name WHERE this_rank &lt;= 50</pre><br>
 <p>「COUNT」加上「WHERE」條件，就可以計算符合特定條件的資料數量，例如想要計算日語歌曲的總數時，可以使用如下：</p>
 <pre class="brush: sql">SELECT COUNT(language) FROM song WHERE language = '日語'</pre><br>
 
-<p>如果要列出不同資料的數量，則需要先用「GROUP BY」把他們聚集在一起，再來計算數量，例如歌曲包含哪幾種語言與其歌曲數目：</p>
+<hr>
+
+<p>如果要將資料分門別類做處理，例如列出不同資料各自的數量，則需要先用「GROUP BY」把相同內容的資料聚集在一起，再來計算數量。以下是選出歌曲包含哪幾種語言及其曲數的方式，因為需要根據語言不同各自去做計數，所以要對語言做「GROUP BY」：</p>
 <pre class="brush: sql">SELECT language, COUNT(language) FROM song GROUP BY language</pre><br>
 
-<p>又或者選出每位歌手的入榜次數：</p>
+<p>又或者選出每位歌手的入榜次數，因為是根據歌手不同各自去做計數，所以要對歌手做「GROUP BY」：</p>
 <pre class="brush: sql">SELECT singer_name, count(singer_name) FROM songrank GROUP BY singer_name</pre><br>
 
+<p>如果你需要根據多個欄位做分類，則把它們全部進行「GROUP BY」即可。例如選出每個歌手在每種語言各唱過幾首歌時，需要同時對歌手和語言來分類：</p>
+<pre class="brush: sql">SELECT singer_id, language, COUNT(singer_id) FROM song GROUP BY language, singer_id</pre><br>
+
+<p>如果你在分門別類處理時，又希望對<u>處理結果</u>同時加入條件來篩選，則應該使用「HAVING」，而非「WHERE」，並且須要<b>先寫「GROUP BY」再寫「HAVING」</b>。例如若要選出所有入榜次數在兩次以上的歌手，以及其入榜次數時，下面範例的第一行是正確的用法，而第二行的指令會產生語法錯誤：</p>
+<pre class="brush: sql">SELECT singer_name, count(singer_name) FROM songrank GROUP BY singer_name HAVING count(singer_name) &gt;= 2
+SELECT singer_name, count(singer_name) FROM songrank WHERE count(singer_name) &gt;= 2 GROUP BY singer_name</pre><br>
+
+<p>但如果要篩選的是<u>原始資料</u>，則還是應該使用「WHERE」。並且，若在一句 SQL 當中，<b>需要同時篩選原始資料和分類處理的結果，又希望同時做排序時，則語句順序必須是「WHERE」、「GROUP BY」、「HAVING」、「ORDER BY」</b>。例如，以下語句可以選出只唱過一首華語歌，或者只唱過一首台語歌的歌手的相關資料，並且依照歌手 id 排序：</p>
+<pre class="brush: sql">SELECT singer_id, language, COUNT(singer_id) FROM song
+	WHERE language in ('華語', '台語')
+	GROUP BY singer_id, language
+	HAVING COUNT(singer_id) = 1
+	ORDER BY singer_id</pre><br>
+
+<hr>
+
 <p>我們可以在 SQL 指令中放入另一個 SQL 指令，此種作法稱為子查詢。例如歌曲包含幾種語言：</p>
-<pre class="brush: sql">SELECT COUNT(*) FROM (SELECT DISTINCT(language) FROM song) AS dstn_lang</pre><br>
+<pre class="brush: sql">SELECT COUNT(*) FROM (SELECT DISTINCT language FROM song) AS dstn_lang</pre><br>
 
 <p>當然，若以上面的範例來說，你也可以直接寫成如下：</p>
 <pre class="brush: sql">SELECT COUNT(DISTINCT language) FROM song</pre><br>
 
 <p>如果子查詢的欄位只有一個，則也可以作為 where 的條件，例如以下範例可選出唱過日語歌的歌手名稱及類型：</p>
 <pre class="brush: sql">SELECT name, type from singer WHERE id in (SELECT singer_id from song WHERE language = '日語')</pre><br>
+
+<hr>
 
 <p>「UNION」可以將兩個 SQL 指令的結果合併起來，唯一的限制是欄位的資料種類要相同：</p>
 <pre class="brush: sql">SELECT id, singer_name FROM songrank

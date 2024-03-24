@@ -22,13 +22,22 @@
 <p>如果要新增一筆或數筆資料，則可使用「INSERT」：</p>
 <pre class="brush: sql">INSERT INTO songrank (this_rank, singer_name) VALUES (123, '這是測試'), (456, '也是測試')</pre><br>
 
+<p>在上述語句中：</p>
+<ul>
+	<li>欄位與要新增的值，是依序對應的。</li>
+	<li>如果一次要再多新增一些資料，則直接再 VALUES 後面增加幾組值即可。</li>
+	<li>未指定值的欄位（例如 prev_rank），系統會幫你填上預設值。但是如果資料表在建立時沒有做預設值的相關設定，可有能會產生錯誤。</li>
+</ul>
+
 <p>若需要更新資料，可以使用「UPDATE」：</p>
 <pre class="brush: sql">UPDATE songrank SET this_rank = '789', song_name = '不知道' WHERE id = 9</pre><br>
+
+<p>在上述語句中，如果要修改多一點欄位，則再新增對應的「欄位名稱 = 要修改的值」即可。</p>
 
 <p>若需要刪除資料，可以使用「DELETE」：</p>
 <pre class="brush: sql">DELETE FROM songrank WHERE this_rank &gt; 100</pre><br>
 
-<p>更新或刪除資料時請記得指定正確的條件，否則會不小心把整個資料庫改掉一大半或全部！</p>
+<p><b>更新或刪除資料時請記得指定正確的條件，否則會不小心把整個資料庫改掉一大半或全部！</b></p>
 
 </blockquote>
 
