@@ -19,48 +19,48 @@
 
 <blockquote>
 
-<p>接下來的部份範例需要用到兩張資料表，我們會利用「JOIN」來連接兩張資料表（也可以連接多張，但本篇未展示）。其基本用法是「SELECT 欄位名 from 表格_A ... JOIN 表格_B on 對照條件 ...」，代表要取 A 跟 B 的某種集合；其中，<b>若對照條件未指定，則所有組合都會被列出</b>。而根據要取的是 A, B 兩張表格的不同種類的集合，還會有「LEFT JOIN」、「RIGHT JOIN」等變化。</p>
+<p>如果你要選出的資料，需要對照兩張以上的表才能查出來，則最經典的方式是使用 JOIN 語法。其基本用法是「SELECT 欄位名 from 表格_A ... JOIN 表格_B on 對照條件 ...」，代表要取 A 跟 B 的某種集合；其中，<b>若對照條件未指定，則所有組合都會被列出</b>。而根據要取的是 A 與 B 兩張表格的不同種類的集合，還會有「LEFT JOIN」、「RIGHT JOIN」等變化。</p>
 
-<p>例如，若需要選出伍佰唱過的台語歌，則會需要顯示 song 資料表的 name 欄位，並用 song 資料表的 singer_id 欄位，跟 singer 資料表的 id 做對照：</p>
+<p>例如，若需要選出伍佰唱過的台語歌，則會需要顯示 song 資料表的 name 欄位，並用 song 資料表的 singer_id 欄位，跟 singer 資料表的 id 做對照；然後再跟一般的 SELECT 一樣，使用 WHERE 做篩選即可：</p>
 <pre class="brush: sql">
 SELECT song.name FROM song
 INNER JOIN singer on singer.id = song.singer_id
-WHERE song.language = '台語'
-AND singer.name = '伍佰'</pre><br>
+WHERE song.language = '台語' AND singer.name = '伍佰'</pre><br>
 
 <p>其中，「INNER JOIN」代表取兩張資料表的交集，並且雖然將「INNER」省略也可以，但一般會建議完整地寫出來，會讓 SQL 語句在人眼看來比較明確。</p>
 
-<p>又如唱過華語歌的歌手及其歌曲：</p>
+<p>又如唱過華語歌的歌手及其歌曲，一樣需要 singer 和 song 兩張資料表，並以 song.singer_id 和 singer.id 對照，再使用 WHERE 篩選出華語歌：</p>
 <pre class="brush: sql">
 SELECT singer.name, song.name FROM singer
 INNER JOIN song on singer.id = song.singer_id
 WHERE language = '華語'</pre><br>
 
-<p>你可能注意到了上面兩個範例的表格順序不太一樣。事實上，由於 INNER JOIN 取的是交集，所以<strike>表格序順不影執響行</strike>順序並不會影響結果；而且除非你操作的資料非常大量，使用到了較特殊的分散式資料庫，也不會影響效能。</p>
+<p>你可能注意到了上面兩個範例的表格順序不太一樣。事實上，由於 INNER JOIN 取的是交集，所以<strike>表格序順不影執響行</strike><span title="兩個表格是可逆的">順序並不會影響結果</span>；而且除非你操作的資料非常大量，使用到了較特殊的分散式資料庫，否則一般來說，順序也不會影響效能。</p>
 
-<p>我們繼續看其他範例，例如每個歌手唱過的歌曲數，除了需要對照 singer 和 song 這兩張資料表，也要計算 singer.name 的數量：</p>
+<p>需要將資料分類進行處理時，也跟一般的 SELECT 一樣，加上 GROUP BY 即可。例如每個歌手唱過的歌曲數，除了需要對照 singer 和 song 這兩張資料表以外，也要計算 singer.name 的數量：</p>
 <pre class="brush: sql">
 SELECT singer.name, COUNT(singer.name) FROM singer
 INNER JOIN song on singer.id = song.singer_id
 GROUP BY singer.name</pre><br>
 
-<p>而若是需要選出每個歌手唱過各種語言的歌曲數，則需要把 song.language 也加入 GROUP BY 的項目中，才能把不同語言區分開來：</p>
+<p>需要 GROUP BY 兩個欄位的時候，也是使用一樣的處理原則。例如選出每個歌手唱過的各種語言的歌曲數，則除了對照兩張表格以外，也需要同時 GROUP BY 歌手名稱(singer.name)以及語言(song.language)：</p>
 <pre class="brush: sql">
 SELECT singer.name, song.language, COUNT(singer.name) FROM singer
 INNER JOIN song on singer.id = song.singer_id
 GROUP BY singer.name, song.language</pre><br>
 
-<p>你可能會發現，在前面兩個範例中，歌曲數目為 0 的鏡音並未被列出，這是因為兩張表格的 singer_id 取的是交集。若要將鏡音也列在查詢結果當中，則可使用「LEFT JOIN」，代表取左邊表格的所有資料。這時候，表格的順序就會很重要。</p>
+<p>你可能會發現，在前面兩個範例中，歌曲數目為 0 的鏡音並未被列出，這是因為兩張表格的 singer_id 取的是交集。若要將鏡音也列在查詢結果當中，則代表 singer 資料表裡面有的歌手，全部都要列出。這時候，我們可使用「table_1 LEFT JOIN table_2」，代表取左邊表格 table_1 的所有資料。這時候，表格的<span title="不可逆">順序就會很重要</span>。</p>
 <pre class="brush: sql">
-SELECT singer.name, song.language, COUNT(singer.name) FROM singer
+SELECT singer.name, song.language, COUNT(song.language) FROM singer
 LEFT JOIN song ON singer.id = song.singer_id
 GROUP BY singer.name, song.language</pre><br>
 
-<p>比較新版的資料庫軟體，可能會支援「WITH...AS」語法，它的概念相當於子查詢，但是當整體 SQL 語句比較複雜時，使用「WITH...AS」的可讀性比較高，並且因為其查詢結果會變成一個暫時的表格，因此對效能也有幫助。我們同樣以「歌曲包含幾種語言」示範如下，各位可以跟前面的另外兩種方法比較看看</p>
-<pre class="brush: sql">
-WITH
-	dstn_lang AS (SELECT DISTINCT(language) as langs FROM song)
-SELECT COUNT(dstn_lang.langs) FROM dstn_lang</pre><br>
+<p>在上述範例中：</p>
+<ul>
+	<li>COUNT 當中是 song.language 而非 singer.name 的原因，是由於鏡音鈴在 singer 裡面有一筆資料，song 資料表裡面沒有資料，如果你 COUNT 前者會得到 1，後者則會得到 0。本範例希望呈現為 0，故使用「COUNT(song.language)」。</li>
+	<li>你也可以把 singer LEFT JOIN song 改為 song RIGHT JOIN singer，但通常這兩種寫法只是習慣上的差異。</li>
+	<li>「null」代表空值，沒有資料。如果你在其他應用中，需要進行判斷是否為空，或者將其改為 0 等等的操作，請自行上網查詢相關語法。</li>
+</ul>
 
 </blockquote>
 

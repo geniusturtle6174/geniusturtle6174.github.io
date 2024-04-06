@@ -114,6 +114,12 @@ SELECT singer_name, count(singer_name) FROM songrank WHERE count(singer_name) &g
 <p>如果子查詢的欄位只有一個，則也可以作為 where 的條件，例如以下範例可選出唱過日語歌的歌手名稱及類型：</p>
 <pre class="brush: sql">SELECT name, type from singer WHERE id in (SELECT singer_id from song WHERE language = '日語')</pre><br>
 
+<p>比較新版的資料庫軟體，可能會支援「WITH...AS」語法，它的概念也相當於子查詢，但是當整體 SQL 語句比較複雜時，一般會認為使用「WITH...AS」的可讀性比較高，並且因為其查詢結果會變成一個暫時的表格，因此對效能也有幫助。我們同樣以「歌曲包含幾種語言」示範如下，各位可以跟前面的方法比較看看：</p>
+<pre class="brush: sql">
+WITH
+	dstn_lang AS (SELECT DISTINCT(language) as langs FROM song)
+SELECT COUNT(dstn_lang.langs) FROM dstn_lang</pre><br>
+
 <hr>
 
 <p>「UNION」可以將兩個 SQL 指令的結果合併起來，唯一的限制是欄位的資料種類要相同：</p>
