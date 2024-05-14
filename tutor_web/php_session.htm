@@ -20,7 +20,7 @@
 <blockquote>
 
 <p>
-Session 與 cookie 非常類似，但最主要的差別在於 session 是儲存在伺服器端。若要在某個 PHP 程式當中使用 session，首先必須呼叫「session_start」，此函數必須在網頁輸出任何東西之前呼叫，否則會產生錯誤。之後，我們可以使用「$_SESSION["名稱"]」的方式去設定與讀取內容。而若要刪除 session，則可使用「unset」函式刪除指定名稱的 session，或者用「session_destroy」刪除所有的 session。以下是一系列的範例，各位可以在建立、讀取、毀滅之間互相點選看看。
+Session 與 cookie 非常類似，都是用來儲存一些小東西，但最主要的差別在於 session 是儲存在伺服器端。而 session 最常見的用法，是透過自動的跟 cookie 做搭配，來認出現在是誰在使用網頁。若你要在某個 PHP 程式當中使用 session，首先必須呼叫「session_start」，此函數必須在網頁輸出任何東西之前呼叫，就算是多一個空白也不行，否則會產生錯誤。之後，我們可以使用「$_SESSION["名稱"]」的方式去設定與讀取內容。而若要刪除 session，則可使用「unset」函式刪除指定名稱的 session，或者用「session_destroy」刪除所有的 session。以下是一系列的範例，各位可以在建立、讀取、毀滅之間互相點選看看。
 </p>
 
 <p>創建 session：</p>
