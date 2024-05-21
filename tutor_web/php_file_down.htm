@@ -1,0 +1,57 @@
+﻿<html>
+<head>
+	<title>線上教材：WEB 程式設計</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css" />
+	<base target="_blank">
+	<script type="text/javascript" src="myJs.js"></script>
+	<script type="text/javascript" src="shCore.js"></script>
+	<script type="text/javascript" src="shBrushXml.js"></script>
+	<script type="text/javascript" src="shBrushMine.js"></script>
+	<script type="text/javascript" src="shBrushPython.js"></script>
+	<link href="shCore.css" rel="stylesheet" type="text/css" />
+	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SyntaxHighlighter.all();
+	</script>
+	</head>
+
+<body bgcolor="#ccccff">
+
+<blockquote>
+
+<script>
+
+showWarning("此篇內容為上傳篇之延續，若尚未閱讀過上傳篇者，建議先閱讀之。");
+
+</script>
+
+<p>而關於檔案下載，則是依照路徑把檔案取出。以下範例是由 GET 傳送檔名，來告訴伺服器要取得哪個檔案：</p>
+<pre class="brush: htmljsphp">&lt;?php$baseDir = &quot;./uploadFile/&quot;;if(isset($_GET['file']) &amp;&amp; $_GET['file']){	$file = $baseDir.$_GET['file'];	if (file_exists($file)) {		header('Content-Type: application/octet-stream');		header(&quot;Content-Transfer-Encoding: Binary&quot;); 		header('Content-Disposition: attachment; filename='.basename($file));		readfile($file);	}}?&gt;</pre>
+<br>
+<p>如果你知道或者還記得<a href="http://technews.tw/2014/01/07/fetc-collection-again-etags-official-website-were-terrible-population-data-leaks/">遠通</a>的話，應該很容易看的出來這個範例的問題。若要測試，請在輸入框中輸入例如"../../../abc.txt"等內容。</p>
+
+<p>比較好的方法，則應該檢查輸入的檔名是否符合期待的格式。由於格式部分跟上傳存檔時的命名可能有關，故此處僅示範"數字字母底線.htm"的格式：</p>
+<pre class="brush: htmljsphp">&lt;?phpif(isset($_GET['file'])&amp;&amp;$_GET['file']){	$pattern = '/^[0-9A-Za-z_]+\.htm$/';	$file = $_GET['file'];	if (preg_match($pattern, $file) &amp;&amp; file_exists($file)) {		header('Content-Type: application/octet-stream');		header(&quot;Content-Transfer-Encoding: Binary&quot;); 		header('Content-Disposition: attachment; filename='.basename($file));		readfile($file);	}	else {		echo '此檔案不能下載！';	}}?&gt;</pre>
+<br>
+<p>除了上述示範的直接輸入檔名的方式，我們也可以建立類似以下的資料表，其中，id 的部分設定為 primary key 與 auto increment，伺服器路徑為上傳時儲存的位置以及由伺服器端程式自訂的檔名，並同時將原始檔名等資訊塞入資料庫。此時，就能使用 id 或伺服器端路徑等當作參數，來撈取真正的檔案。</p>
+<table class="slide" align=center>
+	<tr>
+		<th>id</th>
+		<th>server_path (伺服器路徑)</th>
+		<th>ori_name (原始檔名)</th>
+	</tr>
+	<tr><td>1</td><td>../upload/a4b153</td><td>aaa.php</td></tr>
+	<tr><td>2</td><td>../upload/f241cd</td><td>bbb.doc</td></tr>
+	<tr><td>3</td><td>../upload/2a34fe</td><td>ccc.pdf</td></tr>
+</table>
+
+<p>前述方式的上傳範例如下。請注意本範例僅作為概念展示，若有語法方面等錯誤請自行修正之(下同)：</p>
+<pre class="brush: htmljsphp">&lt;?phpinclude(&quot;../examples/pdoInc.php&quot;);$newDir = &quot;../../uploadFile/&quot;; // Some where outside the root directory of website$resultStr = '';if(isset($_FILES[&quot;testFile&quot;][&quot;name&quot;]) &amp;&amp; $_FILES[&quot;testFile&quot;][&quot;name&quot;] != NULL &amp;&amp; $_FILES[&quot;testFile&quot;][&quot;size&quot;] &lt;= 1024 * 1024){	$sth = $dbh-&gt;prepare('INSERT INTO file (ori_name) VALUES (?)');	$sth-&gt;execute(array($_FILES[&quot;testFile&quot;][&quot;name&quot;]));	$lastInsertId = $dbh-&gt;lastInsertId();		$serverPath = $newDir.md5($lastInsertId.$_FILES[&quot;testFile&quot;][&quot;name&quot;].time());	move_uploaded_file($_FILES[&quot;testFile&quot;][&quot;tmp_name&quot;], $serverPath);		$sth = $dbh-&gt;prepare('UPDATE file SET server_path = ? WHERE id = ?');	$sth-&gt;execute(array($serverPath, $lastInsertId));		$resultStr = &quot;Submit file OK.&quot;;}?&gt;&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body bgcolor=&quot;#ccccff&quot;&gt;&lt;form action=&quot;&lt;?php echo basename($_SERVER['PHP_SELF']);?&gt;&quot; method=&quot;post&quot; enctype=&quot;multipart/form-data&quot;&gt;	&lt;label for=&quot;file&quot;&gt;Upload your file: &lt;/label&gt;	&lt;input type=&quot;file&quot; name=&quot;testFile&quot;&gt;	&lt;input type=&quot;submit&quot; name=&quot;submit&quot; value=&quot;Submit&quot;&gt;	&lt;?php echo $resultStr;?&gt;&lt;/form&gt;&lt;/body&gt;&lt;/html&gt;</pre>
+<br>
+<p>下載的範例則如下。若有需要進行權限控管，你也可以在資料庫中加入相關的欄位，或者在程式中做適當的處理：</p>
+<pre class="brush: htmljsphp">&lt;?phpinclude(&quot;../examples/pdoInc.php&quot;);if(isset($_GET['file']) &amp;&amp; $_GET['file']){	$sth = $dbh-&gt;prepare('SELECT * FROM file WHERE id = ?');	$sth-&gt;execute(array((int)$_GET['file']));	if($sth-&gt;rowCount() == 0){		echo '此檔案不存在';	}	else {		$row = $sth-&gt;fetch(PDO::FETCH_ASSOC);		if (file_exists($row['server_path'])) {			header('Content-Type: application/octet-stream');			header(&quot;Content-Transfer-Encoding: Binary&quot;); 			header('Content-Disposition: attachment; filename='.basename($row['ori_name']));			readfile($row['server_path']);		}		else {			echo '此檔案不存在';		}	}}?&gt;</pre>
+<br>
+</blockquote>
+
+</body></html>
