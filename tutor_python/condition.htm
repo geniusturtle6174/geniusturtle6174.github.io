@@ -80,7 +80,7 @@ else:
 	</li>
 </ul>
 
-<p>使用範例如下：</p>
+<p>上述運算子的簡單使用範例如下：</p>
 <pre class="brush: py">
 a = 10
 if a &gt; 5:
@@ -101,8 +101,19 @@ if a &gt; 60 or b &gt; 70:
 	print("a or b passed")
 </pre>
 
+<p>先前我們在條件判斷運算子的左右兩邊，放的都是單一的常數或變數，但你當然也可以放一條運算式，再去跟另一條運算式對比。例如常用的判斷是否可以形成三角形的規則「兩個短邊相加是否大於第三邊」，可以撰寫如下：</p>
+<pre class="brush: py">
+a = 50
+b = 60
+c = 108
+if a + b &gt; c:
+	print("This is a triangle.")
+else:
+	print("This is NOT a triangle.")
+</pre>
+
 <div class="newbie">
-<p>或和且的混用：</p>
+<p>或和且的混用範例如下：</p>
 <pre class="brush: py">
 a = 10
 b = 20
@@ -209,7 +220,7 @@ else:
 </pre>
 
 <div class="newbie">
-<p>條件判斷也可以一層包一層，稱為巢狀。例如把第一個範例中，80 分以上的加一個特別鼓勵：</p>
+<p>條件判斷也可以一層包一層，稱為巢狀。例如要把第一個範例中，80 分以上的加一個特別鼓勵時，方法如下：</p>
 <pre class="brush: py">
 grade = 65
 
