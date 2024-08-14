@@ -61,7 +61,18 @@ else:
 	print('GG')
 </pre>
 
-<p>上例中的「>=」，稱之為條件運算子，可以用來判斷左邊的運算結果，是否大於等於右邊的運算結果。其餘的條件運算子有：</p>
+<p>又例如，常用的判斷是否可以形成三角形的規則「兩個短邊相加是否大於第三邊」，可以撰寫如下：</p>
+<pre class="brush: py">
+a = 50
+b = 60
+c = 108
+if a + b &gt; c:
+	print("This is a triangle.")
+else:
+	print("This is NOT a triangle.")
+</pre>
+
+<p>上面兩個範例中的「&gt;=」和「&gt;」，稱之為條件運算子，可以用來判斷左邊的運算結果，是否大於等於右邊的運算結果。其餘的條件運算子有：</p>
 <ul>
 	<li>大於：「&gt;」，等於：「==」，小於：「&lt;」。需注意判斷是否等於的用法是兩個等號（一個等號是變數指派）</li>
 	<li>大於等於：「&gt;=」，小於等於：「&lt;=」</li>
@@ -82,10 +93,6 @@ else:
 
 <p>上述運算子的簡單使用範例如下：</p>
 <pre class="brush: py">
-a = 10
-if a &gt; 5:
-	print("a &gt; 5")
-
 b = 7
 if b % 2 != 0:
 	print("b is odd")
@@ -99,17 +106,6 @@ a = 20
 b = 90
 if a &gt; 60 or b &gt; 70:
 	print("a or b passed")
-</pre>
-
-<p>先前我們在條件判斷運算子的左右兩邊，放的都是單一的常數或變數，但你當然也可以放一條運算式，再去跟另一條運算式對比。例如常用的判斷是否可以形成三角形的規則「兩個短邊相加是否大於第三邊」，可以撰寫如下：</p>
-<pre class="brush: py">
-a = 50
-b = 60
-c = 108
-if a + b &gt; c:
-	print("This is a triangle.")
-else:
-	print("This is NOT a triangle.")
 </pre>
 
 <div class="newbie">
