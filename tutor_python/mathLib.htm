@@ -17,25 +17,40 @@
 
 <blockquote>
 
-<p>本篇介紹一些可能比較常用的數學運算。以下範例皆假設各位已在 cmd 當中輸入過，或者檔案當中有「import math」。</p>
+<p>本篇介紹一些可能比較常用的數學運算，以下範例請在 cmd 當中開啟 Python 來執行，並在開啟後就立刻輸入過「import math」。若你希望寫成 *.py 的檔案來執行，則除了在檔案開頭加上「import math」以外，還要加上適當的「print」，才會有結果輸出。</p>
 
 <p>數論系列：</p>
 <pre class="brush: py">
 math.ceil(0.4)  # 往正向無條件進位至整數
 math.floor(0.6) # 往負向無條件捨位至整數
-round(12.34) # 四捨五入。這是內建函式，前面不需要「math.」
-round(56.78) # 四捨五入。再說一次，這是內建函式，前面不需要「math.」
 
 math.fabs(-12.345) # 絕對值。亦可使用「abs(-12.345)」，「abs」也是是內建函式，前面不需要「math.」
 math.factorial(5)  # 階乘
 math.gcd(12, 34)   # 最大公因數，Python 3.5 開始支援
 </pre>
 
+<p>「四捨五入」比較特別，一般會先想到「round」，但它做的是「四捨六入五取雙」。此外，round 是內建函式，不用載入 math 等任何函式庫就可以使用：</p>
+<pre class="brush: py">
+round(12.34)
+round(56.78)
+
+round(7.5)
+round(8.5)
+</pre>
+
+<p>「round」在四捨五入到小數點下指定位數的時候，也會遇到問題：</p>
+<pre class="brush: py">
+round(3.15, 1) # 會得到 3.1，但數學上是 3.2
+round(4.15, 1) # 會得到 4.2，與數學上相同
+</pre>
+
+<p>這些問題是由於電腦表示小數點的精確度限制所導致。若想要有效的處理類似問題，可以自行參考「decimal」這個模組。</p>
+
 <p>指數對數系列：</p>
 <pre class="brush: py">
 math.exp(3)     # e 的幾次方
-math.pow(3, 5)  # x 的 y 次方，相當於 x**y
-math.sqrt(2)    # x 的開根號
+math.pow(3, 5)  # x 的 y 次方，相當於 x ** y
+math.sqrt(2)    # 開根號
 
 math.log(20.085536923187668) # 自然對數
 math.log2(8)
@@ -60,23 +75,6 @@ math.degrees(math.asin(tmp))
 math.degrees(math.acos(tmp))
 math.degrees(math.atan(tmp))
 </pre>
-
-<p>在前面的一些範例中，你可能會發現數字會少掉或者多出一個很小的數字。這是由於浮點數在電腦中的精確度限制所造成，只要程式當中需要進行浮點數的運算，就很可能會碰到類似問題，例如加法不一定遵守結合律(associative)：</p>
-<pre class="brush: py">
-print(0.1 + 0.2 + 0.3)
-print((0.1 + 0.2) + 0.3)
-print(0.1 + (0.2 + 0.3))
-print((0.1 + 0.2) + 0.3 == 0.1 + (0.2 + 0.3))
-</pre>
-
-<p>例如一開始介紹的 round 內建函式，在四捨五入到小數點下指定位數的時候，也會遇到問題：</p>
-<pre class="brush: py">
-round(3.15, 1) # 數學上是 3.2
-round(4.15, 1) # 數學上是 4.2
-round(5.15, 1) # 數學上是 5.2
-</pre>
-
-<p>若想要有效的處理類似問題，可以自行參考「decimal」這個模組。</p>
 
 <!--p>
 下面用取概數中的四捨六入五取雙來做一個應用範例(本範例只考慮正數)。

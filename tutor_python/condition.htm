@@ -3,9 +3,6 @@
 	<title>線上教材：Python 程式設計</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel=stylesheet type="text/css" href="myCss.css" />
-	<style>
-		.newbie{display: block;}
-	</style>
 	<base target="_blank">
 	<script type="text/javascript" src="shCore.js"></script>
 	<script type="text/javascript" src="shBrushPython.js"></script>
@@ -20,28 +17,6 @@
 
 <blockquote>
 
-<p>
-<script>
-var status = 1;
-function toggle(){
-	var newbie = document.getElementsByClassName("newbie");
-	if(status == 1){
-		status = 0;
-		for(var i=0;i<newbie.length;i++){
-			newbie[i].style.display = 'none';
-		}
-	}
-	else {
-		status = 1;
-		for(var i=0;i<newbie.length;i++){
-			newbie[i].style.display = 'block';
-		}
-	}
-}
-</script>
-本篇將程式初學者所需的內容預設為顯示，若需切換請點<a onclick="toggle()">這裡</a>。
-</p>
-
 <p>程式可以如此靈活的原因之一，就是能依據不同的條件，來進行不同的工作。要進行判斷，可以使用 if...else 的語法，如下：</p>
 <pre class="brush: py">
 if 條件運算式:
@@ -52,9 +27,9 @@ else:
 
 <p>當條件成立時，將執行敘述一，否則會執行敘述二。如果不需要敘述二，則可省略 else 以下的部分。此外，在一行的開頭加入空白使程式往右靠，這種排版方式稱為縮排，縮排在 Python 當中是必須的。Python 的習慣上是使用四個空白作為縮排，本範例亦如此使用（但因編輯器的緣故，如果你看的是網頁原始碼，則是使用 Tab 縮排），Python 內建的 IDLE 環境也會使用空白縮排。如果沒有團隊合作，或者程式碼必須讓別人閱讀等特殊必要，你也可以依照喜好選擇空白的數量或者改用 Tab 來進行縮排，但請留意，這些方式應避免混用，否則可能導致程式無法執行或難以除錯（若有興趣知道混用的後果，請自行嘗試或上網查詢）。</p>
 
-<p>以成績及格與否的判斷做為一個簡單的範例，其邏輯上為「60分以上及格，否則被當」。寫成程式碼時的範例如下：</p>
+<p>以成績及格與否的判斷做為一個簡單的範例，其邏輯上為「60 分以上及格，否則被當」。寫成程式碼時的範例如下：</p>
 <pre class="brush: py">
-grade = int(input('Please enter grade: ')) # 接受使用者輸入一個整數
+grade = 87 # 你可以改成其他數字，來觀察效果
 if grade &gt;= 60:
 	print('Pass')
 else:
@@ -108,7 +83,6 @@ if a &gt; 60 or b &gt; 70:
 	print("a or b passed")
 </pre>
 
-<div class="newbie">
 <p>或和且的混用範例如下：</p>
 <pre class="brush: py">
 a = 10
@@ -135,9 +109,7 @@ if (a &gt; 5 or b &gt; 10) and c &gt; 15:
 else:
 	print("Test 2: GG")
 </pre>
-</div>
 
-<div class="newbie">
 <p>「或」就像加法，「且」就像乘法，它們也遵守先乘除後加減的規則。我們把前面範例最後一段的括號拿掉看看，就會產生跟前面範例不同的結果：
 <pre class="brush: py">
 a = 15
@@ -153,7 +125,6 @@ if a &gt; 5 or b &gt; 10 and c &gt; 15:
 else:
 	print("Test 2: GG")
 </pre>
-</div>
 
 <p>在數學式子中，我們會寫"a &gt; b &gt; c"，這是大家很熟悉的遞移律。在其他某些語言當中，直接寫"a &gt; b &gt; c"作為判斷式是會有問題的，但是在 Python 當中，可以直接使用遞移律來撰寫判斷式：</p>
 <pre class="brush: py">
@@ -169,14 +140,13 @@ else:
 
 <p>如果要進行的條件判斷或動作比較簡單，可以用以下的方法縮成一行：</p>
 <pre class="brush: py">
-grade = 70
-a = 1
-b = 2
-
 # 例如第一個範例，可以簡化成這樣
+grade = 70
 print('Pass') if grade &gt;= 60 else print('GG')
 
-# 也可以這樣用
+# 語法簡化的條件判斷，也可以用於指派運算式
+a = 1
+b = 2
 c = (a + b) if a &gt; b else (a - b)
 </pre>
 
@@ -215,7 +185,6 @@ else:
 	print("Common")
 </pre>
 
-<div class="newbie">
 <p>條件判斷也可以一層包一層，稱為巢狀。例如要把第一個範例中，80 分以上的加一個特別鼓勵時，方法如下：</p>
 <pre class="brush: py">
 grade = 65
@@ -227,7 +196,14 @@ if grade &gt;= 60:
 else:
 	print('GG')
 </pre>
-</div>
+
+<p>在前面的一些範例中，你可能會發現數字會少掉或者多出一個很小的數字。這是由於浮點數在電腦中的精確度限制所造成，只要程式當中需要進行浮點數的運算，就很可能會碰到類似問題，例如加法不一定遵守結合律(associative)：</p>
+<pre class="brush: py">
+print(0.1 + 0.2 + 0.3)
+print((0.1 + 0.2) + 0.3)
+print(0.1 + (0.2 + 0.3))
+print((0.1 + 0.2) + 0.3 == 0.1 + (0.2 + 0.3))
+</pre>
 
 </blockquote>
 
