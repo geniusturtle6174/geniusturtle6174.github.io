@@ -17,21 +17,29 @@
 
 <blockquote>
 
-<p>LeetCode 是一個可以讓你用各種程式語言，練習解答各種題目的地方，並且原則上是撰寫函式來解答，不需要像 UVa Online Judge 或 ZeroJudge 一樣自己讀取使用者的輸入。本篇將說明使用 Python 語言解答題目時的相關原則，首先要注意的是，LeetCode 的語言選項提供了 Python 和 Python3，如果你選擇了 Python3，則其函式架構會包含 type hints，即輸入和輸出的參數類型提示；但 type hints 的部份狀況在 Python 3.6 等較早版本並未完整支援，因此本篇的範例將以 Python 選項為主，唯此選項會讓語法改為以 Python 2 的方式來解讀，因此可能需要注意除法的規則不同（Python 2 的除法，在兩邊都是整數時，會把商的小數丟掉），以及部分內建函式尚未支援（例如 math.gcd）等問題。</p>
+<p>LeetCode 是一個可以讓你用各種程式語言，練習解答各種題目的地方，並且<b>原則上是撰寫函式來解答，不需要</b>像 UVa Online Judge 或 ZeroJudge 一樣<b>自己讀取使用者的輸入</b>。本篇將說明使用 Python 語言解答題目時的相關原則。</p>
 
-<p>LeetCode 的架構規則，會有一個 Solution 物件，其中包含一個指定了名稱和參數的函式。以一個「把輸入數字加一」的範例題目來說，函式名稱可能會叫做「addOne」，輸入參數可能只有一個 n，你需要做的事情是根據參數算好解答後再回傳回去，如下：</p>
+<p><b>首先要注意的是語言選項</b>。LeetCode 的語言選項提供了 Python 和 Python3；以目前(2024/09)來說，Python 選項的版本是 Python 2.7，而 Python3 是 Python 3.11。如果你要選擇 Python3，則其函式架構會包含 type hints，即輸入和輸出的參數類型提示；但 type hints 的部份狀況在較早版本並未完整支援，若要在送出之前在自己電腦上測試的話，可能需要留意；而若你要選擇 Python 選項，則可能需要注意除法的規則不同（Python 2 的除法，在兩邊都是整數時，會把商的小數丟掉），以及部分內建函式尚未支援（例如 math.gcd）等問題。<b>本篇將以 Python3 選項為主來解說</b>。</p>
+
+<p>LeetCode 的架構規則，會有一個 Solution 物件，其中包含一個指定了名稱和參數的函式。以一個「把輸入數字加一」的範例題目來說，LeetCode 可能會告訴你，函式名稱要叫做「addOne」，輸入參數可能只有一個 n，如下：</p>
 <pre class="brush: py">
-class Solution(object):
-	def addOne(self, num):
+class Solution:
+	def addOne(self, num: int) -> int:
+</pre>
+
+<p>在上述範例中，<b>物件名稱、函式名稱，以及參數列表都會由題目給定，你不應該對他們做任何修改</b>。</p>
+
+<p>因此，你需要做的事情是根據參數算好解答後再回傳回去，如下：</p>
+<pre class="brush: py">
+class Solution:
+	def addOne(self, num: int) -> int:
 		return num + 1
 </pre>
 
-<p>在上述範例中，前兩行都會由題目給定，你不應該對他們做任何修改。</p>
-
-<p>如果要對你寫好的程式做測試，首先必須使用「S = Solution()」建立一個物件，並在呼叫一般函式的方法前面加上「S.」來測試。整段程式可以撰寫在全域範圍，也可以包含在「if __name__ == '__main__':」裡面，如下：</p>
+<p><b>如果要對你寫好的程式做測試，首先必須使用「S = Solution()」建立一個物件，並在呼叫一般函式的方法前面加上「S.」來測試</b>。整段程式可以撰寫在全域範圍，也可以包含在「if __name__ == '__main__':」裡面，但<b>建議包含在「if __name__ == '__main__':」裡面，比較不會影響 LeetCode 平台的自動評分</b>，如下：</p>
 <pre class="brush: py">
-class Solution(object):
-	def addOne(self, num):
+class Solution:
+	def addOne(self, num: int) -> int:
 		return num + 1
 
 

@@ -3,6 +3,9 @@
 	<title>線上教材：Python 程式設計</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel=stylesheet type="text/css" href="myCss.css">
+	<style>
+		.py2{display: none;}
+	</style>
 	<base target="_blank">
 	<script type="text/javascript" src="shCore.js"></script>
 	<script type="text/javascript" src="shBrushPython.js"></script>
@@ -16,6 +19,29 @@
 <body bgcolor="#ccccff">
 
 <blockquote>
+
+<p>
+<script>
+var status = 0;
+
+function toggle2(){
+	var py2 = document.getElementsByClassName("py2");
+	if(status == 1){
+		status = 0;
+		for(var i=0;i<py2.length;i++){
+			py2[i].style.display = 'none';
+		}
+	}
+	else {
+		status = 1;
+		for(var i=0;i<py2.length;i++){
+			py2[i].style.display = 'inline';
+		}
+	}
+}
+</script>
+<p align="center" style="background:#ffa;padding:5px">本篇將 Python 2 相關內容預設為隱藏，若需在顯示與隱藏間相互切換請點<a onclick="toggle2()">這裡</a>。</p>
+</p>
 
 <p>使用日常生活中的字典時，你會有一個要查詢的字詞，然後翻找到解釋。Python 當中的字典也跟生活中的字典非常相似，但我們會把要查詢的字詞稱為 key，翻找到的解釋稱為 value。Python 的字典的基本使用方法如下，大致上跟串列非常相似：</p>
 <pre class="brush: py">
@@ -55,8 +81,8 @@ d = {
 }
 
 # 新增一組 key-value 的組合
-d['this-is-new-key-1'] = 'this-is-new-val'
-print(d['this-is-new-key-1'])
+d['new-key'] = 'new-val'
+print(d['new-key'])
 
 # 修改一組 key-value 的組合
 d[123] = 789
@@ -69,7 +95,7 @@ print(d[123]) # 這行也會產生錯誤，因為字典當中現在沒有這個�
 del d[12345] # 刪除不存在的字，也會產生錯誤
 </pre>
 
-<p>若要在程式中判斷字典裡是否有該字詞，可以用 in 來進行。如果是在 Python 2 當中，還有 has_key() 可以使用，不過在 Python 3 沒有此方法。</p>
+<p>若要在程式中判斷字典裡是否有該字詞，可以用 in 來進行。<span class="py2">如果是在 Python 2 當中，還有 has_key() 可以使用，不過在 Python 3 沒有此方法。</span>如下：</p>
 <pre class="brush: py">
 d = {
 	123: 456,
