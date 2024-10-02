@@ -17,7 +17,7 @@
 
 <blockquote>
 
-<p>本篇將以終極密碼和勘跟定理兩個範例，來做為迴圈語法的應用展示。</p>
+<p>本篇將以終極密碼和勘根定理兩個範例，來做為迴圈語法的應用展示。</p>
 
 <p>終極密碼的遊戲目標是，給定一個上下界，讓大家猜出該範圍內的數字。而在遊戲過程中，上下界會隨著大家猜想的數字變化，而愈來愈縮小範圍，直至有人猜中為止。以下是完整程式碼：</p>
 <pre class="brush: python">
@@ -32,15 +32,16 @@ while True:
 		print('You got it!')
 		break
 	elif guess &lt; pwd:
-		low = max(guess, low)
+		low = max(guess+1, low)
 	elif guess &gt; pwd:
-		high = min(guess, high)
+		high = min(guess-1, high)
 </pre>
 
 <p>在上述範例中：</p>
 <ul>
 	<li>密碼是事先寫死的。若你想要改用亂數產生，可以參考 random 模組。</li>
 	<li>「while True:」代表迴圈永遠會執行，因此你若希望在猜中後結束遊戲，需要用「break」跳出迴圈。</li>
+	<li>範例設計為密碼有可能剛好是上界或下界。你如果有其他設計，必須自行修改程式碼。</li>
 </ul>
 
 <p>
@@ -76,7 +77,13 @@ while True:
 		b = c
 </pre>
 
-<p>在上述範例中，數字已經過是先設計，保證該方程式在該範圍內恰有一根；你可以利用 Google 或其他方式自動畫圖觀察看看，或者用 matplotlib.pyplot 模組自己畫圖觀察看看。</p>
+<p>在上述範例中：</p>
+<ul>
+	<li>數字已經過是先設計，保證該方程式在該範圍內恰有一根。</li>
+	<li>你可以利用 Google、matplotlib.pyplot 模組，或其他方式畫圖，觀察看看範例結果是否與圖形相符。</li>
+	<li>我們只需要關心左界和右界的函數值的正負號，而不用關心實際的函數值，因此不需要反覆計算新的 f(a) 與 f(b)。</li>
+</ul>
+
 
 </blockquote>
 
