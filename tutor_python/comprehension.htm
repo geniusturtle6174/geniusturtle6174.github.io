@@ -58,12 +58,12 @@ a = ['A', 'B', 'C']
 b = ['X', 'Y', 'Z']
 
 c1 = []
-for i in a:
-	for j in b:
-		c1.append(i + j)
+for vi in a:
+	for vj in b:
+		c1.append(vi + vj)
 print(c1)
 
-c2 = [i + j for i in a for j in b]
+c2 = [vi + vj for vi in a for vj in b]
 print(c2)
 </pre>
 

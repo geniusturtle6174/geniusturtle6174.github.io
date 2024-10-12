@@ -23,7 +23,7 @@ a = ['A', 'B', 'C', 'D']
 b = ['W', 'X', 'Y', 'Z']
 
 for m, n in zip(a, b):
-	print(m ,n)
+	print(m, n)
 </pre>
 
 <p>如果兩個或多個串列的長度不一時，zip 只會幫你處理到最短的那個結束為止：</p>
@@ -32,7 +32,7 @@ a = ['A', 'B', 'C', 'D', 'E', 'F']
 b = ['W', 'X', 'Y', 'Z']
 
 for m, n in zip(a, b):
-	print(m ,n)
+	print(m, n)
 </pre>
 
 <p>如果你在進行處理的時候，除了原本值的資訊以外，也需要知道他們是第幾對的話，則當然可以跟 enumerate 一起使用。此時，在迴圈的變數位置處，需要把 zip 產生出的配對用括號括住：</p>
@@ -41,7 +41,7 @@ a = ['A', 'B', 'C', 'D']
 b = ['W', 'X', 'Y', 'Z']
 
 for i, (m, n) in enumerate(zip(a, b)):
-	print(i, m ,n)
+	print(i, m, n)
 </pre>
 
 <p>透過 map，可以很方便的幫你把串列的每個元素，都進行一樣的處理。以下範例，將比較原版迴圈、list comprehension，以及 map 等寫法：</p>

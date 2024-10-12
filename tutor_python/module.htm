@@ -70,7 +70,7 @@ def dec(x):
 print('This is my_mod')
 </pre>
 
-<p>如果你真的希望在作為模組使用的程式檔案裡面寫 print 或者任何不被包在函式（或者物件，但不在本篇之列）內的運算，可以用「if __name__ == '__main__':」這段來包住它們，如下：</p>
+<p>如果你希望在作為模組使用的程式檔案裡面，撰寫 print 或者任何不被包在函式（或者物件，但不在本篇之列）內的程式碼，但是又不希望那些程式碼隨著該檔案被 import 而執行的話，可以用「if __name__ == '__main__':」來包住它們，如下：</p>
 <pre class="brush: py">
 def inc(x):
 	return x + 1
@@ -84,7 +84,7 @@ if __name__ == '__main__':
 	print('This is my_mod')
 </pre>
 
-<p>這是因為「__name__」變數在該 Python 程式碼作為一般檔案直接執行，和作為模組時的內容不一樣所致。你可以將 my_mod.py 修改為以下，然後分別直接執行 my_mod.py，以及在其他檔案 import 以後，再執行「print(my_mod.__name__)」：</p>
+<p>這是因為「__name__」變數在該 Python 程式碼作為一般檔案直接執行，和作為模組時的內容不一樣所致。你可以將 my_mod.py 修改為以下，然後直接執行 my_mod.py；以及在其他檔案 import my_mod 以後，再執行「print(my_mod.__name__)」看看：</p>
 <pre class="brush: py">
 print(__name__)
 </pre>
