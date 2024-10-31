@@ -30,7 +30,7 @@ print(np.log2(1024))
 print(np.log10(2))
 </pre>
 
-<p>Numpy 當中，最基本與常見的資料結構，就是多維陣列(ndarray)；而向量，當然就是一維陣列：</p>
+<p>Numpy 當中，最基本與常見的資料結構，就是多維陣列(ndarray)；而矩陣和向量，當然就是二維或一維陣列。以下先對向量的建立和使用作示範：</p>
 <pre class="brush: py">
 import numpy as np
 
@@ -44,7 +44,14 @@ print(b / c) # 元素對元素計算
 print(a.shape, b.shape, c.shape)
 </pre>
 
-<p>創建規則向量，可以用 arange，相當於 range 的 numpy 版本；如果在你的程式中，知道點的個數比起知道幾點取一點來的方便的話，也可以使用 linspace：</p>
+<p>在上述範例中：</p>
+<ul>
+	<li>你當然可以使用原生的 list 來進行操作，只是這樣就必須自己撰寫迴圈，對個別元素都親自去處理。</li>
+	<li>在程式上提到軸的個數或是元素的個數時，都是使用「維度」這個詞，如果你需要確認當下是在指涉何者的話，需要自己閱讀上下文來釐清。</li>
+	<li>在程式的最後，印出了資料的形狀。在使用 numpy 的過程中，清楚你的資料形狀是很重要的事情。</li>
+</ul>
+
+<p>要創建有規則的向量，可以用 arange，它相當於 range 的 numpy 版本；如果在你的應用當中，知道點的個數比起知道幾點取一點來的方便的話，也可以使用 linspace：</p>
 <pre class="brush: py">
 import numpy as np
 
@@ -54,25 +61,29 @@ print(np.arange(1, 10, 2))
 print(np.linspace(0, 1, 11))
 </pre>
 
-<p>矩陣，也就是二維陣列，因此也就是很多個一維陣列排在一起：</p>
+<p>矩陣，也就是二維陣列，因此也就是很多個一維陣列排在一起。以下範例，會由一個外層長度 2，內層長度每個都是 3 的 list，轉換成一個 2-by-3 的矩陣：</p>
 <pre class="brush: py">
 import numpy as np
 
-a = np.array([[1, 2, 3], [4, 5, 6]])
+a = [[1, 2, 3], [4, 5, 6]]
+print(a[0][2])
+print(a[0, 2]) # 這行會產生錯誤
 
-print(a)
-print(a.shape)
+b = np.array(a)
+print(b.shape)
+print(b[0][2])
+print(b[0, 2]) # 換成 numpy array 就可以這樣用
 </pre>
 
 <p>Numpy 可以幫你創建各種具有某種規則的一維或二維陣列，以下介紹零矩陣和單位矩陣；如果你把 zeros 換成 ones，則可以產生全一矩陣：</p>
 <pre class="brush: py">
 import numpy as np
 
-print(np.zeros(5))
+print(np.zeros(5)) # Shape: (5,)
 print(np.zeros((2, 3)))
 print(np.zeros((5, 1)))
 
-print(np.eye(5))
+print(np.eye(5)) # Shape: (5, 5)
 print(np.eye(5, M=3))
 </pre>
 
@@ -91,21 +102,26 @@ print(np.vstack([a, b]))
 print(np.hstack([a, b]))
 </pre>
 
+<p>在上述範例中，把兩個 2-by-3 的矩陣垂直（上下）的疊起來時，成品會是一個 (2+2)-by-3 的矩陣，而若是改成水平（左右）的來疊，則成品會是 2-by-(3+3) 的矩陣。</p>
+
 <p>需要注意的是，如果其中一方是空矩陣的話，可能會產生問題，所以必須對其 size 屬性進行判斷，例如下列程式片段中，已知 a 有可能為空時，可能會出問題的寫法，以及適當的對應方法如下：</p>
 <pre class="brush: py">
 import numpy as np
 
-a = np.array([])
-b1 = np.array([1, 2, 3])
-b2 = np.array([[1], [2], [3]])
+a = np.array([]) # Shape: (0,)
+b1 = np.array([1, 2, 3]) # Shape: (3,)
+b2 = np.array([[1], [2], [3]]) # Shape: (3, 1)
 
-c = np.hstack([a, b1])  # 空的一維向量接非空的一維向量，可以執行
-c = np.vstack([b1, b1]) # 只是垂直疊兩個 b1，也可以執行
+c = np.hstack([a, b1])  # 空的一維向量水平接非空的一維向量，可以執行
+c = np.vstack([b1, b1]) # 垂直疊兩個 b1，也可以執行（Question: shape 為何？）
+
 c = np.vstack([a, b1])  # 這行會產生錯誤
 c = np.hstack([a, b2])  # 這行會產生錯誤
+c = np.vstack([a, b2])  # 這行會產生錯誤
 
-c = np.vstack([a, b1]) if(a.size) else b1
-c = np.vstack([a, b2]) if(a.size) else b2
+c = np.vstack([a, b1]) if a.size else b1
+c = np.hstack([a, b2]) if a.size else b2
+c = np.vstack([a, b2]) if a.size else b2
 </pre>
 
 <p>利用 Numpy 進行取極值、排序、平均的方法如下：</p>
@@ -113,15 +129,18 @@ c = np.vstack([a, b2]) if(a.size) else b2
 import numpy as np
 
 a = np.array([[1, 5, 3], [4, 2, 6]])
+print(a)
 print(np.max(a)) # 在所有元素裡面找
 print(np.max(a, axis=0)) # 沿著 row index 的方向找
 print(np.max(a, axis=1)) # 沿著 column index 的方向找
 
 b = np.array([[4, 2, 5, 3, 1], [8, 6, 7, 9, 0]])
+print(b)
 print(np.sort(b))         # 預設沿著最後一個軸(axis=-1)的方向排序
 print(np.sort(b, axis=0)) # 沿著 row index 的方向排序
 
 c = np.array([[4, 2, 5, 3, 1], [8, 6, 7, 9, 0]])
+print(c)
 print(np.mean(c)) # 所有元素平均
 print(np.mean(c, axis=0)) # 沿著 row index 的方向平均
 print(np.mean(c, axis=1)) # 沿著 column index 的方向平均
@@ -191,21 +210,21 @@ print(b.shape)
 
 print('------------')
 
-c = a[:, np.newaxis]
-print(c)
-print(c.shape)
+b = a.reshape(1, a.shape[0])
+print(b)
+print(b.shape)
 
 print('------------')
 
-d = a.reshape(a.shape[0], 1)
-print(d)
-print(d.shape)
+b = a[:, np.newaxis]
+print(b)
+print(b.shape)
 
 print('------------')
 
-e = a.reshape(1, a.shape[0])
-print(e)
-print(e.shape)
+b = a.reshape(a.shape[0], 1)
+print(b)
+print(b.shape)
 </pre>
 
 <p>如前所述，對矩陣使用一般的乘號，是在做元素對元素的相乘，呼叫 np.multiply 亦同。若是需要做矩陣相乘，則必須使用 np.matmul，或者「@」運算子：</p>
@@ -243,7 +262,7 @@ c = np.zeros((a.shape[0], b.shape[1]))
 for i in range(a.shape[0]):
 	for j in range(b.shape[1]):
 		for k in range(a.shape[1]): # Or b.shape[0]
-			c[i, j] = a[i, k] * b[k, j]
+			c[i, j] += a[i, k] * b[k, j]
 print(c)
 print('------------')
 
