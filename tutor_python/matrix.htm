@@ -17,29 +17,209 @@
 
 <blockquote>
 
+<p>本篇將介紹基本的矩陣乘法以外的一些矩陣操作與運算，並且除了矩陣的建立和存取，以及演算法效果的對照以外，將盡可能避免使用 numpy，以便讓各位更清楚演算法細節。關於基本的矩陣乘法本身，請參照 numpy 篇章的範例。</p>
+
+<p>矩陣乘法的公式 C<sub>i, j</sub> = &Sigma;<sub>k</sub> A<sub>i, k</sub> * B<sub>k, j</sub>，除了對每一個純量(scalar)可以套用以外，也可以對 block matrix 的每個子矩陣套用，即 A<sub>i, k</sub>、B<sub>k, j</sub> 和 C<sub>i, j</sub> 從原本的純量變成矩陣。若將 block matrix multiplication 寫成程式，則需要六層迴圈；外層的三個是對所有 block 做迴圈，內層的三個是對每一個 block 做純量的乘法。以下用兩個大方陣相乘，並可將兩個大方陣切成大小都相等的小方陣的狀況，示範程式如何實作：</p>
+<pre class="brush: py">
+import numpy as np
+
+MATRIX_SIZE = 12
+BLOCK_SIZE = 4
+
+a = np.random.randint(1, 10, (MATRIX_SIZE, MATRIX_SIZE))
+b = np.random.randint(1, 10, (MATRIX_SIZE, MATRIX_SIZE))
+c = np.zeros((MATRIX_SIZE, MATRIX_SIZE))
+block_num = MATRIX_SIZE // BLOCK_SIZE
+
+for large_i in range(block_num):
+	i_start = large_i * BLOCK_SIZE
+	i_end = i_start + BLOCK_SIZE
+	for large_j in range(block_num):
+		j_start = large_j * BLOCK_SIZE
+		j_end = j_start + BLOCK_SIZE
+		for large_k in range(block_num):
+			k_start = large_k * BLOCK_SIZE
+			k_end = k_start + BLOCK_SIZE
+			for i in range(i_start, i_end):
+				for j in range(j_start, j_end):
+					for k in range(k_start, k_end):
+						c[i, j] += a[i, k] * b[k, j]
+
+
+print('Difference':, np.sum(np.abs(c - a@b)))
+</pre>
+
+<p>Block matrix multiplication 是否具有速度優勢，會視程式語言與硬體平台而定。一般而言，改以 C 語言實作，並將程式執行在一般的筆電或桌機上，應該比較容易產生優勢。</p>
+
 <p>
-Row 交換：
+矩陣除了基本的加法和乘法以外，還有很多種運算或分解。 其中，有不少運算都會用到 row 的基本操作（colunm 的操作可自行類推），例如兩個 row 交換，以及某個 row 乘上一個常數加到另外一個 row 等等， 因此我們先來示範這兩種操作。 以下範例，會亂數產生一個矩陣，並示範如何以單純的串列及 numpy array 進行上述的基本操作：
 </p>
 <pre class="brush: py">
-pass
+import random
+
+import numpy as np
+
+def row_exchange_list(mat, idx1, idx2):
+	mat[idx1], mat[idx2] = mat[idx2], mat[idx1]
+
+
+def row_exchange_np(mat, idx1, idx2):
+	mat[[idx1, idx2]] = mat[[idx2, idx1]]
+
+
+def add_row_to_another_list(mat, idx1, const, idx2):
+	mat[idx2] = [const * v + mat[idx2][col] for col, v in enumerate(mat[idx1])]
+
+
+def add_row_to_another_np(mat, idx1, const, idx2):
+	mat[idx2] += const * mat[idx1]
+
+
+N = 5
+
+a = [[random.randint(1, 10) for _ in range(N)] for _ in range(N)]
+b = np.array(a)
+
+print('Original a:')
+print(a)
+
+row_exchange_list(a, 0, 3)
+print('Row-exchanged a:')
+print(a)
+
+add_row_to_another_list(a, 3, 5, 1)
+print('Row-exchanged and one-added-to-other a:')
+print(a)
+
+print('Original b:')
+print(b)
+
+row_exchange_np(b, 0, 3)
+print('Row-exchanged b:')
+print(b)
+
+add_row_to_another_np(b, 3, 5, 1)
+print('Row-exchanged and one-added-to-other b:')
+print(b)
 </pre>
 
-<p>以高斯消去法(Gaussian Elimination)將矩陣進行三角化：</p>
+<p>接著，我們來示範如何以高斯消去法(Gaussian Elimination)將矩陣進行三角化。 這個方法，我們其實在國中就學過，那時稱之為「加減消去法」； 只是在高中時才告訴你「高斯消去法」這個名稱，以及引入矩陣的概念。 而也許你記得為了人工計算方便，我們會以好計算的數字所在的 row 當基準，來消去其他的 row；而在電腦裡面，為了數值計算的穩定度等原因，我們一樣可以進行類似的操作，亦即以絕對值最大的 row 當基準。 以下範例，會示範如何將矩陣進行三角化，並展示中間每一步的運算過程：</p>
 <pre class="brush: py">
-pass
+import numpy as np
+
+
+def row_exchange_np(mat, idx1, idx2):
+	mat[[idx1, idx2]] = mat[[idx2, idx1]]
+
+
+def add_row_to_another_np(mat, idx1, const, idx2):
+	mat[idx2] += const * mat[idx1]
+
+
+N = 5
+
+a = np.random.randint(1, 10, (N, N)).astype('float')
+print('Original a:')
+print(a)
+
+for col in range(N):
+	idx = np.argmax(np.abs(a[col:, col])) + col
+	if idx != col:
+		row_exchange_np(a, idx, col)
+		print(f'Row {idx} and {col} exchanged, new a:')
+		print(a)
+	for row in range(col+1, N):
+		coef = -a[row, col] / a[col, col]
+		add_row_to_another_np(a, col, coef, row)
+		print(f'{coef:.4f} * row {col} added to row {row}, new a:')
+		print(a)
+	print('--------------------')
 </pre>
 
-<p>反矩陣：</p>
+<p>上述範例中的三角化，是把矩陣變成上三角矩陣(upper triangular matrix)。你可以試著改變一下迴圈的方向，來得到下三角矩陣(lower triangular matrix)。</p>
+
+<p>你可能還記得高中時教過的反矩陣求法，即先把原本矩陣跟單位矩陣橫向並列為增廣矩陣； 而把左半邊原本矩陣透過列運算變成單位矩陣時，右半邊的矩陣就是反矩陣反矩陣。因此，我們可以修改一下前述的三角化範例，來達成反矩陣的計算：</p>
 <pre class="brush: py">
-pass
+import numpy as np
+
+
+def row_exchange_np(mat, idx1, idx2):
+	mat[[idx1, idx2]] = mat[[idx2, idx1]]
+
+
+def add_row_to_another_np(mat, idx1, const, idx2):
+	mat[idx2] += const * mat[idx1]
+
+
+N = 5
+
+a = np.random.randint(1, 10, (N, N)).astype('float')
+idn = np.identity(N)
+
+a_aug = np.hstack((a, idn))
+print('Original aug:')
+print(a_aug)
+
+# Downward
+for col in range(N):
+	idx = np.argmax(np.abs(a_aug[col:, col])) + col
+	if idx != col:
+		row_exchange_np(a_aug, idx, col)
+		print(f'Downward, row {idx} and {col} exchanged, new a_aug:')
+		print(a_aug)
+	for row in range(col+1, N):
+		coef = -a_aug[row, col] / a_aug[col, col]
+		add_row_to_another_np(a_aug, col, coef, row)
+		print(f'Downward, {coef:.4f} * row {col} added to row {row}, new a_aug:')
+		print(a_aug)
+	print('--------------------')
+
+# Upward
+for col in range(N-1, 0, -1):
+	for row in range(col-1, -1, -1):
+		coef = -a_aug[row, col] / a_aug[col, col]
+		add_row_to_another_np(a_aug, col, coef, row)
+		print(f'Upward, {coef:.4f} * row {col} added to row {row}, new a_aug:')
+		print(a_aug)
+	print('--------------------')
+
+# Diagonal
+for row in range(N):
+	a_aug[row, :] /= a_aug[row, row]
+
+
+a_inv = a_aug[:, N:]
+print('Inverse of a:')
+print(a_inv)
 </pre>
 
-<p>行列式(determinant)降階展開：</p>
+<p>關於行列式(determinant)的計算，也許你在線性代數等課程，已經學到可以先進行三角化再求解，不過我們還是先來看看高中教的降階展開，要怎樣寫成程式。在降階的方法中，要求 n-by-n 矩陣的行列式時，會透過遞迴計算 n 個 (n-1)-by-(n-1) 矩陣的行列式，範例如下：</p>
 <pre class="brush: py">
-pass
+import numpy as np
+
+
+def get_det(mat):
+	if mat.shape[0] == 2:
+		return mat[0, 0] * mat[1, 1] - mat[0, 1] * mat[1, 0]
+	sign = 1
+	result = 0
+	for row in range(mat.shape[0]):
+		tmp = np.vstack((mat[:row, 1:], mat[row+1:, 1:]))
+		result += sign * mat[row, 0] * get_det(tmp)
+		sign = -sign
+	return result
+
+
+N = 3
+
+a = np.random.randint(1, 10, (N, N)).astype('float')
+print('a:')
+print(a)
+print('det(a):')
+print(get_det(a))
 </pre>
 
-<p>如果你在自己電腦上執行這個範例，可能會發現當矩陣大小增加到某個值後，程式會跑到天荒地老還沒有結果出現。 這是因為，若矩陣大小為 n-by-n，則降階法的執行時間，大約會與 n<sup>n</sup> 成比例（正式的說法，是「時間複雜度為 O(n<sup>n</sup>)」）。 因此，求行列式時，還是要透過三角化，會比較有效率。</p>
+<p>如果你在自己電腦上執行這個範例，可能會發現當矩陣大小增加到某個值後，程式會跑到天荒地老還沒有結果出現。 這是因為，若矩陣大小為 n-by-n，則降階法的執行時間，大約會與 n! 成比例（正式的說法，是「時間複雜度為 O(n!)」）。 因此，求行列式時，還是要透過三角化，會比較有效率。</p>
 
 </blockquote>
 
