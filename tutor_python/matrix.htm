@@ -46,7 +46,7 @@ for large_i in range(block_num):
 						c[i, j] += a[i, k] * b[k, j]
 
 
-print('Difference':, np.sum(np.abs(c - a@b)))
+print('Difference:', np.sum(np.abs(c - a@b)))
 </pre>
 
 <p>Block matrix multiplication 是否具有速度優勢，會視程式語言與硬體平台而定。一般而言，改以 C 語言實作，並將程式執行在一般的筆電或桌機上，應該比較容易產生優勢。</p>
@@ -136,9 +136,9 @@ for col in range(N):
 	print('--------------------')
 </pre>
 
-<p>上述範例中的三角化，是把矩陣變成上三角矩陣(upper triangular matrix)。你可以試著改變一下迴圈的方向，來得到下三角矩陣(lower triangular matrix)。</p>
+<p>上述範例中的三角化，是把矩陣變成上三角矩陣(upper triangular matrix)。你可以試著改變一下迴圈的方向，來得到下三角矩陣(lower triangular matrix)。另外需要注意的是，上述範例並沒有考慮到絕對值最大者為 0 的狀況；若有需要，你可以試著自行加入相關判斷。</p>
 
-<p>你可能還記得高中時教過的反矩陣求法，即先把原本矩陣跟單位矩陣橫向並列為增廣矩陣； 而把左半邊原本矩陣透過列運算變成單位矩陣時，右半邊的矩陣就是反矩陣反矩陣。因此，我們可以修改一下前述的三角化範例，來達成反矩陣的計算：</p>
+<p>你可能還記得高中時教過的反矩陣求法，即先把原本矩陣跟單位矩陣橫向並列為增廣矩陣； 而把左半邊原本矩陣透過列運算變成單位矩陣時，右半邊的矩陣就是反矩陣。因此，我們可以修改一下前述的三角化範例，來達成反矩陣的計算：</p>
 <pre class="brush: py">
 import numpy as np
 

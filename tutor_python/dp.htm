@@ -117,14 +117,14 @@ ctx.lineTo(395, 5);
 ctx.stroke();
 </script>
 
-<p>因此，若有一個表格 D，其中的 D<sub>i-1, j-1</sub> 代表字串 A 的前 i - 1 個字和字串 B 的前 j - 1 個字的最佳連線方式的話，則 D<sub>i, j</sub> 可以表示成下列三個式子當中的最大值：</p>
+<p>因此，若定義一個表格 D，其中的 D<sub>i-1, j-1</sub> 代表字串 A 的前 i - 1 個字和字串 B 的前 j - 1 個字的最佳連線方式的話，則 D<sub>i, j</sub> 可以表示成下列三個式子當中的最大值：</p>
 <ul>
 	<li>D<sub>i-1, j-1</sub> + 1, if A<sub>i</sub> == B<sub>j</sub></li>
 	<li>D<sub>i-1, j</sub></li>
 	<li>D<sub>i, j-1</sub></li>
 </ul>
 
-<p>當然，如果其中一個字串，例如 A 只有一個字，則應該變成下列兩個式子的最大值（字串 B 只有一個字的情況請依此類推）：</p>
+<p>當然，如果其中一個字串只考慮第一個字時，以考慮 A 字串為例，則 D<sub>i, j</sub> 應該變成下列兩個式子的最大值（字串 B 只有一個字的情況請依此類推）：</p>
 <ul>
 	<li>1, if A<sub>i</sub> == B<sub>j</sub></li>
 	<li>D<sub>i, j-1</sub></li>
@@ -186,7 +186,7 @@ print(seq)
 <p>要解決這個問題，我們一樣來填一張表格，其中 D<sub>i, j</sub> 代表「在承重限制是 i 的狀況下，只考慮前 j 樣物品」的最佳解。而對每一樣物品來說，都分成要拿與不拿兩種狀況； 如果要拿，就是取得其價值，但是總承重量減少；如果不拿，則其已獲得的總價值跟剩餘的承重限制都不變。因此，若第 j 個物品：</p>
 <ul>
 	<li>不能拿（拿了會超重）：D<sub>i, j</sub> = D<sub>i, j-1</sub></li>
-	<li>可以拿：D<sub>i, j</sub>為下列兩者取最大值
+	<li>可以拿（拿了不會超重）：D<sub>i, j</sub>為下列兩者取最大值
 		<ul>
 			<li>D<sub>i, j-1</sub>，亦即就算可以拿但還是不拿</li>
 			<li>D<sub>i-W<sub>j</sub>, j-1</sub> + P<sub>j</sub>，亦即從拿取前已獲得的價值，加上現在物品的價值</li>
@@ -194,7 +194,7 @@ print(seq)
 	</li>
 </ul>
 
-<p>以下以實際的數字來說明。假設我們共有五樣物品，背包限裝 15 單位重：</p>
+<p>以下以實際的數字來說明。假設我們共有 5 樣物品，背包限裝 15 單位重：</p>
 
 <center><table>
 <tr class="slide"><th class="slide">物品</th><th class="slide">價值</th><th class="slide">重量</th></tr>
