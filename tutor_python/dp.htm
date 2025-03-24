@@ -119,20 +119,20 @@ ctx.stroke();
 
 <p>因此，若定義一個表格 D，其中的 D<sub>i-1, j-1</sub> 代表字串 A 的前 i - 1 個字和字串 B 的前 j - 1 個字的最佳連線方式的話，則 D<sub>i, j</sub> 可以表示成下列三個式子當中的最大值：</p>
 <ul>
-	<li>D<sub>i-1, j-1</sub> + 1, if A<sub>i</sub> == B<sub>j</sub></li>
-	<li>D<sub>i-1, j</sub></li>
-	<li>D<sub>i, j-1</sub></li>
+	<li>D<sub>i-1, j-1</sub> + 1, if A<sub>i</sub> == B<sub>j</sub>（兩邊新加入的字母相等的狀況）</li>
+	<li>D<sub>i-1, j</sub>（兩邊新加入的字母不相等時，拔掉字串 A 的新字母的狀況）</li>
+	<li>D<sub>i, j-1</sub>（兩邊新加入的字母不相等時，拔掉字串 B 的新字母的狀況）</li>
 </ul>
 
 <p>當然，如果其中一個字串只考慮第一個字時，以考慮 A 字串為例，則 D<sub>i, j</sub> 應該變成下列兩個式子的最大值（字串 B 只有一個字的情況請依此類推）：</p>
 <ul>
-	<li>1, if A<sub>i</sub> == B<sub>j</sub></li>
-	<li>D<sub>i, j-1</sub></li>
+	<li>1, if A<sub>i=1</sub> == B<sub>j</sub></li>
+	<li>D<sub>i=1, j-1</sub></li>
 </ul>
 
 <p>字串 A 和 B 都只有一個字時，則可以直接判斷他們是否相等，若是則為 D<sub>1, 1</sub> 為 1，否則為 0。</p>
 
-<p>整體的範例如下。其中，在實作上，我們通常還會把 index 0 的 row 和 column 「浪費」掉，來讓邊界狀況（任何一個字串只有一個字的）的程式寫法比較簡潔：</p>
+<p>在前述的記號使用上，我們讓字串的索引(index)從 1 開始，但是 Python 語言的串列索引是從 0 開始，因此我們通常會把 index 為 0 的 row 和 column 「浪費」掉，來讓邊界狀況（任何一個字串只有一個字的）的程式寫法比較簡潔：</p>
 <pre class="brush: py">
 str_a = 'IVVSVSTN'
 str_b = 'IVIVVVSVAVTN'
@@ -146,7 +146,7 @@ for i in range(1, len(str_a)+1):
 print(d[-1][-1])
 </pre>
 
-<p>上述的範例只能求取最長共同序列的長度。如果你希望找出該序列的話，則除了求取最大值外，有需要把產生最大值的方向記錄下來，並在最後回溯回去：</p>
+<p>上述的範例只能求取最長共同序列的長度。如果你希望找出該序列的話，則除了求取最大值外，還有需要把產生最大值的方向記錄下來，並在最後回溯回去：</p>
 <pre class="brush: py">
 str_a = 'IVVSVSTN'
 str_b = 'IVIVVVSVAVTN'
