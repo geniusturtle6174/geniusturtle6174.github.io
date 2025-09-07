@@ -33,7 +33,7 @@ grade = 87 # 你可以改成其他數字，來觀察效果
 if grade &gt;= 60:
 	print('Pass')
 else:
-	print('GG')
+	print('Flunk')
 </pre>
 
 <p>又例如，常用的判斷是否可以形成三角形的規則「兩個短邊相加是否大於第三邊」，可以撰寫如下：</p>
@@ -107,7 +107,7 @@ c = 3
 if (a &gt; 5 or b &gt; 10) and c &gt; 15:
 	print("Test 2: match")
 else:
-	print("Test 2: GG")
+	print("Test 2: NOT match")
 </pre>
 
 <p>「或」就像加法，「且」就像乘法，它們也遵守先乘除後加減的規則。我們把前面範例最後一段的括號拿掉看看，就會產生跟前面範例不同的結果：
@@ -123,7 +123,7 @@ c = 3
 if a &gt; 5 or b &gt; 10 and c &gt; 15:
 	print("Test 2: match")
 else:
-	print("Test 2: GG")
+	print("Test 2: NOT match")
 </pre>
 
 <p>在數學式子中，我們會寫"a &gt; b &gt; c"，這是大家很熟悉的遞移律。在其他某些語言當中，直接寫"a &gt; b &gt; c"作為判斷式是會有問題的，但是在 Python 當中，可以直接使用遞移律來撰寫判斷式：</p>
@@ -135,14 +135,14 @@ c = 1
 if a &gt; b &gt; c:
 	print("Match\n")
 else:
-	print("Ha ha ha UCCU\n")
+	print("NOT match\n")
 </pre>
 
 <p>如果要進行的條件判斷或動作比較簡單，可以用以下的方法縮成一行：</p>
 <pre class="brush: py">
 # 例如第一個範例，可以簡化成這樣
 grade = 70
-print('Pass') if grade &gt;= 60 else print('GG')
+print('Pass') if grade &gt;= 60 else print('Flunk')
 
 # 語法簡化的條件判斷，也可以用於指派運算式
 a = 1
@@ -165,7 +165,7 @@ elif grade &gt;= 70:
 elif grade &gt;= 60:
 	print('C-, C or C+')
 else:
-	print('GG')
+	print('Flunk')
 </pre>
 
 <p>Question: 在前述範例中，如果把幾個 elif 區塊的順序調換，會發生什麼事？為什麼？</p>
@@ -194,15 +194,34 @@ if grade &gt;= 60:
 	if grade &gt;= 80:
 		print('Good')
 else:
-	print('GG')
+	print('Flunk')
 </pre>
 
-<p>在前面的一些範例中，你可能會發現數字會少掉或者多出一個很小的數字。這是由於浮點數在電腦中的精確度限制所造成，只要程式當中需要進行浮點數的運算，就很可能會碰到類似問題，例如加法不一定遵守結合律(associative)：</p>
+<p>如果你需要依據小數來進行條件判斷，則因為浮點數在電腦中的精確度限制，你可能會發現數字少掉或者多出了一個很小的數字。事實上，只要程式當中需要進行浮點數的運算，就很可能會碰到類似問題，例如加法不一定遵守結合律(associative)：</p>
 <pre class="brush: py">
 print(0.1 + 0.2 + 0.3)
 print((0.1 + 0.2) + 0.3)
 print(0.1 + (0.2 + 0.3))
 print((0.1 + 0.2) + 0.3 == 0.1 + (0.2 + 0.3))
+</pre>
+
+<p>因此，如果你真的需要依據小數來進行條件判斷，比較好的作法是允許一定的誤差出現。以下範例在判斷時會容許 10<sup>-5</sup> 以內的誤差，你可以依據需求自行改變：</p>
+<pre class="brush: py">
+a = 0.1
+b = 0.2
+c = 0.3
+
+print('When error NOT allowed:')
+if (a + b) + c == a + (b + c):
+	print('Match')
+else:
+	print('NOT match')
+
+print('When error allowed:')
+if abs(((a + b) + c) - (a + (b + c))) &lt;= 1e-5:
+	print('Match')
+else:
+	print('NOT match')
 </pre>
 
 </blockquote>
