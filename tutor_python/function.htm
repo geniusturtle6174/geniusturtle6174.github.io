@@ -23,8 +23,15 @@ def my_add(x):
 	return x + 1
 
 a = 3
+
 a = my_add(a)
-print("New a:", a)
+print("(1st call) New a:", a)
+
+a = my_add(a)
+print("(2nd call) New a:", a)
+
+a = my_add(a)
+print("(3rd call) New a:", a)
 </pre>
 
 <p>在上述範例中：</p>
@@ -39,21 +46,54 @@ print("New a:", a)
 <p>當你需要傳入兩個以上的參數時，中間以逗點區隔即可。以下的範例是計算三次多項式的值，輸入的參數有多個係數和 x 本身：</p>
 <pre class="brush: py">
 def cubic_poly_val(a, b, c, d, x):
-	return a*x*x*x + b*x*x + c*x + d
+	return a * x ** 3 + b * x * x + c * x + d
 
-print("When x = 1.2, 2x^3 + 3x^2 + 2.5x + 1 is", cubic_poly_val(2, 3, 2.5, 1, 1.2) )
+print("When x = 1, 2x^3 + 3x^2 + 4x + 5 is", cubic_poly_val(2, 3, 4, 5, 1) )
+print("When x = 5, 4x^3 + 3x^2 + 2x + 1 is", cubic_poly_val(4, 3, 2, 1, 5) )
 </pre>
 
 <p>當然，也可以回傳多個結果，中間也是用逗點隔開。以下範例，是回傳一個二次式的值和它在該點的微分：</p>
 <pre class="brush: py">
-def my_add(a, b, c, x):
-	y = a*x*x + b*x + c
-	dy = 2*a*x + b
+def quad_and_diff(a, b, c, x):
+	y = a * x * x + b * x + c
+	dy = 2 * a * x + b
 	return y, dy
 
-y, dy = my_add(1, 2, 3, 4)
+y, dy = quad_and_diff(1, 2, 3, 4)
+print(y, dy)
+
+y, dy = quad_and_diff(5, 6, 7, 8)
 print(y, dy)
 </pre>
+
+<p>函式當中可以呼叫其他的自訂函式或內建函式，以下是把多項式計算範例中的 x<sup>3</sup> 和 x<sup>2</sup> 的計算，分別改為呼叫自訂函式和內建函式來計算：</p>
+<pre class="brush: py">
+import math
+
+def x_cubic(x):
+	return x * x * x
+
+def cubic_poly_val(a, b, c, d, x):
+	return a * x_cubic(x) + b * math.pow(x, 2) + c * x + d
+
+print("When x = 1, 2x^3 + 3x^2 + 4x + 5 is", cubic_poly_val(2, 3, 4, 5, 1) )
+print("When x = 5, 4x^3 + 3x^2 + 2x + 1 is", cubic_poly_val(4, 3, 2, 1, 5) )
+</pre>
+
+<p>我們在開頭提到，透過函式可以將程式碼中常用的功能包裝起來。如果你的包裝不完善的話，很可能會造成該函式在使用上的困擾。以前面的多項式計算範例來說，如果你把 x<sup>3</sup> 和 x<sup>2</sup> 的計算放在沒有縮排的外部，則這個函式會難以被重複使用：</p>
+<pre class="brush: py">
+x = 1
+x3 = x ** 3
+x2 = x * x
+
+def cubic_poly_val(a, b, c, d, x):
+	return a * x3 + b * x2 + c * x + d
+
+print("When x = 1, 2x^3 + 3x^2 + 4x + 5 is", cubic_poly_val(2, 3, 4, 5, 1) )
+print("When x = 5, 4x^3 + 3x^2 + 2x + 1 is", cubic_poly_val(4, 3, 2, 1, 5) )
+</pre>
+
+<p>一般來說，除非你很清楚自己有特別的設計需求，否則<b>函式在計算時，請只依賴輸入的值來進行</b>。</p>
 
 <p>日常生活中，你到飲料店買飲料，如果不指定甜度冰塊，或者是到拉麵店不要求調整湯頭鹹度和麵的軟硬度，店家可能會用一個預設的份量或程度來幫你製作飲料或拉麵。在程式中，我們也可以透過「預設參數」，來讓函式有預設行為。以下範例也會把把兩個數字相加，但是只給一個數字的時候，會把那個數字 +1：</p>
 <pre class="brush: py">
@@ -96,7 +136,7 @@ my_add(a)
 print('a outside:', a)
 </pre>
 
-<p>如果想在函式當中取用外部的變數（全域變數），可以使用 global 關鍵字：</p>
+<p>如果想在函式當中確實需要取用外部的變數（全域變數），比較妥善的做法是使用 global 關鍵字：</p>
 <pre class="brush: py">
 def my_add(a):
 	global b

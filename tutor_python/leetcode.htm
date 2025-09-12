@@ -17,26 +17,46 @@
 
 <blockquote>
 
-<p>LeetCode 是一個可以讓你用各種程式語言，練習解答各種題目的地方，並且<b>原則上是撰寫函式來解答，不需要</b>像 UVa Online Judge 或 ZeroJudge 一樣<b>自己讀取使用者的輸入</b>。本篇將說明使用 Python 語言解答題目時的相關原則。</p>
+<p><a href="https://leetcode.com/">LeetCode</a> 是一個可以讓你用各種程式語言，練習解答各種題目的地方，並且<b>原則上是撰寫函式來解答，不需要</b>像 UVa Online Judge 或 ZeroJudge 一樣<b>自己讀取使用者的輸入</b>。本篇將說明使用 Python3 語言解答題目時的相關原則。</p>
 
-<p><b>首先要注意的是語言選項</b>。LeetCode 的語言選項提供了 Python 和 Python3；以目前(2024/09)來說，Python 選項的版本是 Python 2.7，而 Python3 是 Python 3.11。如果你要選擇 Python3，則其函式架構會包含 type hints，即輸入和輸出的參數類型提示；但 type hints 的部份狀況在較早版本並未完整支援，若要在送出之前在自己電腦上測試的話，可能需要留意；而若你要選擇 Python 選項，則可能需要注意除法的規則不同（Python 2 的除法，在兩邊都是整數時，會把商的小數丟掉），以及部分內建函式尚未支援（例如 math.gcd）等問題。<b>本篇將以 Python3 選項為主來解說</b>。</p>
+<p><b>首先要注意的是語言選項</b>。實際上，LeetCode 的語言選項提供了 Python 和 Python3；以目前(2024/09)來說，Python 選項的版本是 Python 2.7，而 Python3 是 Python 3.11。<b>本篇將以 Python3 選項為主來解說</b>。如果你需要選擇使用 Python (2.7)，則必須注意除法的規則不同（Python 2 的除法，在兩邊都是整數時，會把商的小數丟掉），以及部分內建函式尚未支援（例如 math.gcd）等問題。</p>
 
-<p>LeetCode 的架構規則，會有一個 Solution 物件，其中包含一個指定了名稱和參數的函式。以一個「把輸入數字加一」的範例題目來說，LeetCode 可能會告訴你，函式名稱要叫做「addOne」，輸入參數可能只有一個 n，如下：</p>
+<p>LeetCode 的架構規則，會有一個 Solution 物件，其中包含一個指定了名稱和參數的函式。以一個「把輸入數字加一」的範例題目來說，LeetCode 會在頁面上的程式碼的編輯區告訴你，函式名稱要叫做「addOne」，輸入參數可能只有一個 n，如下：</p>
 <pre class="brush: py">
 class Solution:
 	def addOne(self, num: int) -> int:
 </pre>
 
-<p>在上述範例中，<b>物件名稱、函式名稱，以及參數列表都會由題目給定，你不應該對他們做任何修改</b>。</p>
+<p>在上述範例中</p>
+<ul>
+	<li>「: int」和「 -> int」是 type hints，即輸入和輸出的參數類型提示。</li>
+	<li><b>物件名稱、函式名稱，以及參數列表都會由題目給定</b>，除非你很熟悉自己在做什麼，否則<b>不應該對他們做任何修改</b>。</li>
+	<li>對 LeetCode 上的多數題目來說，你只需要專注在函式的撰寫即可，不需要認識多少物件的相關語法就可以解題，因此本篇章以下的內容中，對於物件相關的語法，只會告訴各位「是這樣使用」，而不會多做說明。</li>
+</ul>
 
-<p>因此，你需要做的事情是根據參數算好解答後再回傳回去，如下：</p>
+<p>因此，你需要做的事情，只有根據參數算好解答後再回傳回去，如下：</p>
 <pre class="brush: py">
 class Solution:
 	def addOne(self, num: int) -> int:
 		return num + 1
 </pre>
 
-<p><b>如果要對你寫好的程式做測試，首先必須使用「S = Solution()」建立一個物件，並在呼叫一般函式的方法前面加上「S.」來測試</b>。整段程式可以撰寫在全域範圍，也可以包含在「if __name__ == '__main__':」裡面，但<b>建議包含在「if __name__ == '__main__':」裡面，比較不會影響 LeetCode 平台的自動評分</b>，如下：</p>
+<p>如果你寫完後覺得沒有問題，則可以先用 Run 功能跑跑看範例測資，真的沒問題後再用 Submit 正式送出，讓 LeetCode 平台用更多測資測試你的程式。</p>
+
+<p>如果程式比較複雜，使得你想要在繳送前，在自己的電腦上先做測試的話，則首先必須使用「S = Solution()」建立一個物件，並在呼叫一般函式的方法前面加上「S.」來測試；其中的 S 是變數名稱，因此你可以依據變數命名規則，改取一個自己喜歡的名字。測試用的程式可以撰寫在沒有縮排的全域範圍，如下：
+<pre class="brush: py">
+class Solution:
+	def addOne(self, num: int) -> int:
+		return num + 1
+
+
+S = Solution()
+print(S.addOne(123))
+</pre>
+
+<p>測試完成沒有問題後，就可以把 class 的部份，複製到 LeetCode 頁面的編輯區，執行 Run 或者 Submit。</p>
+
+<p>但如果你除了將物件繳送到 LeetCode 以外，也會需要把程式碼傳給他人（例如批改作業的老師）使用的話，則建議<b>把自行測試的相關程式碼，包含在「if __name__ == '__main__':」裡面</b>，比較不會影響對方的使用，如下：</p>
 <pre class="brush: py">
 class Solution:
 	def addOne(self, num: int) -> int:
@@ -48,27 +68,30 @@ if __name__ == '__main__':
 	print(S.addOne(123))
 </pre>
 
-<p>撰寫及測試完成後，送出至 LeetCode 時，可以只複製 class 區塊並貼上，也可以連「if __name__ == '__main__':」一起複製並貼上。</p>
-
-<p>如果你在解題時需要用到遞迴，則有多種方法可以使用，但以撰寫全域函式最為簡單，以下以階乘來做示範：</p>
+<p>如果你在解題時，需要撰寫額外的函式來包裝一些功能，則有多種方法可以使用，但以撰寫全域函式最為簡單，如下：</p>
 <pre class="brush: py">
-def factorial(n):
-	if n == 1:
-		return 1
-	return n * factorial(n - 1)
+def my_add(a, b):
+	return a + b
 
 
-class Solution(object):
-	def factorial(self, num):
-		return factorial(num)
+class Solution:
+	def addOne(self, num: int) -> int:
+		return my_add(num, 1)
 
 
 if __name__ == '__main__':
 	S = Solution()
-	print(S.factorial(5))
+	print(S.addOne(123))
 </pre>
 
-<p>在上述範例中，我們在物件內外使用了一樣的函式名稱，但是 Python 會自動幫你判別是物件內或物件外的函式，因此不會造成語法錯誤。當然，以此種方式撰寫時，必須連同物件外的函式一起送出至 LeetCode 的平台。</p>
+<p>當然，以此種方式撰寫時，必須將物件跟物件外的函式一起送出。</p>
+
+<p>有一些較進階的 type hints，需要 import 特定函式庫才能使用；這在 LeetCode 平台上會預設幫你 import，但若要在送出之前在自己電腦上測試的話，會需要自己 import，串列就屬於這一類的 type hints。下列是一個函式輸入參數有串列的範例，如果你直接複製貼上在自己的電腦上執行，會出現「NameError: name 'List' is not defined.」這樣的錯誤訊息，你可以在最開頭加上「from typing import List」，或者把「L」改成小寫來處理：</p>
+<pre class="brush: py">
+class Solution:
+	def myTest(self, nums: List[int]) -> int:
+		pass
+</pre>
 
 </blockquote>
 
