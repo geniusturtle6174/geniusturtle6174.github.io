@@ -41,7 +41,13 @@ class Solution:
 		return num + 1
 </pre>
 
-<p>如果你寫完後覺得沒有問題，則可以先用 Run 功能跑跑看範例測資，真的沒問題後再用 Submit 正式送出，讓 LeetCode 平台用更多測資測試你的程式。</p>
+<p>如果你寫完後覺得沒有問題，則可以先用 Run 功能跑跑看範例測資，真的沒問題後再用 Submit 正式送出，讓 LeetCode 平台用更多測資測試你的程式。在 LeetCode 平台上，<b>要用 Submit 送出並取得 Accepted 後，才算是完成解題</b>，其中 Accepted 俗稱 AC。而若你的程式有問題，則可能會拿到下列結果：</p>
+<ul>
+	<li>Wrong Answer (WA)：回傳結果錯誤，代表你的程式有些邏輯不周全。</li>
+	<li>Time Limit Exceeded (TLE)：程式跑太久，代表你的計算方法或實作細節需要改良。</li>
+	<li>Memory Limit Exceeded (MLE)：程式佔用太多記憶體，代表你的計算方法或實作細節需要改良。</li>
+	<li>Runtime Error (RE)：程式執行中產生錯誤，例如除以 0，或者串列索引超出範圍等等。</li>
+</ul>
 
 <p>如果程式比較複雜，使得你想要在繳送前，在自己的電腦上先做測試的話，則首先必須使用「S = Solution()」建立一個物件，並在呼叫一般函式的方法前面加上「S.」來測試；其中的 S 是變數名稱，因此你可以依據變數命名規則，改取一個自己喜歡的名字。測試用的程式可以撰寫在沒有縮排的全域範圍，如下：
 <pre class="brush: py">
@@ -56,7 +62,7 @@ print(S.addOne(123))
 
 <p>測試完成沒有問題後，就可以把 class 的部份，複製到 LeetCode 頁面的編輯區，執行 Run 或者 Submit。</p>
 
-<p>但如果你除了將物件繳送到 LeetCode 以外，也會需要把程式碼傳給他人（例如批改作業的老師）使用的話，則建議<b>把自行測試的相關程式碼，包含在「if __name__ == '__main__':」裡面</b>，比較不會影響對方的使用，如下：</p>
+<p>但如果你除了將物件繳送到 LeetCode 以外，也會需要把程式碼傳給他人（例如職場上的合作夥伴，或者<u>批改作業的老師</u>）使用的話，則建議<b>把自行測試的相關程式碼，包含在「if __name__ == '__main__':」裡面</b>，比較不會影響對方的使用，如下：</p>
 <pre class="brush: py">
 class Solution:
 	def addOne(self, num: int) -> int:
@@ -86,7 +92,7 @@ if __name__ == '__main__':
 
 <p>當然，以此種方式撰寫時，必須將物件跟物件外的函式一起送出。</p>
 
-<p>有一些較進階的 type hints，需要 import 特定函式庫才能使用；這在 LeetCode 平台上會預設幫你 import，但若要在送出之前在自己電腦上測試的話，會需要自己 import，串列就屬於這一類的 type hints。下列是一個函式輸入參數有串列的範例，如果你直接複製貼上在自己的電腦上執行，會出現「NameError: name 'List' is not defined.」這樣的錯誤訊息，你可以在最開頭加上「from typing import List」，或者把「L」改成小寫來處理：</p>
+<p>有一些較進階的 type hints，需要 import 特定函式庫才能使用；這在 LeetCode 平台上會預設幫你 import，但若要在送出之前在自己電腦上測試的話，會需要自己 import，串列就屬於這一類的 type hints。下列是一個函式輸入參數有串列的範例，如果你直接複製貼上在自己的電腦上執行，會出現「NameError: name 'List' is not defined.」這樣的錯誤訊息，你可以試著在最開頭加上「from typing import List」，或者把「L」改成小寫來處理，或者乾脆手動移除 type hints：</p>
 <pre class="brush: py">
 class Solution:
 	def myTest(self, nums: List[int]) -> int:
