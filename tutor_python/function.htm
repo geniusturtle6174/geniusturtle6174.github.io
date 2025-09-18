@@ -162,6 +162,17 @@ a = b(a)
 print("New a:", a)
 </pre>
 
+<p>函式 return 回去以後，其他的敘述就不會再被執行：</p>
+<pre class="brush: py">
+def my_add(x):
+	print('Hello')
+	return x + 1
+	print('U CAN\'T SEE ME')
+
+a = my_add(123)
+print(a)
+</pre>
+
 </blockquote>
 
 </body></html>
