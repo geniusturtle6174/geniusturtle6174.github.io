@@ -17,32 +17,43 @@
 
 <blockquote>
 
-<p>基本的串列排序，是使用「sort」或者「sorted」：</p>
+<p>如果串列間的元素能互相比較大小，那就可以對串列排序，例如若元素都是數字的話，就是依照數字本身的大小來排序。排序的操作，可以透過「sort」或者「sorted」來進行，其預設的排法是由小排到大，亦即遞增排序：</p>
 <pre class="brush: py">
-a = [12, 34, 12345, 56, 78, 90, 123, 1234, 5678, 456, 789]
+a = [12, 34, -12345, 56, -78, 90, -123, 1234, 5678, -456, 789]
 
-a.sort()      # 排序，元素之間必須可以互相比較才能使用，會直接修改原本的串列
+a.sort()      # 會直接修改原本的串列
 print(a)
 
-b = sorted(a) # 也是排序，不過不是修改原本的串列，而是產生一個新的
+b = sorted(a) # 不修改原本的串列，而是產生一個新的
 print(b)
 
 b = sorted(a, reverse=True) # 需要反向排序時，可以使用「reverse」參數
 print(b)
 </pre>
 
-<p>如果想要依據某個內建函式來排序，可以使用「key」參數帶入該函式，範例如下：</p>
+<p>如果元素都是文字的話，預設會依照 A 到 Z 的字典順序，且所有大寫比所有小寫還要小；如果你把數字加上引號，也當作文字一起來排的話，則電腦中的預設行為是，所有的阿拉伯數字會比所有的英文要小，小數點比所有的阿拉伯數字要小，負號比小數點要小，範例如下：</p>
+<pre class="brush: py">
+a = ['alice', 'bob', 'Cindy', 'Dexter']
+print(sorted(a))
+
+b = ['-34', '56', '-0.14', 'hello', 'World']
+print(sorted(a))
+</pre>
+
+<p>如果你想要知道更多的文字，例如逗號、分號等標點符號會怎麼被排序，可以上網取得「ASCII code」的相關參考資料。</p>
+
+<p>如果想要改變預設的排序依據，則可以用「key」參數帶入一個函式，該函式的責任是依據單一個元素，來計算出一個比較大小的依據。以下先以代入內建函式來示範：</p>
 <pre class="brush: py">
 a = ['abe', 'Fghij', 'jklm', 'Mn']
-print(sorted(a))          # 預設是字典排序
+print(sorted(a))          # 預設的字典排序
 print(sorted(a, key=len)) # 改以字串長度排序
 
 a = [12, -34, 12345, -78, 90, -56]
-print(sorted(a))          # 預設是數字大小排序
+print(sorted(a))          # 預設的數字大小排序
 print(sorted(a, key=abs)) # 改以絕對值大小排序
 </pre>
 
-<p>如果想要使用自己定義的函式來排序，可以使用「key」參數帶入該函式，或者使用「lambda function」的語法，範例如下：</p>
+<p>如果想要代入自己定義的函式來排序，可以把函式寫好，再將函式名稱（不要加引號）傳入；若函式內容很簡單的話，也可以使用「lambda function」的語法，來讓你的程式碼少兩三行，範例如下：</p>
 <pre class="brush: py">
 def my_func(num):
 	return num % 2
@@ -64,12 +75,12 @@ print(sorted(a, key=my_func))
 print(sorted(a, key=lambda x: (x % 2, x)))
 </pre>
 
-<p>如果你希望基於比較來排序，可以用「functools.cmp_to_key」，來幫你把比較的動作轉換成 key。以下範例會在兩數奇偶相同時將小的排前面，不同時將偶數排前面（也就是跟前一個範例相同，先照奇偶再照大小）：</p>
+<p>如果你不太清楚怎麼由單一元素計算出比大小的依據，但是知道任兩個元素如何比較大小的時候，則可以撰寫一個叫做 comparison function 的函式，它必須有兩個輸入參數，並且當第一個輸入參數比較小的時候回傳一個負數，兩個輸入參數相等的時候回傳 0，第一個輸入參數比較大的時候回傳正數。該函式完成後，要用「functools.cmp_to_key」，來幫你把比較的動作，轉換成適合用於 key 參數的形式。以下範例仍然會在兩數奇偶相同時將小的排前面，不同時將偶數排前面：</p>
 <pre class="brush: py">
 import functools
 
 
-def myCmp(x, y):
+def my_cmp(x, y):
 	if x % 2 == y % 2:
 		return x - y
 	else:
@@ -77,7 +88,7 @@ def myCmp(x, y):
 
 
 a = [90, 12, 34, 12345, 123, 56]
-print(sorted(a, key=functools.cmp_to_key(myCmp)))
+print(sorted(a, key=functools.cmp_to_key(my_cmp)))
 </pre>
 
 </blockquote>
