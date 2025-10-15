@@ -17,7 +17,7 @@
 
 <blockquote>
 
-<p>字串，顧名思義就是一串字元形成的序列。我們首先來看一些基本的運算和取值：</p>
+<p>字串，顧名思義就是一串字元形成的序列；在 Python 裡面，最簡單的字串是用一組單引號或雙引號包住的內容。我們首先來看一些基本的運算和取值：</p>
 <pre class="brush: py">
 s = 'Hello'
 t = 'World'
@@ -70,7 +70,7 @@ print(s.upper())
 print(s.lower())
 </pre>
 
-<p>如果字串當中的內容剛好都是數字，而你要轉換變數類型的話，可以使用「str()」或者「int()」、「float()」等方法：</p>
+<p>如果字串當中的內容剛好可以表示數字，而你想把它們轉換真正意義上的數字，或者反過來將數字轉成字串的話，可以使用「int()」、「float()」、「str()」等方法：</p>
 <pre class="brush: py">
 s1 = '123'
 print(int(s1))
@@ -84,7 +84,10 @@ print(str(n))
 
 <p>要判斷字串是否為特定的字元或字串開頭的話，除了自己取值以外，也可以使用「startswith」以及「endswith」：</p>
 <pre class="brush: py">
+print('Hello World'[:2] == 'He')
 print('Hello World'.startswith('He'))
+
+print('Hello World'[-2:] == 'ld')
 print('Hello World'.endswith('ld'))
 </pre>
 
@@ -129,6 +132,21 @@ t = list(s)
 t[6] = 'X'
 s2 = ''.join(t)
 print(s2)
+</pre>
+
+<p>如果你希望字串有多行的話，可以自己使用「\n」來斷行，或者改用三個引號：</p>
+<pre class="brush: py">
+s1 = 'aifbeef\ntkof\nita'
+
+s2 = """aifbeef
+tkof
+ita"""
+
+print(s1)
+print('---')
+print(s2)
+print('---')
+print(s1 == s2)
 </pre>
 
 </blockquote>
