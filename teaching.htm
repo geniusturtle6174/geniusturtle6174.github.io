@@ -1,0 +1,303 @@
+﻿<html>
+<head>
+	<title>小龜@米爾</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel=stylesheet type="text/css" href="myCss.css">
+	<style>
+		table{width:90%}
+		table, tr, td{border:black solid 2px;border-collapse: collapse;}
+		thead{background-color:#ffff99;}
+		tbody{background-color:#eeffff;}
+	</style>
+	<base target="_blank">
+</head>
+
+<body bgcolor="#ccccff">
+<br>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const isCh = params.get('lang') != 'en';
+</script>
+
+<center id="switch"><p>[正體中文版/<a href="?lang=en" target="_self">English</a>]</p></center><br>
+
+<script>
+document.querySelector('#switch').innerHTML = `[${isCh?"":"<a href='?lang=ch' target='_self'>"}正體中文版${isCh?"":"</a>"}/${!isCh?"":"<a href='?lang=en' target='_self'>"}English${!isCh?"":"</a>"}]`;
+</script>
+
+<center id="table-container"></center>
+
+<script>
+var courses = [
+	{
+		"category": "Python Programming",
+		"semester": "2025 fall",
+		'semcode': 20253,
+		"school": "清大數學系",
+		"schoolEn": "Dept. of Math, NTHU",
+		"name": "程式設計一",
+		"nameEn": "Introduction to Programming I",
+		"url": "https://geniusturtle6174.github.io/courses/25f_math/",
+		"feedback": "",
+		"pastExams": []
+	},
+	{
+		"category": "Python Programming",
+		"semester": "2025 spring",
+		'semcode': 20251,
+		"school": "清大數學系",
+		"schoolEn": "Dept. of Math, NTHU",
+		"name": "程式設計二",
+		"nameEn": "Introduction to Programming II",
+		"url": "https://geniusturtle6174.github.io/courses/25s_math/",
+		"feedback": "https://drive.google.com/file/d/1ZJP2dPfraw9TZWw1BAuqVuRbDcVxeo_x/view?usp=drive_link",
+		"pastExams": []
+	},
+	{
+		"category": "Python Programming",
+		"semester": "2024 fall",
+		'semcode': 20243,
+		"school": "清大數學系",
+		"schoolEn": "Dept. of Math, NTHU",
+		"name": "程式設計一",
+		"nameEn": "Introduction to Programming I",
+		"url": "https://geniusturtle6174.github.io/courses/24f_math/",
+		"feedback": "https://drive.google.com/file/d/1IDhu1Rh6LxUCrsm6E_jQnbAeMgvy4AhV/view?usp=drive_link",
+		"pastExams": [
+			{"text": "期末考", "textEn": "Final Exam", "url": "https://drive.google.com/file/d/1Mp5LJbCezQ90xs_G8EMskvWL9VeLOwTA/view?usp=sharing"},
+		]
+	},
+	{
+		"category": "Web Programming",
+		"semester": "2024 spring",
+		'semcode': 20241,
+		"school": "淡江教科系",
+		"schoolEn": "Dept. of ET, TKU",
+		"name": "數位編輯系統",
+		"nameEn": "Basic Training of Digital Content Production",
+		"url": "https://geniusturtle6174.github.io/courses/24s_tku/",
+		"feedback": "https://drive.google.com/file/d/16ICPm3q5siWJmb7RmItffzznIkk3ppLD/view?usp=drive_link",
+		"pastExams": []
+	},
+	{
+		"category": "Python Programming",
+		"semester": "2023 fall",
+		'semcode': 20233,
+		"school": "清大數學系",
+		"schoolEn": "Dept. of Math, NTHU",
+		"name": "程式設計一",
+		"nameEn": "Introduction to Programming I",
+		"url": "https://geniusturtle6174.github.io/courses/23f_math/",
+		"feedback": "https://drive.google.com/file/d/1CLWkiTtt0RE09j5cy2_D2T9pV1ky9hyP/view?usp=drive_link",
+		"pastExams": [
+			{"text": "期末考", "textEn": "Final Exam", "url": "https://drive.google.com/file/d/1s-saXpWrJI2kXqSG_By76sCMHn2i9DLY/view?usp=sharing"},
+		]
+	},
+	{
+		"category": "Web Programming",
+		"semester": "2022 fall",
+		'semcode': 20221,
+		"school": "淡江教科系",
+		"schoolEn": "Dept. of ET, TKU",
+		"name": "網頁設計與製作",
+		"nameEn": "Web Page Design and Development",
+		"url": "",
+		"feedback": "https://drive.google.com/file/d/1Zt2ovO5dN80CSWcpK8IpNoTROIeHW38Y/view?usp=drive_link",
+		"pastExams": [
+			{"text": "期末考", "textEn": "Final Exam", "url": "https://drive.google.com/file/d/15b76mw3gw2QeEbSSQBTBwsfZue7_ZyjW/view?usp=sharing"},
+		]
+	},
+	{
+		"category": "Web Programming",
+		"semester": "2021 spring",
+		'semcode': 20211,
+		"school": "政大數內學程",
+		"schoolEn": "Program in DCT, NCCU",
+		"name": "Web 程式設計",
+		"nameEn": "Web Programming",
+		"url": "",
+		"feedback": "https://drive.google.com/file/d/1_kK7nRKi25zATRhVAqn-JXCM-8OYJsli/view?usp=sharing",
+		"pastExams": [
+			{"text": "期末考", "textEn": "Final Exam", "url": "https://drive.google.com/file/d/12dvp0AqvgkFqszP-W1LKb2hnTWjYHoVq/view?usp=sharing"},
+		]
+	},
+	{
+		"category": "Web Programming",
+		"semester": "2020 spring",
+		'semcode': 20201,
+		"school": "政大數內學程",
+		"schoolEn": "Program in DCT, NCCU",
+		"name": "Web 程式設計",
+		"nameEn": "Web Programming",
+		"url": "",
+		"feedback": "https://drive.google.com/file/d/1VnFjVlvztvdjIGnQIkGyqCVLsJuZ8vpK/view?usp=drive_link",
+		"pastExams": [
+			{"text": "期末考", "textEn": "Final Exam", "url": "https://drive.google.com/file/d/11LldWACM8U38k-ePR4axZ913euvBRcb9/view?usp=sharing"},
+		]
+	},
+	{
+		"category": "Web Programming",
+		"semester": "2019 spring",
+		'semcode': 20191,
+		"school": "政大數內學程",
+		"schoolEn": "Program in DCT, NCCU",
+		"name": "Web 程式設計",
+		"nameEn": "Web Programming",
+		"url": "",
+		"feedback": "https://drive.google.com/file/d/1p5ygfXPpYa6somztZokb1QA1Yk3XPi1p/view?usp=drive_link",
+		"pastExams": [
+			{"text": "期末考", "textEn": "Final Exam", "url": "https://drive.google.com/file/d/1zkAEynjKA2tzOT_oxDRtZ9i090ZU2WjN/view?usp=sharing"},
+		]
+	},
+	{
+		"category": "C Programming",
+		"semester": "2015 fall",
+		'semcode': 20153,
+		"school": "清大數學系",
+		"schoolEn": "Dept. of Math, NTHU",
+		"name": "程式設計入門",
+		"nameEn": "Introduction to Programming Design",
+		"url": "",
+		"feedback": "https://drive.google.com/file/d/1D_tWEUjINyUgi9dPFgzeEarsytJNSsE-/view?usp=drive_link",
+		"pastExams": [
+			{"text": "期末考", "textEn": "Final Exam", "url": "https://docs.google.com/document/d/1en42jtJjlMfiB3pyiHwY-Mt-_AYHpWJK/edit?usp=drive_link&ouid=102945540345265892530&rtpof=true&sd=true"},
+		],
+		"data": "http://140.114.89.25/~geniusturtle/CS221202/f15"
+	},
+	{
+		"category": "Web Programming",
+		"semester": "2015 spring",
+		'semcode': 20151,
+		"school": "清大資工系",
+		"schoolEn": "Dept. of CS, NTHU",
+		"name": "Web 程式設計、技術與應用",
+		"nameEn": "Web Programming, Technologies, and Applications",
+		"url": "",
+		"feedback": "https://drive.google.com/file/d/1Ywp5o0O-wDWyVpNsJXAdvCRctgaEL-dh/view?usp=drive_link",
+		"pastExams": [
+			{"text": "期末考", "textEn": "Final Exam", "url": "https://drive.google.com/file/d/15uje1A7qpg88M_XR6VSCvs2ILKG2YZfc/view?usp=drive_link"},
+		],
+		"data": "http://140.114.89.25/~geniusturtle/CS343100/s15"
+	},
+	{
+		"category": "Web Programming",
+		"semester": "2014 spring",
+		'semcode': 20141,
+		"school": "清大資工系",
+		"schoolEn": "Dept. of CS, NTHU",
+		"name": "Web 程式設計、技術與應用",
+		"nameEn": "Web Programming, Technologies, and Applications",
+		"url": "",
+		"feedback": "https://docs.google.com/document/d/19VxK1EYoloie7onhWQAaHH5xLwPYKL9u/edit?usp=drive_link&ouid=102945540345265892530&rtpof=true&sd=true",
+		"pastExams": [
+			{"text": "期末考", "textEn": "Final Exam", "url": "https://docs.google.com/document/d/1_RJbWQe9Rzqz1QzVHVwDosLvEk1UESyu/edit?usp=drive_link&ouid=102945540345265892530&rtpof=true&sd=true"},
+		],
+		"data": "http://140.114.89.25/~geniusturtle/CS343100/s14"
+	},
+	{
+		"category": "C Programming",
+		"semester": "2013 fall",
+		'semcode': 20133,
+		"school": "清大數學系",
+		"schoolEn": "Dept. of Math, NTHU",
+		"name": "程式設計入門",
+		"nameEn": "Introduction to Programming Design",
+		"url": "",
+		"feedback": "https://drive.google.com/file/d/13aEYqgVCTaElq_UyNyfeC8eewBtU8S1M/view?usp=drive_link",
+		"pastExams": [
+			{"text": "期末考", "textEn": "Final Exam", "url": "https://docs.google.com/document/d/1mB0U0EQs3cGcydXHThd3HAD22uxc-TCU/edit?usp=drive_link&ouid=102945540345265892530&rtpof=true&sd=true"},
+		],
+		"data": "http://140.114.89.25/~geniusturtle/CS221202/f13"
+	},
+	{
+		"category": "Web Programming",
+		"semester": "2013 spring",
+		'semcode': 20131,
+		"school": "清大資工系",
+		"schoolEn": "Dept. of CS, NTHU",
+		"name": "Web 程式設計、技術與應用",
+		"nameEn": "Web Programming, Technologies, and Applications",
+		"url": "",
+		"feedback": "https://drive.google.com/file/d/1osoen0mgsUZ2wCG2CY9aQFnU9OHKnNez/view?usp=drive_link",
+		"pastExams": [
+			{"text": "期末考", "textEn": "Final Exam", "url": "https://docs.google.com/document/d/1NFd_wBDsTUcb0p6R1PTU6wKAxXwDlugp/edit?usp=drive_link&ouid=102945540345265892530&rtpof=true&sd=true"},
+		],
+		"data": "http://140.114.89.25/~geniusturtle/CS343100/s13"
+	},
+	{
+		"category": "Matlab Programming",
+		"semester": "2012 fall",
+		'semcode': 20123,
+		"school": "清大數學系",
+		"schoolEn": "Dept. of Math, NTHU",
+		"name": "資訊系統應用",
+		"nameEn": "Computer Systems & Applications",
+		"url": "",
+		"feedback": "https://drive.google.com/file/d/1THoLRIz52mBOOg4qATesPE4Bdv-zj-qW/view?usp=drive_link",
+		"pastExams": [],
+		"data": "http://140.114.89.25/~geniusturtle/CS140101/f12",
+	},
+	{
+		"category": "C Programming",
+		"semester": "2012 spring",
+		'semcode': 20121,
+		"school": "清大計財系",
+		"schoolEn": "Dept. of QF, NTHU",
+		"name": "計算機程式設計",
+		"nameEn": "Introduction to Programming",
+		"url": "",
+		"feedback": "https://docs.google.com/document/d/1zS3Lz8hcfxh5pI8SCFz40yYNYBdMAVyh/edit?usp=drive_link&ouid=102945540345265892530&rtpof=true&sd=true",
+		"pastExams": [],
+		"data": "http://140.114.89.25/~geniusturtle/QF100300/s12",
+	},
+	{
+		"category": "Matlab Programming",
+		"semester": "2011 fall",
+		'semcode': 20113,
+		"school": "清大數學系",
+		"schoolEn": "Dept. of Math, NTHU",
+		"name": "資訊系統應用",
+		"nameEn": "Computer Systems & Applications",
+		"url": "",
+		"feedback": "",
+		"pastExams": [],
+		"data": "http://140.114.89.25/~geniusturtle/CS140101/f11",
+	},
+]
+
+function renderCourseName(course) {
+	const name = isCh || !course.nameEn ? course.name : course.nameEn;
+	return course.url ? `<a href="${course.url}">${name}</a>` : name;
+}
+
+function renderExamLink(data){
+	return data.map(item => 
+      `<a href="${item.url}">${isCh||!item.textEn?item.text:item.textEn}</a>`
+    ).join(', ');
+}
+
+function renderFBLink(url, text){
+	return url ? `<a href="${url}">${text}</a>` : '';
+}
+
+function renderTableBySemester(courses) {
+	const sorted = [...courses].sort((a, b) => b.semcode - a.semcode);
+	const html = sorted.map(course => `<tr>
+		<td>${course.category}</td>
+		<td>${isCh||!course.schoolEn?course.school:course.schoolEn}</td>
+		<td>${course.semester}</td>
+		<td>${renderCourseName(course)}</td>
+		<td>${renderExamLink(course.pastExams)}</td>
+		<td>${renderFBLink(course.feedback, 'Link')}</td>
+	</tr>`).join('');
+	document.querySelector('#table-container').innerHTML = `<table>
+	<thead><tr><td>${isCh?"課程類別":"Course Category"}</td><td>${isCh?"授課對象":"Target Audience"}</td><td>${isCh?"開課學期":"Semester"}</td><td>${isCh?"課程名稱":"Course Name"}</td><td>${isCh?"筆試考古題":"Past Exams"}</td><td>${isCh?"教學意見回覆":"Response to Student Feedback"}</td></tr></thead>
+	<tbody>${html}</tbody>
+	</table>`;
+}
+
+renderTableBySemester(courses);
+</script>
+
+</body></html>
