@@ -41,12 +41,14 @@ print(my_mod.inc(1))
 print(my_mod.dec(100))
 </pre>
 
-<p>Import 的時候，利用 as 可以換個名稱：</p>
+<p>Import 的時候，利用 as 可以換個名稱，但是就必須使用另外取的名稱來呼叫：</p>
 <pre class="brush: py">
 import my_mod as mm
 
 print(mm.a)
 print(mm.inc(1))
+
+print(my_mod.inc(1)) # 這行會產生錯誤
 </pre>
 
 <p>也可以只 import 模組中的一部分內容。此時，你在呼叫時就不需要再寫出原本的模組名稱，但是會無法存取未在 import 之列的其他內容：</p>
@@ -54,7 +56,11 @@ print(mm.inc(1))
 from my_mod import inc
 
 print(inc(1))
-print(dec(100)) # 這行會產生錯誤
+
+# 下面這幾行都會產生錯誤
+print(dec(100))
+print(my_mod.dec(100))
+print(my_mod.inc(100))
 </pre>
 
 <p>如果將 my_mod.py 的內容改為以下，則你會發現 import 以後，那行 print 也會被執行：</p>
@@ -84,7 +90,7 @@ if __name__ == '__main__':
 	print('This is my_mod')
 </pre>
 
-<p>這是因為「__name__」變數在該 Python 程式碼作為一般檔案直接執行，和作為模組時的內容不一樣所致。你可以將 my_mod.py 修改為以下，然後直接執行 my_mod.py；以及在其他檔案 import my_mod 以後，再執行「print(my_mod.__name__)」看看：</p>
+<p>這是因為「__name__」變數在該 Python 程式碼作為一般檔案直接執行，和作為模組時的內容不一樣所致：作為一般檔案執行時，該變數的值會是「__main__」字串；而作為模組執行時，會是模組的名稱。若要驗證以上敘述，你可以將 my_mod.py 修改為以下內容，然後分別去直接執行 my_mod.py；以及在其他檔案 import my_mod 以後，再執行該其他檔案看看：</p>
 <pre class="brush: py">
 print(__name__)
 </pre>
