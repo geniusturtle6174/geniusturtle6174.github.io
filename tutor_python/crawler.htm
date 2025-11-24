@@ -17,9 +17,7 @@
 
 <blockquote>
 
-<p>
-本篇將以爬取 Ptt 資料為例，介紹如何用 Python 製作網路爬蟲。需要使用第三方套件時，將在第一次 import 時以註解方式提供安裝指令。另外，由於爬蟲的撰寫會跟網站的設計細節高度相關，但本篇內容不可能隨時依據目標網站更動而修改，因此本篇的範例，都會有失效的可能。
-</p>
+<p>本篇將以爬取網頁版 Ptt 的資料為例，介紹如何用 Python 製作網路爬蟲；需要使用第三方套件時，將在第一次 import 時以註解方式提供安裝指令。另外，由於爬蟲的撰寫會跟網站的設計細節高度相關，但本篇內容不可能隨時依據目標網站更動而修改，因此本篇的範例，隨時都會有失效的可能。</p>
 
 <p>Ptt 網頁版的首頁連結是 <a href="https://www.ptt.cc/bbs/index.html">https://www.ptt.cc/bbs/index.html</a>，單一看板的連結則是 https://www.ptt.cc/bbs/看板名稱/index.html，例如 Python 板是 <a href="https://www.ptt.cc/bbs/Python/index.html">https://www.ptt.cc/bbs/Python/index.html</a>。如果你想要獲得 Python 板的內容，最簡單的方法就是用 Requests 函式庫的相關方法來進行操作：</p>
 <pre class="brush: py">
@@ -29,7 +27,7 @@ response = requests.get('https://www.ptt.cc/bbs/Python/index.html')
 print(response.text)
 </pre>
 
-<p>在上述範例中，你可以發現印出來的內容是一堆 HTML 原始碼。我們當然可以自己撰寫字串處理來取得需要的內容，但也可以使用 Beautiful Soup 函式庫來幫我們進行剖析(parse)。此時，你除了可以用「.」的方式取得第一個子物件以外，也可以用 find_all 直接找出想要處理的物件們：</p>
+<p>在上述範例中，你可以發現印出來的內容是一堆 HTML 原始碼。我們當然可以自己撰寫字串處理來取得需要的內容，但也可以使用 Beautiful Soup 函式庫來幫我們進行剖析(parse)。以下範例將示範如何取得特定的超連結資訊：</p>
 <pre class="brush: py">
 import requests
 from bs4 import BeautifulSoup # pip install beautifulsoup4
@@ -39,6 +37,13 @@ soup = BeautifulSoup(response.text, 'html.parser')
 print(soup.body.div.div.a)
 print(soup.find_all('a', class_='btn wide'))
 </pre>
+
+<p>在上述範例中：</p>
+<ul>
+	<li>我們需先用 requests.get 取得網頁原始碼後，再用 BeautifulSoup 來剖析取得的內容。</li>
+	<li>「soup.body.div.div.a」當中的「.」代表取得第一個子物件；整段程式碼翻譯成白話是「soup（剖析結果）的第一個 body 裡面的第一個 div 裡面的第一個 div 裡面的第一個 a」。至於「.」需要用幾層，跟你要爬取的網頁原始碼架構和爬取目標有關。</li>
+	<li>我們也可以用 find_all，直接找出特定條件的物件們，就不必一層一層一個一個地抓取。範例中的「class_='btn wide'」，代表要找尋標籤中的 class 屬性中，有包含「btn wide」者。</li>
+</ul>
 
 <p>找出物件後，就可以進行其他你想要的處理，甚至若物件有多層時，也可以一層一層的往下剖析。以下的範例是從最新頁面往回，逐頁擷取 Python 看板文章的作者、列表顯示的推噓數、文章標題，以及連結，直至處理完該頁後達 50 篇以上為止</p>
 <pre class="brush: py">
@@ -82,7 +87,7 @@ for a in articles:
 <p>大部分的看板，都可以依此類推來取得資訊，只是有些看板(例如 Beauty 板)會碰到一點問題：</p>
 <center><img src="pics/crawler_ask_18.png"></center>
 
-<p>此時若你按下 F12，打開"開發人員工具"觀察，就可以發現這個按鈕會產生一組「over18=1」的 cookie，因此我們可以在發出請求時加上這組 cookie，就能爬取內容。以下範例一樣是從最新一頁往回擷取資訊直至滿 50 篇，只是把看板從 Python 板換成 Beauty 板，以及在發出請求時加上 cookie：</p>
+<p>此時若你按下 F12，打開"開發人員工具"觀察，就可以發現這個按鈕會產生一組「over18=1」的 cookie（讓網頁用來記得你的某種手段的名稱），因此我們可以在發出請求時加上這組 cookie，就能爬取內容。以下範例一樣是從最新一頁往回擷取資訊直至滿 50 篇，只是把看板從 Python 板換成 Beauty 板，以及在發出請求時加上 cookie：</p>
 <pre class="brush: py">
 import requests
 from bs4 import BeautifulSoup
@@ -153,7 +158,7 @@ for a in articles:
 	print(a)
 </pre>
 
-<p>如果你需要的資訊是網頁版沒有提供的，例如使用者連線的 IP，那就必須直接取得 Telent 的資訊。以下範例會請使用者輸入自己的帳號密碼，以及想查 IP 的帳號，再用一連串的 read_until 與 write 來模擬操作：</p>
+<!-- <p>如果你需要的資訊是網頁版沒有提供的，例如使用者連線的 IP，那就必須直接取得 Telent 的資訊。以下範例會請使用者輸入自己的帳號密碼，以及想查 IP 的帳號，再用一連串的 read_until 與 write 來模擬操作：</p>
 <pre class="brush: py">
 import re
 import time
@@ -197,8 +202,7 @@ except Exception as e:
     print('FAIL: {}\r\n'.format(e))
 
 tn.close()
-</pre>
-
+</pre> -->
 
 </blockquote>
 
