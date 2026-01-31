@@ -4,6 +4,22 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel=stylesheet type="text/css" href="myCss.css">
 	<base target="_blank">
+	<style>
+		#toggleAdjunct {
+			border: none;
+			background: none;
+			color: #0066cc;
+			text-decoration: None;
+			cursor: pointer;
+			font-size: inherit;
+			padding: 0;
+			font-family: inherit;
+		}
+
+		#toggleAdjunct:hover {
+			color: #004499;
+		}
+	</style>
 </head>
 
 <body bgcolor="#ccccff">
@@ -18,7 +34,7 @@
 			王崇喆(小龜)<br>
 			Chung-Che Wang (aka geniusturtle)<br>
 			geniusturtle6174_at_gmail_dot_com<br>
-			<a href="http://www.nthu.edu.tw">國立清華大學</a>．<a href="http://www.cs.nthu.edu.tw">資訊工程學系</a>．<a href="http://mirlab.org">多媒體資訊檢索實驗室</a>．博士
+			<!-- <a href="http://www.nthu.edu.tw">國立清華大學</a>．<a href="http://www.cs.nthu.edu.tw">資訊工程學系</a>．<a href="http://mirlab.org">多媒體資訊檢索實驗室</a>．博士 -->
 			</span>
 		</td>
 		<td width="25%">
@@ -35,12 +51,13 @@
 <center><table border=0 width="95%"><tr><td><span class="myTitle">
 
 <ul>
-	<li>工作經歷
+	<li>工作經歷&nbsp;<input type=button value="顯示兼任" id="toggleAdjunct">
 		<ul>
-			<li>2023/08~2024/01 及 2024/08~2026/07: 清華大學，數學系，兼任助理教授</li>
-			<li>2022/09~2023/01 及 2024/02~2024/07: 淡江大學，教育科技學系，兼任助理教授</li>
+			<li>2026/02~迄今: 元智電機甲，助理教授</li>
+			<li class="adjunct" style="display:none">2023/08~2024/01 及 2024/08~2026/07: 清華大學，數學系，兼任助理教授</li>
+			<li class="adjunct" style="display:none">2022/09~2023/01 及 2024/02~2024/07: 淡江大學，教育科技學系，兼任助理教授</li>
 			<li>2021/03~2025/12: 台大資工，博士後研究員</li>
-			<li>2019/02~2021/06 (僅春學期): 政治大學，數位內容學程，兼任助理教授</li>
+			<li class="adjunct" style="display:none">2019/02~2021/06 (僅春學期): 政治大學，數位內容學程，兼任助理教授</li>
 			<li>2017/09~2021/02: KKBOX，研究中心，工程師</li>
 		</ul>
 	</li>
@@ -100,6 +117,19 @@
 	
 	<li><a href="toolNotes.htm">工具操作筆記</a></li> -->
 </ul>
+
+<script>
+document.getElementById('toggleAdjunct').addEventListener('click', function() {
+	const adjuncts = document.querySelectorAll('.adjunct');
+	const isHidden = adjuncts[0].style.display === 'none';
+
+	adjuncts.forEach(item => {
+	item.style.display = isHidden ? 'list-item' : 'none';
+	});
+
+	this.value = isHidden ? '隱藏兼任' : '顯示兼任';
+});
+</script>
 
 </span></td></tr></table></center>
 

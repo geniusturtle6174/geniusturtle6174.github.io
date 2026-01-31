@@ -146,7 +146,38 @@ for i in range(1, len(str_a)+1):
 print(d[-1][-1])
 </pre>
 
-<p>上述的範例只能求取最長共同序列的長度。如果你希望找出該序列的話，則除了求取最大值外，還有需要把產生最大值的方向記錄下來，並在最後回溯回去：</p>
+<p>你也許有注意到，我們前面展示的式子是個遞迴式，因此也可以寫成遞迴的形式。在此形式中，為了避免重複計算，因此我們改用 -1 代表某位置未被計算過；而如果有計算過的話，就直接取用，不必再次呼叫遞迴：</p>
+<pre class="brush: py">
+str_a = 'IVVSVSTN'
+str_b = 'IVIVVVSVAVTN'
+d = [[-1 for _ in range(len(str_b)+1)] for _ in range(len(str_a)+1)]
+
+
+def lcs(dp, i, j):
+	if i == 0 or j == 0:
+		dp[i][j] = 0
+		return 0
+
+	if dp[i][j] != -1:
+		return dp[i][j]
+
+	if str_a[i-1] == str_b[j-1]:
+		dp[i][j] = lcs(dp, i-1, j-1) + 1
+	else:
+		dp[i][j] = max(
+			lcs(dp, i-1, j),
+			lcs(dp, i, j-1),
+		)
+
+	return dp[i][j]
+
+
+print(lcs(d, len(str_a), len(str_b)))
+</pre>
+
+<p>若有興趣，你可以把「有計算過的話，就直接取用」的程式碼移除，並且把字串加長，來試試看會跑多久。</p>
+
+<p>上述的兩個範例，只能求取最長共同序列的長度。如果你希望找出該序列的話，則除了求取最大值外，還有需要把產生最大值的方向記錄下來，並在最後回溯回去。以下展示迴圈版的做法：</p>
 <pre class="brush: py">
 str_a = 'IVVSVSTN'
 str_b = 'IVIVVVSVAVTN'
