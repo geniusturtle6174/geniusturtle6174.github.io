@@ -78,14 +78,15 @@ def sieve_of_Eratosthenes(n):
 	for i in range(2, int(n**0.5)+1):
 		if is_prime[i]:
 			for j in range(i*i, n+1, i):
+				# print(f'composite number {j} is filtered by prime {i}')
 				is_prime[j] = False
 	return [i for i in range(n+1) if is_prime[i]]
 
 
-print(sieve_of_Eratosthenes(20))
+print(sieve_of_Eratosthenes(25))
 </pre>
 
-<p>在上述範例中，我們再次利用了「一合數 n 在 n<sup>0.5</sup> 以內會有一個不是 1 的因數」這個事實，來讓外層迴圈只需要跑到 n<sup>0.5</sup>，而內層迴圈可以從 i<sup>2</sup> 起跑。然而，埃氏篩法還是會有不少重複的檢查，例如 12 這個合數，會被 2 篩除一次，也會被 3 篩除一次。</p>
+<p>在上述範例中，我們再次利用了「一合數 n 在 n<sup>0.5</sup> 以內會有一個不是 1 的因數」這個事實，來讓外層迴圈只需要跑到 n<sup>0.5</sup>，而內層迴圈可以從 i<sup>2</sup> 起跑，以避免 6 被 2 篩除一次，又被 3 篩除一次；以及 10 被 2 篩除一次，又被 5 篩除一次等情況。然而，埃氏篩法還是會有重複的篩除，例如 12、18、24、... 這幾個合數，會被 2 篩除一次，也會被 3 篩除一次。</p>
 
 <p>比較埃氏篩法效率的篩法，是歐拉篩法，又稱作線性篩法。在歐拉篩法中，每個合數只會被其最小的質因數篩除：</p>
 <pre class="brush: py">
@@ -98,6 +99,7 @@ def sieve_of_Euler(n):
 		for p in primes:
 			if i * p > n:
 				break
+			# print(f'composite number {i} * {p} = {i * p} is filtered by prime {p}')
 			is_prime[i * p] = False
 			if i % p == 0:
 				break
@@ -106,7 +108,7 @@ def sieve_of_Euler(n):
 print(sieve_of_Euler(20))
 </pre>
 
-<p>在上述範例中：</p>
+<p>在上述範例中，第一個 break 代表的是超過建表範圍就不再檢查；第二個 break 則是用來確保每個合數只被它最小的質因數篩掉一次<span style="text-decoration: line-through;">，其證明過程很顯然，留給讀者做練習</span>。而以 20 以下的質數表為例，歐拉篩法篩除的過程如下：</p>
 <ul>
 	<li>i = 2 時，primes 串列被放入 2，內容為 [2]，內層迴圈篩除 2 * 2 = 4。</li>
 	<li>i = 3 時，primes 串列被放入 3，內容為 [2, 3]，內層迴圈篩除 3 * 2 = 6 以及 3 * 3 = 9。</li>
