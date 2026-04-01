@@ -8,28 +8,154 @@
 		table, tr, td{border:black solid 2px;border-collapse: collapse;}
 		thead{background-color:#ffff99;}
 		tbody{background-color:#eeffff;}
+
+		.h3-wrapper {
+			display: flex;       /* 啟動彈性佈局 */
+			justify-content: center; /* 讓內容整組水平置中 */
+			align-items: baseline; /* 讓文字對齊底線，看起來比較整齊 */
+			gap: 15px;           /* 設定標題與連結之間的間隔 */
+			margin-bottom: 16px; /* 這裡手動補回原本 h3 下方的留白 */
+		}
+
+		.h3-wrapper h3 {
+			margin: 0;           /* 清除 h3 預設的 margin，避免干擾容器 */
+		}
+
+		.back-to-top-link {
+			font-size: 0.95rem;   /* 讓連結小一點，才不會搶了標題風采 */
+			text-decoration: none;
+			color: #444;
+		}
+
+		.back-to-top-link:hover {color: #007bff;}
+
+		#sort-buttons {margin-bottom: 20px;/* 在按鈕下方加上間距 */}
+
+		/* 排序按鈕 */
+		#sort-buttons button {
+			margin: 0 5px;
+			padding: 5px 15px;
+			border: 1px solid #ccc;
+			background: #f5f5f5;
+			cursor: pointer;
+			border-radius: 3px;
+		}
+
+		#sort-buttons button.active {
+			background: #0066cc;
+			color: white;
+			border-color: #0066cc;
+		}
+
+		#sort-buttons button:hover {background: #e0e0e0;}
+
+		#sort-buttons button.active:hover {background: #0052a3;}
+
+		/* 快速跳轉 */
+		.quick-jump {
+			margin: 15px 25px;
+			padding: 10px;
+		}
+
+		.quick-jump a {
+			margin: 0 8px;
+			color: #0066cc;
+			text-decoration: none;
+		}
+
+		.quick-jump a:hover {text-decoration: underline;}
+
+		/* 類別標題 */
+		h3 {margin-top: 25px;}
+
+		/* 表格間距 */
+		table {margin-bottom: 30px;}
 	</style>
 	<base target="_blank">
 </head>
 
-<body bgcolor="#ccccff">
+<body bgcolor="#ccccff" id="top">
 <br>
 
 <script>
 const params = new URLSearchParams(window.location.search);
 const isCh = params.get('lang') != 'en';
+function getCurrentSort() {
+	const params = new URLSearchParams(window.location.search);
+	return params.get('sort') || 'semester';
+}
 </script>
 
-<center id="switch"><p>[正體中文版/<a href="?lang=en" target="_self">English</a>]</p></center><br>
+<center id="lang-switcher"></center><br>
 
-<script>
-document.querySelector('#switch').innerHTML = `[${isCh?"":"<a href='?lang=ch' target='_self'>"}正體中文版${isCh?"":"</a>"}/${!isCh?"":"<a href='?lang=en' target='_self'>"}English${!isCh?"":"</a>"}]`;
-</script>
+<center><div id="sort-buttons">
+	<span id="sort-label"></span>
+	<button data-sort="semester" class="active" id="btn-semester"></button>
+	<button data-sort="category" id="btn-category"></button>
+</div></center>
 
 <center id="table-container"></center>
 
 <script>
+
+const categoryOrder = [
+	'Machine Learning and Applications',
+	'Logic Design',
+	'Python Programming',
+	'C Programming',
+	'Web Programming',
+	'Matlab Programming'
+];
+
 var courses = [
+	{
+		"category": "Machine Learning and Applications",
+		"semester": "2026 spring",
+		'semcode': 20261,
+		"school": "元智電機甲",
+		"schoolEn": "Dept. of EE (Prog. A), YZU",
+		"name": "多媒體處理",
+		"nameEn": "Multimedia Processing",
+		"url": "",
+		"feedback": [],
+		"pastExams": []
+	},
+	{
+		"category": "Machine Learning and Applications",
+		"semester": "2026 spring",
+		'semcode': 20261,
+		"school": "元智電機甲",
+		"schoolEn": "Dept. of EE (Prog. A), YZU",
+		"name": "樣形識別",
+		"nameEn": "Pattern Recognition",
+		"url": "",
+		"feedback": [],
+		"pastExams": []
+	},
+	{
+		"category": "Logic Design",
+		"semester": "2026 spring",
+		'semcode': 20261,
+		"school": "元智電機甲",
+		"schoolEn": "Dept. of EE (Prog. A), YZU",
+		"name": "邏輯電路設計",
+		"nameEn": "Digital Logic Design",
+		"url": "",
+		"feedback": [],
+		"pastExams": []
+	},
+	{
+		"category": "Python Programming",
+		"semester": "2026 spring",
+		'semcode': 20261,
+		"school": "清大數學系",
+		"schoolEn": "Dept. of Math, NTHU",
+		"name": "程式設計二",
+		"nameEn": "Introduction to Programming II",
+		"url": "https://geniusturtle6174.github.io/courses/26s_math/",
+		"feedback": "",
+		"pastExams": []
+	},
 	{
 		"category": "Python Programming",
 		"semester": "2025 fall",
@@ -275,31 +401,169 @@ function renderCourseName(course) {
 
 function renderExamLink(data){
 	return data.map(item => 
-      `<a href="${item.url}">${isCh||!item.textEn?item.text:item.textEn}</a>`
-    ).join(', ');
+		`<a href="${item.url}">${isCh||!item.textEn?item.text:item.textEn}</a>`
+	).join(', ');
 }
 
-function renderFBLink(url, text){
-	return url ? `<a href="${url}">${text}</a>` : '';
+function renderFBLink(data){
+	if(!data) return '';
+	
+	// 如果是字串
+	const text = isCh ? '期末意見' : 'Final Feedback';
+	if(typeof data === 'string'){
+		return `<a href="${data}">${text}</a>`;
+	}
+	
+	// 如果是陣列
+	return data.map(item => 
+		`<a href="${item.url}">${isCh||!item.textEn?item.text:item.textEn}</a>`
+	).join(', ');
+}
+
+function renderTableHead() {
+	return `<thead><tr>
+		<td>${isCh?"課程類別":"Course Category"}</td>
+		<td>${isCh?"授課對象":"Target Audience"}</td>
+		<td>${isCh?"開課學期":"Semester"}</td>
+		<td>${isCh?"課程名稱":"Course Name"}</td>
+		<td>${isCh?"筆試考古題":"Past Exams"}</td>
+		<td>${isCh?"教學意見回覆":"Response to Student Feedback"}</td>
+	</tr></thead>`;
+}
+
+function renderTableRow(course) {
+	return `<tr>
+		<td>${isCh || !course.categoryEn ? course.category : course.categoryEn}</td>
+		<td>${isCh || !course.schoolEn ? course.school : course.schoolEn}</td>
+		<td>${course.semester}</td>
+		<td>${renderCourseName(course)}</td>
+		<td>${course.pastExams ? renderExamLink(course.pastExams) : ''}</td>
+		<td>${course.feedback ? renderFBLink(course.feedback) : ''}</td>
+	</tr>`;
 }
 
 function renderTableBySemester(courses) {
 	const sorted = [...courses].sort((a, b) => b.semcode - a.semcode);
-	const html = sorted.map(course => `<tr>
-		<td>${course.category}</td>
-		<td>${isCh||!course.schoolEn?course.school:course.schoolEn}</td>
-		<td>${course.semester}</td>
-		<td>${renderCourseName(course)}</td>
-		<td>${renderExamLink(course.pastExams)}</td>
-		<td>${renderFBLink(course.feedback, 'Link')}</td>
-	</tr>`).join('');
-	document.querySelector('#table-container').innerHTML = `<table>
-	<thead><tr><td>${isCh?"課程類別":"Course Category"}</td><td>${isCh?"授課對象":"Target Audience"}</td><td>${isCh?"開課學期":"Semester"}</td><td>${isCh?"課程名稱":"Course Name"}</td><td>${isCh?"筆試考古題":"Past Exams"}</td><td>${isCh?"教學意見回覆":"Response to Student Feedback"}</td></tr></thead>
-	<tbody>${html}</tbody>
+	const html = `<table>
+		${renderTableHead()}
+		<tbody>
+			${sorted.map(course => renderTableRow(course)).join('')}
+		</tbody>
 	</table>`;
+	document.getElementById('table-container').innerHTML = html;
 }
 
-renderTableBySemester(courses);
+function renderTableByCategory(courses) {
+	const grouped = {};
+	courses.forEach(course => {
+		if (!grouped[course.category]) {
+			grouped[course.category] = [];
+		}
+		grouped[course.category].push(course);
+	});
+
+	// 按 categoryOrder 排序，未定義的放最後
+	const sortedCategories = Object.keys(grouped).sort((a, b) => {
+		const indexA = categoryOrder.indexOf(a);
+		const indexB = categoryOrder.indexOf(b);
+		const orderA = indexA === -1 ? 999 : indexA;
+		const orderB = indexB === -1 ? 999 : indexB;
+		return orderA - orderB;
+	});
+
+	// 生成快速跳轉
+	const jumpLinks = sortedCategories.map(category => 
+		`<a href="#cat-${encodeURIComponent(category)}" target='_self'>${category}</a>`
+	).join(' | ');
+
+	// 生成各類別的表格
+	const tables = sortedCategories.map(category => {
+		const categoryCourses = grouped[category].sort((a, b) => b.semcode - a.semcode);
+
+		return `
+			<div class="h3-wrapper">
+				<h3 id="cat-${encodeURIComponent(category)}">${category} (${categoryCourses.length} ${isCh?"門":"courses"})</h3>
+				<a href="#top" class="back-to-top-link" target="_self">↑ ${isCh?"回到頁面頂端":"Back to Top"}</a>
+			</div>
+			<table>
+			${renderTableHead()}
+			<tbody>${categoryCourses.map(course => renderTableRow(course)).join('')}</tbody>
+			</table>
+		`;
+	}).join('');
+
+	const html = `<div class="quick-jump">${isCh?"快速跳轉":"Jump to"}: ${jumpLinks}</div>${tables}`;
+
+	document.getElementById('table-container').innerHTML = html;
+}
+
+document.querySelectorAll('[data-sort]').forEach(btn => {
+	btn.addEventListener('click', (e) => {
+		const sortType = e.target.dataset.sort;
+		const params = new URLSearchParams(window.location.search);
+		params.set('sort', sortType);
+		window.history.pushState({}, '', `?${params.toString()}`);
+		// 移除所有按鈕的 active 狀態
+		document.querySelectorAll('[data-sort]').forEach(b => b.classList.remove('active'));
+		// 當前按鈕加上 active
+		e.target.classList.add('active');
+		// 渲染
+		renderLanguageSwitcher();
+		renderCourses(sortType);
+	});
+});
+
+function renderCourses(sortType) {
+	switch(sortType) {
+		case 'semester':
+			renderTableBySemester(courses);
+			break;
+		case 'category':
+			renderTableByCategory(courses);
+			break;
+		case 'school':
+			// 未來實作
+			break;
+	}
+}
+
+function updateButtonTexts() {
+	document.getElementById('sort-label').textContent = isCh ? '排序方式:' : 'Sort by:';
+	document.getElementById('btn-semester').textContent = isCh ? '依學期' : 'Semester';
+	document.getElementById('btn-category').textContent = isCh ? '依類別' : 'Category';
+	// document.getElementById('btn-school').textContent = isCh ? '依學校' : 'By School';
+}
+
+function renderLanguageSwitcher() {
+	const currentSort = getCurrentSort();
+	const params = new URLSearchParams();
+	params.set('sort', currentSort);
+
+	const html = `<div class="lang-switcher">
+		${isCh ? 
+		`<span>正體中文版</span> | <a href="?lang=en&${params.toString()}" target='_self'>English</a>` :
+		`<a href="?lang=ch&${params.toString()}" target='_self'>正體中文版</a> | <span>English</span>`
+		}
+	</div>`;
+	document.getElementById('lang-switcher').innerHTML = html;
+}
+
+// 初始化（預設依學期排序）
+window.addEventListener('DOMContentLoaded', () => {
+	renderLanguageSwitcher();
+	updateButtonTexts();
+
+	const currSort = getCurrentSort();
+	document.querySelectorAll('[data-sort]').forEach(btn => {
+		if (btn.dataset.sort === currSort) {
+			btn.classList.add('active');
+		} else {
+			btn.classList.remove('active');
+		}
+	});
+	renderCourses(currSort);
+});
+
 </script>
 
 </body></html>
