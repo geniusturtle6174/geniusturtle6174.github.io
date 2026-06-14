@@ -183,6 +183,7 @@ var courses = [
 		],
 		"pastExams": [
 			{"text": "期中考", "textEn": "Midterm Exam", "url": "https://drive.google.com/file/d/1hRX7dOpkN1GaFanzLV065S0hk0eOoPAV/view?usp=sharing"},
+			{"text": "期末考", "textEn": "Final Exam", "url": "https://drive.google.com/file/d/1wwp4UkmusY9h7xzyqXdqABqjwTzMVviq/view?usp=sharing"},
 		]
 	},
 	{
@@ -443,13 +444,13 @@ function renderCourseName(course) {
 function renderExamLink(data){
 	return data.map(item => 
 		`<a href="${item.url}">${isCh||!item.textEn?item.text:item.textEn}</a>`
-	).join(', ');
+	).join(isCh ? '、' : ', ');
 }
 
 function renderFBLink(data){
 	if(!data) return '';
 	
-	// 如果是字串
+	// 如果是字串，則視為只有期末意見
 	const text = isCh ? '期末意見' : 'Final feedbacks';
 	if(typeof data === 'string'){
 		return `<a href="${data}">${text}</a>`;
