@@ -1,11 +1,11 @@
 ﻿<html>
 <head>
 	<title>王崇喆、小龜、geniusturtle6174</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<link rel=stylesheet type="text/css" href="myCss.css">
 	<base target="_blank">
 	<style>
-		#toggleAdjunct {
+		.toggle {
 			border: none;
 			background: none;
 			color: #0066cc;
@@ -16,7 +16,7 @@
 			font-family: inherit;
 		}
 
-		#toggleAdjunct:hover {
+		.toggle:hover {
 			color: #004499;
 		}
 	</style>
@@ -38,20 +38,19 @@
 			</span>
 		</td>
 		<td width="25%">
-			<img src="./pics/geniusturtle2.jpg" align=right/>
+			<img src="./pics/geniusturtle2.jpg" align=right>
 		</td>
 	</tr>
 </table>
 </center>
 <!--頁面上端資訊結尾-->
 
-<font class="small">&nbsp;</font>
-<hr><br>
+<hr>
 
 <center><table border=0 width="95%"><tr><td><span class="myTitle">
 
 <ul>
-	<li>工作經歷&nbsp;<input type=button value="顯示兼任" id="toggleAdjunct">
+	<li>工作經歷&nbsp;<input type=button value="顯示兼任" class="toggle" id="toggleAdjunct">
 		<ul>
 			<li>2026/02~迄今: 元智電機甲，助理教授</li>
 			<li class="adjunct" style="display:none">2023/08~2024/01 及 2024/08~2026/07: 清華大學，數學系，兼任助理教授</li>
@@ -71,43 +70,43 @@
 		</ul>
 	</li>
 	
-	<li>獲獎與證照
+	<li>獲獎與證照&nbsp;<input type=button value="顯示全部" class="toggle" id="toggleAward">
 		<ul>
 			<li>2023/05，多模態病理嗓音分類競賽，一百五十個隊伍中第五名及銅牌獎(指導參賽)</li>
-			<li>2022/06，餘光能源太陽能發電量預測比賽，一百七十九個隊伍中，Public LB 第五名，Private LB 第十名</li>
+			<li class="minor-award" style="display:none">2022/06，餘光能源太陽能發電量預測比賽，一百七十九個隊伍中，Public LB 第五名，Private LB 第十名</li>
 			<li>2022/01，玉山銀行信用卡消費類別推薦比賽，三百多個隊伍中第九名</li>
 			<li>2021/07，Tomofun 狗音辨識比賽，一百多個隊伍中第九名(團隊競賽)</li>
-			<li>2018/11，<a href="https://www.music-ir.org/mirex/wiki/2018:Automatic_Lyrics-to-Audio_Alignment">MIREX Lyrics Alignment task</a> 歷屆最佳</li>
-			<li>2016/08，<a href="https://www.music-ir.org/mirex/wiki/2016:Audio_Melody_Extraction">MIREX Audio Melody Extraction task</a> 使用 deep learning 之隊伍中成績最佳</li>
+			<li class="minor-award" style="display:none">2018/11，<a href="https://www.music-ir.org/mirex/wiki/2018:Automatic_Lyrics-to-Audio_Alignment">MIREX Lyrics Alignment task</a> 歷屆最佳</li>
+			<li class="minor-award" style="display:none">2016/08，<a href="https://www.music-ir.org/mirex/wiki/2016:Audio_Melody_Extraction">MIREX Audio Melody Extraction task</a> 使用 deep learning 之隊伍中成績最佳</li>
 			<li>2013/09，CUDA 工程師認證</li>
-			<li>2013/01，CUDA 程式競賽第三名(團隊競賽)</li>
-			<li>2011/09，CUDA 程式競賽第一名(團隊競賽)</li>
-			<li>2010/12，第一屆美律電聲論文獎銅質獎</li>
+			<li class="minor-award" style="display:none">2013/01，CUDA 程式競賽第三名(團隊競賽)</li>
+			<li class="minor-award" style="display:none">2011/09，CUDA 程式競賽第一名(團隊競賽)</li>
+			<li class="minor-award" style="display:none">2010/12，第一屆美律電聲論文獎銅質獎</li>
 		</ul>
 	</li>
 
-	<li>教學內容：C、Python、Web 程式設計等，詳細列表請<a href="teaching.htm">點此</a></li>
+	<li>教學內容：程式設計、邏輯設計、機器學習等相關課程，詳細列表請<a href="teaching.htm">點此</a></li>
+
+	<li>線上教材
+		<ul>
+			<li><a href="https://geniusturtle6174.github.io/music-info-analysis-tutorial/">音樂資訊分析</a></li>
+			<li><a href="tutor_web/">WEB 程式設計</a></li>
+			<li><a href="tutor_c/">C 程式設計</a></li>
+			<li><a href="tutor_python/">Python 程式設計</a></li>
+			<li><a href="tutor_CUDA/">CUDA 程式設計</a></li>
+			<!-- <li><a href="tutor_matlab/">Matlab 程式設計</a></li> -->
+		</ul>
+	</li>
 
 	<li><a href="students.htm">學生須知</a></li>
 
-	<li>著作發表：[<a href="https://scholar.google.com.tw/citations?user=tMnD4H0AAAAJ">Google Scholar</a>] [<a href="https://dblp.org/pid/38/9955.html">DBLP</a>]</li>
+	<li>著作發表：請參閱 <a href="https://scholar.google.com.tw/citations?user=tMnD4H0AAAAJ">Google Scholar</a> 與 <a href="https://dblp.org/pid/38/9955.html">DBLP</a></li>
 
 	<li>學術服務
 		<ul>
 			<li>ROCLING 2025 議程主席</li>
 			<li>期刊審稿：Scientific Reports (2024-2025)、IJPRAI (2025)</li>
-			<li>會議審稿：IJCNN (2025)、ICASSP (2024-2026)、APSIPA (2023-2025)、ISMIR (2020-2026)</li>
-		</ul>
-	</li>
-
-	<li>線上教材
-		<ul>
-			<li><a href="https://geniusturtle6174.github.io/music-info-analysis-tutorial/">音樂資訊分析</a>(撰寫中)</li>
-			<li><a href="tutor_web/">WEB 程式設計</a></li>
-			<li><a href="tutor_c/">C 程式設計</a></li>
-			<li><a href="tutor_python/">Python 程式設計</a></li>
-			<li><a href="tutor_CUDA/">CUDA 程式設計</a></li>
-			<li><a href="tutor_matlab/">Matlab 程式設計</a></li>
+			<li>會議審稿：ISMIR (2020-2026)、ICASSP (2024-2026)、IEEE MLSP (2025-2026)、APSIPA (2023-2025)、IJCNN (2025)</li>
 		</ul>
 	</li>
 
@@ -126,10 +125,21 @@ document.getElementById('toggleAdjunct').addEventListener('click', function() {
 	const isHidden = adjuncts[0].style.display === 'none';
 
 	adjuncts.forEach(item => {
-	item.style.display = isHidden ? 'list-item' : 'none';
+		item.style.display = isHidden ? 'list-item' : 'none';
 	});
 
 	this.value = isHidden ? '隱藏兼任' : '顯示兼任';
+});
+
+document.getElementById('toggleAward').addEventListener('click', function() {
+	const minorAward = document.querySelectorAll('.minor-award');
+	const isHidden = minorAward[0].style.display === 'none';
+
+	minorAward.forEach(item => {
+		item.style.display = isHidden ? 'list-item' : 'none';
+	});
+
+	this.value = isHidden ? '隱藏部份' : '顯示全部';
 });
 </script>
 

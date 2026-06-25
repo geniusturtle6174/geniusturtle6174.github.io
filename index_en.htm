@@ -5,7 +5,7 @@
 	<link rel=stylesheet type="text/css" href="myCss.css">
 	<base target="_blank">
 	<style>
-		#toggleAdjunct {
+		.toggle {
 			border: none;
 			background: none;
 			color: #0066cc;
@@ -16,7 +16,7 @@
 			font-family: inherit;
 		}
 
-		#toggleAdjunct:hover {
+		.toggle:hover {
 			color: #004499;
 		}
 	</style>
@@ -45,13 +45,12 @@
 </center>
 <!--頁面上端資訊結尾-->
 
-<font class="small">&nbsp;</font>
-<hr><br>
+<hr>
 
 <center><table border=0 width="95%"><tr><td><span class="myTitle">
 
 <ul>
-	<li>Work Experience&nbsp;<input type=button value="Show Adjunct" id="toggleAdjunct">
+	<li>Work Experience&nbsp;<input type=button value="Show Adjunct" class="toggle" id="toggleAdjunct">
 		<ul>
 			<li>2026/02~Present: Dept. of EE (Program A), assistant professor</li>
 			<li class="adjunct" style="display:none">2023/08~2024/01 & 2024/08~2026/07: Adjunct assistant professor, Dept. of Math, MTHU</li>
@@ -71,42 +70,43 @@
 		</ul>
 	</li>
 	
-	<li>Awards and Certification:
+	<li>Awards and Certification&nbsp;<input type=button value="Show All" class="toggle" id="toggleAward">
 		<ul>
-			<li>2023/05，5<sup>th</sup> place and bronze medal (out of 150 teams) of Multimodal Pathology Voice Classification competition (guide students to participate)</li>
-			<li>2022/06: 5<sup>th</sup> (public LB) or 10<sup>th</sup> (private LB) place (out of 179 teams) of Surplux Energy solar power generation prediction competition</li>
+			<li>2023/05: 5<sup>th</sup> place and bronze medal (out of 150 teams) of Multimodal Pathology Voice Classification competition (guide students to participate)</li>
+			<li class="minor-award" style="display:none">2022/06: 5<sup>th</sup> (public LB) or 10<sup>th</sup> (private LB) place (out of 179 teams) of Surplux Energy solar power generation prediction competition</li>
 			<li>2022/01: 9<sup>th</sup> place (out of 300+ teams) of E.Sun credit card consuming recommendation competition</li>
 			<li>2021/07: 9<sup>th</sup> place (out of 100+ teams) Tomofun dog bark sound recognition competition (team work)</li>
-			<li>2018/11: 1<sup>st</sup> place (out of 4 teams, including the past) of MIREX Lyrics Alignment task</li>
-			<li>2016/08: 1<sup>st</sup> place (of those using deep learning) of MIREX Audio Melody Extraction task</li>
-			<li>2013/01: 3<sup>rd</sup> place of CUDA programming contest (team work)</li>
-			<li>2011/09: 1<sup>st</sup> place of CUDA programming contest (team work)</li>
-			<li>2010/12: 3<sup>rd</sup> place of 1st Merry Electric Acoustics Thesis Award</li>
+			<li class="minor-award" style="display:none">2018/11: 1<sup>st</sup> place (out of 4 teams, including the past) of MIREX Lyrics Alignment task</li>
+			<li class="minor-award" style="display:none">2016/08: 1<sup>st</sup> place (of those using deep learning) of MIREX Audio Melody Extraction task</li>
+			<li>2013/09: CUDA Engineers Certification</li>
+			<li class="minor-award" style="display:none">2013/01: 3<sup>rd</sup> place of CUDA programming contest (team work)</li>
+			<li class="minor-award" style="display:none">2011/09: 1<sup>st</sup> place of CUDA programming contest (team work)</li>
+			<li class="minor-award" style="display:none">2010/12: 3<sup>rd</sup> place of 1st Merry Electric Acoustics Thesis Award</li>
 		</ul>
 	</li>
 
-	<li>Teaching: C, Python, and Web programming. Click <a href="teaching.htm?lang=en">here</a> for a detailed list.</li>
+	<li>Teaching: Courses on programming, logic design, machine learning, and more. Click <a href="teaching.htm?lang=en">here</a> for a detailed list.</li>
+
+	<li>Online Tutorial (written in Traditional Chinese, following Taiwanese conventions)
+		<ul>
+			<li><a href="https://geniusturtle6174.github.io/music-info-analysis-tutorial/">Music Infomation Analysis</a></li>
+			<li><a href="tutor_web/">WEB Programming</a></li>
+			<li><a href="tutor_c/">C Programming</a></li>
+			<li><a href="tutor_python/">Python Programming</a></li>
+			<li><a href="tutor_CUDA/">CUDA Programming</a></li>
+			<!-- <li><a href="tutor_matlab/">Matlab Programming</a></li> -->
+		</ul>
+	</li>
 
 	<li><a href="students.htm">Student Guidelines</a></li>
 
-	<li>Publications: [<a href="https://scholar.google.com.tw/citations?user=tMnD4H0AAAAJ">Google Scholar</a>] [<a href="https://dblp.org/pid/38/9955.html">DBLP</a>]</li>
+	<li>Publications: Please visit <a href="https://scholar.google.com.tw/citations?user=tMnD4H0AAAAJ">Google Scholar</a> and <a href="https://dblp.org/pid/38/9955.html">DBLP</a></li>
 
 	<li>Academic Service
 		<ul>
 			<li>Program Chair, ROCLING 2025 conference</li>
 			<li>Journal Reviewer: Scientific Reports (2024-2025)、IJPRAI (2025)</li>
-			<li>Conference Reviewer: IJCNN (2025)、ICASSP (2024-2026)、APSIPA (2023-2025)、ISMIR (2020-2026)</li>
-		</ul>
-	</li>
-
-	<li>Online Tutorial (written in Traditional Chinese, following Taiwanese conventions)
-		<ul>
-			<li><a href="https://geniusturtle6174.github.io/music-info-analysis-tutorial/">Music Infomation Analysis</a> (ongoing)</li>
-			<li><a href="tutor_web/">WEB Programming</a></li>
-			<li><a href="tutor_c/">C Programming</a></li>
-			<li><a href="tutor_python/">Python Programming</a></li>
-			<li><a href="tutor_CUDA/">CUDA Programming</a></li>
-			<li><a href="tutor_matlab/">Matlab Programming</a></li>
+			<li>Conference Reviewer: ISMIR (2020-2026)、ICASSP (2024-2026)、IEEE MLSP (2025-2026)、APSIPA (2023-2025)、IJCNN (2025)</li>
 		</ul>
 	</li>
 
@@ -129,6 +129,17 @@ document.getElementById('toggleAdjunct').addEventListener('click', function() {
 	});
 
 	this.value = isHidden ? 'Hide Adjunct' : 'Show Adjunct';
+});
+
+document.getElementById('toggleAward').addEventListener('click', function() {
+	const minorAward = document.querySelectorAll('.minor-award');
+	const isHidden = minorAward[0].style.display === 'none';
+
+	minorAward.forEach(item => {
+		item.style.display = isHidden ? 'list-item' : 'none';
+	});
+
+	this.value = isHidden ? 'Show Less' : 'Show All';
 });
 </script>
 
