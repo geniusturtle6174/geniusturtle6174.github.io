@@ -5,13 +5,19 @@
 	<link rel=stylesheet type="text/css" href="myCss.css">
 	<base target="_blank">
 	<style>
+		body {
+			font-size: 14pt;
+			padding-left: 20px;
+			padding-top: 15px;
+		}
+
 		.toggle {
 			border: none;
 			background: none;
 			color: #0066cc;
 			text-decoration: None;
 			cursor: pointer;
-			font-size: inherit;
+			font-size: 0.8em;
 			padding: 0;
 			font-family: inherit;
 		}
@@ -19,83 +25,81 @@
 		.toggle:hover {
 			color: #004499;
 		}
+
+		.collapsible {
+			color: #555;
+		}
+
+		.collapsible a {
+			color: #55e;
+		}
 	</style>
 </head>
 
 <body bgcolor="#ccccff">
 
 <!--頁面上端資訊開始-->
-<center>
-<table border=0 width="95%">
-	<tr>
-		<td width="75%">
-			<p>[<a href="index.htm" target="_self">正體中文版</a>/English]</p>
-			<span class="myTitle">
-			王崇喆(小龜)<br>
-			Chung-Che Wang (aka geniusturtle)<br>
-			geniusturtle6174_at_gmail_dot_com<br>
-			<!-- PhD of <a href="http://mirlab.org">MIR lab</a>, <a href="http://web-en.cs.nthu.edu.tw/">Dept. of Computer Science</a>, <a href="http://nthu-en.web.nthu.edu.tw/">National Tsing Hua Univ.</a> -->
-			</span>
-		</td>
-		<td width="25%">
-			<img src="./pics/geniusturtle2.jpg" align=right/>
-		</td>
-	</tr>
-</table>
-</center>
+<div style="display:flex; align-items:flex-start; gap:30px; width:95%">
+	<img src="./pics/geniusturtle3.jpg" style="height:10em;margin-bottom:10px;margin-left:5px;">
+	<div>
+		<p>[<a href="index.htm" target="_self">正體中文版</a>/English]</p>
+		<span class="myTitle">
+		王崇喆(小龜)<br>
+		Chung-Che Wang (aka geniusturtle)<br>
+		geniusturtle6174_at_gmail_dot_com<br>
+		<!-- PhD of <a href="http://mirlab.org">MIR lab</a>, <a href="http://web-en.cs.nthu.edu.tw/">Dept. of Computer Science</a>, <a href="http://nthu-en.web.nthu.edu.tw/">National Tsing Hua Univ.</a> -->
+		</span>
+	</div>
+</div>
 <!--頁面上端資訊結尾-->
 
 <hr>
 
-<center><table border=0 width="95%"><tr><td><span class="myTitle">
-
 <ul>
-	<li>Work Experience&nbsp;<input type=button value="Show Adjunct" class="toggle" id="toggleAdjunct">
+	<li>Work Experience&nbsp;<input type=button value="" class="toggle" id="toggleAdjunct">
 		<ul>
 			<li>2026/02~Present: Dept. of EE (Program A), assistant professor</li>
-			<li class="adjunct" style="display:none">2023/08~2024/01 & 2024/08~2026/07: Adjunct assistant professor, Dept. of Math, MTHU</li>
-			<li class="adjunct" style="display:none">2022/09~2023/01 & 2024/02~2024/07: Adjunct assistant professor, Dept. of ET, TKU</li>
+			<li class="adjunct collapsible" style="display:none">2023/08~2024/01 & 2024/08~2026/07: Adjunct assistant professor, Dept. of Math, MTHU</li>
+			<li class="adjunct collapsible" style="display:none">2022/09~2023/01 & 2024/02~2024/07: Adjunct assistant professor, Dept. of ET, TKU</li>
 			<li>2021/03~2025/12: Postdoc, Dept. of CSIE, NTU</li>
-			<li class="adjunct" style="display:none">2019/02~2021/06 (Spring semesters only): Adjunct assistant professor, Program in DCT, NCCU</li>
+			<li class="adjunct collapsible" style="display:none">2019/02~2021/06 (Spring semesters only): Adjunct assistant professor, Program in DCT, NCCU</li>
 			<li>2017/09~2021/02: Engineer of Research and Development Center, KKBOX</li>
 		</ul>
 	</li>
 
-	<li>Education
+	<li>Education: PhD, NTHU&nbsp;<input type=button value="" class="toggle" id="toggleEdu">
 		<ul>
-			<li>2010/09~2017/08: PhD student of Dept. of CS, NTHU, Taiwan.</li>
-			<li>2016/05~2017/04: Visiting Scholar, Kyoto Univ., Japan </li>
-			<li>2008/09~2010/08: M.S. in CS, NTHU, Taiwan</li>
-			<li>2004/09~2008/06: B.S. in CS, NTHU, Taiwan</li>
+			<li class="edu collapsible" style="display:none">2010/09~2017/08: PhD student of Dept. of CS, NTHU, Taiwan.</li>
+			<li class="edu collapsible" style="display:none">2016/05~2017/04: Visiting Scholar, Kyoto Univ., Japan </li>
+			<li class="edu collapsible" style="display:none">2008/09~2010/08: M.S. in CS, NTHU, Taiwan</li>
+			<li class="edu collapsible" style="display:none">2004/09~2008/06: B.S. in CS, NTHU, Taiwan</li>
 		</ul>
 	</li>
 	
-	<li>Awards and Certification&nbsp;<input type=button value="Show All" class="toggle" id="toggleAward">
+	<li>Awards and Certification&nbsp;<input type=button value="" class="toggle" id="toggleAward">
 		<ul>
 			<li>2023/05: 5<sup>th</sup> place and bronze medal (out of 150 teams) of Multimodal Pathology Voice Classification competition (guide students to participate)</li>
-			<li class="minor-award" style="display:none">2022/06: 5<sup>th</sup> (public LB) or 10<sup>th</sup> (private LB) place (out of 179 teams) of Surplux Energy solar power generation prediction competition</li>
+			<li class="minor-award collapsible" style="display:none">2022/06: 5<sup>th</sup> (public LB) or 10<sup>th</sup> (private LB) place (out of 179 teams) of Surplux Energy solar power generation prediction competition</li>
 			<li>2022/01: 9<sup>th</sup> place (out of 300+ teams) of E.Sun credit card consuming recommendation competition</li>
 			<li>2021/07: 9<sup>th</sup> place (out of 100+ teams) Tomofun dog bark sound recognition competition (team work)</li>
-			<li class="minor-award" style="display:none">2018/11: 1<sup>st</sup> place (out of 4 teams, including the past) of MIREX Lyrics Alignment task</li>
-			<li class="minor-award" style="display:none">2016/08: 1<sup>st</sup> place (of those using deep learning) of MIREX Audio Melody Extraction task</li>
+			<li class="minor-award collapsible" style="display:none">2018/11: 1<sup>st</sup> place (out of 4 teams, including the past) of MIREX Lyrics Alignment task</li>
+			<li class="minor-award collapsible" style="display:none">2016/08: 1<sup>st</sup> place (of those using deep learning) of MIREX Audio Melody Extraction task</li>
 			<li>2013/09: CUDA Engineers Certification</li>
-			<li class="minor-award" style="display:none">2013/01: 3<sup>rd</sup> place of CUDA programming contest (team work)</li>
-			<li class="minor-award" style="display:none">2011/09: 1<sup>st</sup> place of CUDA programming contest (team work)</li>
-			<li class="minor-award" style="display:none">2010/12: 3<sup>rd</sup> place of 1st Merry Electric Acoustics Thesis Award</li>
+			<li class="minor-award collapsible" style="display:none">2013/01: 3<sup>rd</sup> place of CUDA programming contest (team work)</li>
+			<li class="minor-award collapsible" style="display:none">2011/09: 1<sup>st</sup> place of CUDA programming contest (team work)</li>
+			<li class="minor-award collapsible" style="display:none">2010/12: 3<sup>rd</sup> place of 1st Merry Electric Acoustics Thesis Award</li>
 		</ul>
 	</li>
 
 	<li>Teaching: Courses on programming, logic design, machine learning, and more. Click <a href="teaching.htm?lang=en">here</a> for a detailed list.</li>
 
-	<li>Online Tutorial (written in Traditional Chinese, following Taiwanese conventions)
-		<ul>
-			<li><a href="https://geniusturtle6174.github.io/music-info-analysis-tutorial/">Music Infomation Analysis</a></li>
-			<li><a href="tutor_web/">WEB Programming</a></li>
-			<li><a href="tutor_c/">C Programming</a></li>
-			<li><a href="tutor_python/">Python Programming</a></li>
-			<li><a href="tutor_CUDA/">CUDA Programming</a></li>
-			<!-- <li><a href="tutor_matlab/">Matlab Programming</a></li> -->
-		</ul>
+	<li>Online Tutorial (written in Traditional Chinese, following Taiwanese conventions):
+		<a href="https://geniusturtle6174.github.io/music-info-analysis-tutorial/">Music Infomation Analysis</a>,
+		<a href="tutor_web/">WEB Programming</a>,
+		<a href="tutor_c/">C Programming</a>,
+		<a href="tutor_python/">Python Programming</a>,
+		<a href="tutor_CUDA/">CUDA Programming</a>
+		<!-- <li><a href="tutor_matlab/">Matlab Programming</a></li> -->
 	</li>
 
 	<li><a href="students.htm">Student Guidelines</a></li>
@@ -120,29 +124,27 @@
 </ul>
 
 <script>
-document.getElementById('toggleAdjunct').addEventListener('click', function() {
-	const adjuncts = document.querySelectorAll('.adjunct');
-	const isHidden = adjuncts[0].style.display === 'none';
 
-	adjuncts.forEach(item => {
-	item.style.display = isHidden ? 'list-item' : 'none';
-	});
+function setupToggle(btnId, itemClass, showText, hideText) {
+	const btn = document.getElementById(btnId);
+	btn.value = showText; // 設定初始值
 
-	this.value = isHidden ? 'Hide Adjunct' : 'Show Adjunct';
-});
+	btn.addEventListener('click', function() {
+		const items = document.querySelectorAll(itemClass);
+		const isHidden = items[0].style.display === 'none';
 
-document.getElementById('toggleAward').addEventListener('click', function() {
-	const minorAward = document.querySelectorAll('.minor-award');
-	const isHidden = minorAward[0].style.display === 'none';
-
-	minorAward.forEach(item => {
+		items.forEach(item => {
 		item.style.display = isHidden ? 'list-item' : 'none';
+		});
+
+		this.value = isHidden ? hideText : showText;
 	});
+}
 
-	this.value = isHidden ? 'Show Less' : 'Show All';
-});
+setupToggle('toggleAdjunct', '.adjunct', 'Show Adjunct', 'Hide Adjunct');
+setupToggle('toggleEdu', '.edu', 'Show All', 'Hide All');
+setupToggle('toggleAward', '.minor-award', 'Show All', 'Show Less');
+
 </script>
-
-</span></td></tr></table></center>
 
 </body></html>
