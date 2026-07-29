@@ -82,6 +82,32 @@ if __name__ == '__main__':
 <center><img src="pics/recu05.png" height="60%"></center>
 </p>
 
+<p>如果你希望的是在一個有 m 個元素的串列當中，列出所有取 n 個不同元素的狀況的話，則除了利用內建的 itertools.combinations 以外，也可以撰寫如下：</p>
+<pre class="brush: py">
+def list_combo(items, n):
+	if len(items) < n:
+		return []
+	if len(items) == n:
+		return [items]
+	if n == 0:
+		return [[]]
+	if n <= 1:
+		return [[item] for item in items]
+
+	with_first = [[items[0]] + c for c in list_combo(items[1:], n-1)]
+	without_first = list_combo(items[1:], n)
+	return with_first + without_first
+
+
+if __name__ == '__main__':
+	print(list_combo([1, 2, 3, 4, 5], 3))
+</pre>
+
+<p>
+上述範例為了遞迴數的方便繪製，所以根據組合的數學特性，多加了一些終止條件，例如 C m 取 1 的時候，是每個元素各別都要選，以及 m 與 n 相等時是全部的元素都要一起選。其整個呼叫過程，可以用下圖表達：<br>
+<center><img src="pics/recu06.png" height="60%"></center>
+</p>
+
 <p>在 Python 當中的最大公因數（greatest common divisor, gcd）也有內建函式可以使用，但你如果會關心怎樣用遞迴自己寫的話，則可以使用 gcd(a, b) = gcd(b, a % b) 這個遞迴式來撰寫，其實就是我們以前都學過的輾轉相除法，如下：</p>
 <pre class="brush: py">
 def gcd(a, b):
@@ -119,6 +145,91 @@ if __name__ == '__main__':
 	hanoi(3, 1, 2, 3)
 </pre>
 
+<p>遞迴除了用於計算和列舉以外，也可以用來做搜尋。例如有個經典的數學遊戲「24 game」，其內容是給你四個數字，問有沒有辦法透過這四個數字之間的運算，來產生 24 這個數字；例如 [8, 9, 6, 4] 這四個數字，可以用 8 * 9 / 4 + 6 的方式得到 24，而 [3, 5, 7, 7] 這四個數字，則無論怎樣組合，都無法得到 24。這個遊戲很適合利用遞迴來做搜尋，範例如下：</p>
+<pre class="brush: py">
+def game_24(nums):
+	EPS = 1e-5
+	if len(nums) == 1:
+		return abs(nums[0] - 24.0) < EPS
+
+	for i in range(len(nums)):
+		for j in range(len(nums)):
+			if i == j:
+				continue
+			next_nums = [nums[k] for k in range(len(nums)) if k != i and k != j]
+			a, b = nums[i], nums[j]
+			candidates = [a + b, a - b, b - a, a * b]
+			if abs(b) > EPS:
+				candidates.append(a / b)
+			if abs(a) > EPS:
+				candidates.append(b / a)
+
+			for val in candidates:
+				if game_24([val] + next_nums):
+					return True
+	return False
+
+if __name__ == '__main__':
+	print(game_24([8, 9, 6, 4]))
+</pre>
+
+<p>上述範例中的遞迴方式，是每次挑選兩個不同位置的數字，並做各種可行的運算來組成新的數字，再一一的問這些新數字，能否跟剩下的數字組合出 24；而遞迴的終止條件，就是當數字個數只剩一個時，如果它是 24 就成功，否則就失敗。至於呼叫的過程，以 game_24([8, 9, 6, 4]) 來說，它會依次呼叫：</p>
+
+<p style="text-align:center">i = 0, j = 1 時的 game_24([8+9, 6, 4])</p>
+<p style="text-align:center">i = 0, j = 1 時的 game_24([8-9, 6, 4])</p>
+<p style="text-align:center">i = 0, j = 1 時的 game_24([9-8, 6, 4])</p>
+<p style="text-align:center">...</p>
+<p style="text-align:center">i = 3, j = 2 時的 game_24([6 * 4, 8, 9])</p>
+<p style="text-align:center">i = 3, j = 2 時的 game_24([6 / 4, 8, 9])</p>
+<p style="text-align:center">i = 3, j = 2 時的 game_24([4 / 6, 8, 9])</p>
+
+<p>而該層首個被呼叫的 game_24([8+9, 6, 4])，即 game_24([17, 6, 4])，則會依次呼叫：</p>
+<p style="text-align:center">i = 0, j = 1 時的 game_24([17+6, 4])</p>
+<p style="text-align:center">i = 0, j = 1 時的 game_24([17-6, 4])</p>
+<p style="text-align:center">i = 0, j = 1 時的 game_24([6-17, 4])</p>
+<p style="text-align:center">...</p>
+
+<p>而如果你希望遞迴函式不只是回答是否有解，而是要找出至少一組解的話，程式架構也非常相似，只需要把算式跟計算結果一起在遞迴中傳遞即可，範例如下：</p>
+<pre class="brush: py">
+def game_24(nums, expr=[]):
+	EPS = 1e-5
+	if len(nums) == 1:
+		return abs(nums[0] - 24.0) < EPS, expr
+
+	if not expr:
+		expr = list(map(str, nums))
+
+	for i in range(len(nums)):
+		for j in range(len(nums)):
+			if i == j:
+				continue
+			next_nums = [nums[k] for k in range(len(nums)) if k != i and k != j]
+			next_exprs = [expr[k] for k in range(len(expr)) if k != i and k != j]
+			a, b = nums[i], nums[j]
+			x, y = expr[i], expr[j]
+			candidates_nums = [a + b, a - b, b - a, a * b]
+			candidates_exprs = [f'(({x})+({y}))', f'(({x})-({y}))', f'(({y})-({x}))', f'(({x})*({y}))']
+			if abs(b) > EPS:
+				candidates_nums.append(a / b)
+				candidates_exprs.append(f'(({x})/({y}))')
+			if abs(a) > EPS:
+				candidates_nums.append(b / a)
+				candidates_exprs.append(f'(({y})/({x}))')
+
+			for val, exp in zip(candidates_nums, candidates_exprs):
+				is_24, the_exp = game_24(
+					[val] + next_nums,
+					expr=[exp]+next_exprs
+				)
+				if is_24:
+					return True, the_exp
+	return False, ''
+
+if __name__ == '__main__':
+	print(game_24([8, 9, 6, 4]))
+</pre>
+
+<p>在上述範例中，我們採取的是把括號加好加滿的策略，來避免算式的實際意義，與它希望被代表的意義不同；你如果希望少加一點括號，則需要根據運算優先權等原則，另外撰寫邏輯判斷，或者等到計算完成後，以其他的方法處理。另外，如果你有興趣，也可以再去瞭解看看要怎樣找出所有解。</p>
 
 </blockquote>
 
