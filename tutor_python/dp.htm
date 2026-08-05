@@ -4,13 +4,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel=stylesheet type="text/css" href="myCss.css">
 	<base target="_blank">
-	<script type="text/javascript" src="shCore.js"></script>
-	<script type="text/javascript" src="shBrushPython.js"></script>
-	<link href="shCore.css" rel="stylesheet" type="text/css" />
-	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
-	<script type="text/javascript">
-		SyntaxHighlighter.all();
-	</script>
+	<link href="prism.css" rel="stylesheet">
+	<script src="prism.js"></script>
 </head>
 
 <body bgcolor="#ccccff">
@@ -133,8 +128,7 @@ ctx.stroke();
 <p>字串 A 和 B 都只有一個字時，則可以直接判斷他們是否相等，若是則為 D<sub>1, 1</sub> 為 1，否則為 0。</p>
 
 <p>在前述的記號使用上，我們讓字串的索引(index)從 1 開始，但是 Python 語言的串列索引是從 0 開始，因此我們通常會把 index 為 0 的 row 和 column 「浪費」掉，來讓邊界狀況（任何一個字串只有一個字的）的程式寫法比較簡潔：</p>
-<pre class="brush: py">
-str_a = 'IVVSVSTN'
+<pre class="line-numbers match-braces"><code class="language-python">str_a = 'IVVSVSTN'
 str_b = 'IVIVVVSVAVTN'
 d = [[0 for _ in range(len(str_b)+1)] for _ in range(len(str_a)+1)]
 for i in range(1, len(str_a)+1):
@@ -144,11 +138,10 @@ for i in range(1, len(str_a)+1):
 		else:
 			d[i][j] = max(d[i-1][j], d[i][j-1])
 print(d[-1][-1])
-</pre>
+</code></pre>
 
 <p>你也許有注意到，我們前面展示的式子是個遞迴式，因此也可以寫成遞迴的形式。在此形式中，為了避免重複計算，因此我們改用 -1 代表某位置未被計算過；而如果有計算過的話，就直接取用，不必再次呼叫遞迴：</p>
-<pre class="brush: py">
-str_a = 'IVVSVSTN'
+<pre class="line-numbers match-braces"><code class="language-python">str_a = 'IVVSVSTN'
 str_b = 'IVIVVVSVAVTN'
 d = [[-1 for _ in range(len(str_b)+1)] for _ in range(len(str_a)+1)]
 
@@ -173,13 +166,12 @@ def lcs(dp, i, j):
 
 
 print(lcs(d, len(str_a), len(str_b)))
-</pre>
+</code></pre>
 
 <p>若有興趣，你可以把「有計算過的話，就直接取用」的程式碼移除，並且把字串加長，來試試看會跑多久。</p>
 
 <p>上述的兩個範例，只能求取最長共同序列的長度。如果你希望找出該序列的話，則除了求取最大值外，還有需要把產生最大值的方向記錄下來，並在最後回溯回去。以下展示迴圈版的做法：</p>
-<pre class="brush: py">
-str_a = 'IVVSVSTN'
+<pre class="line-numbers match-braces"><code class="language-python">str_a = 'IVVSVSTN'
 str_b = 'IVIVVVSVAVTN'
 d = [[0 for _ in range(len(str_b)+1)] for _ in range(len(str_a)+1)]
 path = [[0 for _ in range(len(str_b)+1)] for _ in range(len(str_a)+1)]
@@ -209,7 +201,7 @@ while path[i][j] != 0:
 	else:
 		j -= 1
 print(seq)
-</pre>
+</code></pre>
 
 <p>下一個要介紹的是 0-1 背包問題。這個問題是說，有一個尋寶人，發現了 n 個寶物，每個寶物 j 的價值是 P<sub>j</sub>，重量則是 W<sub>j</sub>，尋寶人希望在有承重限制 W 的背包裡，裝下價值總和最高的寶物。在這個問題裡，如果寶物可以分割，那很明顯就從單價最高的寶物先拿再說；
 但是 0-1 背包問題討論的，是寶物不可分割的狀況，所以情況會變得比較複雜。</p>
@@ -237,8 +229,7 @@ print(seq)
 </table></center>
 
 <p>則我們可以開出一個 (15 + 1) x (5 + 1) 的表格，並撰寫如下程式，就可以獲得最佳解：</p>
-<pre class="brush: py">
-price = [4, 2, 2, 1, 10]
+<pre class="line-numbers match-braces"><code class="language-python">price = [4, 2, 2, 1, 10]
 weight = [12, 2, 1, 1, 4]
 w_limit = 15
 d = [[0 for _ in range(len(price)+1)] for _ in range(w_limit+1)]
@@ -249,7 +240,7 @@ for i in range(1, w_limit+1):
 		else:
 			d[i][j] = max(d[i][j-1], d[i-weight[j-1]][j-1] + price[j-1])
 print(d[-1][-1])
-</pre>
+</code></pre>
 
 <p>
 再來要介紹的問題叫做「矩陣鏈乘積(Matrix Chain Multiplication)」。先想像一下有三個矩陣 A, B, C 要相乘，你要用 (AB)C 還是 A(BC)的順序來乘呢？假設它們的維度分別是 5-by-5, 5-by-3, 3-by-1，則 (AB)C 的順序，需要 5 * 5 * 3 + 5 * 3 * 1 = 90 次乘法運算；而 A(BC) 的順序，則只需要 5 * 3 * 1 + 5 * 5 * 1 = 40 次乘法運算。當矩陣的數量一多的時候，順序的差別就會更明顯，而要找出好的順序，就成了一個重要的問題。這次我們用由上往下的角度來思考：

@@ -4,13 +4,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel=stylesheet type="text/css" href="myCss.css">
 	<base target="_blank">
-	<script type="text/javascript" src="shCore.js"></script>
-	<script type="text/javascript" src="shBrushPython.js"></script>
-	<link href="shCore.css" rel="stylesheet" type="text/css" />
-	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
-	<script type="text/javascript">
-		SyntaxHighlighter.all();
-	</script>
+	<link href="prism.css" rel="stylesheet">
+	<script src="prism.js"></script>
 </head>
 
 <body bgcolor="#ccccff">
@@ -18,8 +13,7 @@
 <blockquote>
 
 <p>如果你需要一個 Python 物件來當作數學上的集合使用，那麼可以使用 Python 當中的集合。Python 的集合跟數學上的集合一樣，具有元素不可重覆等特性，其基本操作方法如下：</p>
-<pre class="brush: py">
-s1 = {1, 2, 1, 2, 3, 4, 4, 5}
+<pre class="line-numbers match-braces"><code class="language-python">s1 = {1, 2, 1, 2, 3, 4, 4, 5}
 print(s1)
 
 s2 = set([1, 2, 1, 2, 3, 4, 4, 5])
@@ -37,13 +31,12 @@ s3.add(5)
 print(s3)
 
 print(len(s1), len(s2), len(s3))
-</pre>
+</code></pre>
 
 <p>在上述範例中，你應該可以發現，即使我們特意地試圖加入重複的元素，但每個元素在集合裡面還是只會出現一次。</p>
 
 <p>需要刪除元素時，可以使用「remove」或者「discard」，兩者的差別在於前者會在沒有元素時噴出錯誤，而後者不會：</p>
-<pre class="brush: py">
-s = set([1, 2, 3, 4, 5, 6, 7])
+<pre class="line-numbers match-braces"><code class="language-python">s = set([1, 2, 3, 4, 5, 6, 7])
 
 s.remove(1)
 print(s)
@@ -56,20 +49,18 @@ print(s)
 
 s.remove(99)
 print(s)
-</pre>
+</code></pre>
 
 <p>若要在判斷集合中是否有該元素，跟字典一樣可以用 in 來進行：</p>
-<pre class="brush: py">
-s = set([1, 2, 3, 4, 5, 6, 7])
+<pre class="line-numbers match-braces"><code class="language-python">s = set([1, 2, 3, 4, 5, 6, 7])
 
 print(1 in s)
 print('a' in s)
 print('x' not in s) # 或 print(not 'x' in s)
-</pre>
+</code></pre>
 
 <p>若要進行聯集或交集的運算，可以分別使用「union」和「intersection」：</p>
-<pre class="brush: py">
-s1 = set([1, 2, 3, 4, 5])
+<pre class="line-numbers match-braces"><code class="language-python">s1 = set([1, 2, 3, 4, 5])
 s2 = set([4, 5, 6, 7, 8])
 
 s3 = s1.union(s2)
@@ -77,11 +68,10 @@ print(s3)
 
 s4 = s1.intersection(s2)
 print(s4)
-</pre>
+</code></pre>
 
 <p>若是要做差集，則可以使用「difference」，或者直接使用減號：</p>
-<pre class="brush: py">
-s1 = set([1, 2, 3, 4, 5])
+<pre class="line-numbers match-braces"><code class="language-python">s1 = set([1, 2, 3, 4, 5])
 s2 = set([4, 5, 6, 7, 8])
 
 s3 = s1 - s2
@@ -95,7 +85,7 @@ print(s5)
 
 s6 = s2.difference(s1)
 print(s6)
-</pre>
+</code></pre>
 
 </blockquote>
 

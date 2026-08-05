@@ -4,13 +4,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel=stylesheet type="text/css" href="myCss.css">
 	<base target="_blank">
-	<script type="text/javascript" src="shCore.js"></script>
-	<script type="text/javascript" src="shBrushPython.js"></script>
-	<link href="shCore.css" rel="stylesheet" type="text/css" />
-	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
-	<script type="text/javascript">
-		SyntaxHighlighter.all();
-	</script>
+	<link href="prism.css" rel="stylesheet">
+	<script src="prism.js"></script>
 </head>
 
 <body bgcolor="#ccccff">
@@ -45,7 +40,7 @@
 <pre class="brush: python">
 train_images = mnist.train.images.reshape((-1, 28, 28, 1))
 print(train_images.shape)
-</pre>
+</code></pre>
 
 <p>如果你希望的話，一樣可以把圖片印出來看看，這邊跟 MLP 篇的方法大致相同，只是因為多了一個軸，所以操作的方法要做一點修改：</p>
 <pre class="brush: python">
@@ -53,7 +48,7 @@ tmp = train_images[1000]
 tmp[tmp>0] = 1
 for t in tmp:
     print(''.join(map(str,t[:,0].astype('int'))))
-</pre>
+</code></pre>
 
 <p>
 建構類神經網路的部分如下，conv2d 的第二和第三個參數分別是 kernel 的數量和大小，還有其他選用參數可以控制 kernel 一次要移動多少等等(就是上面說的 strides)；max pooling 的兩個參數則分別是區塊的大小和每次移動多少。在 convolution 之後，我們還可以接上一些 dense layer，如同 MLP 篇一樣，如下：</p>
@@ -71,7 +66,7 @@ h = tf.layers.flatten(h)
 h = tf.layers.dense(h, 256, activation=tf.nn.relu)
 h = tf.layers.dropout(h, rate=0.5, training=True)
 out = tf.layers.dense(h, 10)
-</pre>
+</code></pre>
 
 <p>完整的訓練程式碼如下，因其餘部分與 MLP 篇的內容相差無幾，故不再贅述。在一台使用 i5-3230M CPU 的電腦上，大約二十分鐘左右可以訓練完畢：</p>
 <pre class="brush: python">
@@ -136,7 +131,7 @@ for epoch in range(epoch_num):
     print('\tRecog rate: {:.2f}%'.format(100*np.mean(recog_idx==gt)))
     
 saver.save(sess, os.path.join('model_cnn', 'model.ckpt'))
-</pre>
+</code></pre>
 
 <p>提示：<strike>找飯店，XXgo；</strike>嫌慢嗎？<a href="tf_install_gpu.htm">GPU</a></p>
 
@@ -179,7 +174,7 @@ for batch in range(0, test_data_num, test_batch_size):
     recog_all = np.vstack([recog_all, recog]) if recog_all.size else recog
 recog_idx = np.argmax(recog_all, axis=1)
 print('\tRecog rate: {:.2f}%'.format(100*np.mean(recog_idx==gt)))
-</pre>
+</code></pre>
 
 </blockquote>
 

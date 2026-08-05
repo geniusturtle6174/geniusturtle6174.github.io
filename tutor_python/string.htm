@@ -4,13 +4,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel=stylesheet type="text/css" href="myCss.css">
 	<base target="_blank">
-	<script type="text/javascript" src="shCore.js"></script>
-	<script type="text/javascript" src="shBrushPython.js"></script>
-	<link href="shCore.css" rel="stylesheet" type="text/css" />
-	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
-	<script type="text/javascript">
-		SyntaxHighlighter.all();
-	</script>
+	<link href="prism.css" rel="stylesheet">
+	<script src="prism.js"></script>
 </head>
 
 <body bgcolor="#ccccff">
@@ -18,8 +13,7 @@
 <blockquote>
 
 <p>字串，顧名思義就是一串字元形成的序列；在 Python 裡面，最簡單的字串是用一組單引號或雙引號包住的內容。我們首先來看一些基本的運算和取值：</p>
-<pre class="brush: py">
-s = 'Hello'
+<pre class="line-numbers match-braces"><code class="language-python">s = 'Hello'
 t = 'World'
 u = s + t     # 字串連接
 
@@ -27,11 +21,10 @@ print(u)
 print(s * 3)  # 重複三次
 print(u[3:])  # 跟串列一樣，取出各個元素
 print(len(u)) # 取得字串長度
-</pre>
+</code></pre>
 
 <p>要知道字串中有沒有某個字元的話，有以下幾種方法：</p>
-<pre class="brush: py">
-s = 'Hello'
+<pre class="line-numbers match-braces"><code class="language-python">s = 'Hello'
 t = 'World'
 u = s + t
 
@@ -39,40 +32,36 @@ print('W' in u)
 print('A' in u)
 print(u.index('o')) # 某字元第一個出現的位置
 print(u.count('l')) # 某字元出現的次數
-</pre>
+</code></pre>
 
 <p>Question：上述範例中的「index」和「count」，如果帶入的參數是沒出現的字會怎樣？請猜看看以及試看看。</p>
 
 <p>字串的比較，基本上是依照字典的順序，但所有大寫比所有的小寫還小。事實上，單個字元在電腦當中的表示方法，也可以用數字的規則來解讀，例如 'A'、'a'、'0' 的表示法，分別和數字 65、97、48 相同，如果你需要互相轉換的話，可以使用「ord」以及「chr」：</p>
-<pre class="brush: py">
-print('ABC' &lt 'BBB')
+<pre class="line-numbers match-braces"><code class="language-python">print('ABC' &lt 'BBB')
 print('Dog' &lt 'cat')
 print('OAO' == 'QQ')
 
 print(ord('A'))
 print(chr(97))
-</pre>
+</code></pre>
 
 <p>Python 提供了一系列的 isxxx 功能，可以判斷字串是否有 xxx 屬性。以下介紹其中一些：</p>
-<pre class="brush: py">
-print('\'123\'.isdigit():', '123'.isdigit())      # 是否全為數字
+<pre class="line-numbers match-braces"><code class="language-python">print('\'123\'.isdigit():', '123'.isdigit())      # 是否全為數字
 print('\'AbC\'.isalpha():', 'AbC'.isalpha())      # 是否全為字母
 print('\'12cd5\'.isalnum():', '12cd5'.isalnum())  # 是否全為數字或字母
 print('\'ab345\'.islower():', 'ab345'.islower())  # 是否全為小寫
 print('\'123DE\'.isupper():', '123DE'.isupper())  # 是否全為大寫
-</pre>
+</code></pre>
 
 <p>如果你希望將字串當中的英文全部轉換為大寫或小寫的話，則可以直接使用「upper()」或者「lower()」：</p>
-<pre class="brush: py">
-s = 'He110 W0r1d'
+<pre class="line-numbers match-braces"><code class="language-python">s = 'He110 W0r1d'
 
 print(s.upper())
 print(s.lower())
-</pre>
+</code></pre>
 
 <p>如果字串當中的內容剛好可以表示數字，而你想把它們轉換真正意義上的數字，或者反過來將數字轉成字串的話，可以使用「int()」、「float()」、「str()」等方法：</p>
-<pre class="brush: py">
-s1 = '123'
+<pre class="line-numbers match-braces"><code class="language-python">s1 = '123'
 print(int(s1))
 
 s2 = '456.78'
@@ -80,51 +69,46 @@ print(float(s2))
 
 n = 9.101112
 print(str(n))
-</pre>
+</code></pre>
 
 <p>要判斷字串是否為特定的字元或字串開頭的話，除了自己取值以外，也可以使用「startswith」以及「endswith」：</p>
-<pre class="brush: py">
-print('Hello World'[:2] == 'He')
+<pre class="line-numbers match-braces"><code class="language-python">print('Hello World'[:2] == 'He')
 print('Hello World'.startswith('He'))
 
 print('Hello World'[-2:] == 'ld')
 print('Hello World'.endswith('ld'))
-</pre>
+</code></pre>
 
 <p>如果要搜尋子字串，則除了 in 以外，也有 find 和 rfind 可以使用，且後兩者除了告訴你是否存在以外，若存在的話還會告訴你位置；若是計算子字串的出現次數，則是使用 count：</p>
-<pre class="brush: py">
-s = 'I saw a saw saw a saw'
+<pre class="line-numbers match-braces"><code class="language-python">s = 'I saw a saw saw a saw'
 
 print('saw' in s)
 print(s.find('saw'))
 print(s.rfind('saw'))
 print(s.count('saw'))
-</pre>
+</code></pre>
 
 <p>用 split 可以把字串以特定字元切開成串列，join 則可以把多個字串依照指定的方式連接起來：</p>
-<pre class="brush: py">
-s = 'I saw a saw saw a saw'
+<pre class="line-numbers match-braces"><code class="language-python">s = 'I saw a saw saw a saw'
 t = 'a,b,c,d,e,f,g,h'
 
 print(s.split())
 print(t.split(','))
 print('~'.join(['a', 'b', 'c']))
-</pre>
+</code></pre>
 
 <p>如果要把字串中的特定內容取代掉，則可以視情況來使用 replace、strip、lstrip，或者 rstrip 等函式：</p>
-<pre class="brush: py">
-s = 'I saw a saw saw a saw'
+<pre class="line-numbers match-braces"><code class="language-python">s = 'I saw a saw saw a saw'
 t = 'aeifubeetkoeitauo'
 
 print(s.replace('saw', 'QQ'))
 print(t.strip('aeiou'))  # 從左右刪除特定的一些字元
 print(t.lstrip('aeiou')) # 從左邊刪除特定的一些字元
 print(t.rstrip('aeiou')) # 從右邊刪除特定的一些字元
-</pre>
+</code></pre>
 
 <p>需要注意的是，字串並無法像串列一樣，直接取代掉特定位置的字元。如果真的需要這麼做，你可以把該字串先轉換成串列，取代完成以後再 join 回去：</p>
-<pre class="brush: py">
-s = 'aifbeeftkofita'
+<pre class="line-numbers match-braces"><code class="language-python">s = 'aifbeeftkofita'
 
 s[6] = 'X' # 這行會產生錯誤
 
@@ -132,11 +116,10 @@ t = list(s)
 t[6] = 'X'
 s2 = ''.join(t)
 print(s2)
-</pre>
+</code></pre>
 
 <p>如果你希望字串有多行的話，可以自己使用「\n」來斷行，或者改用三個引號：</p>
-<pre class="brush: py">
-s1 = 'aifbeef\ntkof\nita'
+<pre class="line-numbers match-braces"><code class="language-python">s1 = 'aifbeef\ntkof\nita'
 
 s2 = """aifbeef
 tkof
@@ -147,7 +130,7 @@ print('---')
 print(s2)
 print('---')
 print(s1 == s2)
-</pre>
+</code></pre>
 
 </blockquote>
 

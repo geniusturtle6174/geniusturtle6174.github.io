@@ -4,13 +4,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel=stylesheet type="text/css" href="myCss.css" />
 	<base target="_blank">
-	<script type="text/javascript" src="shCore.js"></script>
-	<script type="text/javascript" src="shBrushPython.js"></script>
-	<link href="shCore.css" rel="stylesheet" type="text/css" />
-	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
-	<script type="text/javascript">
-		SyntaxHighlighter.all();
-	</script>
+	<link href="prism.css" rel="stylesheet">
+	<script src="prism.js"></script>
 </head>
 
 <body bgcolor="#ccccff">
@@ -20,35 +15,31 @@
 <p>本篇介紹一些可能比較常用的數學運算，以下範例請在 cmd 當中開啟 Python 來執行，並在開啟後就立刻輸入過「import math」。若你希望寫成 *.py 的檔案來執行，則除了在檔案開頭加上「import math」以外，還要加上適當的「print」，才會有結果輸出。</p>
 
 <p>數論系列：</p>
-<pre class="brush: py">
-math.ceil(0.4)  # 往正向無條件進位至整數
+<pre class="line-numbers match-braces"><code class="language-python">math.ceil(0.4)  # 往正向無條件進位至整數
 math.floor(0.6) # 往負向無條件捨位至整數
 
 math.fabs(-12.345) # 絕對值。亦可使用「abs(-12.345)」，「abs」也是是內建函式，前面不需要「math.」
 math.factorial(5)  # 階乘
 math.gcd(12, 34)   # 最大公因數，Python 3.5 開始支援
-</pre>
+</code></pre>
 
 <p>「四捨五入」比較特別，一般會先想到「round」，但它做的是「四捨六入五取雙」。此外，round 是內建函式，不用載入 math 等任何函式庫就可以使用：</p>
-<pre class="brush: py">
-round(12.34)
+<pre class="line-numbers match-braces"><code class="language-python">round(12.34)
 round(56.78)
 
 round(7.5)
 round(8.5)
-</pre>
+</code></pre>
 
 <p>「round」在四捨五入到小數點下指定位數的時候，也會遇到問題：</p>
-<pre class="brush: py">
-round(3.15, 1) # 會得到 3.1，但數學上是 3.2
+<pre class="line-numbers match-braces"><code class="language-python">round(3.15, 1) # 會得到 3.1，但數學上是 3.2
 round(4.15, 1) # 會得到 4.2，與數學上相同
-</pre>
+</code></pre>
 
 <p>這些問題是由於電腦表示小數點的精確度限制所導致。若想要有效的處理類似問題，可以自行參考「decimal」這個模組。</p>
 
 <p>指數對數系列：</p>
-<pre class="brush: py">
-math.exp(3)     # e 的幾次方
+<pre class="line-numbers match-braces"><code class="language-python">math.exp(3)     # e 的幾次方
 math.pow(3, 5)  # x 的 y 次方，相當於 x ** y
 math.sqrt(2)    # 開根號
 
@@ -56,11 +47,10 @@ math.log(20.085536923187668) # 自然對數
 math.log2(8)
 math.log10(7)
 # 若要計算其他底數的對數，請使用「math.log(真數, 底數)」的方式，或自行套用換底公式
-</pre>
+</code></pre>
 
 <p>三角函數系列，其輸入單位為弧度：</p>
-<pre class="brush: py">
-math.sin(0.5)
+<pre class="line-numbers match-braces"><code class="language-python">math.sin(0.5)
 math.cos(0.5)
 math.tan(0.5)
 
@@ -74,15 +64,14 @@ tmp = 1 / math.sqrt(2)
 math.degrees(math.asin(tmp))
 math.degrees(math.acos(tmp))
 math.degrees(math.atan(tmp))
-</pre>
+</code></pre>
 
 <!--p>
 下面用取概數中的四捨六入五取雙來做一個應用範例(本範例只考慮正數)。
 一般的四捨五入是 4 以下捨位，5 以上進位；
 但四捨六入五取雙則是 4 以下捨位，6 以上進位，而遇到 5 時，如果進位後是偶數則進位，否則捨位。
 依據其原則，虛擬碼可寫為以下(假設要處理的是變數 x，結果儲存在變數 r)：
-<pre class="brush: py">
-if(小數點下第一位&lt;=4){
+<pre class="line-numbers match-braces"><code class="language-python">if(小數點下第一位&lt;=4){
 	r = floor(x);
 }
 else if(小數點下第一位&gt;=6){
@@ -96,14 +85,13 @@ else { /* 小數點下第一位==5 */
 		r = ceil(x);
 	}
 }
-</pre>
+</code></pre>
 Question: 如何取得個位數與小數點下第一位？如何判斷奇偶數？
 </p>
 
 <p>
 寫成程式碼，則可為以下：
-<pre class="brush: py">
-#include &lt;stdio.h&gt;
+<pre class="line-numbers match-braces"><code class="language-python">#include &lt;stdio.h&gt;
 #include &lt;math.h&gt;
 
 int main ()
@@ -136,7 +124,7 @@ int main ()
 	printf("概數：%.1f\n",r);
 	return 0;
 }
-</pre>
+</code></pre>
 </p-->
 
 </blockquote>

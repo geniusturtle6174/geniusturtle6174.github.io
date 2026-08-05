@@ -4,13 +4,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel=stylesheet type="text/css" href="myCss.css">
 	<base target="_blank">
-	<script type="text/javascript" src="shCore.js"></script>
-	<script type="text/javascript" src="shBrushPython.js"></script>
-	<link href="shCore.css" rel="stylesheet" type="text/css" />
-	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
-	<script type="text/javascript">
-		SyntaxHighlighter.all();
-	</script>
+	<link href="prism.css" rel="stylesheet">
+	<script src="prism.js"></script>
 </head>
 
 <body bgcolor="#ccccff">
@@ -22,17 +17,15 @@ Numpy 是 Python 的一個函式庫，支援了非常多種的向量和矩陣等
 </p>
 
 <p>首先來看一些基本的數學運算。由於常見的部分在 math 當中也有提供很多，故以下僅任意列出其中一些，作為語法的介紹：</p>
-<pre class="brush: py">
-import numpy as np
+<pre class="line-numbers match-braces"><code class="language-python">import numpy as np
 
 print(np.abs(-123.45))
 print(np.log2(1024))
 print(np.log10(2))
-</pre>
+</code></pre>
 
 <p>Numpy 當中，最基本與常見的資料結構，就是多維陣列(ndarray)；而矩陣和向量，當然就是二維或一維陣列。以下先對向量的建立和使用作示範：</p>
-<pre class="brush: py">
-import numpy as np
+<pre class="line-numbers match-braces"><code class="language-python">import numpy as np
 
 a = np.array([]) # 空陣列
 b = np.array([3, 4, 2, 1, 5])
@@ -42,7 +35,7 @@ print(b - c)
 print(b * c) # 元素對元素計算
 print(b / c) # 元素對元素計算
 print(a.shape, b.shape, c.shape)
-</pre>
+</code></pre>
 
 <p>在上述範例中：</p>
 <ul>
@@ -52,18 +45,16 @@ print(a.shape, b.shape, c.shape)
 </ul>
 
 <p>要創建有規則的向量，可以用 arange，它相當於 range 的 numpy 版本；如果在你的應用當中，知道點的個數比起知道幾點取一點來的方便的話，也可以使用 linspace：</p>
-<pre class="brush: py">
-import numpy as np
+<pre class="line-numbers match-braces"><code class="language-python">import numpy as np
 
 print(np.arange(10))
 print(np.arange(1, 10))
 print(np.arange(1, 10, 2))
 print(np.linspace(0, 1, 11))
-</pre>
+</code></pre>
 
 <p>矩陣，也就是二維陣列，因此也就是很多個一維陣列排在一起。以下範例，會由一個外層長度 2，內層長度每個都是 3 的 list，轉換成一個 2-by-3 的矩陣：</p>
-<pre class="brush: py">
-import numpy as np
+<pre class="line-numbers match-braces"><code class="language-python">import numpy as np
 
 a = [[1, 2, 3], [4, 5, 6]]
 print(a[0][2])
@@ -73,11 +64,10 @@ b = np.array(a)
 print(b.shape)
 print(b[0][2])
 print(b[0, 2]) # 換成 numpy array 就可以這樣用
-</pre>
+</code></pre>
 
 <p>Numpy 可以幫你創建各種具有某種規則的一維或二維陣列，以下介紹零矩陣和單位矩陣；如果你把 zeros 換成 ones，則可以產生全一矩陣：</p>
-<pre class="brush: py">
-import numpy as np
+<pre class="line-numbers match-braces"><code class="language-python">import numpy as np
 
 print(np.zeros(5)) # Shape: (5,)
 print(np.zeros((2, 3)))
@@ -85,13 +75,12 @@ print(np.zeros((5, 1)))
 
 print(np.eye(5)) # Shape: (5, 5)
 print(np.eye(5, M=3))
-</pre>
+</code></pre>
 
 <p>Question: 如何產生全部都是某個任意實數的矩陣？</p>
 
 <p>矩陣的合併則有各種「stack」系列的方法，或者「concatenate」可以使用。以下介紹其中兩種：</p>
-<pre class="brush: py">
-import numpy as np
+<pre class="line-numbers match-braces"><code class="language-python">import numpy as np
 
 a = np.array([[1, 2, 3], [4, 5, 6]])
 b = np.array([[7, 8, 9], [0, 0, 0]])
@@ -100,13 +89,12 @@ print(b)
 print('=====')
 print(np.vstack([a, b]))
 print(np.hstack([a, b]))
-</pre>
+</code></pre>
 
 <p>在上述範例中，把兩個 2-by-3 的矩陣垂直（上下）的疊起來時，成品會是一個 (2+2)-by-3 的矩陣，而若是改成水平（左右）的來疊，則成品會是 2-by-(3+3) 的矩陣。</p>
 
 <p>需要注意的是，如果其中一方是空矩陣的話，可能會產生問題，所以必須對其 size 屬性進行判斷，例如下列程式片段中，已知 a 有可能為空時，可能會出問題的寫法，以及適當的對應方法如下：</p>
-<pre class="brush: py">
-import numpy as np
+<pre class="line-numbers match-braces"><code class="language-python">import numpy as np
 
 a = np.array([]) # Shape: (0,)
 b1 = np.array([1, 2, 3]) # Shape: (3,)
@@ -122,11 +110,10 @@ c = np.vstack([a, b2])  # 這行會產生錯誤
 c = np.vstack([a, b1]) if a.size else b1
 c = np.hstack([a, b2]) if a.size else b2
 c = np.vstack([a, b2]) if a.size else b2
-</pre>
+</code></pre>
 
 <p>利用 Numpy 進行取極值、排序、平均的方法如下：</p>
-<pre class="brush: py">
-import numpy as np
+<pre class="line-numbers match-braces"><code class="language-python">import numpy as np
 
 a = np.array([[1, 5, 3], [4, 2, 6]])
 print(a)
@@ -144,20 +131,18 @@ print(c)
 print(np.mean(c)) # 所有元素平均
 print(np.mean(c, axis=0)) # 沿著 row index 的方向平均
 print(np.mean(c, axis=1)) # 沿著 column index 的方向平均
-</pre>
+</code></pre>
 
 <p>你當然還可以進行更多比較複雜的統計運算，例如第幾百分位數等等，若有興趣請自行上網搜尋。而關於取極值或排序時，如果是需要找出位置或順序再做進一步利用時，可以使用 argmax 或 argsort（此處僅以向量示範）：</p>
-<pre class="brush: py">
-import numpy as np
+<pre class="line-numbers match-braces"><code class="language-python">import numpy as np
 
 a = np.array([4, 2, 3, 1, 5])
 print(np.argmax(a))
 print(np.argsort(a))
-</pre>
+</code></pre>
 
 <p>邏輯運算與尋找特定值的方法如下，此處亦僅以向量示範：</p>
-<pre class="brush: py">
-import numpy as np
+<pre class="line-numbers match-braces"><code class="language-python">import numpy as np
 
 a = np.array([4, 3, 1, 6, 9, 2, 5, 0, 8, 7])
 print(a &gt;= 5)
@@ -165,11 +150,10 @@ print(np.where(a &gt;= 5)[0])
 
 print(np.logical_or(a &gt;= 7, a &lt;= 3))
 print(np.where(np.logical_or(a &gt;= 7, a &lt;= 3))[0])
-</pre>
+</code></pre>
 
 <p>矩陣的轉置，可以直接使用「.T」：</p>
-<pre class="brush: py">
-import numpy as np
+<pre class="line-numbers match-braces"><code class="language-python">import numpy as np
 
 a = np.array([[1, 5, 3], [4, 2, 6]])
 print(a)
@@ -192,11 +176,10 @@ print(c)
 print(c.shape)
 print(c.T)
 print(c.T.shape)
-</pre>
+</code></pre>
 
 <p>但一維的向量若也需要轉置，則需要透過各種方法先變成二維。以下介紹將一維轉成二維的相關方法：</p>
-<pre class="brush: py">
-import numpy as np
+<pre class="line-numbers match-braces"><code class="language-python">import numpy as np
 
 a = np.array([4, 2, 3, 5, 1])
 print(a)
@@ -225,11 +208,10 @@ print('------------')
 b = a.reshape(a.shape[0], 1)
 print(b)
 print(b.shape)
-</pre>
+</code></pre>
 
 <p>如前所述，對矩陣使用一般的乘號，是在做元素對元素的相乘，呼叫 np.multiply 亦同。若是需要做矩陣相乘，則必須使用 np.matmul，或者「@」運算子：</p>
-<pre class="brush: py">
-import numpy as np
+<pre class="line-numbers match-braces"><code class="language-python">import numpy as np
 
 a = np.array([[1, 3], [4, 2]])
 print(a * a)
@@ -246,11 +228,10 @@ print(a)
 print(b)
 print(np.matmul(a, b))
 print(a @ b)
-</pre>
+</code></pre>
 
 <p>前述的矩陣乘法，如果你要用迴圈自己寫的話，根據公式 C<sub>i, j</sub> = &Sigma;<sub>k</sub> A<sub>i, k</sub> * B<sub>k, j</sub> 來說，是需要三層迴圈的；此處為了讓各位對 numpy array 的存取方式等方面有更多的了解，以下範例也將同時示範兩層及一層迴圈的寫法：</p>
-<pre class="brush: py">
-import numpy as np
+<pre class="line-numbers match-braces"><code class="language-python">import numpy as np
 
 a = np.array([[1, 2, 3], [4, 6, 6]])
 b = np.array([[7, 8], [9, 0], [1, 2]])
@@ -277,13 +258,12 @@ c = np.zeros((a.shape[0], b.shape[1]))
 for i in range(a.shape[0]):
 	c[i] = a[i] @ b
 print(c)
-</pre>
+</code></pre>
 
 <p>在上述範例中的三層迴圈版本，當然也可以用單純的串列來進行，但此處為了範例撰寫的方便，故皆使用 numpy array。</p>
 
 <p>如果你需要做一些進階的線性代數運算，則需要使用 np.linalg。例如，計算行列式值與反矩陣的方法如下：</p>
-<pre class="brush: py">
-import numpy as np
+<pre class="line-numbers match-braces"><code class="language-python">import numpy as np
 
 a = np.array([[4, 3, 5], [2, 6, 1], [0, 5, 8]])
 print(np.linalg.det(a))
@@ -293,11 +273,10 @@ print('------------')
 b = np.linalg.inv(a)
 print(b)
 print(a @ b) # Should be very closed to identity
-</pre>
+</code></pre>
 
 <p>若需要進行線性方程求解，則可以使用 np.linalg.lstsq：</p>
-<pre class="brush: py">
-import numpy as np
+<pre class="line-numbers match-braces"><code class="language-python">import numpy as np
 
 A = np.array([[1, 4, 2], [3, 1, 8], [9, 4, 1]])
 b = np.array([10, 11, 100])
@@ -313,7 +292,7 @@ print('------------------')
 x, _, _, _ = np.linalg.lstsq(A.T, b.T, rcond=None)
 print(x)
 print(x @ A)
-</pre>
+</code></pre>
 
 <p>其餘如 LU、QR 等分解，都有相對應的函式，若有興趣可以自行上網搜尋。</p>
 

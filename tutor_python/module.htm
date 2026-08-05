@@ -4,13 +4,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel=stylesheet type="text/css" href="myCss.css">
 	<base target="_blank">
-	<script type="text/javascript" src="shCore.js"></script>
-	<script type="text/javascript" src="shBrushPython.js"></script>
-	<link href="shCore.css" rel="stylesheet" type="text/css" />
-	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
-	<script type="text/javascript">
-		SyntaxHighlighter.all();
-	</script>
+	<link href="prism.css" rel="stylesheet">
+	<script src="prism.js"></script>
 </head>
 
 <body bgcolor="#ccccff">
@@ -18,8 +13,7 @@
 <blockquote>
 
 <p>每個 Python 的檔案都可以看作模組，import 以後就可以使用裡面的函式或變數。假設我們有一個 my_mod.py，內容為以下：</p>
-<pre class="brush: py">
-def inc(x):
+<pre class="line-numbers match-braces"><code class="language-python">def inc(x):
 	return x + 1
 
 
@@ -29,31 +23,28 @@ def dec(x):
 
 a = 10
 b = 20
-</pre>
+</code></pre>
 
 <p>則我們可以在同一目錄下的 Python 環境或檔案中這樣使用：</p>
-<pre class="brush: py">
-import my_mod
+<pre class="line-numbers match-braces"><code class="language-python">import my_mod
 
 print(my_mod.a)
 print(my_mod.b)
 print(my_mod.inc(1))
 print(my_mod.dec(100))
-</pre>
+</code></pre>
 
 <p>Import 的時候，利用 as 可以換個名稱，但是就必須使用另外取的名稱來呼叫：</p>
-<pre class="brush: py">
-import my_mod as mm
+<pre class="line-numbers match-braces"><code class="language-python">import my_mod as mm
 
 print(mm.a)
 print(mm.inc(1))
 
 print(my_mod.inc(1)) # 這行會產生錯誤
-</pre>
+</code></pre>
 
 <p>也可以只 import 模組中的一部分內容。此時，你在呼叫時就不需要再寫出原本的模組名稱，但是會無法存取未在 import 之列的其他內容：</p>
-<pre class="brush: py">
-from my_mod import inc
+<pre class="line-numbers match-braces"><code class="language-python">from my_mod import inc
 
 print(inc(1))
 
@@ -61,11 +52,10 @@ print(inc(1))
 print(dec(100))
 print(my_mod.dec(100))
 print(my_mod.inc(100))
-</pre>
+</code></pre>
 
 <p>如果將 my_mod.py 的內容改為以下，則你會發現 import 以後，那行 print 也會被執行：</p>
-<pre class="brush: py">
-def inc(x):
+<pre class="line-numbers match-braces"><code class="language-python">def inc(x):
 	return x + 1
 
 
@@ -74,11 +64,10 @@ def dec(x):
 
 
 print('This is my_mod')
-</pre>
+</code></pre>
 
 <p>如果你希望在作為模組使用的程式檔案裡面，撰寫 print 或者任何不被包在函式（或者物件，但不在本篇之列）內的程式碼，但是又不希望那些程式碼隨著該檔案被 import 而執行的話，可以用「if __name__ == '__main__':」來包住它們，如下：</p>
-<pre class="brush: py">
-def inc(x):
+<pre class="line-numbers match-braces"><code class="language-python">def inc(x):
 	return x + 1
 
 
@@ -88,12 +77,11 @@ def dec(x):
 
 if __name__ == '__main__':
 	print('This is my_mod')
-</pre>
+</code></pre>
 
 <p>這是因為「__name__」變數在該 Python 程式碼作為一般檔案直接執行，和作為模組時的內容不一樣所致：作為一般檔案執行時，該變數的值會是「__main__」字串；而作為模組執行時，會是模組的名稱。若要驗證以上敘述，你可以將 my_mod.py 修改為以下內容，然後分別去直接執行 my_mod.py；以及在其他檔案 import my_mod 以後，再執行該其他檔案看看：</p>
-<pre class="brush: py">
-print(__name__)
-</pre>
+<pre class="line-numbers match-braces"><code class="language-python">print(__name__)
+</code></pre>
 
 </blockquote>
 

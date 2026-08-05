@@ -4,13 +4,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel=stylesheet type="text/css" href="myCss.css">
 	<base target="_blank">
-	<script type="text/javascript" src="shCore.js"></script>
-	<script type="text/javascript" src="shBrushPython.js"></script>
-	<link href="shCore.css" rel="stylesheet" type="text/css" />
-	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
-	<script type="text/javascript">
-		SyntaxHighlighter.all();
-	</script>
+	<link href="prism.css" rel="stylesheet">
+	<script src="prism.js"></script>
 </head>
 
 <body bgcolor="#ccccff">
@@ -18,8 +13,7 @@
 <blockquote>
 
 <p>串列是由一群資料排在一起形成的，其定義與使用方式非常簡單。定義時必須使用中括號，並在內容之間以逗點隔開；存取元素時則是依照順序，由 0 開始數，或者由 -1 開始倒數，並且也是使用方括號存取。範例如下：</p>
-<pre class="brush: py">
-a = [9, 4, 8, 7]
+<pre class="line-numbers match-braces"><code class="language-python">a = [9, 4, 8, 7]
 
 print(a[0])
 print(a[1])
@@ -30,39 +24,35 @@ print(a[-1])
 print(a[-2])
 print(a[-3])
 print(a[-4])
-</pre>
+</code></pre>
 
 <p>存取元素時，如果使用小數當作索引，或者索引值超出範圍時，會產生錯誤。範例如下：</p>
-<pre class="brush: py">
-a = [9, 4, 8, 7]
+<pre class="line-numbers match-braces"><code class="language-python">a = [9, 4, 8, 7]
 
 print(a[3.14])
 print(a[4])
 print(a[-5])
-</pre>
+</code></pre>
 
 <p>透過「:」這個運算，也可以一次存取多個元素，如下：</p>
-<pre class="brush: py">
-a = [12, 34, 56, 78, 90, 123, 456, 789, 1234, 5678, 12345]
+<pre class="line-numbers match-braces"><code class="language-python">a = [12, 34, 56, 78, 90, 123, 456, 789, 1234, 5678, 12345]
 
 print(a[3:])    # 從 a[3] 開始取到結束
 print(a[:6])    # 從頭開始取到 a[6-1]
 print(a[4:7])   # a[4] 開始取到 a[7-1]，或者說 a[4] 開始取 7-4 個
 print(a[3:8:2]) # a[3] 開始取到 a[8-1]，每 2 個取 1 個
-</pre>
+</code></pre>
 
 <p>透過「:」存取多個元素時，如果遇到索引值超出範圍，則會視為從某個位置開始或結束，有看到元素則取出，因此可能會是空串列或整個串列，如下：</p>
-<pre class="brush: py">
-a = [12, 34, 56, 78, 90, 123, 456, 789, 1234, 5678]
+<pre class="line-numbers match-braces"><code class="language-python">a = [12, 34, 56, 78, 90, 123, 456, 789, 1234, 5678]
 
 print(a[100:])  # 這行會拿到空串列
 print(a[:100])  # 這行會拿到整個串列
 print(a[-100:]) # 這行會拿到整個串列
-</pre>
+</code></pre>
 
 <p>判斷 list 當中是否含有特定元素可以使用「in」，取得長度可以使用「len」；此外，如果 list 當中都是數字，還可以進行一些基本統計：</p>
-<pre class="brush: py">
-a = [12, 34, 56, 78, 90, 123, 456, 789, 1234, 5678, 12345]
+<pre class="line-numbers match-braces"><code class="language-python">a = [12, 34, 56, 78, 90, 123, 456, 789, 1234, 5678, 12345]
 
 print(123 in a)
 print(5566 not in a)
@@ -72,11 +62,10 @@ print(len(a))
 print(min(a))
 print(max(a))
 print(sum(a))
-</pre>
+</code></pre>
 
 <p>修改一或多個元素的方法，如以下範例：</p>
-<pre class="brush: py">
-a = [12, 34, 56, 78, 90, 123, 456, 789, 1234, 5678, 12345]
+<pre class="line-numbers match-braces"><code class="language-python">a = [12, 34, 56, 78, 90, 123, 456, 789, 1234, 5678, 12345]
 
 a[0] = 'hello'
 print(a)
@@ -89,13 +78,12 @@ print(a)
 
 a[1:4] = '!!!'
 print(a)
-</pre>
+</code></pre>
 
 <p>在上述範例中你可以看到，在 Python 當中，串列是可以把不同類型的資料放在一起的；此外，當一次修改多個元素時，你可以將此操作視為「把左邊所代表的子串列剪掉，換成右邊的串列接上去」（Question: 當左右兩邊所指的個數不一致時，會發生什麼事？）。</p>
 
 <p>新增與刪除元素的方法如下：</p>
-<pre class="brush: py">
-a = [12, 34, 56, 78, 90, 123, 456, 789, 1234, 5678, 12345]
+<pre class="line-numbers match-braces"><code class="language-python">a = [12, 34, 56, 78, 90, 123, 456, 789, 1234, 5678, 12345]
 
 a.append('A')    # 加入一個元素到尾端，會直接改變原本的串列
 print(a)
@@ -123,18 +111,17 @@ print(a)
 
 del a[3:5]       # 刪除指定位置的多個元素，不回傳
 print(a)
-</pre>
+</code></pre>
 
 <p>串列反轉的方法如下：</p>
-<pre class="brush: py">
-a = [12, 34, 12345, 56, 78, 90, 123, 1234, 5678, 456, 789]
+<pre class="line-numbers match-braces"><code class="language-python">a = [12, 34, 12345, 56, 78, 90, 123, 1234, 5678, 456, 789]
 
 a.reverse()   # 反轉，會直接修改原本的串列
 print(a)
 
 b = a[::-1]   # 也可以反轉，不過不是修改原本的串列，而是產生一個新的
 print(b)
-</pre>
+</code></pre>
 
 </blockquote>
 

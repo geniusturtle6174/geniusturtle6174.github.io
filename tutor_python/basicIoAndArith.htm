@@ -7,13 +7,8 @@
 		.py2{display: none;}
 	</style>
 	<base target="_blank">
-	<script type="text/javascript" src="shCore.js"></script>
-	<script type="text/javascript" src="shBrushPython.js"></script>
-	<link href="shCore.css" rel="stylesheet" type="text/css" />
-	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
-	<script type="text/javascript">
-		SyntaxHighlighter.all();
-	</script>
+	<link href="prism.css" rel="stylesheet">
+	<script src="prism.js"></script>
 </head>
 
 <body bgcolor="#ccccff">
@@ -44,9 +39,8 @@ function toggle2(){
 </p>
 
 <p>我們首先來印出固定的少量內容。這在 Python 當中非常簡單，以下範例會在螢幕上印出「Hello World!!」：</p>
-<pre class="brush: py">
-print('Hello World!!') # 印出一些東西
-</pre>
+<pre class="line-numbers match-braces"><code class="language-python">print('Hello World!!') # 印出一些東西
+</code></pre>
 
 <p>要執行這段程式碼，你可以先在 cmd 當中先開啟 Python 後輸入程式碼，再敲下 enter 來執行；或者將這段程式碼存成一個副檔名為 py 的純文字檔，例如 hello.py，然後在 cmd 當中，用「python hello.py」的方式執行。其中：</p>
 <ul>
@@ -59,23 +53,20 @@ print('Hello World!!') # 印出一些東西
 
 <div class="py2">
 <p>另外，若是在 Python 2 當中，應該寫成：</p>
-<pre class="brush: py">
-print 'OAO'
-</pre>
+<pre class="line-numbers match-braces"><code class="language-python">print 'OAO'
+</code></pre>
 
 <p>或者：</p>
-<pre class="brush: py">
-from __future__ import print_function
+<pre class="line-numbers match-braces"><code class="language-python">from __future__ import print_function
 print('OAO')
-</pre>
+</code></pre>
 
 <p>第一行的 import，主要用於使用外掛功能。較細節的說明，之後會另外介紹</p>
 </div>
 
 <p>Question：下列程式片段，有哪些語法錯誤？</p>
-<pre class="brush: py">
-Print "Hello World!!'
-</pre>
+<pre class="line-numbers match-braces"><code class="language-python">Print "Hello World!!'
+</code></pre>
 
 <p>目前為止，已經能輸出大部分的固定內容，而程式中的資料，若要能隨著使用者輸入或者運算結果等狀況改變時，則需要用變數來儲存。變數是記憶體裡面的一塊空間，可以用來存放資料，而變數命名時，必須遵循下列的命名規則：</p>
 <ul>
@@ -94,12 +85,11 @@ Print "Hello World!!'
 </ul>
 
 <p>將資料塞進變數當中的方法，是使用「=」（指派運算子），例如程式敘述「a = 2」的結果，就是讓變數 a 的值為 2。以下範例會計算一些整數相加的結果：</p>
-<pre class="brush: py">
-a = 1
+<pre class="line-numbers match-braces"><code class="language-python">a = 1
 b = 2
 c = a + b + 3
 print(c) # 因為是單純印出變數的內容，所以不用加引號
-</pre>
+</code></pre>
 
 <p>在上述範例中，運算子左右不一定要加空白；但是為了方便閱讀程式，通常會如同範例顯示那樣的加上空白。</p>
 
@@ -115,26 +105,23 @@ print(c) # 因為是單純印出變數的內容，所以不用加引號
 <p>運算子之間，會遵守優先順序，例如先乘除後加減，以及括號先算等等；而優先層級相同時，則一般來說是由左到右運算。另外要注意的是，變數一旦被指派了新的值，則舊的值會永遠消失。例如先寫了「a = 1」的敘述，而後面又接著「a = 2」，則此時的變數 a 的值，會由 1 變成 2。以下簡單展示幾個使用運算子的範例。</p>
 
 <p>四則運算時，是先乘除後加減，若你希望加減先算，則要明確地加上括號。你可以比較看看以下兩組算式的結果：</p>
-<pre class="brush: py">
-print( 12 * (18 - 15) * 17 )
+<pre class="line-numbers match-braces"><code class="language-python">print( 12 * (18 - 15) * 17 )
 print( 12 * 18 - 15 * 17 )
 
 print( 560 * (1 + 0.3 + 0.2) )
 print( 560 * 1 + 0.3 + 0.2 )
-</pre>
+</code></pre>
 
 <p>優先層級相同時，則一般來說是由左到右運算，若你希望右邊先算，則也要明確地加上括號。你可以比較看看以下兩個算式的結果：</p>
-<pre class="brush: py">
-a = 3000
+<pre class="line-numbers match-braces"><code class="language-python">a = 3000
 b = 12
 c = 15
 print( a / (b * c) )
 print( a / b * c )
-</pre>
+</code></pre>
 
 <p>依此類推，例如三個整數取平均的計算，可以寫成如下：</p>
-<pre class="brush: py">
-a = 1
+<pre class="line-numbers match-braces"><code class="language-python">a = 1
 b = 2
 c = 3
 d = (a + b + c) / 3
@@ -142,36 +129,32 @@ d = (a + b + c) / 3
 # 變數跟固定文字混在一起印的方法很多，以下是其中兩種，其中的雙引號皆可換成單引號
 print(f"Avg of {a}, {b}, and {c}: {d}")
 print("Avg of {}, {}, and {}: {}".format(a, b, c, d))
-</pre>
+</code></pre>
 
 <p>次方的運算順序不太一樣，在 Python 是依照數學上的定義，從右邊運算；因此若你希望左邊先算，則也要明確地加上括號。你可以比較看看以下幾個算式的結果：</p>
-<pre class="brush: py">
-print( 2 ** 2 ** 2 ** 2 ) # 預設順序
+<pre class="line-numbers match-braces"><code class="language-python">print( 2 ** 2 ** 2 ** 2 ) # 預設順序
 print( 2 ** (2 ** (2 ** 2)) ) # 右邊先算
 print( ((2 ** 2) ** 2) ** 2 ) # 左邊先算
-</pre>
+</code></pre>
 
 <p>書寫數學式時，我們習慣省略乘號，但在 Python 中，仍然必須寫出乘號，否則會出現語法錯誤，如下：</p>
-<pre class="brush: py">
-a = 3
+<pre class="line-numbers match-braces"><code class="language-python">a = 3
 b = 2
 print(2 * a)
 print(3b) # 這行會產生語法錯誤
-</pre>
+</code></pre>
 
 <p>Question: 兩行 print 分別會印出什麼？</p>
-<pre class="brush: py">
-a = 1
+<pre class="line-numbers match-braces"><code class="language-python">a = 1
 a = a + 1
 print(a)
 b = a + 1
 a = a + 1
 print(a, b)
-</pre>
+</code></pre>
 
 <p>在前面幾個範例中，除法的結果都恰好是整數，如果在數學上有小數的話，那麼在程式語言中，我們可以利用不同的運算符號，讓程式計算是否捨去小數的結果</p>
-<pre class="brush: py">
-a = 8 / 3
+<pre class="line-numbers match-braces"><code class="language-python">a = 8 / 3
 b = 8 / 4
 c = 8 / 5
 print(a, b, c)
@@ -179,37 +162,33 @@ a = 8 // 3
 b = 8 // 4
 c = 8 // 5
 print(a, b, c)
-</pre>
+</code></pre>
 
 <p>在上述範例中，一個斜線會保留小數，兩個斜線會往負的方向取整數<span class="py2">；而在 Python 2 當中，則都是往負的方向取整數。但當你在 Python 2 中使用了「from __future__ import division」之後，就又會跟 Python 3 一樣</span>。</p>
 
 <p>在 Python 語言中，餘數的正負號會與除數相同，即 a % b 相當於計算 a - a // b * b。以下是用「%」符號求餘數的範例：</p>
-<pre class="brush: py">
-print(15 % 4)
+<pre class="line-numbers match-braces"><code class="language-python">print(15 % 4)
 print(-15 % 4)
 print(15 % -4)
 print(-15 % -4)
-</pre>
+</code></pre>
 
 <p>關於其他一些的 print 使用與其格式控制，範例如下。其中，三個引號是多行字串，但也可以當作多行註解使用：</p>
-<pre class="brush: py">
-''' 以下為了讓不同格式間的輸出效果更明顯，
+<pre class="line-numbers match-braces"><code class="language-python">''' 以下為了讓不同格式間的輸出效果更明顯，
     因此在前後都加上底線來輔助顯示 '''
 print('__{:5d}__'.format(123))  # 靠右輸出 5 位整數，前方空白
 print('__{:05d}__'.format(123)) # 靠右輸出 5 位整數，前方補 0
 print('__{:10.2f}__'.format(12345.678))  # 靠右輸出浮點數，總共 10 位，小數點部分 2 位。輸出結果會被四捨五入
-</pre>
+</code></pre>
 
 <p>若要接收使用者輸入的變數，則可使用 input 函式（目前，我們只先介紹一次讀取一個數字的方法）。以下是兩個整數相加的範例，為了避免次一行程式被當成這一行的輸入，請存成 py 檔，或者逐行執行。執行時，請依次輸入兩個數字，例如 960 和 110，輸入完第一個數字後要按 enter 才能再輸入下一個：</p>
-<pre class="brush: py">
-a = input('Please enter 1st number: ')
+<pre class="line-numbers match-braces"><code class="language-python">a = input('Please enter 1st number: ')
 b = input('Please enter 2nd number: ')
 print(a + b)
-</pre>
+</code></pre>
 
 <p>你可能會發現結果跟預期的不太一樣，這是因為輸入的內容被當成一般文字，而加號在此種情況下的行為是文字的連接。若要修正，可以進行如下的幾種修改之一：</p>
-<pre class="brush: py">
-a = int(input('Please enter 1st number: '))
+<pre class="line-numbers match-braces"><code class="language-python">a = int(input('Please enter 1st number: '))
 b = int(input('Please enter 2nd number: '))
 print(a + b)
 
@@ -222,16 +201,15 @@ print(a + b)
 a = input('Please enter 1st number: ')
 b = input('Please enter 2nd number: ')
 print(int(a) + int(b))
-</pre>
+</code></pre>
 
 <p>當然，如果你希望輸入小數，並進行小數的運算，則把「int」改為「float」就可以達成目標。<span class="py2">另外，若使用 Python 2，則會自動判斷輸入的類型；但是像上述範例這樣明確地寫出要使用整數運算，仍會對釐清程式的運作細節有幫助。</span></p>
 
 <p>Question: 下列修改方式是否可亦可達到進行整數相加的效果？為什麼？</p>
-<pre class="brush: py">
-a = input('Please enter 1st number: ')
+<pre class="line-numbers match-braces"><code class="language-python">a = input('Please enter 1st number: ')
 b = input('Please enter 2nd number: ')
 print(int(a + b))
-</pre>
+</code></pre>
 
 <p>Question: 如果你想進行小數運算，但是「剛好忘記」把 int 改成 float，會發生什麼事？為什麼？請觀察結果並試著解釋。</p>
 

@@ -4,13 +4,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel=stylesheet type="text/css" href="myCss.css">
 	<base target="_blank">
-	<script type="text/javascript" src="shCore.js"></script>
-	<script type="text/javascript" src="shBrushPython.js"></script>
-	<link href="shCore.css" rel="stylesheet" type="text/css" />
-	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
-	<script type="text/javascript">
-		SyntaxHighlighter.all();
-	</script>
+	<link href="prism.css" rel="stylesheet">
+	<script src="prism.js"></script>
 </head>
 
 <body bgcolor="#ccccff">
@@ -136,7 +131,7 @@ np.save('train_fea', fea_train_all)
 np.save('train_lab', label_train_all)
 np.save('test_fea', fea_test_all)
 np.save('test_lab', label_test_all)
-</pre>
+</code></pre>
 
 <p>接著就可以進入訓練部分，在一台 i5-3230M CPU 的筆電上，大約十多分鐘可以訓練完畢。</p>
 <pre class="brush: python">
@@ -203,7 +198,7 @@ for epoch in range(epoch_num):
     ))
     print('\tRecog rate: {:.2f}%'.format(100*np.mean(recog_idx==gt)))
 saver.save(sess, os.path.join('model_sd', 'model.ckpt'))
-</pre>
+</code></pre>
 
 <p>提示：<strike>找飯店，XXgo；</strike>嫌慢嗎？<a href="tf_install_gpu.htm">GPU</a></p>
 
@@ -251,7 +246,7 @@ for batch in range(0, test_data_num, test_batch_size):
     recog_all = np.vstack([recog_all, recog]) if recog_all.size else recog
 recog_idx = np.argmax(recog_all, axis=1)
 print('\tRecog rate: {:.2f}%'.format(100*np.mean(recog_idx==gt)))
-</pre>
+</code></pre>
 
 <p>
 若要自己錄好聲音來測試也很簡單，只要把特徵抽取的部分跟測試部分拿出來拼湊一下即可。但有兩個地方需要注意，一是網路的輸入有四個維度，但是範例提供的頻譜圖抽取函式只會輸出二維的頻譜，所以需要新增一些維度(本範例已包含相關程式碼)；二是錄音通常不一定容易控制在大約一秒，因此建議可從音檔最大震幅的地方，往左右各取半秒，以取代本範例的"少的補零多的丟掉"。完整的程式碼如下：
@@ -319,7 +314,7 @@ saver.restore(sess, os.path.join('model_sd', 'model.ckpt'))
 recog = sess.run([out], feed_dict={ph_x: fea})[0]
 recog_idx = np.argmax(recog, axis=1)
 print('Recognized spoken digit is:', recog_idx)
-</pre>
+</code></pre>
 
 </blockquote>
 

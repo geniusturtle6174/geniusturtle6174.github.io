@@ -4,13 +4,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel=stylesheet type="text/css" href="myCss.css">
 	<base target="_blank">
-	<script type="text/javascript" src="shCore.js"></script>
-	<script type="text/javascript" src="shBrushPython.js"></script>
-	<link href="shCore.css" rel="stylesheet" type="text/css" />
-	<link href="shThemeDefault.css" rel="stylesheet" type="text/css" />
-	<script type="text/javascript">
-		SyntaxHighlighter.all();
-	</script>
+	<link href="prism.css" rel="stylesheet">
+	<script src="prism.js"></script>
 </head>
 
 <body bgcolor="#ccccff">
@@ -20,8 +15,7 @@
 <p>本篇將說明質數的判斷以及質數表的建立，並將盡可能地展示從普通、直覺的寫法，修改到較有效率的寫法的過程。</p>
 
 <p>質數的定義，是大於 1 的正整數中，因數只有 1 和他自己者；反之，則稱為合數。根據此定義，你可能會很直覺的撰寫出如下的函式，來判斷一個數字是否為質數：</p>
-<pre class="brush: py">
-def is_prime(n):
+<pre class="line-numbers match-braces"><code class="language-python">def is_prime(n):
 	if n <= 1:
 		return False
 	counter = 0
@@ -32,11 +26,10 @@ def is_prime(n):
 
 for i in range(1, 21):
 	print(i, is_prime(i))
-</pre>
+</code></pre>
 
 <p>當然，你可能知道一個數字 n 的因數，必定會有小於或等於 n<sup>0.5</sup> 者。因此，我們可以將迴圈檢查的範圍縮小：</p>
-<pre class="brush: py">
-def is_prime(n):
+<pre class="line-numbers match-braces"><code class="language-python">def is_prime(n):
 	if n <= 1:
 		return False
 	counter = 0
@@ -47,11 +40,10 @@ def is_prime(n):
 
 for i in range(1, 21):
 	print(i, is_prime(i))
-</pre>
+</code></pre>
 
 <p>而如果你考慮到了質數當中只有 2 是偶數的這個事實，則對於 3 以上的數字，可以只檢查奇數部分，並且在檢查到有多餘因數時就結束，這樣就能讓跑迴圈的次數再省下不少：</p>
-<pre class="brush: py">
-def is_prime(n):
+<pre class="line-numbers match-braces"><code class="language-python">def is_prime(n):
 	if n <= 1:
 		return False
 	if n == 2:
@@ -65,13 +57,12 @@ def is_prime(n):
 
 for i in range(1, 21):
 	print(i, is_prime(i))
-</pre>
+</code></pre>
 
 <p>前述的做法，稱為「試除法」。我們只介紹到了在大於 2 的狀況中，僅測試奇數的做法；各位也可以試試看，要怎樣實作出在大於 3 的狀況中，只測試 6k ± 1 的做法。</p>
 
 <p>但如果你在程式中需要時常的進行質數判斷，則比較好的做法，應該是先建立質數表，然後當輸入範圍在表內的時候，直接查表判斷；範圍超過時，才使用試除法。下面介紹埃氏篩法(sieve of Eratosthenes)，也就是國小學過的「用第一個質數 2，篩除所有大於 2 的 2 的倍數；下一個沒被篩除的 3 是質數，用 3 篩除所有大於 3 的 3 的倍數；下一個沒被篩除的 5 是質數，用 5 篩除所有大於 5 的 5 的倍數；...」：</p>
-<pre class="brush: py">
-def sieve_of_Eratosthenes(n):
+<pre class="line-numbers match-braces"><code class="language-python">def sieve_of_Eratosthenes(n):
 	is_prime = [True for _ in range(n+1)]
 	is_prime[0] = False
 	is_prime[1] = False
@@ -84,13 +75,12 @@ def sieve_of_Eratosthenes(n):
 
 
 print(sieve_of_Eratosthenes(25))
-</pre>
+</code></pre>
 
 <p>在上述範例中，我們再次利用了「一合數 n 在 n<sup>0.5</sup> 以內會有一個不是 1 的因數」這個事實，來讓外層迴圈只需要跑到 n<sup>0.5</sup>，而內層迴圈可以從 i<sup>2</sup> 起跑，以避免 6 被 2 篩除一次，又被 3 篩除一次；以及 10 被 2 篩除一次，又被 5 篩除一次等情況。然而，埃氏篩法還是會有重複的篩除，例如 12、18、24、... 這幾個合數，會被 2 篩除一次，也會被 3 篩除一次。</p>
 
 <p>比較埃氏篩法效率的篩法，是歐拉篩法，又稱作線性篩法。在歐拉篩法中，每個合數只會被其最小的質因數篩除：</p>
-<pre class="brush: py">
-def sieve_of_Euler(n):
+<pre class="line-numbers match-braces"><code class="language-python">def sieve_of_Euler(n):
 	is_prime = [True for _ in range(n+1)]
 	primes = []
 	for i in range(2, n+1):
@@ -106,7 +96,7 @@ def sieve_of_Euler(n):
 	return primes
 
 print(sieve_of_Euler(20))
-</pre>
+</code></pre>
 
 <p>在上述範例中，第一個 break 代表的是超過建表範圍就不再檢查；第二個 break 則是用來確保每個合數只被它最小的質因數篩掉一次<span style="text-decoration: line-through;">，其證明過程很顯然，留給讀者做練習</span>。而以 20 以下的質數表為例，歐拉篩法篩除的過程如下：</p>
 <ul>
