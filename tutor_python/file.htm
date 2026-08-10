@@ -14,8 +14,7 @@
 <blockquote>
 
 <p>本篇介紹檔案的基本操作，首先是讀取檔案的示範。執行此範例以及本篇章的其他大部分範例之前，都請先在跟 py 檔案相同的目錄下創造一個 OAO.txt，並任意的輸入幾行內容。</p>
-<pre class="brush: python">
-fin = open('OAO.txt', 'r')
+<pre class="line-numbers match-braces"><code class="language-python">fin = open('OAO.txt', 'r')
 
 for line in fin.readlines():
 	print(line)
@@ -32,8 +31,7 @@ fin.close()
 </ul>
 
 <p>你也可以使用 read 一次讀取全部內容後，再用 splitlines 切出一行一行的內容：</p>
-<pre class="brush: python">
-fin = open('OAO.txt', 'r')
+<pre class="line-numbers match-braces"><code class="language-python">fin = open('OAO.txt', 'r')
 
 for line in fin.read().splitlines():
 	print(line)
@@ -42,8 +40,7 @@ fin.close()
 </code></pre>
 
 <p>檔案關閉的程式碼並不一定要放在最後，你也可以先將需要的內容讀取完畢後就關閉檔案，然後再慢慢地處理內容。我們將前一個範例變更一點順序，如下：</p>
-<pre class="brush: python">
-fin = open('OAO.txt', 'r')
+<pre class="line-numbers match-braces"><code class="language-python">fin = open('OAO.txt', 'r')
 
 cnt = fin.read().splitlines()
 
@@ -54,22 +51,19 @@ for line in cnt:
 </code></pre>
 
 <p>如果要寫入檔案，則可以在開啟時使用「'w'」。使用 w 模式時，如果檔案不存在，則會建立一個新的；但如果檔案存在，則舊的內容會被清掉重寫：</p>
-<pre class="brush: python">
-fout = open('QQ.txt', 'w')
+<pre class="line-numbers match-braces"><code class="language-python">fout = open('QQ.txt', 'w')
 fout.write('123\n456')
 fout.close()
 </code></pre>
 
 <p>前面提到，「w」模式會把檔案覆蓋並重寫；而有另一個「a」模式，是把新的內容，附加到原本檔案的尾端 。如果檔案不存在的話，「a」模式也會幫你建立一個新的。以下是範例，為了看出附加的效果，各位可以試著多執行幾次：</p>
-<pre class="brush: python">
-fout = open('QQ.txt', 'a')
+<pre class="line-numbers match-braces"><code class="language-python">fout = open('QQ.txt', 'a')
 fout.write('GG\nOAO')
 fout.close()
 </code></pre>
 
 <p>除了自己把檔案關閉以外，還可以利用 Pytohn 的 with...as 功能，接在 with 後面開啟的檔案，在離開 with 區塊以後，會自動關閉：</p>
-<pre class="brush: python">
-with open('OAO.txt', 'r') as fin
+<pre class="line-numbers match-braces"><code class="language-python">with open('OAO.txt', 'r') as fin
 	cnt = fin.read().splitlines()
 for line in cnt:
 	print(line)
@@ -79,8 +73,7 @@ with open('QQ.txt', 'w') as fout:
 </code></pre>
 
 <p>在前面的範例中，我們都假設檔案存在，並且可以順利地被讀取或寫入。在其他某些語言中，如果檔案不存在的話，會在讀取時才產生問題，而 Python 會在開啟時就產生錯誤。若要在程式中偵測相關情況，你可以使用「try...except」處理，或者使用 os 函式庫的 isfile 或 exists 判斷檔案是否存在，兩者的差別是前者會把資料夾視為否定（因為資料夾不是檔案），但後者可以不管是檔案或資料夾都可以判斷。下列範例將展示 isfile 的用法：</p>
-<pre class="brush: python">
-import os
+<pre class="line-numbers match-braces"><code class="language-python">import os
 
 if os.path.isfile('hello.txt'):
 	with open('hello.txt', 'r') as fin:

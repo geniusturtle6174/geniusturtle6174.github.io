@@ -39,14 +39,12 @@ function toggle(){
 </p>
 
 <p>程式中，經常需要重複的進行某些動作，這時候，就需要用到「迴圈」。其中一種方法是 for 迴圈，通常用在重複次數確定的情況下。For 迴圈的基本語法如下：</p>
-<pre class="brush: python">
-for 變數 in 串列或其他任何一串東西:
+<pre class="line-numbers match-braces"><code class="language-python">for 變數 in 串列或其他任何一串東西:
 	程式敘述
 </code></pre>
 
 <p>其中的變數，在迴圈執行時，會依照串列或其他任何一串東西當中的內容，依次的變化。例如，下面這個程式可以有規則的印出一些數字：</p>
-<pre class="brush: python">
-for i in range(10):
+<pre class="line-numbers match-braces"><code class="language-python">for i in range(10):
 	print(i)
 
 print('-----')
@@ -69,8 +67,7 @@ for i in range(10, 1, -1):
 
 <div class="newbie">
 <p>我們將前面的範例修改一下數字範圍，並加上一點變數，則可以從 1 加到 100：</p>
-<pre class="brush: python">
-s = 0
+<pre class="line-numbers match-braces"><code class="language-python">s = 0
 for i in range(1, 101):
 	s = s + i
 print(s)
@@ -81,8 +78,7 @@ print(s)
 
 <div class="newbie">
 <p>利用迴圈自己計算階乘的方法也非常相似，但是千萬記得初始值必須設為 1，而不是上一個範例的 0。以下示範計算 10 的階乘（當然，若在允許使用內建函式的情況下，可以盡量利用之）：</p>
-<pre class="brush: python">
-s = 1
+<pre class="line-numbers match-braces"><code class="language-python">s = 1
 for i in range(1, 11):
 	s = s * i
 print(s)
@@ -91,8 +87,7 @@ print(s)
 
 <div class="newbie">
 <p>如果要計算比較一般化的等差級數和，則可簡單的把迴圈變數跳動的範圍，改用變數來給值或判斷。當然，也可以如最後一段，用公式計算級數和。尤其是項數多的時候，用公式計算會比迴圈來的有效率：</p>
-<pre class="brush: python">
-s = 0
+<pre class="line-numbers match-braces"><code class="language-python">s = 0
 
 a1 = 3
 an = 101
@@ -108,8 +103,7 @@ print(n*(a1+an)/2)
 
 <div class="newbie">
 <p><a href="http://zh.wikipedia.org/wiki/%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97">費氏數列</a>也很適合用迴圈來計算，以下程式可以印出費氏數列直到第 n (n ≥ 2)項的值：</p>
-<pre class="brush: python">
-prev2 = 0 # a_{n-2}
+<pre class="line-numbers match-braces"><code class="language-python">prev2 = 0 # a_{n-2}
 prev1 = 1 # a_{n-1}
 n = 10
 for i in range(2, n+1):
@@ -154,8 +148,7 @@ for i in range(2, n+1):
 </table>
 
 <p>要使用迴圈來看過 list 的每個元素時，有以下幾種用法：</p>
-<pre class="brush: python">
-a = [3, 5, 2, 4, 1]
+<pre class="line-numbers match-braces"><code class="language-python">a = [3, 5, 2, 4, 1]
 
 for i in range(len(a)):
 	print(i, a[i])
@@ -177,8 +170,7 @@ for i, x in enumerate(a, 10):
 </code></pre>
 
 <p>要使用迴圈來看過整個 dictionary 時，則有以下幾種用法：</p>
-<pre class="brush: python">
-d = {
+<pre class="line-numbers match-braces"><code class="language-python">d = {
 	'AB': 'CDE',
 	'W': 'XYZ',
 	123: 456,
@@ -199,8 +191,7 @@ for k, v in d.items(): # 在 Python 2 是 iteritems
 </code></pre>
 
 <p>當然，你也可以在迴圈中，對串列或者字典進行其他各種操作，以下示範兩個範例：</p>
-<pre class="brush: python">
-a = [9, 7, 8, 6, 0]
+<pre class="line-numbers match-braces"><code class="language-python">a = [9, 7, 8, 6, 0]
 
 b = []
 for x in a:
@@ -217,8 +208,7 @@ print(d)
 
 <div class="newbie">
 <p>迴圈跟條件判斷一樣，也可以是巢狀（一層包一層）的。以下程式使用了兩層的 for 迴圈來輸出九九乘法表：</p>
-<pre class="brush: python">
-for i in range(1, 10):
+<pre class="line-numbers match-braces"><code class="language-python">for i in range(1, 10):
 	for j in range(1, 10):
 		print('{:d}*{:d}={:2d} '.format(i, j, i*j), end='')
 	print('')
@@ -236,15 +226,13 @@ for i in range(1, 10):
 </div>
 
 <p>另外一種迴圈是 while，使用時會給定一個條件，只要條件符合，迴圈就會一直執行，所以通常使用在不太確定重複次數的情況下。While 迴圈的語法如下：</p>
-<pre class="brush: python">
-while 條件式:
+<pre class="line-numbers match-braces"><code class="language-python">while 條件式:
 	程式敘述
 </code></pre>
 
 <div class="newbie">
 <p>以下程式也會印出 1 到 10，各位可以體會一下 while 與 for 的語法差異：</p>
-<pre class="brush: python">
-i = 1
+<pre class="line-numbers match-braces"><code class="language-python">i = 1
 while i &lt;= 10:
 	print(i)
 	i = i + 1
@@ -261,8 +249,7 @@ while i &lt;= 10:
 </ul>
 
 <p>所以我們可以利用 while 迴圈，加上 if 進行判斷，寫出下面的程式：</p>
-<pre class="brush: python">
-n = 13
+<pre class="line-numbers match-braces"><code class="language-python">n = 13
 print(n)
 while n != 1:
 	if n%2 == 0:
@@ -276,8 +263,7 @@ while n != 1:
 <p>Question: 在上述範例中，如果把 n 設為 1，請問程式會如何輸出？</p>
 
 <p>「break」可以跳出所在的這一層迴圈，「continue」可以繼續下一層迴圈：</p>
-<pre class="brush: python">
-print("First loop:")
+<pre class="line-numbers match-braces"><code class="language-python">print("First loop:")
 for i in range(1, 6):
 	if i == 3:
 		break

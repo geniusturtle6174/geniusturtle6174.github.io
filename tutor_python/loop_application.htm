@@ -16,8 +16,7 @@
 <p>本篇將以終極密碼和勘根定理兩個範例，來做為迴圈語法的應用展示。</p>
 
 <p>終極密碼的遊戲目標是，給定一個上下界，讓大家猜出該範圍內的數字。而在遊戲過程中，上下界會隨著大家猜想的數字變化，而愈來愈縮小範圍，直至有人猜中為止。以下是完整程式碼：</p>
-<pre class="brush: python">
-low = 1
+<pre class="line-numbers match-braces"><code class="language-python">low = 1
 high = 100
 pwd = 35
 
@@ -50,8 +49,7 @@ while True:
 </ol><br>
 
 <p>以下範例，會展示如何找出 x<sup>5</sup> - x - 1 = 0 在 (-0.5, 1.5) 之間的某一根：</p>
-<pre class="brush: python">
-def f(x):
+<pre class="line-numbers match-braces"><code class="language-python">def f(x):
 	return x ** 5 - x - 1
 
 
