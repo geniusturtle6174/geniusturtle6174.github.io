@@ -16,27 +16,28 @@
 
 <blockquote>
 
-<p>
 <script>
-var status = 0;
+var status2 = 0;
 
-function toggle2(){
+function toggle2() {
 	var py2 = document.getElementsByClassName("py2");
-	if(status == 1){
-		status = 0;
-		for(var i=0;i<py2.length;i++){
+	if (status2 == 1) {
+		status2 = 0;
+		for (var i = 0; i < py2.length; i++) {
 			py2[i].style.display = 'none';
 		}
 	}
 	else {
-		status = 1;
-		for(var i=0;i<py2.length;i++){
+		status2 = 1;
+		for (var i = 0; i < py2.length; i++) {
 			py2[i].style.display = 'inline';
 		}
 	}
+	document.getElementById("status2-label").textContent = (status2 == 1) ? '顯示中' : '隱藏中';
 }
 </script>
-<p align="center" style="background:#ffa;padding:5px">本篇將 Python 2 相關內容預設為隱藏，若需在顯示與隱藏間相互切換請點<a onclick="toggle2()">這裡</a>。</p>
+<p style="text-align:center; background:#ffa; padding:5px">
+本篇將 Python 2 相關內容預設為隱藏（目前狀態：<span id="status2-label">隱藏中</span>），若需在顯示與隱藏間相互切換請點<a href="#" onclick="toggle2(); return false;">這裡</a>。
 </p>
 
 <p>我們首先來印出固定的少量內容。這在 Python 當中非常簡單，以下範例會在螢幕上印出「Hello World!!」：</p>
@@ -65,7 +66,7 @@ print('OAO')
 <p>第一行的 import，主要用於使用外掛功能。較細節的說明，之後會另外介紹</p>
 </div>
 
-<p>Question：下列程式片段，有哪些語法錯誤？</p>
+<p><b>Question:</b> 下列程式片段，有哪些語法錯誤？</p>
 <pre class="line-numbers match-braces"><code class="language-python">Print "Hello World!!'
 </code></pre>
 
@@ -77,7 +78,7 @@ print('OAO')
 	</li>
 </ul>
 
-<p>Question: 下列哪些變數名稱合法？</p>
+<p><b>Question:</b> 下列哪些變數名稱合法？</p>
 <ul>
 	<li>AbCdE</li>
 	<li>34fgh</li>
@@ -98,7 +99,7 @@ print(c) # 因為是單純印出變數的內容，所以不用加引號
 <ul>
 	<li>「+」、「-」、「*」、「/」或「//」：加減乘除。</li>
 	<li>「**」：次方，底數在前指數在後。</li>
-	<li>「%」：取餘數（模數運算, modulo）。</li>
+	<li>「%」：取餘數（模數運算，modulo）。</li>
 	<li>「()」：括號，必須成對。</li>
 	<li>「=」：指派，將運算結果指定給某個變數。</li>
 </ul>
@@ -145,7 +146,7 @@ print(2 * a)
 print(3b) # 這行會產生語法錯誤
 </code></pre>
 
-<p>Question: 兩行 print 分別會印出什麼？</p>
+<p><b>Question:</b> 兩行 print 分別會印出什麼？</p>
 <pre class="line-numbers match-braces"><code class="language-python">a = 1
 a = a + 1
 print(a)
@@ -206,13 +207,13 @@ print(int(a) + int(b))
 
 <p>當然，如果你希望輸入小數，並進行小數的運算，則把「int」改為「float」就可以達成目標。<span class="py2">另外，若使用 Python 2，則會自動判斷輸入的類型；但是像上述範例這樣明確地寫出要使用整數運算，仍會對釐清程式的運作細節有幫助。</span></p>
 
-<p>Question: 下列修改方式是否可亦可達到進行整數相加的效果？為什麼？</p>
+<p><b>Question:</b> 下列修改方式是否可亦可達到進行整數相加的效果？為什麼？</p>
 <pre class="line-numbers match-braces"><code class="language-python">a = input('Please enter 1st number: ')
 b = input('Please enter 2nd number: ')
 print(int(a + b))
 </code></pre>
 
-<p>Question: 如果你想進行小數運算，但是「剛好忘記」把 int 改成 float，會發生什麼事？為什麼？請觀察結果並試著解釋。</p>
+<p><b>Question:</b> 如果你想進行小數運算，但是「剛好忘記」把 int 改成 float，會發生什麼事？為什麼？請觀察結果並試著解釋。</p>
 
 </blockquote>
 

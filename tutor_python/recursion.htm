@@ -178,8 +178,8 @@ if __name__ == '__main__':
 <p style="text-align:center">i = 0, j = 1 時的 game_24([6-17, 4])</p>
 <p style="text-align:center">...</p>
 
-<p>而如果你希望遞迴函式不只是回答是否有解，而是要找出至少一組解的話，程式架構也非常相似，只需要把算式跟計算結果一起在遞迴中傳遞即可，範例如下：</p>
-<pre class="line-numbers match-braces"><code class="language-python">def game_24(nums, expr=[]):
+<p>而如果你希望遞迴函式不只是回答是否有解，而是要找出至少一組解的話，程式架構也非常相似，只需要把算式跟計算結果一起在遞迴中傳遞即可，範例如下，其中 highlight 的部份，代表與前一版本有差異之處：</p>
+<pre class="line-numbers match-braces" data-line="4,6,7,14,16,18,21,24,26,27,29,31-33"><code class="language-python">def game_24(nums, expr=[]):
 	EPS = 1e-5
 	if len(nums) == 1:
 		return abs(nums[0] - 24.0) < EPS, expr

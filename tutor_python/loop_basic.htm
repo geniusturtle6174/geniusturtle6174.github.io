@@ -5,7 +5,7 @@
 	<link rel=stylesheet type="text/css" href="myCss.css">
 	<script src="myJs.js"></script>
 	<style>
-		.newbie{display: block;}
+		.newbie{display: hidden;}
 	</style>
 	<base target="_blank">
 	<link href="prism.css" rel="stylesheet">
@@ -16,26 +16,28 @@
 
 <blockquote>
 
-<p>
 <script>
-var status = 0;
-function toggle(){
+var statusNewbie = 0;
+
+function toggle() {
 	var newbie = document.getElementsByClassName("newbie");
-	if(status == 1){
-		status = 0;
-		for(var i=0;i<newbie.length;i++){
+	if (statusNewbie == 1) {
+		statusNewbie = 0;
+		for (var i = 0; i < newbie.length; i++) {
 			newbie[i].style.display = 'none';
 		}
 	}
 	else {
-		status = 1;
-		for(var i=0;i<newbie.length;i++){
+		statusNewbie = 1;
+		for (var i = 0; i < newbie.length; i++) {
 			newbie[i].style.display = 'block';
 		}
 	}
+	document.getElementById("newbie-status-label").textContent = (statusNewbie == 1) ? '顯示中' : '隱藏中';
 }
 </script>
-本篇將程式初學者所需的內容預設為顯示，若需切換請點<a onclick="toggle()">這裡</a>。
+<p style="text-align:center; background:#ffa; padding:5px">
+本篇將程式初學者所需的內容預設為隱藏（目前狀態：<span id="newbie-status-label">隱藏中</span>），若需切換請點<a href="#" onclick="toggle(); return false;">這裡</a>。
 </p>
 
 <p>程式中，經常需要重複的進行某些動作，這時候，就需要用到「迴圈」。其中一種方法是 for 迴圈，通常用在重複次數確定的情況下。For 迴圈的基本語法如下：</p>
@@ -63,9 +65,9 @@ for i in range(10, 1, -1):
 	print(i)
 </code></pre>
 
+<div class="newbie">
 <p>跟著迴圈跳動的變數，若沒有明確意義或者特殊用途，則習慣上會命名為 i, j, k 等等。在前述範例中，迴圈裡面的 print，會因會變數 i 的跳動，而印出不同的數字。</p>
 
-<div class="newbie">
 <p>我們將前面的範例修改一下數字範圍，並加上一點變數，則可以從 1 加到 100：</p>
 <pre class="line-numbers match-braces"><code class="language-python">s = 0
 for i in range(1, 101):
@@ -74,18 +76,14 @@ print(s)
 </code></pre>
 
 <p>其中的變數 s，會依次被加上 1, 2, 3, ..., 100，所以迴圈跑完以後，就可以得到 1 加到 100 的結果。記得一開始要將變數 s 初始化為 0（此動作稱為歸零），否則可能會得到不正確的結果。當然，若是利用內建指令，則可以寫成「sum(range(1, 101))」，也可以利用等差級數的公式來直接做計算。</p>
-</div>
 
-<div class="newbie">
 <p>利用迴圈自己計算階乘的方法也非常相似，但是千萬記得初始值必須設為 1，而不是上一個範例的 0。以下示範計算 10 的階乘（當然，若在允許使用內建函式的情況下，可以盡量利用之）：</p>
 <pre class="line-numbers match-braces"><code class="language-python">s = 1
 for i in range(1, 11):
 	s = s * i
 print(s)
 </code></pre>
-</div>
 
-<div class="newbie">
 <p>如果要計算比較一般化的等差級數和，則可簡單的把迴圈變數跳動的範圍，改用變數來給值或判斷。當然，也可以如最後一段，用公式計算級數和。尤其是項數多的時候，用公式計算會比迴圈來的有效率：</p>
 <pre class="line-numbers match-braces"><code class="language-python">s = 0
 
@@ -99,9 +97,7 @@ print(s)
 n = (an - a1) / d + 1
 print(n*(a1+an)/2)
 </code></pre>
-</div>
 
-<div class="newbie">
 <p><a href="http://zh.wikipedia.org/wiki/%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97">費氏數列</a>也很適合用迴圈來計算，以下程式可以印出費氏數列直到第 n (n ≥ 2)項的值：</p>
 <pre class="line-numbers match-braces"><code class="language-python">prev2 = 0 # a_{n-2}
 prev1 = 1 # a_{n-1}
@@ -112,7 +108,6 @@ for i in range(2, n+1):
 	prev1 = fn
 	print(fn)
 </code></pre>
-</div>
 
 <p>在上述的範例中，變數變化的狀況如下表：</p>
 <table class="tutor">
@@ -146,6 +141,7 @@ for i in range(2, n+1):
 	</tr>
 	<tr><td colspan="5" class="tutor" align="center">......</td></tr>
 </table>
+</div>
 
 <p>要使用迴圈來看過 list 的每個元素時，有以下幾種用法：</p>
 <pre class="line-numbers match-braces"><code class="language-python">a = [3, 5, 2, 4, 1]
@@ -222,7 +218,7 @@ print(d)
 ......(以下略)
 </code></pre>
 
-<p>Question: 上述範例中的同一被乘數會排在同一橫排。如何改成印直的，即同一被乘數排在同一直排？</p>
+<p><b>Question:</b> 上述範例中的同一被乘數會排在同一橫排。如何改成印直的，即同一被乘數排在同一直排？</p>
 </div>
 
 <p>另外一種迴圈是 while，使用時會給定一個條件，只要條件符合，迴圈就會一直執行，所以通常使用在不太確定重複次數的情況下。While 迴圈的語法如下：</p>
@@ -237,9 +233,7 @@ while i &lt;= 10:
 	print(i)
 	i = i + 1
 </code></pre>
-</div>
 
-<div class="newbie">
 <p>利用 while 迴圈，很適合觀察「3n+1問題」的數列。這個問題的規則是這樣的：</p>
 <ul>
 	<li>給定一正整數 n</li>
@@ -258,9 +252,9 @@ while n != 1:
 		n = 3*n + 1
 	print(int(n))
 </code></pre>
-</div>
 
-<p>Question: 在上述範例中，如果把 n 設為 1，請問程式會如何輸出？</p>
+<p><b>Question:</b> 在上述範例中，如果把 n 設為 1，請問程式會如何輸出？</p>
+</div>
 
 <p>「break」可以跳出所在的這一層迴圈，「continue」可以繼續下一層迴圈：</p>
 <pre class="line-numbers match-braces"><code class="language-python">print("First loop:")

@@ -35,7 +35,7 @@ print(u.index('o')) # 某字元第一個出現的位置
 print(u.count('l')) # 某字元出現的次數
 </code></pre>
 
-<p>Question：上述範例中的「index」和「count」，如果帶入的參數是沒出現的字會怎樣？請猜看看以及試看看。</p>
+<p><b>Question:</b> 上述範例中的「index」和「count」，如果帶入的參數是沒出現的字會怎樣？請猜看看以及試看看。</p>
 
 <p>字串的比較，基本上是依照字典的順序，但所有大寫比所有的小寫還小。事實上，單個字元在電腦當中的表示方法，也可以用數字的規則來解讀，例如 'A'、'a'、'0' 的表示法，分別和數字 65、97、48 相同，如果你需要互相轉換的話，可以使用「ord」以及「chr」：</p>
 <pre class="line-numbers match-braces"><code class="language-python">print('ABC' &lt 'BBB')

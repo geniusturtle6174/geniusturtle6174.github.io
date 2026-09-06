@@ -78,7 +78,7 @@ print(np.eye(5)) # Shape: (5, 5)
 print(np.eye(5, M=3))
 </code></pre>
 
-<p>Question: 如何產生全部都是某個任意實數的矩陣？</p>
+<p><b>Question:</b> 如何產生全部都是某個任意實數的矩陣？</p>
 
 <p>矩陣的合併則有各種「stack」系列的方法，或者「concatenate」可以使用。以下介紹其中兩種：</p>
 <pre class="line-numbers match-braces"><code class="language-python">import numpy as np
@@ -102,7 +102,7 @@ b1 = np.array([1, 2, 3]) # Shape: (3,)
 b2 = np.array([[1], [2], [3]]) # Shape: (3, 1)
 
 c = np.hstack([a, b1])  # 空的一維向量水平接非空的一維向量，可以執行
-c = np.vstack([b1, b1]) # 垂直疊兩個 b1，也可以執行（Question: shape 為何？）
+c = np.vstack([b1, b1]) # 垂直疊兩個 b1，也可以執行（<b>Question:</b> shape 為何？）
 
 c = np.vstack([a, b1])  # 這行會產生錯誤
 c = np.hstack([a, b2])  # 這行會產生錯誤
