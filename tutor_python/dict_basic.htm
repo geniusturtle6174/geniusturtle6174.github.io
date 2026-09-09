@@ -16,27 +16,28 @@
 
 <blockquote>
 
-<p>
 <script>
-var status = 0;
+var status2 = 0;
 
-function toggle2(){
+function toggle2() {
 	var py2 = document.getElementsByClassName("py2");
-	if(status == 1){
-		status = 0;
-		for(var i=0;i<py2.length;i++){
+	if (status2 == 1) {
+		status2 = 0;
+		for (var i = 0; i < py2.length; i++) {
 			py2[i].style.display = 'none';
 		}
 	}
 	else {
-		status = 1;
-		for(var i=0;i<py2.length;i++){
+		status2 = 1;
+		for (var i = 0; i < py2.length; i++) {
 			py2[i].style.display = 'inline';
 		}
 	}
+	document.getElementById("status2-label").textContent = (status2 == 1) ? '顯示中' : '隱藏中';
 }
 </script>
-<p align="center" style="background:#ffa;padding:5px">本篇將 Python 2 相關內容預設為隱藏，若需在顯示與隱藏間相互切換請點<a onclick="toggle2()">這裡</a>。</p>
+<p style="text-align:center; background:#ffa; padding:5px">
+本篇將 Python 2 相關內容預設為隱藏（目前狀態：<span id="status2-label">隱藏中</span>），若需在顯示與隱藏間相互切換請點<a href="#" onclick="toggle2(); return false;">這裡</a>。
 </p>
 
 <p>使用日常生活中的字典時，你會有一個要查詢的字詞，然後翻找到解釋。Python 當中的字典也跟生活中的字典非常相似，但我們會把要查詢的字詞稱為 key，翻找到的解釋稱為 value。Python 的字典的基本使用方法如下，大致上跟串列非常相似：</p>
